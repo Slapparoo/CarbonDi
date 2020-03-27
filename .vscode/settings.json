@@ -1,4 +1,10 @@
 {
     "java.dependency.packagePresentation": "flat",
-    "java.dependency.syncWithFolderExplorer": true
+    "java.dependency.syncWithFolderExplorer": true,
+    "files.associations": {
+        "*.HC": "cpp",
+        "array.h": "c",
+        "std.library.class_main.h": "c",
+        "default.resolvetypes_main.h": "c"
+    }
 }

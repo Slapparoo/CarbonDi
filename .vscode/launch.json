@@ -6,6 +6,21 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Debug (Launch) with Arguments Prompt",
+            "request": "launch",
+            "mainClass": "",
+            "args": "${command:SpecifyProgramArgs}"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - BasicWalk",
+            "request": "launch",
+            "mainClass": "ec.lang.BasicWalk",
+            "projectName": "ec",
+            "args": "examples/if.ec"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - BasicWalk",
             "request": "launch",
             "mainClass": "ec.lang.BasicWalk",

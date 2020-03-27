@@ -61,7 +61,7 @@
 				<artifactId>antlr4-maven-plugin</artifactId>
 				<version>${antlr.version}</version>
 				<configuration>
-					<sourceDirectory>${basedir}</sourceDirectory>
+					<sourceDirectory>${basedir}/src/main/antlr4</sourceDirectory>
 					<grammars>ec.g4</grammars>
 					<visitor>true</visitor>
 					<listener>true</listener>

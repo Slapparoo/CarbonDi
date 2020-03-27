@@ -311,33 +311,48 @@ and should it support?
 // if true add `$a` to result
 `@subSet = (Item[])loop(items) {$a.value;}`
 
+New class instances
+---
+
+The keyword new is not required
+
+```
+MyClass myClass();
+@myClass = MyClass();
+```
+
+Comments
+---
+`/** Comments are markdown */` 
+`/* standard text */` 
+`//` line comment
+
 Class Internals
 ---
 
-Class runles are all resolved at complie time and classes have all there parent properties merged into this class rather than a pointer to the parent class
+Classes are all resolved at complie time and classes have all there parent properties merged into this class rather than a pointer to the parent class
 
-the struct will have a specific order with the parent variables first
+The struct will have a specific order with the parent variables first
 
-the runtime introspection will be an object tree with parent object information (and maybe function pointers? in a single static instance)
-so their can be many runtime Instance's of the object with their own data, but a single static descriptor instance of the Class tree.
+A static class function object tree will be constructed at compile time and loaded at runtime, this can also be used to introspection?
 
-all the function pointers are resolved at compile time 
-Classes internally have there properties
+So an object in memory will just be it internal data
 
-typedef struct parentClass {
-    int value;
-}
+The Object reference table will contain a reference to the object type and the object data, the object type is where the function pointers are resolved from.
 
-typedef struct subClass {
-    int value;
-    int subclassValue;
-}
+Static functions and non-oo functions will be access directly - constructors are static functions.
 
-static introspectorDef {
-    String name;
-    String namespace;
-    introspectorDef parent;
-    List<Plan> plans;
+
+struct MyClassFunctionPointers {
+    BaseClass super;
+    // this classes function pointers and all parent classes function pointers rolled up
+    void (*functionName)(ObjectReference, int) = &fun; 
     ...
-} 
-    
+    asString(ObjectReference);
+    asHash(ObjectReference);
+    equals(ObjectReference);
+
+} ClassFunctionPointers;
+
+
+
