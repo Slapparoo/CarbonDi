@@ -2,20 +2,20 @@ imports {
     extern_c library.stdio;
 }
 
-plan Array {
+plan Array1 {
     T geti(u64 index);
     void seti(u64 index, T value);
     u64 length();
 }
 
 
-private plan Array {
+private plan Array2 {
     T geti(u64 index);
     void seti(u64 index, T value);
     u64 length();
 }
 
-private stub Array {
+private stub Array3 {
     (public, protected) properties {
         (protected,) String firstname;
         (, private) String lastname;
@@ -37,7 +37,7 @@ private stub Array {
 }
 
 
-protected final plan Array<T>(Object) {
+protected final plan Array4<T>(Object) {
     T geti(u64 index);
     void seti(u64 index[], T value);
     u64 length();

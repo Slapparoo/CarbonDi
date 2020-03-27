@@ -1,55 +1,75 @@
 namespace std.library ;
 
-imports {
-    extern_c 'stdio.h' ;
-    std.library;
-}
 
-public class Array(obj) {
-    public Td getit(u64 index) {return 1;};
-    void setit(u64 index, T value);
-    u64 length();
-}
-
-
-private class Array {
-    T getit(u64 index);
-    void setit(u64 index, T value) throws AnException;
-    u64 length();
-
-    get count {}
-
-}
-
-protected final class Array<T>(Object) {
+protected final class SimpleObject (Object) {
     (public, public) properties {
-        (private, ) u64 count;
-        (, ) u64 count;
-        (,private) u64 count;
-        (private, private) u64 count;
+        (private, ) num count1;
+        String package;
     }
 
-    get count {
-        return count;
+    num length() {
+        return 0b_111;
     }
-
-    set count { count = $a; }
-
-    set count {
-        if (count != $a) {
-            countChanged = true;
-        }
-        count = $a;
-    }
-
-    T getit(u64 index);
-    static void setit(u64 index = 1, T value[] = [1,2,3]);
-    u64 length();
-    public void setLength(u64);
-
-    private void setLength(u64) {
-        length = $a + 1 * 2;
-    };
-
-
 }
+
+// plan Comparable {
+//     num compareTo(Comparable other);
+// }
+
+/*
+plan Primative<T> {
+    // (public, public) properties {
+    //     T value;
+    // }
+}
+
+public class Num is Comparable, Primative<num> {
+#override     
+    public num compareTo(Num other);
+}
+*/
+public class AnotherSimpleClass (SimpleObject) is Comparable {
+    (public, public) properties {
+        String name;
+    }
+
+    // num compareTo(AnotherSimpleObject other) {
+    //     return name - other.name;
+    // };
+}
+
+class StillAnotherClass (AnotherSimpleClass) {
+    // num compareTo(StillAnotherClass other) {
+    //     return name - other.name;
+    // };
+}
+
+void someFunction() {
+    printf("someFunction.\n");    
+}
+
+i64 someFunction2() {
+    num b = 10;
+    num a = 5 + b;
+    return 1 + 0b_1111 + a;
+}
+
+someFunction();
+
+printf("Hello world %ld.\n", 0x_A0_FF + 0b_0001_0001);
+
+String s1 = String_create("Hello EC");
+SimpleObject simpleObject  = SimpleObject_create();
+
+printf("Objects s1=%ld simpleObject=%ld.\n", s1, simpleObject);
+
+AnotherSimpleClass_create();
+StillAnotherClass_create();
+
+s1.printTo(stdout);
+
+
+num a = 10;
+num b = someFunction2();
+
+printf("numbers %ld %ld.\n", a, b);

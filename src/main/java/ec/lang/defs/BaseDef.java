@@ -2,6 +2,9 @@ package ec.lang.defs;
 
 public class BaseDef {
 
+    public String line;
+    
+
     public BaseDef() {}
 
     public String asHeader() {

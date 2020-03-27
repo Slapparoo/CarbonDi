@@ -1,7 +1,10 @@
 package ec.lang.defs;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * This is variable type / cast type / Parameter type
@@ -12,14 +15,22 @@ public class TypeIdDef extends BaseDef {
     public String name;
     public boolean is_array;
 
-    private static Map<String, String> TYPE_MAPPING = new HashMap<>();
+    private static Set<String> PRIMATIVES = new HashSet<>();
 
     static {
-        TYPE_MAPPING.put("u8", "char");
-        TYPE_MAPPING.put("u32", "unsigned int");
-        TYPE_MAPPING.put("i32", "int");
-        TYPE_MAPPING.put("u64", "unsigned long long");
-        TYPE_MAPPING.put("i64", "long long");
+        // All ref objects become i64
+        PRIMATIVES.addAll(Arrays.asList(new String[] { "i64", "u64", "u32", "i32", "u16", "i16", "i8", "u8", "f32",
+                "f64", "f128", "f80", "boolean", "num"
+        }));
+    }
+
+    @Override
+    public void resolve_01() {
+        System.out.println("@@TypeIdDef.resolve " + name);
+        if (name.contains(".")) {
+            System.out.println("@@TypeIdDef.resolve " + name + ", classvar");
+        }
+        super.resolve_01();
     }
 
 
@@ -34,23 +45,22 @@ public class TypeIdDef extends BaseDef {
         return "";
     }
 
-
     private String getMappedType(String type) {
-        String res = TYPE_MAPPING.get(type);
-
-        return res == null ? type : res;
+        return PRIMATIVES.contains(type) ? type : "num";
     }
 
-
     public String asCode() {
-        // if (is_array) {
-        //     return getMappedType(name) + "[]";
-        // }
-        return getMappedType(name);
+        // @TODO if it is a return type void is valid
+        return "/*"+ name +"*/"+ getMappedType(name);
     }
 
     @Override
     public String toString() {
         return "TypeIdDef [is_array=" + is_array + ", name=" + name + "]";
     }
+
+
+	public boolean isPrimative() {
+		return PRIMATIVES.contains(name);
+	}
 }

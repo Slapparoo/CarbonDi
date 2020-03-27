@@ -1,16 +1,41 @@
 package ec.lang.defs;
 
-public class IfDef extends ExprDef {
+import java.util.ArrayList;
+import java.util.List;
+
+public class IfDef extends StatementDef implements ContainerDef {
     public ExprDef condition;
-    public BlockDef content;
-    public BlockDef elseContent;
-    public IfDef elseIf;
+    public BlockDef blockDef;
+    public BlockDef elseblockDef;
+    public IfDef elseDef;
+    public List<IfDef> elseIfs = new ArrayList<>();
+
+    @Override
+    public void resolve_01() {
+        condition.resolve_01();
+        super.resolve_01();
+    }
 
     public String asHeader() {
         return "";
     }
 
     public String asCode() {
-        return "";
+        return "if ("+condition.asCode()+") " + blockDef.asCode();
     }
+
+	public BlockDef getBlockDef() {
+		return blockDef;
+	}
+
+	public void setBlockDef(BlockDef blockDef) {
+        System.out.println("(setIfBlock)");
+		this.blockDef = blockDef;
+	}
+
+    @Override
+    public List<VariableDef> variableDefs() {
+        return null;
+    }
+    
 }

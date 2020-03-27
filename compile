@@ -1,0 +1,9 @@
+mvn clean compile
+#/usr/lib/jvm/java-11-openjdk-amd64/bin/java -Dfile.encoding=UTF-8 @/tmp/cp_35lbmltlo5sxoyz655ps47hy1.argfile ec.lang.BasicWalk examples/class.ec c-lang
+echo "/usr/lib/jvm/java-11-openjdk-amd64/bin/java -Dfile.encoding=UTF-8 @/tmp/cp_35lbmltlo5sxoyz655ps47hy1.argfile ec.lang.BasicWalk examples/$1.ec c-lang"
+/usr/lib/jvm/java-11-openjdk-amd64/bin/java -Dfile.encoding=UTF-8 @/tmp/cp_35lbmltlo5sxoyz655ps47hy1.argfile ec.lang.BasicWalk examples/$1.ec c-lang
+echo "cd c-lang; ./$2.$1_main.compile ; cd .."
+cd c-lang; ./$2.$1_main.compile ; cd ..
+echo c-lang/$2.$1_main
+c-lang/$2.$1_main
+

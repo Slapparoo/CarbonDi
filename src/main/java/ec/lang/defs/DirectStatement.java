@@ -3,10 +3,10 @@ package ec.lang.defs;
 /**
  * Allows the direct defintion of c code
  */
-public class DirectExpr extends ExprDef {
+public class DirectStatement extends StatementDef {
     public String value;
 
-    public DirectExpr(String value) {
+    public DirectStatement(String value) {
         this.value = value;
     }
 

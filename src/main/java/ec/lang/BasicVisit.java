@@ -1,6 +1,6 @@
 package ec.lang;
 
-import ec.lang.gen.*;
+import ec.lang.model.*;
 
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;

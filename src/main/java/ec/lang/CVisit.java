@@ -1,6 +1,6 @@
 package ec.lang;
 
-import ec.lang.gen.*;
+import ec.lang.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
