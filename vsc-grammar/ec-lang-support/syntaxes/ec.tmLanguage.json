@@ -1,0 +1,98 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "EC",
+	"patterns": [
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#strings1"
+		},
+		{
+			"include": "#strings2"
+		},
+		{
+			"include": "#control"
+		},
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#variable"
+		},
+		{
+			"include": "#variable2"
+		},
+		{
+			"include": "#function"
+		},
+		{
+			"include": "#linecomment"
+		}
+	],
+	"repository": {
+		"comments": {
+			"begin": "/\\*",
+			"end": "\\*/",
+			"name": "comment",
+			"patterns": [{
+				"name": "comment",
+				"match": "."
+			}]
+		},
+		"linecomment": {
+			"patterns": [{
+				"name": "comment",
+				"match": "//.*"
+			}]
+		},
+
+		"keywords": {
+			"patterns": [{
+				"name": "keyword.control.ec",
+				"match": "\\b(with|in|if|else|loop|for|return)\\b"
+			}]
+		},
+		"control":{
+			"patterns": [{
+				"name": "keyword",
+				"match": "\\b(true|false|imports|class|stub|plan|properties|final|static|namespace|try|catch|finally|throws|throw|public|private|protected|get|set)\\b"
+			}]
+		},
+		"variable":{
+			"patterns": [{
+				"name": "variable",
+				"match": "\\b(void|boolean|num|String|i8|u8|i16|u16|i32|u32|i64|u64|f32|f64|f80|f128)\\b"
+			}]
+		},
+		"variable2":{
+			"patterns": [{
+				"name": "variable",
+				"match": "(@[a-zA-Z_]*|\\$[a-zA-Z])"
+			}]
+		},
+		"function":{
+			"patterns": [{
+				"name": "entity.name.function",
+				"match": "[a-zA-Z_]([\\.a-zA-Z0-9_]*)?\\("
+			}]
+		},
+		"strings1": {
+			"patterns": [
+				{
+					"name": "string",
+					"match": "\".*?\""
+				}
+			]
+		},
+		"strings2": {
+			"patterns": [
+				{
+					"name": "string",
+					"match": "'.*?'"
+				}
+			]
+		}
+	},
+	"scopeName": "source.ec"
+}

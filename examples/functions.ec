@@ -1,20 +1,24 @@
 
-i64 getName() {
-    return name; 
+
+String getName(String value) {
+    return value;
 }
 
-void setName(i64 name) {
-    this.name = name; 
+String getAName() {
+    return String("A name");
 }
 
-void updateName(&i64 name) {
-    name = "my name"; 
+void printName(String value) {
+    printf("name=%s", value.asStr());
 }
 
-void updateName(boolean always = true, &i64 name);
+@name2 = getAName();
 
-void updateName(boolean always = true, &i64 name) {
-    if (always) {
-        name = 100; 
-    }
+loop (10) {
+    @name = getName(String("Ma Name"));
+    printf("l=%ld ", $a);
+    printName(name);
 }
+
+printName(name2);
+

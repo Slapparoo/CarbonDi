@@ -1,6 +1,7 @@
 package ec.lang.defs;
 
 public class BaseDef {
+    public BlockDef containedInBlock;
 
     public String line;
     

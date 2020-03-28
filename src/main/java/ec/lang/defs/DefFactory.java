@@ -259,6 +259,17 @@ public class DefFactory {
         return def;
     }
 
+
+    public static VariableDef newParamDef() {
+        VariableDef def = new VariableDef();
+
+        // addStatement(def);
+        // VAR_DEFS.add(def);
+        in_funct_def.parameters.add(def);
+
+        return def;
+    }
+
     public static VariableDef newVarDef() {
         VariableDef def = new VariableDef();
 

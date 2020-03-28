@@ -13,16 +13,23 @@ import ec.lang.defs.VariableDef;
 public class FunctionCallExpr extends ExprDef {
     public List<ExprDef> params = new ArrayList<>();
     private String name;
+    private boolean returnPrimative = true;
+    // public BlockDef containedInBlock;
 
 
     @Override
     public void resolve_01() {
         System.out.println("@@FunctionCallExpr.resolve " + name);
 
+        if (containedInBlock == null) {
+            new NullPointerException("FunctionCallExpr containedInBlock == null" + name);
+        }
+
         for (ExprDef exprDef : params) {
             if (exprDef instanceof TypeExpr) {
                 ((TypeExpr)exprDef).isGet = true;
             }
+            exprDef.containedInBlock = containedInBlock;
             exprDef.resolve_01();
         }
 
@@ -50,7 +57,9 @@ public class FunctionCallExpr extends ExprDef {
                 if (classDef.name.equals(name)) {
                     name = name + "_create";                    
                     System.out.println("@@function resolve Constructor " + name);
-                    // name = name + "_create";                    
+                    // name = name + "_create";  
+                    returnPrimative = false; 
+                    thisType = new TypeIdDef(name);                 
                 }
             }
 
@@ -74,6 +83,12 @@ public class FunctionCallExpr extends ExprDef {
 
     private String getClassModelName(String varName) {
         // DefFactory lookup to return the Type by name
+        for (VariableDef var : containedInBlock.variableDefs) {
+            if (var.getName().equals(varName)) {
+                return var.type.name;
+            }
+        }
+
         for (VariableDef var : DefFactory.VAR_DEFS) {
             if (var.getName().equals(varName)) {
                 return var.type.name;
@@ -81,7 +96,6 @@ public class FunctionCallExpr extends ExprDef {
         }
 
         throw new RuntimeException("Class not resolved " + varName);
-        // System.out.println(DefFactory.VAR_DEFS);
     }
 
     public FunctionCallExpr() {
@@ -92,7 +106,6 @@ public class FunctionCallExpr extends ExprDef {
         System.out.println("@@FunctionCallExpr.setname " + name);
         this.name = name;
     }
-
 
     private String paramsAsCode() {
         String res = "";

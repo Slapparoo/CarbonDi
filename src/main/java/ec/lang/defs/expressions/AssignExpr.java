@@ -18,9 +18,13 @@ public class AssignExpr extends StatementDef {
             ((TypeExpr)assignRight).isGet = true;
         }
 
+        assignRight.containedInBlock = containedInBlock;
         assignRight.resolve_01();
 
         System.out.println("@@AssignExpr.resolve " + assignLeft.expr);
+
+        assignLeft.containedInBlock = containedInBlock;
+        assignLeft.resolve_01();
 
         if (assignLeft.expr.contains(".")) {
             classVar = true;
@@ -28,7 +32,7 @@ public class AssignExpr extends StatementDef {
             String[] tokens = assignLeft.expr.split("\\.");
             if (tokens.length == 2) {
                 // resolve object 
-                VariableDef var = DefFactory.resolveVariable(tokens[0]);
+                VariableDef var = containedInBlock.resolveVariable(tokens[0]);
 
                 assignLeft.expr = "get" + var.type.name + "ClassModel()->set_" + tokens[1] + "(" + tokens[0] + ", "+assignRight.asCode()+")";
                 // type

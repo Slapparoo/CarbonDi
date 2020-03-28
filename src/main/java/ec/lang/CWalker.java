@@ -82,13 +82,21 @@ public class CWalker extends ecBaseListener {
         }
 
         try (FileOutputStream out = new FileOutputStream(ffilename + ".compile")) {
-            String code = "gcc -g -c -I../c-lang-deps -o obj/"+ ctx.ff.filename +".o "+ctx.ff.filename+".c";
 
-            code += "\ngcc -g -I../c-lang-deps ../c-lang-deps/types.o obj/*.o  -o "+ ctx.ff.filename +" "+ctx.ff.filename+".run.c";
+            String code = "";
 
             for (ClassDef classDef : ctx.ff.getClasses()) {
-                code += "\ngcc -g -c -I../c-lang-deps -o obj/"+ classDef.getClassFQN() +".o "+classDef.getClassFQN()+".c";
+                // code += "\ngcc -g -c -I../c-lang-deps -o obj/"+ classDef.getClassFQN() +".o "+classDef.getClassFQN()+".c";
+                 code += "\nclang -std=gnu17 -O3 -g -c -I../c-lang-deps -o obj/"+ classDef.getClassFQN() +".o "+classDef.getClassFQN()+".c";
+                // code += "\nclang-format -style=file -i "+classDef.getClassFQN()+".c";
             }
+            // code += "\ngcc -g -c -I../c-lang-deps -o obj/"+ ctx.ff.filename +".o "+ctx.ff.filename+".c";
+            code += "\nclang -std=gnu17 -O3 -g -c -I../c-lang-deps -o obj/"+ ctx.ff.filename +".o "+ctx.ff.filename+".c";
+            // code += "\nclang-format -style=file -i "+ctx.ff.filename+".c";
+
+            // code += "\ngcc -g -I../c-lang-deps ../c-lang-deps/types.o obj/*.o  -o "+ ctx.ff.filename +" "+ctx.ff.filename+".run.c";
+            code += "\nclang -std=gnu17 -O3 -g -I../c-lang-deps ../c-lang-deps/types.o obj/*.o  -o "+ ctx.ff.filename +" "+ctx.ff.filename+".run.c";
+            // code += "\nclang-format -style=file -i "+ctx.ff.filename+".run.c";
 
             out.write(code.getBytes());
             out.flush();
@@ -98,7 +106,8 @@ public class CWalker extends ecBaseListener {
 
 
         try (FileOutputStream out = new FileOutputStream(ffilename + ".run.c")) {
-            String code = "#include \""+ ctx.ff.filename +".h\"\n\nvoid main() { "+ctx.ff.mainName()+";}";
+            String code = "#define DEBUG 1" 
+            + "\n#include \""+ ctx.ff.filename +".h\"\n\nint main() { "+ctx.ff.mainName()+";}";
 
 
             out.write(code.getBytes());

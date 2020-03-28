@@ -3,6 +3,9 @@ class MyClass {
         num value = 0b_1111;
         String name;
     }
+    void printSomeStuff() {
+        printf("Some Stuff\n");
+    }
 }
 
 class MySecondClass(MyClass) {}
@@ -13,9 +16,13 @@ class MyOtherClass {
     }
 }
 
-__onEnter();
+String getAString() {
+    return String("the new name");
+}
 
-@c1 = MyClass(); 
+@c1 = MyClass();
+c1.name = getAString();
+c1.printSomeStuff();
 @mySecondClass = MySecondClass();
 c1.value = 0b_1010;
 mySecondClass.value = c1.value;
@@ -34,6 +41,8 @@ c2.set_myClass(c1);
 // @number3 = c2.myClass.value;
 
 @s1 = String("the name");
+@s2 = getAString();
+s2.printTo(stdout);
 c1.name = s1;
 @name = c1.name;
 
@@ -42,9 +51,3 @@ c3.printTo(stdout);
 
 printf("number %ld, %ld %s\n", number, number2, name.asStr());
 
-// returnObject(c1);
-// returnObject(s1);
-// returnObject(mySecondClass);
-// returnObject(c2);
-
-__onExit();

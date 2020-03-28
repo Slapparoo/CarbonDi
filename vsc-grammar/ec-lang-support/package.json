@@ -1,0 +1,25 @@
+{
+    "name": "ec-lang-support",
+    "displayName": "EC Lang Support",
+    "description": "Basic EC Langauge Support",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.43.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "ec",
+            "aliases": ["EC", "ec"],
+            "extensions": [".ec"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "ec",
+            "scopeName": "source.ec",
+            "path": "./syntaxes/ec.tmLanguage.json"
+        }]
+    }
+}

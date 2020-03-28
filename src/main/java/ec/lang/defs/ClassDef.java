@@ -42,10 +42,11 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
 
         for (StatementDef statementDef : blockDef.statementDefs) {
             if (statementDef.getClass().equals(FunctionDef.class)) {
-                System.out.println("*function " + statementDef);
+                // System.out.println("*function " + statementDef);
                 functionDefs.add((FunctionDef)statementDef);
                 ((FunctionDef)statementDef).classDef = this;
             }   
+            statementDef.resolve_01();
         }
 
         // remove functions and variables from main block
@@ -87,9 +88,9 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
             getter.accessor = var.accessor;
             getter.returnType = var.type;
             getter.setBlockDef(new BlockDef());
+            getter.getBlockDef().includeEntryExit = false;
 
-            getter.getBlockDef().statementDefs.add(new DirectStatement("\n  Object_ref *object_ref = useObject(_refId);"));
-            getter.getBlockDef().statementDefs.add(new DirectStatement("  return (("+getClassVar()+"*)object_ref->data)->"+var.getName()+";"));
+            getter.getBlockDef().statementDefs.add(new DirectStatement("  return (("+getClassVar()+"*)useObject(_refId)->data)->"+var.getName()+";"));
 
             VariableDef param = new VariableDef();
             param.setName("_refId");
@@ -106,13 +107,14 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
             setter.accessor = var.accessor;
             setter.returnType = new TypeIdDef("void");
             setter.setBlockDef(new BlockDef());
+            setter.getBlockDef().includeEntryExit = false;
 
-            if (!var.isPrimative()) {
-                setter.getBlockDef().statementDefs.add(new DirectStatement("borrowObject("+var.getName()+");"));
+            if (var.isPrimative()) {
+                setter.getBlockDef().statementDefs.add(new DirectStatement("\n  (("+getClassVar()+"*)useObject(_refId)->data)->" + var.getName() + " = " + var.getName() +";" ));
+
+            } else {
+                setter.getBlockDef().statementDefs.add(new DirectStatement("\n  assignObject(&(("+getClassVar()+"*)useObject(_refId)->data)->" + var.getName()+", "+var.getName()+");"));
             }
-
-            setter.getBlockDef().statementDefs.add(new DirectStatement("\n  Object_ref *object_ref = useObject(_refId);"));
-            setter.getBlockDef().statementDefs.add(new DirectStatement("  (("+getClassVar()+"*)object_ref->data)->" + var.getName() + " = " + var.getName() +";" ));
             addFunction(setter);
         }
 
@@ -304,7 +306,7 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
     private String createInitMethod() {
         return  ""
         + "\ni64 "+getClassVar()+"_create() {"
-        + "\n  "+getClassVar()+" * _"+getClassVar()+" = malloc(sizeof("+getClassVar()+"));"
+        + "\n  "+getClassVar()+" * _"+getClassVar()+" = calloc(sizeof("+getClassVar()+"), sizeof(char));"
         + "\n  return createObject(_"+getClassVar()+", (ClassModel*)get"+getClassVar()+"ClassModel(), false);"
         + "\n}\n"
         + "\n"+getClassVar()+"ClassModel* _"+getClassVar() +"ClassModel = NULL;"

@@ -53,7 +53,7 @@ public class VariableDef extends StatementDef {
                 ((TypeExpr)assignValue).isGet = true;
             }
 
-
+            assignValue.containedInBlock = containedInBlock;
             assignValue.resolve_01();
         }
 
@@ -105,9 +105,12 @@ public class VariableDef extends StatementDef {
         if (type == null) {
             return "(incomplete) " + getName();
         }
+        String aa = (assignValue == null ? ";" : assignValue.asCode());
+        String av = (aa.trim().equals(";") ? "" : " = " + aa);
 
-        return type.asCode() + " " + getName() + (type.is_array ? "[" + (indexSize > 0 ? ""+indexSize : "")+ "]" : "") 
-            + (assignValue == null ? "" : " = " + assignValue.asCode());
+        System.out.println("@@VariableDef.asCode " + aa + ", " + av);
+
+        return type.asCode() + " " + getName() + (type.is_array ? "[" + (indexSize > 0 ? ""+indexSize : "")+ "]" : "") + av;
     }
 
     @Override

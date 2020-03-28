@@ -7,14 +7,20 @@ public class TypeExpr extends ExprDef {
 
     @Override
     public void resolve_01() {
-        System.out.println("@@TypeExpr.resolve " + expr);
+        System.out.println("@@TypeExpr.resolve " + expr + ", " + containedInBlock);
         if (expr.contains(".")) {
             System.out.println("@@TypeExpr.resolve " + expr + ", classvar isget=" + isGet);
             // resolve the class
             String[] tokens = expr.split("\\.");
             if (tokens.length == 2) {
                 // resolve object 
-                VariableDef var = DefFactory.resolveVariable(tokens[0]);
+                if (containedInBlock == null) {
+                    throw new NullPointerException("containedInBlock == null " + expr);
+                }
+
+                VariableDef var = containedInBlock.resolveVariable(tokens[0]);
+
+                // VariableDef var = DefFactory.resolveVariable(tokens[0]);
 
                 if (isGet) {
                     expr = "get" + var.type.name + "ClassModel()->get_" + tokens[1] + "(" + tokens[0] + ")";

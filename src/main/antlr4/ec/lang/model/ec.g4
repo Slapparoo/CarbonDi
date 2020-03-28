@@ -154,7 +154,7 @@ cast_type
    : keyword_lparen parameter_data_type {DefFactory.castType = $parameter_data_type.text;} keyword_rparen
    ;
 
-parameter_definition locals[VariableDef vd = DefFactory.newVarDef()]
+parameter_definition locals[VariableDef vd = DefFactory.newParamDef()]
    : ti2=builtin_or_type nm=type_id keyword_lbracket keyword_rbracket (keyword_equals ct=cast_type? (as=type_id | array_values ))?  
       {$vd.setValues(null, $nm.text, $ti2.text, true, $ct.text, null, null, null, $as.text, null);}
    | ti2=builtin_or_type keyword_lbracket keyword_rbracket nm=type_id (keyword_equals ct=cast_type? (as=type_id | array_values ))?  

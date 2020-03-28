@@ -7,7 +7,10 @@ namespace std.library ;
 // zero based
 loop(10) { printf("loop1 %ld\n", $a);}
 loop(end) { printf("loop4 %ld\n", $a);}
-loop(-5) { printf("loop5 %ld\n", $a); break;}
+loop(-5) { 
+   printf("loop5 %ld\n", $a); 
+   break;
+}
 
 // range inclusive
 loop(1..2) { printf("loop2 %ld\n", $a);}

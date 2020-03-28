@@ -1,0 +1,4 @@
+cd c-lang-deps
+#gcc -g -c -o types.o types.c
+clang -std=gnu17 -O3 -g -c -o types.o types.c
+cd ..
