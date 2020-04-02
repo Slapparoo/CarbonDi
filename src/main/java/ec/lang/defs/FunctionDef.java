@@ -44,30 +44,32 @@ public class FunctionDef extends StatementDef implements ContainerDef {
 
     @Override
     public void resolve_01() {
-        System.out.println("@@FunctionDef.resolve_01");
+        // System.out.println("@@FunctionDef.resolve_01");
+        super.resolve_01();
 
         if (classDef != null) {
             VariableDef param = new VariableDef();
             param.setName("this");
             param.type = new TypeIdDef(classDef.name);
             parameters.add(0, param);
-            System.out.println("@@FunctionDef.resolve add param " + param );
+            // System.out.println("@@FunctionDef.resolve add param " + param );
         }
         
         for (VariableDef  param : parameters) {
-            System.out.println("@@FunctionDef.resolve resolve param " + param );
+            // System.out.println("@@FunctionDef.resolve resolve param " + param );
             // param.resolve_01();
-            blockDef.variableDefs.add(param);
+            if (blockDef != null) {
+                blockDef.variableDefs.add(param);
+            }
         }
 
-        System.out.println("@@FunctionDef.resolve blockDef.variableDefs " + blockDef.variableDefs );
 
         if (blockDef != null) {
             blockDef.resolve_01();
+            System.out.println(blockDef.variableDefs);
         }
-        // if it is a class local
-        // printTo(stdout); -> getStringClassModel()->printTo(this, stdout);
-        super.resolve_01();
+        System.out.println("@@FunctionDef.resolve " + this);
+       
     }
 
 

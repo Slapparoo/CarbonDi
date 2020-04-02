@@ -17,7 +17,7 @@ public class BlockDef extends StatementDef implements ContainerDef {
 
     @Override
     public void resolve_01() {
-        System.out.println("@@BlockDef.resolve vars=" + variableDefs);
+        // System.out.println("@@BlockDef.resolve vars=" + variableDefs);
         for (StatementDef statementDef : statementDefs) {
             System.out.println("@@BlockDef.resolve " + statementDef.getClass() + ", " + statementDef);
             statementDef.containedInBlock = this;
@@ -64,7 +64,7 @@ public class BlockDef extends StatementDef implements ContainerDef {
     }
 
 	public VariableDef resolveVariable(String name) {
-        System.out.println("@@BlockDef.resolveVariable " + name + " : " + variableDefs);
+        // System.out.println("@@BlockDef.resolveVariable " + name + " : " + variableDefs);
         for (VariableDef variableDef : variableDefs) {
             if (variableDef.getName().equals(name)) {
                 return variableDef;

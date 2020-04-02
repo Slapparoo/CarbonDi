@@ -1,9 +1,7 @@
 package ec.lang.defs;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -26,11 +24,8 @@ public class TypeIdDef extends BaseDef {
 
     @Override
     public void resolve_01() {
-        System.out.println("@@TypeIdDef.resolve " + name);
-        if (name.contains(".")) {
-            System.out.println("@@TypeIdDef.resolve " + name + ", classvar");
-        }
         super.resolve_01();
+        System.out.println("@@TypeIdDef.resolve " + name + ", is_array="+ is_array + ", isPrimative=" + isPrimative());
     }
 
 
@@ -51,7 +46,7 @@ public class TypeIdDef extends BaseDef {
 
     public String asCode() {
         // @TODO if it is a return type void is valid
-        return "/*"+ name +"*/"+ getMappedType(name);
+        return getMappedType(name);
     }
 
     @Override

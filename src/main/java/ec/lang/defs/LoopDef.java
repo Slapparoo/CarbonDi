@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import ec.lang.defs.expressions.ConstExpr;
+import ec.lang.defs.expressions.FunctionCallExpr;
+import ec.lang.defs.expressions.OperationExpr;
 import ec.lang.defs.expressions.ParenExpr;
 import ec.lang.defs.expressions.RangeExpr;
 import ec.lang.defs.expressions.TypeExpr;
@@ -38,10 +40,27 @@ public class LoopDef extends StatementDef implements ContainerDef {
 
     @Override
     public void resolve_01() {
-        System.out.println("@@LoopDef.resolve ");
-        loopOver.resolve_01();
-        blockDef.resolve_01();
+        // System.out.println("@@LoopDef.resolve ");
         super.resolve_01();
+
+        VariableDef counter = new VariableDef();
+        counter.setName("$a");
+        counter.type = new TypeIdDef("num");
+        counter.containedInBlock = blockDef;
+
+        counter.resolve_01();
+
+        blockDef.variableDefs.add(counter);
+        loopOver.containedInBlock = this.containedInBlock;
+        if (loopOver.containedInBlock == null) {
+            throw new NullPointerException("loopOver.containedInBlock == null");
+        }
+
+        System.out.println("##loopover -->");
+        loopOver.resolve_01();
+        System.out.println("##loopover <--");
+        blockDef.resolve_01();
+        
     }
 
     public String asHeader() {
@@ -56,8 +75,11 @@ public class LoopDef extends StatementDef implements ContainerDef {
 
         if (loopOver instanceof ParenExpr) {
             ParenExpr p = (ParenExpr) loopOver;
-            System.out.println("@@loop.asCode " + p.enclosed.getClass());
-            if (p.enclosed instanceof TypeExpr || p.enclosed instanceof ConstExpr) {
+            System.out.println("@@loop.asCode " + p.enclosed.getClass() + ", " + p.enclosed.asCode());
+            if (p.enclosed instanceof TypeExpr 
+                || p.enclosed instanceof ConstExpr 
+                || p.enclosed instanceof OperationExpr
+                || p.enclosed instanceof FunctionCallExpr) {
                 String ex = p.enclosed.asCode();
                 // do nothing for 0
                 return "if ("+ex+" > 0) {"
@@ -72,7 +94,7 @@ public class LoopDef extends StatementDef implements ContainerDef {
         }
 
         if (loopOver instanceof RangeExpr) {
-            System.out.println("@@loop.asCode RangeExpr " + blockDef.asCode());
+            // System.out.println("@@loop.asCode RangeExpr " + blockDef.asCode());
             RangeExpr rangeExpr = (RangeExpr) loopOver;
             return "if ("+rangeExpr.start+" < "+rangeExpr.end+") {"
             + "\nfor (num a__a = "+rangeExpr.start+"; a__a <= "+rangeExpr.end+"; a__a++)"
@@ -83,7 +105,7 @@ public class LoopDef extends StatementDef implements ContainerDef {
             + "\n}";
         }
 
-        System.out.println("@@loop " + loopOver.getClass());
+        // System.out.println("@@loop " + loopOver.getClass());
         return "";
     }
 

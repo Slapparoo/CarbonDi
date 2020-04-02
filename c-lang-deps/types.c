@@ -1,12 +1,19 @@
 #include "types.h"
 
-
-
 Object_ref *poorMansMap[PM_LIST_LENGTH];
 num refStack[PM_LIST_LENGTH];
 num refStackIndex = 0;
 struct timespec __times_[PM_LIST_LENGTH];
 num timesIndex = 0;
+
+int _class_models_index = 0;
+pointer _class_models[PM_LIST_LENGTH];
+
+
+//typedef enum {_u32, _i32, _i64, _u64, _u16, _i16, _i8, _u8, _f32, _f64, _num, _f128, _f80, _pointer, _struct } primative_types;
+
+Str primative_names[] = {"u32", "i32", "i64", "u64", "u16", "i16", "i8", "u8", "f32", "f64", "num", "f128", "f80", "boolean", "pointer", "struct", "Object"};
+
 
 /**
  * used when variable or property is assgined a value
@@ -66,14 +73,20 @@ void returnObject(num ref) {
   if (object_ref->refCounter == 0) {
     // dereferenced deallocate etc
     // call the class destructor(s)
-
+    if (object_ref->classmodel->close != NULL) {  
+      object_ref->classmodel->close(ref);
+    }
     object_ref->classmodel->free(ref);
+
     ClassModel *cm = object_ref->classmodel->parent;
 
-    void *l_free = object_ref->classmodel->free;
+    pointer l_free = object_ref->classmodel->free;
     while (cm) {
       // don't call the same free twice
       if (l_free != cm->free) {
+        if (cm->close != NULL) {  
+          cm->close(ref);
+        }
         cm->free(ref);
       }
       l_free = cm->free;
@@ -193,7 +206,23 @@ num __exitReturn_ref(num a) {
   return a;
 }
 
-num createObject(void *object_data, ClassModel *class_model, boolean is_stack) {
+void registerClassModel(pointer classmodel) {
+  // debug_println("pointer %d, %p", _class_models_index, classmodel);
+  _class_models[_class_models_index++] = classmodel;
+}
+
+/**
+ * clean up he class model, so after this is run anything left in memory is a memory leak
+ */
+void __onFinalExit() {
+  _class_models_index--;
+  while (_class_models_index >= 0) {
+    // debug_println("pointer %d, %p", _class_models_index, _class_models[_class_models_index]);
+    free(_class_models[_class_models_index--]);
+  }
+}
+
+num createObject(pointer object_data, ClassModel *class_model, boolean is_stack) {
   // load the class model into cache read-only
   __builtin_prefetch (class_model, 0, 3);
   __builtin_prefetch (object_data, 1, 3);
@@ -239,7 +268,14 @@ Str returnStrCopy(Str str) {
   return res;
 }
 
-char tmpBuffer[1024];
+num Object_hashCode(num ref) {
+  return (ref * 0xff3ff3ff3ff3ff13) >> 3;
+}
+
+boolean Object_equals(num ref, num other) {
+  return ref == other;
+} 
+
 
 Str Object_asStr(num ref) {
   Object_ref *object_ref = useObject(ref);
@@ -289,33 +325,33 @@ Str _PackageName = NULL;
 ObjectClassModel *getObjectClassModel() {
   if (_objectClassModel == NULL) {
     _objectClassModel = malloc(sizeof(ObjectClassModel));
-    _ObjectName = malloc(7);
-    strcpy(_ObjectName, "Object");
-    _PackageName = malloc(5);
-    strcpy(_PackageName, "Core");
-
+    registerClassModel(_objectClassModel);
     populateObjectClassModel(_objectClassModel);
   }
   return _objectClassModel;
 }
 
-void populateObjectClassModel(void *_classModel) {
+void populateObjectClassModel(pointer _classModel) {
   ObjectClassModel *classModel = (ObjectClassModel *)_classModel;
   classModel->parent = NULL;
-  classModel->name = _ObjectName;
-  classModel->package = _PackageName;
+  classModel->name = "Object";
+  classModel->package = "Core";
   classModel->asStr = &Object_asStr;
   classModel->asString = NULL;
   classModel->free = &Object_free;
   classModel->printTo = &Object_printTo;
-}
+  classModel->close = NULL;
 
+  classModel->hashCode = &Object_hashCode;
+  classModel->equals = &Object_equals;
+
+}
 /***
  * String
  */
 StringClassModel *_stringClassModel = NULL;
 
-void populateStringClassModel(void *_classModel) {
+void populateStringClassModel(pointer _classModel) {
   populateObjectClassModel(_classModel);
 
   StringClassModel *classModel = (StringClassModel *)_classModel;
@@ -332,15 +368,19 @@ void populateStringClassModel(void *_classModel) {
 StringClassModel *getStringClassModel() {
   if (_stringClassModel == NULL) {
     _stringClassModel = malloc(sizeof(StringClassModel));
+    registerClassModel(_stringClassModel);
     populateStringClassModel(_stringClassModel);
   }
   return _stringClassModel;
 }
 
-i64 String_create(Str string) {
+num String_create(Str string) {
   String *_String = malloc(sizeof(String));
-  _String->len = strlen(string);
-  _String->str = malloc(_String->len + 1);
+  // _String->len = strlen(string);
+  // _String->str = malloc(_String->len + 1);
+    num len = strlen(string) + 1;
+  _String->str = malloc(len);
+
   strcpy(_String->str, string);
   return createObject(_String, (ClassModel *)getStringClassModel(), false);
 }

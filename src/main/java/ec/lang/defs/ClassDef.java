@@ -32,7 +32,7 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
 
     @Override
     public void resolve_01() {
-        System.out.println("@@ClassDef.resolve " + name);
+        // System.out.println("@@ClassDef.resolve " + name);
 
         if (blockDef == null) {
             return;
@@ -163,6 +163,7 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
         +"\n#ifndef __"+getClassFQN().toUpperCase().replace('.','_')+"_H__"
         + "\n#define __"+getClassFQN().toUpperCase().replace('.','_') +"_H__"
         + "\n#include \"types.h\""
+        + "\n#include \"array.h\""
         + getParentIncludes()
         + getDependancies()
         // @TODO include class dependancies
@@ -313,8 +314,7 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
         + "\n"+getClassVar() +"ClassModel* get" +getClassVar() +"ClassModel() {"
         + "\n  if (_"+getClassVar()+"ClassModel == NULL) {"
         + "\n    _"+getClassVar()+"ClassModel = malloc(sizeof("+getClassVar()+"ClassModel));"
-        // + "\n          _"+getClassVar()+"Name = malloc(6);"
-        // + "\n          strcpy(_"+getClassVar()+"Name, \""+getClassVar()+"\");"
+        + "\n    registerClassModel(_"+getClassVar()+"ClassModel);"
         + "\n    populate"+getClassVar()+"ClassModel(_"+getClassVar()+"ClassModel);"
         + "\n  }"
         + "\n  return _"+getClassVar()+"ClassModel;"

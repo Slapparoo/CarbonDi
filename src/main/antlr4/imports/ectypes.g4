@@ -86,14 +86,10 @@ operator_mul
    | '%' 
    ;
 
-operator_add
-   : operator_plus
-   | '-' 
-   ;
+operator_add : ( operator_minus  | operator_plus );
 
-operator_plus
-   : '+'
-   ;
+operator_plus : '+';
+operator_minus : '-';
 
 keyword_ampersand
    : '&' 

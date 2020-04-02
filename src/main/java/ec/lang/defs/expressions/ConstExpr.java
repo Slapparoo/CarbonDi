@@ -37,7 +37,7 @@ public class ConstExpr extends ExprDef {
     @Override
     public String asCode() {
         if (type == null) {
-            return "ConstExpr.asCode " + expr;
+            return "/* undefined */ " + expr;
         }
         if (expr.startsWith("0x") || type.equals("float")) {
             return expr.replaceAll("_", "");

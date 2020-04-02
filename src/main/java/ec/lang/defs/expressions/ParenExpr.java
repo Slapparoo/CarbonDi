@@ -12,4 +12,11 @@ public class ParenExpr extends ExprDef {
 
         return "(" + enclosed.asCode() + ")"; 
     }
+
+    @Override
+    public void resolve_01() {
+        super.resolve_01();
+        enclosed.containedInBlock = containedInBlock;
+        enclosed.resolve_01();
+    }
 }

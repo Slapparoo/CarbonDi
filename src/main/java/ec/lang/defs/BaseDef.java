@@ -5,6 +5,11 @@ public class BaseDef {
 
     public String line;
     
+    private int resolveCount = 0;
+
+    public boolean isResolved() {
+        return resolveCount > 0;
+    }
 
     public BaseDef() {}
 
@@ -24,7 +29,10 @@ public class BaseDef {
      * 
      */
     public void resolve_01() {
-
+        resolveCount++;
+        if (resolveCount > 0) {
+            System.out.println("@@@rescount " + resolveCount + " " + this.getClass().getName());
+        } 
     }
 
     /**

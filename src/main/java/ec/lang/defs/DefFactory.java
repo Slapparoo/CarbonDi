@@ -40,7 +40,7 @@ public class DefFactory {
     }
 
     public static void addBlock(ContainerDef blockDef, String debug) {
-        System.out.println("(==>addBlock " + debug + ") " + blockDef);
+        // System.out.println("(==>addBlock " + debug + ") " + blockDef);
 
         if (currentStatementBlock != null && currentStatementBlock.size() > 0) {
             // if the las statement is a container
@@ -57,7 +57,8 @@ public class DefFactory {
     }
 
     public static BlockDef dropBlock() {
-        System.out.println("(<==dropBlock) " +currentBlock.remove(currentBlock.size() - 1));
+        currentBlock.remove(currentBlock.size() - 1);
+        // System.out.println("(<==dropBlock) ");
         ContainerDef cont = currentBlock.get(currentBlock.size() - 1);
         BlockDef res = cont.getBlockDef();
         currentStatementBlock = res.statementDefs;
@@ -211,6 +212,20 @@ public class DefFactory {
         return def;
     }
 
+    public static TypeExpr newTypeExpr(String value, String indexValue) {
+        TypeExpr def = new TypeExpr(value, indexValue);
+        addExpression(def);
+        return def;
+    }
+
+    public static TypeExpr newTypeExpr(String value, ExprDef indexValue) {
+        System.out.println("newTypeExpr(String value, ExprDef indexValue)");
+        TypeExpr def = new TypeExpr(value, indexValue);
+        addExpression(def);
+        return def;
+    }
+
+
     public static EndExpr newEndExpr() {
         // System.out.println("(EndExpr)");
         EndExpr def = new EndExpr();
@@ -284,6 +299,11 @@ public class DefFactory {
         addStatement(def);
     }
 
+    // array
+    public static void newAssignExpr(String assignLeft, String indexValue, String assignOperator) {
+        AssignExpr def = new AssignExpr(assignLeft, indexValue, assignOperator, dropExpression());
+        addStatement(def);
+    }
 
     /**
      * Lookup all the known classes
@@ -304,7 +324,7 @@ public class DefFactory {
 
 	public static VariableDef resolveVariable(String string) {
         // fish around in the varible defs until we find a matching one
-        System.out.println("@@DefFactory.resolveVariable " + string + " : " + VAR_DEFS);
+        // System.out.println("@@DefFactory.resolveVariable " + string + " : " + VAR_DEFS);
         for (VariableDef variableDef : VAR_DEFS) {
             if (variableDef.getName().equals(string)) {
                 return variableDef;
@@ -315,7 +335,7 @@ public class DefFactory {
 	}
 
 	public static ClassDef resolveClass(String name) {
-        System.out.println("@@DefFactory.resolveClass " + name + " : " + CLASS_DEFS);
+        // System.out.println("@@DefFactory.resolveClass " + name + " : " + CLASS_DEFS);
         for (ClassDef classDef : CLASS_DEFS) {
             if (classDef.name.equals(name)) {
                 return classDef;

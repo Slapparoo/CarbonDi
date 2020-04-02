@@ -1,10 +1,12 @@
+/*
 #include "std.library.Array.h"
 #include "std.library.Fruit.h"
 #include "std.library.SomeFruit.h"
 
 int main() {
-  i64 banana = Fruit_create();
-  i64 apple = Fruit_create();
+  num banana = Fruit_create();
+  num apple = Fruit_create();
+
 
   getFruitClassModel()->set_name(apple, String_create("Apple"));
   getStringClassModel()->printTo(getFruitClassModel()->get_name(apple), stdout);
@@ -26,3 +28,4 @@ int main() {
 
   return 0;
 }
+*/

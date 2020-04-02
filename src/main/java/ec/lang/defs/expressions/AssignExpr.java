@@ -55,11 +55,25 @@ public class AssignExpr extends StatementDef {
         this.assignRight = assignRight;
     }
 
+    public AssignExpr(String assignLeft, String indexValue, String assignOperator, ExprDef assignRight) {
+        this.assignLeft = new TypeExpr(assignLeft, indexValue);
+        this.assignOperator = new TypeExpr(assignOperator);
+        this.assignRight = assignRight;
+    }
+
+
     // @Override
     public String asCode() {
         if (classVar) {
             return "/* AssignExpr */" + assignLeft.asCode() + ";";
         }
-        return "/* AssignExpr */" + assignLeft.asCode() + assignOperator.asCode() + assignRight.asCode() + ";";
+
+        if (assignLeft instanceof TypeExpr) {
+            if (((TypeExpr)assignLeft).arrayIndex != null && !assignLeft.thisType.isPrimative()) {
+                return "/* AssignExpr array */" + assignLeft.asCode() + assignRight.asCode() + ");";
+            }
+        }
+
+        return "/* AssignExpr "+assignLeft.thisType.is_array+" */" + assignLeft.asCode() + assignOperator.asCode() + assignRight.asCode() + ";";
     }
 }

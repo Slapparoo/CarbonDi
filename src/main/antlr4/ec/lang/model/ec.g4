@@ -57,11 +57,14 @@ return_loop_definition
    ;
 
 expr locals[ExprDef xd]
+   // missing (functioncall() -1)
    : ( type_id { $xd = DefFactory.newTypeExpr($type_id.text); } 
    | type_num { $xd = DefFactory.newConstExpr($type_num.text); } 
    | type_string { $xd = DefFactory.newConstExpr($type_string.text); } 
    | type_anonymous { $xd = DefFactory.newConstExpr($type_anonymous.text); } 
    | type_float { $xd = DefFactory.newConstExpr($type_float.text, "float"); } )
+   // array
+   | type_id keyword_lbracket assignable_value keyword_rbracket { $xd = DefFactory.newTypeExpr($type_id.text, DefFactory.dropExpression()); }
    // why no builtin value
    | {System.out.println("paren_expr");} paren_expr
    | {$xd = DefFactory.newIncDecDef();} type_id { $xd.expr = $type_id.text; } predicate {((IncDecDef)$xd).suffix = $predicate.text; }
@@ -83,6 +86,7 @@ extended_expr locals [StatementDef xe]
    | {System.out.println("#return.add");} keyword_return_add '(' ( expr | builtin_values | assignable_value ) ')'
    // needs cast
    | {System.out.println("#assign");} la=type_id aa=assign ( ra=expr | rv=assignable_value ) {DefFactory.newAssignExpr($la.text, $aa.text);}
+   | {System.out.println("#Array assign");} la=type_id keyword_lbracket ix=assignable_value keyword_rbracket aa=assign ( ra=expr | rv=assignable_value ) {DefFactory.newAssignExpr($la.text, $ix.text, $aa.text);}
    ;
 
 function_call locals [FunctionCallExpr fc = DefFactory.newFunctionCallExpr()]
@@ -124,22 +128,25 @@ function_description locals[FunctionDef fd = DefFactory.newFunctDef()]
    ;
 
 variable_definition locals[VariableDef vd = DefFactory.newVarDef()]
+
    : ti1=builtin_or_type_or_var nm=type_id keyword_lbracket tn2=type_num? keyword_rbracket  
-      {$vd.setValues(null, $nm.text, $ti1.text, true, null, $tn2.text, null, null);}
+      {$vd.setValues("rule1", $nm.text, $ti1.text, true, null, $tn2.text, null, null);}
       // inline constructor
    | ti3=type_id keyword_lparen ( expr {$vd.params.add(DefFactory.dropExpression());} ( keyword_comma expr {$vd.params.add(DefFactory.dropExpression());} )*)? keyword_rparen  nm=type_id 
-      {System.out.println("#Constructor assign");  $vd.setValues(null, $nm.text, $ti3.text, false, null, null, null, null);}
+      {System.out.println("#Constructor assign");  $vd.setValues("rule3", $nm.text, $ti3.text, false, null, null, null, null);}
    // array looking at specif memory address
    | ti=builtin_types nm=type_id keyword_lbracket tn=num_or_type? keyword_rbracket ':' ra=num_or_type 
-      {$vd.setValues(null, $nm.text, $ti.text, true, null, $tn.text, $ra.text, null);}
+      {$vd.setValues("rule4", $nm.text, $ti.text, true, null, $tn.text, $ra.text, null);}
    | ti2=builtin_or_type keyword_lbracket tn2=type_num? keyword_rbracket nm=type_id                   
-      {$vd.setValues(null, $nm.text, $ti2.text, true, null, $tn2.text, null, null);}
+      {$vd.setValues("rule5", $nm.text, $ti2.text, true, null, $tn2.text, null, null);}
    | ti1=builtin_or_type_or_var nm=type_id keyword_lbracket keyword_rbracket (keyword_equals ct=cast_type? ( as=type_id | array_values ))?
-      {$vd.setValues(null, $nm.text, $ti1.text, true, $ct.text, null, null, null, $as.text, null);}
+      {$vd.setValues("rule6", $nm.text, $ti1.text, true, $ct.text, null, null, null, $as.text, null);}
    | ti2=builtin_or_type keyword_lbracket keyword_rbracket nm=type_id (keyword_equals ct=cast_type? ( as=type_id | array_values ))?
-      {$vd.setValues(null, $nm.text, $ti2.text, true, $ct.text, null, null, null, $as.text, null);}
+      {$vd.setValues("rule7", $nm.text, $ti2.text, true, $ct.text, null, null, null, $as.text, null);}
    | ti1=builtin_or_type_or_var nm=type_id ( keyword_equals ct=cast_type? ( as1=assignable_value | ex=expr ))?
-      { System.out.println("#Var-assign");  $vd.setValues(null, $nm.text, $ti1.text, false, $ct.text, null, null, null, $as1.text, DefFactory.dropExpression());}
+      { System.out.println("#Var-assign");  $vd.setValues("rule8", $nm.text, $ti1.text, false, $ct.text, null, null, null, $as1.text, DefFactory.dropExpression());}
+   | var_type nm=type_id  keyword_equals? ti2=builtin_or_type keyword_lbracket tn2=type_num keyword_rbracket  
+      {$vd.setValues("rule2", $nm.text, $ti2.text, true, null, $tn2.text, null, null);}
    ;
 
 /** convenience stuff */
@@ -147,7 +154,7 @@ num_or_type: (type_num | type_id);
 builtin_or_type: (builtin_types | type_id);
 builtin_or_type_or_var: var_type | builtin_or_type ;
 function_name  :  type_id | 'get' | 'set' ;   
-function_return_type : keyword_void | type_id | builtin_types ;   
+function_return_type : (keyword_void | type_id | builtin_types) ( keyword_lbracket keyword_rbracket )? ;   
 parameter_data_type : ( type_id | builtin_types ) ( keyword_lbracket keyword_rbracket )? ;
 
 cast_type 
@@ -265,6 +272,7 @@ assignable_value
    | function_call 
    | type_float {DefFactory.addExpression(new ConstExpr($type_float.text, "float"));}
    | type_anonymous {DefFactory.addExpression(new AnnonymousExpr($type_anonymous.text));} 
+   | nm=type_id keyword_lbracket ix=num_or_type keyword_rbracket { DefFactory.addExpression( new TypeExpr($nm.text, $ix.text)); }
    | return_loop_definition
    | json_obj
    ;

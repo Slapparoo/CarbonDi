@@ -38,7 +38,8 @@ public class FileDef extends BaseDef implements ContainerDef {
     public void resolve_01() {
         // move everything which is not a function or variable declaration into the main block
         // System.out.println("**resolve**");
-        System.out.println("\033[1;33m@@FileDef.resolve \033[0m");
+        // System.out.println("\033[1;33m@@FileDef.resolve \033[0m");
+        super.resolve_01();
 
         for (ClassDef classDef : classes) {
             // classDef.resolve_01();
@@ -65,24 +66,24 @@ public class FileDef extends BaseDef implements ContainerDef {
         // resolve
         blockDef.resolve_01();
 
-        for (StatementDef statementDef : blockDef.statementDefs) {
-            System.out.println("@@FileDef.resolve " + statementDef.getClass().getName());
-            statementDef.resolve_01();
-        }
+        // for (StatementDef statementDef : blockDef.statementDefs) {
+        //     // System.out.println("@@FileDef.resolve " + statementDef.getClass().getName());
+        //     statementDef.resolve_01();
+        // }
 
-        for (VariableDef variableDef : variableDefs) {
-            System.out.println("@@FileDef.resolve " + variableDef.getClass().getName());
-            variableDef.resolve_01();
-        }
+        // for (VariableDef variableDef : variableDefs) {
+        //     // System.out.println("@@FileDef.resolve " + variableDef.getClass().getName());
+        //     variableDef.resolve_01();
+        // }
 
         for (FunctionDef functionDef : functionDefs) {
-            System.out.println("@@FileDef.resolve " + functionDef.getClass().getName());
+            // System.out.println("@@FileDef.resolve " + functionDef.getClass().getName());
             functionDef.resolve_01();
         }
         
 
 
-        super.resolve_01();
+        
     }
 
     @Override
@@ -128,6 +129,7 @@ public class FileDef extends BaseDef implements ContainerDef {
         + "\n#define __" + getFqn() +"_"
         + "\n#define __" + name.trim() + "_" + namespace.trim().replace('.', '_') + "__"
         + "\n#include \"types.h\""
+        + "\n#include \"array.h\""
         + getContainedClasses()
         + getMethodsAsHeader()
         + "\n#endif";

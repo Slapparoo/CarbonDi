@@ -8,6 +8,7 @@ public class OperationExpr extends ExprDef {
 
     @Override
     public void resolve_01() {
+        super.resolve_01();
         left.containedInBlock = containedInBlock;
         if (left instanceof TypeExpr) {
             ((TypeExpr)left).isGet = true;
@@ -21,7 +22,7 @@ public class OperationExpr extends ExprDef {
         right.resolve_01();
 
 
-        super.resolve_01();
+        this.thisType = left.thisType;
     }
 
     @Override

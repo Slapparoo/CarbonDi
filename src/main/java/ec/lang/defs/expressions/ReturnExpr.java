@@ -28,7 +28,11 @@ public class ReturnExpr extends StatementDef {
             return "return __exitReturn_num(" + statement.asCode() + ");";
         }
 
-        System.out.println("\033[0;31m@@ReturnExpr.asCode return type "+statement.thisType+" "+statement.thisType.name+" \033[0m");
+        System.out.println("\033[0;31m@@ReturnExpr.asCode return type "+statement.printType()+" \033[0m");
+
+        if (statement.thisType.is_array) {
+            return "return __exitReturn_ref(" + statement.asCode() + ");";
+        }
 
         if (statement.thisType.isPrimative()) {
             return "return __exitReturn_" + statement.thisType.name + "(" + statement.asCode() + ");";

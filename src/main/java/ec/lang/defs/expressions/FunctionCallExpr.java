@@ -19,7 +19,6 @@ public class FunctionCallExpr extends ExprDef {
 
     @Override
     public void resolve_01() {
-        System.out.println("@@FunctionCallExpr.resolve " + name);
 
         if (containedInBlock == null) {
             new NullPointerException("FunctionCallExpr containedInBlock == null" + name);
@@ -46,9 +45,22 @@ public class FunctionCallExpr extends ExprDef {
 
                 // how to get the class model name
                 // the variable needs to be resolved
-                thisType = new TypeIdDef(getClassModelName(varName));
-                thisType.resolve_01();
-                name = "get" + thisType.name + "ClassModel()->"+methodName;
+
+                VariableDef variableDef = containedInBlock.resolveVariable(varName);
+                if (variableDef != null) {
+                    thisType = variableDef.type; 
+                } else {
+                    thisType = new TypeIdDef(getClassModelName(varName));
+                    thisType.resolve_01();
+                }
+
+                if (thisType.is_array) {
+                    name = "_arrayClassModel->"+methodName;
+                } else {
+                    name = "get" + thisType.name + "ClassModel()->"+methodName;
+                }
+
+                
                 params.add(0, new ExprDef(varName));
             }
         } else {
@@ -56,7 +68,7 @@ public class FunctionCallExpr extends ExprDef {
             for (ClassDef classDef : DefFactory.CLASS_DEFS) {
                 if (classDef.name.equals(name)) {
                     name = name + "_create";                    
-                    System.out.println("@@function resolve Constructor " + name);
+                    // System.out.println("@@function resolve Constructor " + name);
                     // name = name + "_create";  
                     returnPrimative = false; 
                     thisType = new TypeIdDef(name);                 
@@ -66,7 +78,7 @@ public class FunctionCallExpr extends ExprDef {
             // resolve the return type
             for (FunctionDef funct : DefFactory.FUNCT_DEFS) {
                 if (funct.name.equals(name)) {
-                    System.out.println("@@function return type " + name + ", " + funct);
+                    // System.out.println("@@function return type " + name + ", " + funct);
                     thisType = funct.returnType;
 
                     if (name.equals("String")) {
@@ -79,6 +91,8 @@ public class FunctionCallExpr extends ExprDef {
         }
 
         super.resolve_01();
+        System.out.println("@@FunctionCallExpr.resolve " + this);
+
     }
 
     private String getClassModelName(String varName) {
@@ -99,11 +113,11 @@ public class FunctionCallExpr extends ExprDef {
     }
 
     public FunctionCallExpr() {
-        System.out.println("@@FunctionCallExpr()");
+        // System.out.println("@@FunctionCallExpr()");
     }
 
     public void setName(String name) {
-        System.out.println("@@FunctionCallExpr.setname " + name);
+        // System.out.println("@@FunctionCallExpr.setname " + name);
         this.name = name;
     }
 
@@ -121,6 +135,11 @@ public class FunctionCallExpr extends ExprDef {
 
     @Override
     public String asCode() {
-        return "/* functioncall*/"+  name + "("+ paramsAsCode() + ")" ; 
+        return "/* functioncall */"+  name + "("+ paramsAsCode() + ")" ; 
+    }
+
+    @Override
+    public String toString() {
+        return "FunctionCallExpr [name=" + name + ", params=" + params + ", returnPrimative=" + returnPrimative + "]";
     }
 }

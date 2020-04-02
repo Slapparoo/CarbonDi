@@ -20,6 +20,8 @@ protected final class SimpleObject (Object) {
 }
 
 
+
+
 @simpleObject = SimpleObject();
 simpleObject.length();
 simpleObject.package = String("Simple String");
