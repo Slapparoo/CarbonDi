@@ -1,9 +1,9 @@
-namespace std.library ;
+// namespace std.library ;
 
-imports {
-    extern_c 'stdio.h' ;
-    std.library;
-}
+// imports {
+//     extern_c 'stdio.h' ;
+//     std.library;
+// }
 
 try {
     @a = 10;

@@ -16,7 +16,9 @@ public class ParenExpr extends ExprDef {
     @Override
     public void resolve_01() {
         super.resolve_01();
-        enclosed.containedInBlock = containedInBlock;
-        enclosed.resolve_01();
+        if (enclosed != null) {
+            enclosed.containedInBlock = containedInBlock;
+            enclosed.resolve_01();
+        }
     }
 }

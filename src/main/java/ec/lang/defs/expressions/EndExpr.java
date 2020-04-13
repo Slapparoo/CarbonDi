@@ -4,6 +4,6 @@ import ec.lang.defs.*;
 
 public class EndExpr extends ExprDef {
     public String asCode() {
-        return ";\n";
+        return  "/*"+expr+"*/" + ";\n";
     }
 }

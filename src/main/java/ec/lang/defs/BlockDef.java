@@ -9,7 +9,10 @@ public class BlockDef extends StatementDef implements ContainerDef {
     public List<VariableDef> variableDefs = new ArrayList<>();
 
     public boolean includeEntryExit = true;
-	public boolean hasReturn = false;
+    public boolean hasReturn = false;
+    public boolean isClass = false;
+    public ClassDef classDef = null;
+    
 
     public String asHeader() {
         return "";
@@ -17,11 +20,9 @@ public class BlockDef extends StatementDef implements ContainerDef {
 
     @Override
     public void resolve_01() {
-        // System.out.println("@@BlockDef.resolve vars=" + variableDefs);
         for (StatementDef statementDef : statementDefs) {
-            System.out.println("@@BlockDef.resolve " + statementDef.getClass() + ", " + statementDef);
             statementDef.containedInBlock = this;
-
+            // System.out.println(this.containedInBlock);
             statementDef.resolve_01();
         }
         super.resolve_01();

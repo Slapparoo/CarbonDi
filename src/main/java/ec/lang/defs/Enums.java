@@ -5,7 +5,7 @@ import java.util.Map;
 
 
 public class Enums {
-    public enum Accessor {PUBLIC("public"), PRIVATE("private"), PROTECTED("protected");
+    public enum Accessor {HIDDEN("hidden"), PRIVATE("private"), PROTECTED("protected"), PUBLIC("public");
     
         public final String value;
  
@@ -26,5 +26,6 @@ public class Enums {
         AccessorTypes.put(Accessor.PUBLIC.value, Accessor.PUBLIC);
         AccessorTypes.put(Accessor.PRIVATE.value, Accessor.PRIVATE);
         AccessorTypes.put(Accessor.PROTECTED.value, Accessor.PROTECTED);
+        AccessorTypes.put(Accessor.HIDDEN.value, Accessor.HIDDEN);
     }
 }

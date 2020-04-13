@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.HC": "cpp",
+        "stdio.h": "c",
+        "setjmp.h": "c",
+        "types.h": "c"
+    }
+}

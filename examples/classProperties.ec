@@ -1,14 +1,37 @@
+/**
+
+The release method is called when an object is destroyed, this is where you would put
+code to release and hardware, or resources which are "unmanaged".
+
+*/
 class MyClass {
     properties {
-        num value = 0b_1111;
+        i64 value = 0b_1111;
         String name;
     }
-    void printSomeStuff() {
-        printf("Some Stuff\n");
+
+    MyClass(=value) {
+        printf(`create %s %ld\n`, this.getClassName(), this.value);
+    }
+
+    void myPrint() {
+        printf(`value=%ld, name=%s\n`, this.value, name.asStr());
+    }
+
+    void release() {
+        printf(`release %s %ld\n`, this.getClassName(), this.value);
     }
 }
 
-class MySecondClass(MyClass) {}
+class MySecondClass(MyClass) {
+    MySecondClass(=value, =name) {
+        printf(`create %s\n`, this.getClassName());
+    }
+
+    void release() {
+        printf(`release (override) %s %ld\n`, this.getClassName(), this.value);
+    }
+}
 
 class MyOtherClass {
     properties {
@@ -17,37 +40,32 @@ class MyOtherClass {
 }
 
 String getAString() {
-    return String("the new name");
+    return "the new name";
 }
 
 @c1 = MyClass();
 c1.name = getAString();
-c1.printSomeStuff();
-@mySecondClass = MySecondClass();
-// c1.value = 0b_1010;
-// mySecondClass.value = c1.value;
+c1.myPrint();
+@mySecondClass = MySecondClass(100, "the name");
+mySecondClass.myPrint();
 
-// printf("c1.value %ld\n", c1.value);
-// printf("mySecondClass.value %ld\n", mySecondClass.value);
+// -------
 
-// @c2 = MyOtherClass();
+@myOtherClass = MyOtherClass();
 
-// c2.set_myClass(c1);
+loop (10) {
+    @myClass = MyClass();
+    myClass.value = $a;
+    myOtherClass.myClass = myClass;
 
-// @c3 = c2.myClass;
-// @number = c1.value;
-// @number2 = c3.value;
+    printf(`loop %ld.\n`, $a);
+}
+throwException(`its gome to shit.`);
+printf(`After loop.\n`);
 
-// // @number3 = c2.myClass.value;
+MyClass(55);
+MySecondClass(56);
 
-// @s1 = String("the name");
-// @s2 = getAString();
-// // s2.printTo(stdout);
-// c1.name = s1;
-// @name = c1.name;
+printf(`At end.\n`);
 
-// // name.printTo(stdout);
-// // c3.printTo(stdout);
-
-// printf("number %ld, %ld %s\n", number, number2, name.asStr());
 

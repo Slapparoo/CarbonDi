@@ -5,6 +5,11 @@
         "*.HC": "cpp",
         "array.h": "c",
         "std.library.class_main.h": "c",
-        "default.resolvetypes_main.h": "c"
+        "default.resolvetypes_main.h": "c",
+        "stdarg.h": "c",
+        "limits": "cpp",
+        "type_traits": "cpp",
+        "default.class_main.h": "c",
+        "core.string.h": "c"
     }
 }

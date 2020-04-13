@@ -6,13 +6,37 @@ import java.util.List;
 public class IfDef extends StatementDef implements ContainerDef {
     public ExprDef condition;
     public BlockDef blockDef;
-    public BlockDef elseblockDef;
+    // public IfDef elseIfDef;
     public IfDef elseDef;
-    public List<IfDef> elseIfs = new ArrayList<>();
+    private List<IfDef> elseIfs = new ArrayList<>();
+
+    private boolean resolved = false;
+
+    public void addElseIf(IfDef elseDef) {
+        elseIfs.add(elseDef);
+    }
 
     @Override
     public void resolve_01() {
-        condition.resolve_01();
+        resolved = true;
+
+        if (containedInBlock == null) {
+            throw new RuntimeException("containedInBlock == null");
+        }
+
+        if (condition != null) { 
+            condition.containedInBlock = containedInBlock;
+            condition.resolve_01();
+        }
+
+        blockDef.resolve_01();
+
+        for (IfDef ifDef : elseIfs) {
+            ifDef.containedInBlock = containedInBlock;
+            ifDef.resolve_01();
+        }
+
+
         super.resolve_01();
     }
 
@@ -21,7 +45,16 @@ public class IfDef extends StatementDef implements ContainerDef {
     }
 
     public String asCode() {
-        return "if ("+condition.asCode()+") " + blockDef.asCode();
+        if (!resolved) {
+            System.out.println("if Not resolved.");
+            resolve_01();
+        }
+
+        if (condition == null) {
+            return "/* else? */ else "  + blockDef.asCode();
+        }
+
+        return "if "+condition.asCode()+" " + blockDef.asCode();
     }
 
 	public BlockDef getBlockDef() {
@@ -29,7 +62,6 @@ public class IfDef extends StatementDef implements ContainerDef {
 	}
 
 	public void setBlockDef(BlockDef blockDef) {
-        System.out.println("(setIfBlock)");
 		this.blockDef = blockDef;
 	}
 

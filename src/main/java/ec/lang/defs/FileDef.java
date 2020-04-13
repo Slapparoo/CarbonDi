@@ -52,9 +52,20 @@ public class FileDef extends BaseDef implements ContainerDef {
                 // System.out.println("*function " + statementDef);
                 functionDefs.add((FunctionDef)statementDef);
             }   
-            if (statementDef.getClass().equals(ClassDef.class)) {
-                // System.out.println("*class " + statementDef);
-                classes.add((ClassDef)statementDef);
+            if (statementDef instanceof ClassDef) {
+                ClassDef cd = (ClassDef) statementDef;
+
+                boolean exists = false;
+                for (ClassDef classDef : classes) {
+                    if (cd.filename.equals(classDef.filename)) {
+                        exists = true;
+                        break;
+                    }
+                }
+
+                if (!exists) {
+                    addClass((ClassDef)statementDef);
+                }
             }   
         }
 
@@ -129,7 +140,6 @@ public class FileDef extends BaseDef implements ContainerDef {
         + "\n#define __" + getFqn() +"_"
         + "\n#define __" + name.trim() + "_" + namespace.trim().replace('.', '_') + "__"
         + "\n#include \"types.h\""
-        + "\n#include \"array.h\""
         + getContainedClasses()
         + getMethodsAsHeader()
         + "\n#endif";
@@ -152,7 +162,7 @@ public class FileDef extends BaseDef implements ContainerDef {
         return res;
     }
 
-    private String getContainedClasses() {
+    public String getContainedClasses() {
         String res = "";
         for (ClassDef classDef : classes) {
             res += "\n#include \"" + classDef.filename + ".h\""; 

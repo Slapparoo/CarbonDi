@@ -3,6 +3,7 @@ package ec.lang.defs;
 public class ExprDef extends BaseDef {
     public String expr;
     public TypeIdDef thisType;
+    public boolean isProperty = false;
 
     public String printType() {
         return "thisType " + (thisType == null ? "(undefined)" : thisType.toString());
@@ -10,7 +11,6 @@ public class ExprDef extends BaseDef {
 
     @Override
     public void resolve_01() {
-        System.out.println("@@ExprDef.resolve " + this.getClass().getName());
         super.resolve_01();
     }
 
@@ -23,11 +23,13 @@ public class ExprDef extends BaseDef {
             return "(incomplete expr)";
         }
 
-        if (expr.contains("$")) {
-            return expr.replaceAll("\\$", "") + "__a";
+        // @TODO this needs to improve
+
+        if (expr.matches("\\$[a-z]")) {
+            return expr.replaceAll("(\\$)([a-z])", "$2__a") ;
         }
 
-        return expr;
+        return hasNot + expr;
     }
 
     public ExprDef() {
@@ -39,6 +41,6 @@ public class ExprDef extends BaseDef {
 
     @Override
     public String toString() {
-        return "ExprDef [expr=" + expr + ", thisType=" + thisType + "] " + super.toString();
+        return "ExprDef ln="+getLine()+" [expr=" + expr + ", thisType=" + thisType + "] " + super.toString();
     }
 }

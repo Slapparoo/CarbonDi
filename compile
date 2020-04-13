@@ -1,13 +1,30 @@
+#!/bin/sh 
 mvn clean compile
 echo "rm c-lang/*"
 rm c-lang/*
 echo "rm c-lang/obj/*"
 rm c-lang/obj/*
+
+# poormans pre-processor preppend the signatures to the class
+# screws up the line numbers
+cat c-bin/Core.signature.ec examples/$1.ec > c-lang/$1.ec
+
 #/usr/lib/jvm/java-11-openjdk-amd64/bin/java -Dfile.encoding=UTF-8 @/tmp/cp_35lbmltlo5sxoyz655ps47hy1.argfile ec.lang.BasicWalk examples/class.ec c-lang
 echo "/usr/lib/jvm/java-11-openjdk-amd64/bin/java -Dfile.encoding=UTF-8 @/tmp/cp_35lbmltlo5sxoyz655ps47hy1.argfile ec.lang.BasicWalk examples/$1.ec c-lang"
-/usr/lib/jvm/java-11-openjdk-amd64/bin/java -Dfile.encoding=UTF-8 @/tmp/cp_35lbmltlo5sxoyz655ps47hy1.argfile ec.lang.BasicWalk examples/$1.ec c-lang
-echo "cd c-lang; ./$2.$1_main.compile ; cd .."
-cd c-lang; ./$2.$1_main.compile ; cd ..
-echo c-lang/$2.$1_main
-c-lang/$2.$1_main
+/usr/lib/jvm/java-11-openjdk-amd64/bin/java -Dfile.encoding=UTF-8 @/tmp/cp_35lbmltlo5sxoyz655ps47hy1.argfile ec.lang.BasicWalk c-lang/$1.ec c-lang
+
+if [ -e c-lang/$2.$1_main.compile ]
+then
+    # echo "option 1"
+    echo "cd c-lang; ./$2.$1_main.compile ; cd .."
+    cd c-lang; ./$2.$1_main.compile ; cd ..
+    echo c-lang/$2.$1_main
+    c-lang/$2.$1_main
+else 
+    # echo "option 2"
+    echo "cd c-lang; ./$1_main.compile ; cd .."
+    cd c-lang; ./$1_main.compile ; cd ..
+    echo c-lang/$1_main
+    c-lang/$1_main
+fi
 

@@ -1,94 +1,163 @@
 package ec.lang.defs;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import ec.lang.defs.Enums.Accessor;
+import ec.lang.defs.expressions.ReturnExpr;
 
-public class FunctionDef extends StatementDef implements ContainerDef {
-    public ClassDef classDef; // null or value
-    public FileDef fileDef; // probably never null?
-    public String name;
-    public String org_name;
-    public List<String> exceptions = new ArrayList<>();
-    public List<VariableDef> parameters = new ArrayList<>();
+public class FunctionDef extends FunctionDefBase implements ContainerDef, Cloneable {
     public TypeIdDef returnType;
-    private BlockDef blockDef;
-    public Enums.Accessor accessor;
-    public boolean is_static;
-    public boolean is_final;
+    public boolean is_static = false;
+    public boolean is_property = false;
+    public boolean is_parent = false;
+
+    private static Set<String> STD_OBJECT_METHODS = new HashSet<>();
+
+    static {
+        STD_OBJECT_METHODS.addAll(Arrays.asList(new String[] {"asStr", "printTo", "asString", "hashCode", "equals", "release"}));
+    }
+
 
     public FunctionDef() {
+        accessor = Accessor.PUBLIC;
     }
 
     public FunctionDef(String returns, String name) {
         this.name = name;
         this.returnType = new TypeIdDef(returns);
+        accessor = Accessor.PUBLIC;
     }
 
     public String asHeader() {
-        // not required for class functions
-        // only for public
-
-        System.out.println(this);
-
         if (name == null) {
             return "";
         }
 
         if (classDef == null && (accessor != null && accessor == Accessor.PUBLIC)) {
-            return (returnType.name.equals("void") ? "void" : returnType.asCode()) + (returnType.is_array ? "[]" : "")  + " "+ name + "(" + paramsAsCode() + ")";
+            return (returnType.getName().equals("void") ? "void" : returnType.asCode()) + (returnType.isIs_array() ? "[]" : "")  + " "+ name + "(" + paramsAsCode() + ");";
         }
         return "";
     }
 
+    public String asSignature() {
+        if (is_property) {
+            return "";
+        }
+
+        // if (is_override) {
+        //     return "";
+        // }
+
+        if (exceptions.size() > 0) {
+            String ex = "throws ";
+            boolean first = true;
+            for (String string : exceptions) {
+              ex += string;  
+              if (!first) {
+                  ex += ",";
+              }
+              first = false;
+            } 
+            return "\n  " + accessor + " " 
+            + (is_static ? "static " : "")
+            + (is_final ? "final " : "")
+            + (returnType.getName().equals("void") ? "void" : returnType.asSignature()) + " " +name+"("+ paramsAsSignature() +") "+ex+";";
+        }
+        return "\n  " + accessor + " " 
+        + (is_static ? "static " : "")
+        + (is_final ? "final " : "")
+        + (returnType.getName().equals("void") ? "void" : returnType.asSignature()) + " " +name+"("+ paramsAsSignature() +");";
+    }
+
+
     @Override
     public void resolve_01() {
-        // System.out.println("@@FunctionDef.resolve_01");
         super.resolve_01();
 
         if (classDef != null) {
-            VariableDef param = new VariableDef();
-            param.setName("this");
-            param.type = new TypeIdDef(classDef.name);
-            parameters.add(0, param);
-            // System.out.println("@@FunctionDef.resolve add param " + param );
+
+            String initSignature = getSignature();
+
+            if (!is_static) {
+                VariableDef param = new VariableDef();
+                param.setName("this");
+                param.type = new TypeIdDef(classDef.name);
+                parameters.add(0, param);
+            }
+
+            ClassDef cp = classDef.parent;
+
+            String thisSignature = getSignature();
+
+            if (STD_OBJECT_METHODS.contains(name)) {
+                // @TODO can remove once Object has a class signature
+                is_override = true;
+            } else {
+
+                while (cp != null) {
+                    
+                    for (FunctionDef functionDef : classDef.parent.functionDefs) {
+                        if (functionDef.name.equals(name) && !is_parent) {
+                            // System.out.println("@@Function override " + name + " " + thisSignature + " == " + functionDef.getSignature());
+                            if (thisSignature.equals(functionDef.getSignature()) || initSignature.equals(functionDef.getSignature())) {
+                                is_override = true;
+                                break;
+                            } else {
+                                // System.err.println(thisSignature + ", " + is_parent + " != " + functionDef.getSignature()  + ", " + functionDef.is_parent);
+                                throw new RuntimeException("method signature overloads are not currently supported, a method with the name " + name + " already exists " + functionDef.getParamsSignature());
+                            }
+                        }
+                    }
+                    if (is_override) {
+                        break;
+                    }
+                    cp = cp.parent;
+                }
+            }
         }
         
         for (VariableDef  param : parameters) {
-            // System.out.println("@@FunctionDef.resolve resolve param " + param );
-            // param.resolve_01();
-            if (blockDef != null) {
-                blockDef.variableDefs.add(param);
+            if (getBlockDef() != null) {
+                getBlockDef().variableDefs.add(param);
             }
         }
 
+        if (getBlockDef() != null) {
+            getBlockDef().resolve_01();
 
-        if (blockDef != null) {
-            blockDef.resolve_01();
-            System.out.println(blockDef.variableDefs);
+            for (StatementDef def : getBlockDef().statementDefs) {
+                if (def instanceof ReturnExpr) {
+                    if (def.statement.thisType == null) {
+                        // System.out.println("@@FunctionDef adjusting return type " + returnType);
+                        def.statement.thisType = returnType;
+                    } else if (!def.statement.thisType.getName().equals(returnType.getName())) {
+                        // System.out.println("@@FunctionDef adjusting return type " + returnType);
+                        def.statement.thisType = returnType;
+                    }
+                }
+                // @TODO mine into all the blocks looking for return statements
+            }
         }
-        System.out.println("@@FunctionDef.resolve " + this);
-       
     }
 
-
-    @Override
-    public void prepare_03() {
-        // System.out.println("*function prepare");
-    }
+    // @Override
+    // public void prepare_03() {
+    //     // System.out.println("*function prepare");
+    // }
 
     private String paramsAsCode() {
-        String res = "/* param */";
+        String res = "";
         boolean first = true;
-
-        // the first param is the class object
 
         for(VariableDef param : parameters) {
             if (!first) {
                 res += ", ";
             }
-            res += param.asCode();
+            // code will insert an assigned value
+            res += param.asHeader();
             first = false;
         }
         return res;
@@ -97,13 +166,13 @@ public class FunctionDef extends StatementDef implements ContainerDef {
     private String contentAsCode() {
 
         if (classDef == null) {
-            return (blockDef == null ? "" : blockDef.asCode()) +"\n" ;
+            return (getBlockDef() == null ? "" : getBlockDef().asCode()) +"\n" ;
         } else {
             if (classDef.classType == Enums.ClassType.PLAN) {
                 return "";
             } else {
                 // this. will need to be added
-                return (blockDef == null ? "" : blockDef.asCode()) +"\n" ;
+                return (getBlockDef() == null ? "" : getBlockDef().asCode()) +"\n" ;
             }
         }
         // return "";
@@ -114,43 +183,59 @@ public class FunctionDef extends StatementDef implements ContainerDef {
             return "";
         }
 
-        System.out.println("*function asCode " + name );
-        return (returnType.name.equals("void") ? "void" : returnType.asCode()) + (returnType.is_array ? "[]" : "")  + " "+ name + "(" + paramsAsCode() + ")" + contentAsCode() ;
+        // the function is implemented in the parent class
+        if (is_parent) {
+            return "";
+        }
+
+        // System.out.println("*function asCode " + name );
+        return (returnType.getName().equals("void") ? "void" : returnType.asCode()) + (returnType.isIs_array() ? "[]" : "")  + " "+ name + "(" + paramsAsCode() + ")" + contentAsCode() ;
     }
 
-
-    private String paramsAsClassModelDef() {
+    private String paramsAsSignature() {
         String res = "";
         boolean first = true;
-
-        // the first param is the class object
+        boolean thisParam = true;
 
         for(VariableDef param : parameters) {
+            if (thisParam) {
+                thisParam = false;
+                continue;
+            } 
             if (!first) {
                 res += ", ";
             }
-            res += param.type.asCode();
+            res += param.asParameterSignature();
             first = false;
         }
         return res;
     }
 
-    public String asClassModelDef() {
-        // @TODO correct this elsewhere
-        if (org_name == null) {
-            org_name = name;
-        }
+    public String getExpandedSignature() {
+        return (returnType.getName().equals("void") ? "void" : returnType.asCode())  
+        + (returnType.isIs_array() ? "*" : "")  
+        + " (*"+ getExpandedName() + ")(" + getParamsSignatureAsCode() + ")";
+    }
 
-        // i64* (*toLower)(i64 ref);
-        return (returnType.name.equals("void") ? "void" : returnType.asCode())  + (returnType.is_array ? "*" : "")  + " (*"+ org_name + ")(" + paramsAsClassModelDef() + ")";
+
+    public String getSignature() {
+        return (returnType.getName().equals("void") ? "void" : returnType.asCode())  
+        + (returnType.isIs_array() ? "*" : "")  
+        + " (*"+ name + ")(" + getParamsSignature() + ")";
+    }
+
+    public String getSignatureAsCode() {
+        return (returnType.getName().equals("void") ? "void" : returnType.asCode())  
+        + (returnType.isIs_array() ? "*" : "")  
+        + " (*"+ name + ")(" + getParamsSignatureAsCode() + ")";
     }
 
 
     @Override
     public String toString() {
-        return "FunctionDef [accessor=" + accessor + ", blockDef=" + blockDef + ", classDef=" + classDef
+        return "FunctionDef [accessor=" + accessor + ", blockDef=" + getBlockDef() + ", classDef=" + classDef
                 + ", exceptions=" + exceptions + ", fileDef=" + fileDef + ", is_final=" + is_final + ", is_static="
-                + is_static + ", name=" + name + ", org_name=" + org_name + ", parameters=" + parameters
+                + is_static + ", name=" + name + ", parameters=" + parameters
                 + ", returnType=" + returnType + "]";
     }
 
@@ -160,14 +245,8 @@ public class FunctionDef extends StatementDef implements ContainerDef {
         return parameters;
     }
 
-    public BlockDef getBlockDef() {
-        return blockDef;
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
-
-    public void setBlockDef(BlockDef blockDef) {
-        this.blockDef = blockDef;
-    }
-
-
-    
 }

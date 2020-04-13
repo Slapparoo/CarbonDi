@@ -10,21 +10,35 @@ public class ConstExpr extends ExprDef {
 
     public ConstExpr (String value) {
         expr = value;
+        if (value.equals("true") || value.equals("false")) {
+            this.type = "boolean";
+        }
     }
 
     public ConstExpr (String value, String type) {
         expr = value;
         this.type = type;
+
+        if (type != null) {
+            if (type.equals("builtin")) {
+                if (value.equals("true") || value.equals("false")) {
+                    this.type = "boolean";
+                } else {
+                    this.type = "num";
+                }
+            } else if (type.equals("float")) {
+                this.type = "f64";
+            }
+        }
     }
 
     @Override
     public void resolve_01() {
-        System.out.println("@@ConstExpr.resolve " + expr + ", " + type);
         if (type != null) {
             thisType = new TypeIdDef(type);
         } else {
-            thisType = new TypeIdDef("num");
-            type = "num";
+            thisType = new TypeIdDef("i64");
+            type = "i64";
         }
 
         if (expr.startsWith("$")) {
@@ -37,10 +51,11 @@ public class ConstExpr extends ExprDef {
     @Override
     public String asCode() {
         if (type == null) {
+            // throw new RuntimeException("/* undefined */ " + expr);
             return "/* undefined */ " + expr;
         }
         if (expr.startsWith("0x") || type.equals("float")) {
-            return expr.replaceAll("_", "");
+            return "/* csf */" + expr.replaceAll("_", "");
         }
 
         if (expr.startsWith("0b")) {

@@ -1,6 +1,6 @@
 cd c-lang-deps
 
-make valgrind
+make
 
 #clang -std=gnu17 -O3 -g -c -o types.o types.c
 #clang -std=gnu17 -O3 -g -c -o array.o array.c

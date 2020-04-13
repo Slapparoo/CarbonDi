@@ -6,10 +6,19 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
 public class BasicWalk {
-  public static void main( String[] args) throws Exception 
-  {
+
+
+
+  public static void parseImport() {
+
+  }
+
+  public static void main( String[] args) throws Exception   {
     ecLexer lexer = new ecLexer(new ANTLRFileStream(args[0]));
     ecParser parser = new ecParser(new CommonTokenStream(lexer));
+    // adjust the line number
+    lexer.setLine(-110);
+
     ParseTree tree = parser.program();
     ParseTreeWalker walker = new ParseTreeWalker();
 
@@ -17,11 +26,8 @@ public class BasicWalk {
     if (args.length == 2) {
       dirname = args[1];
     }
+
     CWalker cWalker = new CWalker(args[0], dirname);
     walker.walk( cWalker, tree );
-
-    // cWalker
-
-
   }
 }

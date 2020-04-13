@@ -3,7 +3,9 @@ package ec.lang.defs;
 public class BaseDef {
     public BlockDef containedInBlock;
 
-    public String line;
+    public String hasNot = "";
+
+    private String line;
     
     private int resolveCount = 0;
 
@@ -11,7 +13,10 @@ public class BaseDef {
         return resolveCount > 0;
     }
 
-    public BaseDef() {}
+    public BaseDef() {
+        line = "";      
+    }
+
 
     public String asHeader() {
         return "";
@@ -21,18 +26,20 @@ public class BaseDef {
         return "";
     }
 
-    public String asLlvm() {
+    // public String asLlvm() {
+    //     return "";
+    // }
+
+    public String asSignature() {
         return "";
     }
+
 
     /**
      * 
      */
     public void resolve_01() {
         resolveCount++;
-        if (resolveCount > 0) {
-            System.out.println("@@@rescount " + resolveCount + " " + this.getClass().getName());
-        } 
     }
 
     /**
@@ -52,5 +59,13 @@ public class BaseDef {
 
     public boolean validate_02() {
         return true;
+    }
+
+    public String getLine() {
+        return line;
+    }
+
+    public void setLine(String line) {
+        this.line = line;
     }
 }

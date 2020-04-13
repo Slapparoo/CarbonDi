@@ -4,42 +4,39 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 import ec.lang.defs.ClassDef;
-import ec.lang.model.ecBaseListener;
-import ec.lang.model.ecParser;
-import ec.lang.model.ecParser.Block_statementContext;
-import ec.lang.model.ecParser.ExprContext;
-import ec.lang.model.ecParser.Extended_exprContext;
-import ec.lang.model.ecParser.ProgramContext;
-import ec.lang.model.ecParser.Variable_definitionContext;
+import ec.lang.model.ecParser.*;
+import ec.lang.model.*;
 
 public class CWalker extends ecBaseListener {
 
     String dirname;
     String filename;    
+    FileOutputStream ecOutputStream;
 
-    public CWalker(final String filename, final String dirname) {
+    public CWalker(final String filename, final String dirname) throws Exception {
         this.dirname = dirname;
         this.filename = filename;
-    }
 
-    @Override
-    public void exitExpr(ExprContext ctx) {
-        // if (ctx.xd == null) {
-        //     System.out.println(ctx.start.getLine() + " (UndefinedExpr)");
-        // } else {
-        //     System.out.println(ctx.start.getLine() + " (exitExpr) " +ctx.xd.asCode());
-        // }
-        super.exitExpr(ctx);
-    }
 
-    @Override
-    public void exitVariable_definition(Variable_definitionContext ctx) {
-        // if (ctx.vd != null) {
-        //     System.out.println(ctx.start.getLine() +  " (exitVariable_definition) " +ctx.vd.asCode());
-        // }
-        super.exitVariable_definition(ctx);
-    }
+        File f = new File(filename);
+        int i = f.getName().lastIndexOf('.');
+        String fName = f.getName().substring(0, i);
+        // String nsname = "";
 
+        i = fName.lastIndexOf('.');
+        if (i > 0) {
+            // nsname = fName.substring(0, i);
+            fName = fName.substring(i+1);
+        }
+
+        String ffilename =  fName + ".signature";
+        
+
+        if (!ffilename.equals("signature.signature")) {
+            System.out.println("signature Filename: " + dirname +"/"+ ffilename + ", " + dirname + "/" +  filename );
+            ecOutputStream = new FileOutputStream(dirname +"/"+ffilename + ".ec");
+        }
+    }
 
     @Override
     public void exitProgram(ProgramContext ctx) {
@@ -49,13 +46,20 @@ public class CWalker extends ecBaseListener {
         File f = new File(filename);
         int i = f.getName().lastIndexOf('.');
         String fName = f.getName().substring(0, i);
+        // String nsname = "";
+
+        i = fName.lastIndexOf('.');
+        if (i > 0) {
+            // nsname = fName.substring(0, i);
+            fName = fName.substring(i+1);
+        }
 
         ctx.ff.name = fName;
         ctx.ff.filename = ""+(ctx.ff.namespace == null ? "Default" : ctx.ff.namespace) + "." + fName+ "_main";
         // ctx.ff.filename = fName+ "_main";
 
-        String ffilename = dirname +"/"+ ctx.ff.filename;
-        System.out.println("Filename: " + ffilename);
+        String ffilename =  ctx.ff.filename;
+        System.out.println("Filename: " + dirname +"/"+ ffilename);
         
         ctx.ff.resolve_01();
         ctx.ff.validate_02();
@@ -63,7 +67,7 @@ public class CWalker extends ecBaseListener {
 
         // ctx.ff.prepare_03();
 
-        try (FileOutputStream out = new FileOutputStream(ffilename + ".h")) {
+        try (FileOutputStream out = new FileOutputStream(dirname +"/"+ffilename + ".h")) {
             String header = ctx.ff.asHeader();
 
             out.write(header.getBytes());
@@ -72,7 +76,7 @@ public class CWalker extends ecBaseListener {
             throw new RuntimeException(e);
         }
 
-        try (FileOutputStream out = new FileOutputStream(ffilename + ".c")) {
+        try (FileOutputStream out = new FileOutputStream(dirname +"/"+ffilename + ".c")) {
             String code = ctx.ff.asCode();
 
             out.write(code.getBytes());
@@ -81,22 +85,26 @@ public class CWalker extends ecBaseListener {
             throw new RuntimeException(e);
         }
 
-        try (FileOutputStream out = new FileOutputStream(ffilename + ".compile")) {
+        try (FileOutputStream out = new FileOutputStream(dirname +"/"+ffilename + ".compile")) {
 
             String code = "";
 
-            for (ClassDef classDef : ctx.ff.getClasses()) {
-                // code += "\ngcc -g -c -I../c-lang-deps -o obj/"+ classDef.getClassFQN() +".o "+classDef.getClassFQN()+".c";
-                 code += "\nclang -std=gnu17 -O3 -g -c -I../c-lang-deps -o obj/"+ classDef.getClassFQN() +".o "+classDef.getClassFQN()+".c";
-                code += "\nclang-format -style=file -i "+classDef.getClassFQN()+".c";
-            }
-            // code += "\ngcc -g -c -I../c-lang-deps -o obj/"+ ctx.ff.filename +".o "+ctx.ff.filename+".c";
-            code += "\nclang -std=gnu17 -O3 -g -c -I../c-lang-deps -o obj/"+ ctx.ff.filename +".o "+ctx.ff.filename+".c";
-            code += "\nclang-format -style=file -i "+ctx.ff.filename+".c";
+            String params = "-std=gnu17 -O3 -g";
 
-            // code += "\ngcc -g -I../c-lang-deps ../c-lang-deps/types.o obj/*.o  -o "+ ctx.ff.filename +" "+ctx.ff.filename+".run.c";
-            code += "\nclang -std=gnu17 -O3 -g -I../c-lang-deps ../c-lang-deps/*.o obj/*.o  -o "+ ctx.ff.filename +" "+ctx.ff.filename+".run.c";
-            code += "\nclang-format -style=file -i "+ctx.ff.filename+".run.c";
+            for (ClassDef classDef : ctx.ff.getClasses()) {
+                if (!classDef.is_signature) {
+                    code += "\nclang "+params+" -c -I../c-bin/include -o obj/"+ classDef.getClassFQN() +".o "+classDef.getClassFQN()+".c";
+                    // code += "\nclang "+params+" -c -I../c-lang-deps -o obj/"+ classDef.getClassFQN() +".o "+classDef.getClassFQN()+".c";
+                    code += "\nclang-format -style=file -i "+classDef.getClassFQN()+".c";
+                }
+            }
+            code += "\nclang "+params+" -c -I../c-bin/include -o obj/"+ ffilename +".o "+ffilename+".c";
+            // code += "\nclang "+params+" -c -I../c-lang-deps -o obj/"+ ffilename +".o "+ffilename+".c";
+            code += "\nclang-format -style=file -i "+ffilename+".c";
+
+            code += "\nclang "+params+" -I../c-bin/include ../c-bin/obj/*.o obj/*.o  -o "+ ffilename +" "+ffilename+".run.c";
+            // code += "\nclang "+params+" -I../c-lang-deps -I../c-bin ../c-lang-deps/*.o obj/*.o  -o "+ ffilename +" "+ffilename+".run.c";
+            code += "\nclang-format -style=file -i "+ffilename+".run.c";
 
             out.write(code.getBytes());
             out.flush();
@@ -105,9 +113,15 @@ public class CWalker extends ecBaseListener {
         }
 
 
-        try (FileOutputStream out = new FileOutputStream(ffilename + ".run.c")) {
+        try (FileOutputStream out = new FileOutputStream(dirname +"/"+ffilename + ".run.c")) {
+
             String code = "#define DEBUG 1" 
-            + "\n#include \""+ ctx.ff.filename +".h\"\n\nint main() { "+ctx.ff.mainName()+";\n__onFinalExit();\n}";
+            + "\n#include \""+ ctx.ff.filename +".h\"\n\nint main() { "
+            + "int res = 0;"
+            + "\nif (!setjmp(*catchException())) {"
+            +ctx.ff.mainName() + ";"
+            + "\n} else {\nafterCatchException(); res = 1; \n}"
+            +"\n__onFinalExit();\n return res;}";
 
 
             out.write(code.getBytes());
@@ -119,50 +133,59 @@ public class CWalker extends ecBaseListener {
         
 
         super.exitProgram(ctx);
+
+        try {
+            if (ecOutputStream != null) {
+                ecOutputStream.flush();
+                ecOutputStream.close();
+            }
+        } catch (Exception e) {
+            System.err.println("Error closing file.");
+            e.printStackTrace(System.err);
+        }
     }
-
-    @Override
-    public void exitBlock_statement(Block_statementContext ctx) {
-        // if (ctx.bd != null) {
-        //     System.out.println(ctx.start.getLine() +  " (block) " +ctx.bd.asCode());
-        // }
-
-        super.exitBlock_statement(ctx);
-    }
-
-    @Override
-    public void exitExtended_expr(Extended_exprContext ctx) {
-        super.exitExtended_expr(ctx);
-    }
-
-
 
     @Override
     public void exitClass_definition(final ecParser.Class_definitionContext ctx) {
         // ctx.cd.name
 
         ctx.cd.filename = ctx.cd.getClassFQN();
-        System.out.println("Filename: " + filename);
         ctx.cd.resolve_01();
         ctx.cd.validate_02();
         ctx.cd.prepare_03();
+        System.out.println("#class Filename: " + ctx.cd.filename);
 
-        try (FileOutputStream out = new FileOutputStream(dirname +"/"+ctx.cd.filename + ".h")) {
-            String header = ctx.cd.asHeader();
+        if (!ctx.cd.is_signature) {
+            try (FileOutputStream out = new FileOutputStream(dirname +"/"+ctx.cd.filename + ".h")) {
+                String header = ctx.cd.asHeader();
 
-            out.write(header.getBytes());
-            out.flush();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+                out.write(header.getBytes());
+                out.flush();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
 
-        try (FileOutputStream out = new FileOutputStream(dirname +"/"+ctx.cd.filename + ".c")) {
-            String code = ctx.cd.asCode();
+            String header = ctx.cd.asSignature();
 
-            out.write(code.getBytes());
-            out.flush();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            try {
+                if (ecOutputStream != null) {
+                    ecOutputStream.write(header.getBytes());
+                    ecOutputStream.flush();
+                }
+            } catch (Exception e) {
+                System.err.println("Error writing to ecfile.");
+                e.printStackTrace(System.err);
+            }
+        
+
+            try (FileOutputStream out = new FileOutputStream(dirname +"/"+ctx.cd.filename + ".c")) {
+                String code = ctx.cd.asCode();
+
+                out.write(code.getBytes());
+                out.flush();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
     }
     // @after {$cd.prepare_03(); System.out.println($cd.asCode());}
