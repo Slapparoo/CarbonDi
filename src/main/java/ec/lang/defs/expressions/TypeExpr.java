@@ -1,186 +1,164 @@
 package ec.lang.defs.expressions;
 
 import ec.lang.defs.ClassDef;
-import ec.lang.defs.DefFactory;
 import ec.lang.defs.ExprDef;
 import ec.lang.defs.SnippetFactory;
 import ec.lang.defs.VariableDef;
 
-public class TypeExpr extends ExprDef {
-    public boolean isGet = false;
+public class TypeExpr extends ExprDef implements MultiTypeId {
     public ExprDef arrayIndex = null;
+    protected boolean isGet = true;
     public boolean resolved = false;
-    private String resolvedExpr = "";
-    private VariableDef variableDef = null;
+    public String resolvedExpr = "";
+    public VariableDef variableDef = null;
+    public ClassDef memberOf = null;
+    public boolean is_static = false;
+    public boolean directAccess = false;
+
 
     @Override
-    public void resolve_01() {
-        resolved = true;
-        if (expr.contains(".")) {
-            String[] tokens = expr.split("\\.");
-            if (tokens.length == 2) {
-                // resolve object
-                if (containedInBlock == null) {
-                    throw new NullPointerException("containedInBlock == null " + expr);
-                }
+    public void resolve_02(String red_id) {
+        // TODO Auto-generated method stub
+        
+    }
 
-                VariableDef var = containedInBlock.resolveVariable(tokens[0]);
-                if (var != null && var.type != null) {
-                    if (var.type.isIs_array()) {
-                        resolvedExpr = "/*te7*/"+ "(" + var.type.asCode() + "*)" 
-                        + SnippetFactory.classModelStatement("Array", tokens[0], var.is_static) 
-                        + "->get_" + tokens[1] + "(" + tokens[0] + ")";
-                    } else {
-                        ClassDef cd = DefFactory.resolveClass(var.type.getName());
-                        if (cd == null) {
-                            throw new RuntimeException("Cannot resolve class " + var.type.getName() + " for variable " + var.getName());
-                        } 
-
-                        VariableDef pr = cd.resolveProperty(tokens[1]);
-                        if (pr == null) {
-                            throw new RuntimeException("Cannot resolve property for class " + var.type.getName() + " for variable " + var.getName());
-                        }
-                        if (pr.is_static) {
-                            isProperty = true;
-                            resolvedExpr = "/*te6*/"
-                            + SnippetFactory.classModelStatement(var.type.getName(), tokens[0], pr.is_static) 
-                            + "->get_" + tokens[1] + "()";
-                        } else {
-                            isProperty = true;
-                            if (isGet) {
-                                resolvedExpr = "/*te6a*/"
-                                + SnippetFactory.classModelStatement(var.type.getName(), tokens[0], pr.is_static) 
-                                + "->get_" + tokens[1] + "("
-                                + tokens[0] + ")";
-                            } else {
-                                resolvedExpr = "/*te6b*/"
-                                + SnippetFactory.classModelStatement(var.type.getName(), tokens[0], pr.is_static) 
-                                + "->set_" + tokens[1] + "(" + tokens[0] + ", ";
-                                
-                            }
-                        }
-                    }
-                    // type
-                    if (var.type.isPrimative()) {
-                        thisType = var.type;
-                        variableDef = var;
-                    } else {
-                        ClassDef classDef = DefFactory.resolveClass(var.type.getName());
-                        for (VariableDef def : classDef.properties) {
-                            if (def.getName().equals(tokens[1])) {
-                                thisType = def.type;
-                                variableDef = def;
-                                break;
-                            }
-                        }
-                    }
-                } else {
-                    ClassDef cd = DefFactory.resolveClass(tokens[0]);
-                    if (cd == null) {
-                        throw new RuntimeException("Cannot resolve class " + tokens[0] + " for variable " + tokens[1]);
-                    } 
-
-                    VariableDef pr = cd.resolveProperty(tokens[1]);
-                    if (pr == null) {
-                        throw new RuntimeException("Cannot resolve property for class " +tokens[0] + " for variable " + tokens[1]);
-                    }
-                    if (pr.is_static) {
-                        isProperty = true;
-                        if (isGet) {
-                            resolvedExpr = "/*te12*/"
-                            + SnippetFactory.classModelStatement(tokens[0], "", pr.is_static) 
-                            + "->get_" + tokens[1] + "()";
-                        } else {
-                            resolvedExpr = "/*te13*/"
-                            + SnippetFactory.classModelStatement(tokens[0], "", pr.is_static) 
-                            + "->set_" + tokens[1] + "(";
-                        }
-                    }
-                }
-            }
-        } else {
-            if (containedInBlock == null) {
-                System.out.println("\033[1;33m" + "[warning] containedInBlock == null " + this + "\033[0m");
-            } else {
-                VariableDef var = containedInBlock.resolveVariable(expr);
-
-                if (var != null) {
-                    thisType = var.type;
-                    variableDef = var;
-                } else if (containedInBlock.isClass)  {
-                    VariableDef cd = containedInBlock.resolveVariable("this");
-                    var = DefFactory.resolveProperty(cd, expr);
-                    if (var != null) {
-                        // ok
-                        isProperty = true;
-                        thisType = var.type;
-                        variableDef = var;
-                        if (isGet) {
-                            resolvedExpr = "/*te1*/"+ SnippetFactory.classModelStatement(cd.type.getName(), "this", var.is_static) + "->get_" + expr + "(this)";
-                        } else {
-                            resolvedExpr = "/*te2*/"+ SnippetFactory.classModelStatement(cd.type.getName(), "this", var.is_static) + "->set_" + expr + "(this,";
-                        }
-                    } else {
-                        // static?
-                        if (containedInBlock.classDef == null) {
-                            throw new RuntimeException("Contained in class is null" + expr);
-                        }
-                        variableDef = containedInBlock.classDef.resolveProperty(expr);
-                        if (variableDef != null) {
-
-                            if (isGet) {
-                                resolvedExpr = "/*te9*/"+ SnippetFactory.classModelStatement(containedInBlock.classDef.name, "", true) + "->get_" + expr + "()";
-                            } else {
-                                resolvedExpr = "/*te10*/"+ SnippetFactory.classModelStatement(containedInBlock.classDef.name, "", true) + "->set_" + expr + "(,";
-                            }
-                        }
-
-
-                    }
-                }
-                if (variableDef == null) {
-                    throw new RuntimeException(getLine() +  " variable cannot be resolved " + expr);
-                }
-
-            }
+    public void prepare_03(String ref_id) {
+        if (variableDef == null) {
+            throw new RuntimeException("variableDef == null " + expr + " " + getLine());
         }
 
         if (arrayIndex != null) {
-            arrayIndex.resolve_01();
-            ;
+            // // arrayIndex.resolve_01();
+            // if (thisType == null) {
+            //     resolvedExpr = "/* thisType == null  " + arrayIndex.asCode() + " */" + super.asCode();
+            // }
+
+            boolean isStatic = (variableDef != null ? variableDef.is_static : false);
+
+            if (thisType.isPrimative()) {
+                resolvedExpr = "/*te3*/*(" + thisType.asCode() + "*)"
+                        + SnippetFactory.classModelStatement("Array", super.asCode(), isStatic) + "->get("
+                        + super.asCode() + ", " + arrayIndex.asCode() + ")";
+            } else {
+                if (isGet) {
+                    resolvedExpr = "/*te4*/*(" + thisType.asCode() + "*)"
+                            + SnippetFactory.classModelStatement("RefArray", super.asCode(), isStatic) + "->get("
+                            + super.asCode() + ", " + arrayIndex.asCode() + ")";
+                } else {
+                    resolvedExpr = "/*te5*/" + SnippetFactory.classModelStatement("RefArray", super.asCode(), isStatic)
+                            + "->setObject(" + super.asCode() + ", " + arrayIndex.asCode() + ",";
+                }
+            }
+            return;
+        }        
+        // array
+
+        if (variableDef.is_static) {
+            is_static = true;
+            // isProperty = true;
+            if (isGet) {
+                if (variableDef.functionDef == null) {
+                    resolvedExpr = "/*te14*/"
+                    + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true) 
+                    + "->get_" + expr + "()";
+                } else {
+                    resolvedExpr = "/*te141*/"
+                    + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true) 
+                    + "->" + expr + "()";
+                }
+            } else {
+                if (variableDef.functionDef == null) {
+                    resolvedExpr = "/*te14c*/"
+                    + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true) 
+                    + "->set_" + expr + "(";
+                } else {
+                    resolvedExpr = "/*te14c1*/"
+                    + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true) 
+                    + "->" + expr + "(";
+                }
+            }
+        } else {
+            if (memberOf == null) {
+                if (ref_id != null) {
+                    throw new RuntimeException("ref_id != null " + expr + ", " + ref_id );
+                }
+
+                resolvedExpr = "/*te14e*/"
+                + expr;
+
+                return;
+            }
+
+            // Direct static Access?
+            if (memberOf.getShortname().endsWith(variableDef.getName())) {
+                resolvedExpr = "/*te14f*/"
+                + expr;
+
+                return;
+            }
+
+
+            if (directAccess) {
+                // directly access through the data model, rather than through the acessors
+                if (isGet) {
+                    if (variableDef.functionDef == null) {
+                        resolvedExpr = "/*te15a*/"
+                        + SnippetFactory.dataModelStatement(memberOf.getCName(), ref_id, false) 
+                        + "->" + expr;
+                    } else {
+                        resolvedExpr = "/*te15a1*/"
+                        + SnippetFactory.classModelStatement(memberOf.getCName(), ref_id, false) 
+                        + "->" + expr + "("
+                        + ref_id + ")";
+                    }
+                } else {
+                    if (variableDef.functionDef == null) {
+                        resolvedExpr = "/*te15b*/"
+                        + SnippetFactory.dataModelStatement(memberOf.getCName(), ref_id, false) 
+                        + "->" + expr ;
+                    } else {
+                        resolvedExpr = "/*te15b1*/"
+                        + SnippetFactory.classModelStatement(memberOf.getCName(), ref_id, false) 
+                        + "->" + expr + "(" + ref_id + ", ";
+                    }
+                }
+
+            } else {
+                if (isGet) {
+                    if (variableDef.functionDef == null) {
+                        resolvedExpr = "/*te14a*/"
+                        + SnippetFactory.classModelStatement(memberOf.getCName(), ref_id, false) 
+                        + "->get_" + expr + "("
+                        + ref_id + ")";
+                    } else {
+                        resolvedExpr = "/*te14a1*/"
+                        + SnippetFactory.classModelStatement(memberOf.getCName(), ref_id, false) 
+                        + "->" + expr + "("
+                        + ref_id + ")";
+
+                    }
+                } else {
+                    if (variableDef.functionDef == null) {
+                        resolvedExpr = "/*te14b*/"
+                        + SnippetFactory.classModelStatement(memberOf.getCName(), ref_id, false) 
+                        + "->set_" + expr + "(" + ref_id + ", ";
+                    } else {
+                        resolvedExpr = "/*te14b1*/"
+                        + SnippetFactory.classModelStatement(memberOf.getCName(), ref_id, false) 
+                        + "->" + expr + "(" + ref_id + ", ";
+                    }
+                }
+            }
         }
-        super.resolve_01();
     }
 
     @Override
     public String asCode() {
-        if (arrayIndex != null) {
-            arrayIndex.resolve_01();
-            if (thisType == null) {
-                return "/* thisType == null  " + arrayIndex.asCode() + " */" + super.asCode();
-            }
-
-            boolean isStatic = (variableDef != null ? variableDef.is_static: false);
-
-            if (thisType.isPrimative()) {
-                return "/*te3*/*(" + thisType.asCode() + "*)" + SnippetFactory.classModelStatement("Array", super.asCode(), isStatic) + "->get("
-                        + super.asCode() + ", " + arrayIndex.asCode() + ")";
-            } else {
-                if (isGet) {
-                    return "/*te4*/*(" + thisType.asCode() + "*)" + SnippetFactory.classModelStatement("RefArray", super.asCode(), isStatic) + "->get("
-                            + super.asCode() + ", " + arrayIndex.asCode() + ")";
-                } else {
-                    return "/*te5*/"+SnippetFactory.classModelStatement("RefArray", super.asCode(), isStatic) + "->setObject(" + super.asCode() + ", "
-                            + arrayIndex.asCode() + ",";
-                }
-            }
-        }
-
         if (resolvedExpr.length() > 0) {
             return resolvedExpr;
-        } 
+        }
 
-        return "/*te8*/"+ super.asCode();
+        return "/*te8*/" + super.asCode();
     }
 
     public TypeExpr(String value) {
@@ -203,6 +181,15 @@ public class TypeExpr extends ExprDef {
 
     @Override
     public String toString() {
-        return "TypeExpr [arrayIndex=" + arrayIndex + ", isGet=" + isGet + "]" + super.toString();
+        return "[TypeExpr] " + expr;
+    }
+
+    @Override
+    public void setIsGet(boolean isGet) {
+        // TODO Auto-generated method stub
+
+        // System.out.println("@@setisget " + isGet + " " + expr);
+        this.isGet = isGet;
+
     }
 }

@@ -13,6 +13,7 @@ public class TypeIdDef extends BaseDef {
     private String name;
     private boolean is_array = false;
     private boolean is_boxed = false;
+    private String objectType;
 
     private static Set<String> PRIMATIVES = new HashSet<>();
 
@@ -71,7 +72,7 @@ public class TypeIdDef extends BaseDef {
 
     @Override
     public String toString() {
-        return "TypeIdDef [is_array=" + is_array + ", is_boxed=" + is_boxed + ", name=" + name + "]";
+        return "TypeIdDef  ["+name+ " ObjectType=" + objectType + " array=" + is_array + ", boxed=" + is_boxed + "]";
     }
 
     public String getName() {
@@ -97,4 +98,20 @@ public class TypeIdDef extends BaseDef {
     public void setIs_boxed(boolean is_boxed) {
         this.is_boxed = is_boxed;
     }
+
+    public String getObjectType() {
+        return objectType;
+    }
+
+    public void setObjectType(String objectType) {
+        this.objectType = objectType;
+    }
+
+
+	public boolean isVoid() {
+        if (name == null || objectType == null) {
+            return false;
+        }
+		return name.equals("void") || objectType.equals("void");
+	}
 }

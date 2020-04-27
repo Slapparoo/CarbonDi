@@ -43,24 +43,38 @@ public class LoopDef extends StatementDef implements ContainerDef {
         // System.out.println("@@LoopDef.resolve ");
         super.resolve_01();
 
-        VariableDef counter = new VariableDef();
-        counter.setName("$a");
-        counter.type = new TypeIdDef("num");
-        counter.containedInBlock = blockDef;
-
-        counter.resolve_01();
-
-        blockDef.variableDefs.add(counter);
         loopOver.containedInBlock = this.containedInBlock;
         if (loopOver.containedInBlock == null) {
             throw new NullPointerException("loopOver.containedInBlock == null");
         }
 
-        System.out.println("##loopover -->");
         loopOver.resolve_01();
-        System.out.println("##loopover <--");
+
+        VariableDef counter = null;
+        if (loopOver instanceof ParenExpr) {
+            ParenExpr p = (ParenExpr) loopOver;
+
+            if (p.enclosed.thisType.isIs_array()) {
+
+                counter = new VariableDef();
+                counter.setName("$a");
+                counter.type = p.enclosed.thisType;
+                counter.containedInBlock = blockDef;
+                // counter.resolve_01();
+                blockDef.addVariable(counter);
+            } 
+        }
+            
+        if (counter == null) {
+            counter = new VariableDef();
+            counter.setName("$a");
+            counter.type = new TypeIdDef("num");
+            counter.containedInBlock = blockDef;
+            counter.resolve_01();
+            blockDef.addVariable(counter);
+        }
+
         blockDef.resolve_01();
-        
     }
 
     public String asHeader() {
@@ -72,35 +86,69 @@ public class LoopDef extends StatementDef implements ContainerDef {
 
 //****************** seperate boolean */
 
+// TODO correct name 
+// TODO validate name
 
         if (loopOver instanceof ParenExpr) {
             ParenExpr p = (ParenExpr) loopOver;
             System.out.println("@@loop.asCode " + p.enclosed.getClass() + ", " + p.enclosed.asCode());
-            if (p.enclosed instanceof TypeExpr 
+
+            if (p.enclosed.thisType.isIs_array()) {
+                System.out.println("@@Loop array " + p.enclosed.getClass());
+
+                // u64 al = ((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get_length(numbers);
+
+                String laLen = "u64 al$ = ((c_2106303_Array_cm *)useObject("
+                +p.enclosed.asCode()
+                +")->classmodel)->get_length("
+                +p.enclosed.asCode()
+                +");";
+
+                // *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 6)
+                String itemType = p.enclosed.thisType.getName();
+                String ayItem = itemType + "* a__$a = ("+itemType+"*)((c_2106303_Array_cm *)useObject("
+                +p.enclosed.asCode()
+                +")->classmodel)->get("
+                +p.enclosed.asCode()
+                +", i$);";
+
+                return "/*la1*/"
+                + laLen
+                + "\nfor (u64 i$ = 0; i$ < al$; i$++) {"
+                + ayItem
+                + blockDef.asCode()
+                + "\n}";
+
+
+
+            } else if (p.enclosed instanceof TypeExpr 
                 || p.enclosed instanceof ConstExpr 
                 || p.enclosed instanceof OperationExpr
                 || p.enclosed instanceof FunctionCallExpr) {
                 String ex = p.enclosed.asCode();
                 // do nothing for 0
                 return "if ("+ex+" > 0) {"
-                 + "\nfor (num a__a = 0; a__a < "+ex+"; a__a++)"
+                 + "\nfor (num a__$a = 0; a__$a < "+ex+"; a__$a++)"
                 + blockDef.asCode()
                 + "\n} else if ("+ex+" < 0) {"
-                + "\nnum a__a = "+ex+" *-1 -1;"
-                + "\nfor (; a__a >= 0; a__a--)"
+                + "\nnum a__$a = "+ex+" *-1 -1;"
+                + "\nfor (; a__$a >= 0; a__$a--)"
                 + blockDef.asCode()
                 + "\n}";
             }
+
+            
+
         }
 
         if (loopOver instanceof RangeExpr) {
             // System.out.println("@@loop.asCode RangeExpr " + blockDef.asCode());
             RangeExpr rangeExpr = (RangeExpr) loopOver;
             return "if ("+rangeExpr.start+" < "+rangeExpr.end+") {"
-            + "\nfor (num a__a = "+rangeExpr.start+"; a__a <= "+rangeExpr.end+"; a__a++)"
+            + "\nfor (num a__$a = "+rangeExpr.start+"; a__$a <= "+rangeExpr.end+"; a__$a++)"
             + blockDef.asCode()
             + "\n } else if ("+rangeExpr.start+" > "+rangeExpr.end+") {"
-            + "\nfor (num a__a = "+rangeExpr.start+"; a__a >= "+rangeExpr.end+"; a__a--)"
+            + "\nfor (num a__$a = "+rangeExpr.start+"; a__$a >= "+rangeExpr.end+"; a__$a--)"
             + blockDef.asCode()
             + "\n}";
         }

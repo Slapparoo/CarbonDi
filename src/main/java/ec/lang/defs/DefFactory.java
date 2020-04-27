@@ -4,7 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import ec.lang.defs.expressions.*;
+import ec.lang.defs.expressions.AnnonymousExpr;
+import ec.lang.defs.expressions.AssignExpr;
+import ec.lang.defs.expressions.ConstExpr;
+import ec.lang.defs.expressions.EndExpr;
+import ec.lang.defs.expressions.FunctionCallExpr;
+import ec.lang.defs.expressions.IncDecDef;
+import ec.lang.defs.expressions.MultiTypeExpr;
+import ec.lang.defs.expressions.OperationExpr;
+import ec.lang.defs.expressions.ParenExpr;
+import ec.lang.defs.expressions.ReturnExpr;
+import ec.lang.defs.expressions.StringExpr;
 
 public class DefFactory {
 
@@ -16,13 +26,16 @@ public class DefFactory {
 
     public static ClassDef in_class = null;
     public static Stack<FileDef> in_file = new Stack<>();
+    public static Stack<MultiTypeExpr> in_mMultiTypeExprs = new Stack<>();
     public static FunctionDefBase in_funct = null;
     public static FunctionDefBase in_funct_def = null;
     private static FunctionDefBase last_in_funct_def = null;
 
+    public static FunctionCallExpr functionCallExpr = null;
+
     public static IfDef elseDef = null;
 
-    private static List<ExprDef> currentExprBlock = new ArrayList<>();
+    public static List<ExprDef> currentExprBlock = new ArrayList<>();
     private static List<StatementDef> currentStatementBlock = null;
     private static Stack<ContainerDef> currentBlock = new Stack<>();
 
@@ -81,7 +94,7 @@ public class DefFactory {
     }
 
     public static ClassDef newClassDef() {
-        // System.out.println("(newClassDef)");
+        // System.out.println("(newClassDef) ");
         ClassDef def = new ClassDef();
         CLASS_DEFS.add(def);
         addStatement(def);
@@ -177,8 +190,6 @@ public class DefFactory {
         return elseDef;
     }
 
-
-
     public static ConstExpr newConstExpr(String value) {
         ConstExpr def = new ConstExpr(value);
         addExpression(def);
@@ -200,15 +211,17 @@ public class DefFactory {
 
     public static AnnonymousExpr newAnnonymousExpr(String value) {
         AnnonymousExpr def = new AnnonymousExpr(value);
+        System.out.println("@@newAnnonymousExpr " + value);
         addExpression(def);
         return def;
     }
 
 
     public static FunctionCallExpr newFunctionCallExpr() {
-        FunctionCallExpr def = new FunctionCallExpr();
-        addExpression(def);
-        return def;
+        functionCallExpr = new FunctionCallExpr();
+
+        addExpression(functionCallExpr);
+        return functionCallExpr;
     }
 
     public static ParenExpr newParenExpr() {
@@ -225,25 +238,15 @@ public class DefFactory {
         return def;
     }
 
-    public static TypeExpr newTypeExpr(String value) {
-        TypeExpr def = new TypeExpr(value);
-        addExpression(def);
-        return def;
+    static MultiTypeExpr multiTypeExpr = null;
+    public static MultiTypeExpr newMultiTypeExpr() {
+        if (multiTypeExpr == null) { 
+            multiTypeExpr = new MultiTypeExpr();
+            in_mMultiTypeExprs.push(multiTypeExpr);
+        }
+        
+        return multiTypeExpr;
     }
-
-    public static TypeExpr newTypeExpr(String value, String indexValue) {
-        TypeExpr def = new TypeExpr(value, indexValue);
-        addExpression(def);
-        return def;
-    }
-
-    public static TypeExpr newTypeExpr(String value, ExprDef indexValue) {
-        // System.out.println("newTypeExpr(String value, ExprDef indexValue)");
-        TypeExpr def = new TypeExpr(value, indexValue);
-        addExpression(def);
-        return def;
-    }
-
 
     public static EndExpr newEndExpr() {
         // System.out.println("(EndExpr)");
@@ -263,20 +266,59 @@ public class DefFactory {
         }
     }
 
+    static int lastMt = 0;
+
     public static void addExpression(ExprDef def) {
-        // System.out.println("**AddExpression " + def.getClass().getName() + " " + def.asCode());
+        if (def instanceof FunctionCallExpr) {
+            return;
+        }
+
+        if (def instanceof MultiTypeExpr) {
+            int sig = def.hashCode();
+            lastMt = sig;
+        }
+
+
+        if (currentExprBlock.size() > 0 && currentExprBlock.get(currentExprBlock.size() -1) == def) {
+            throw new RuntimeException("What are you doing, why are you adding the same expr twice? " + def);
+        }
+
         if (currentExprBlock != null) {
             currentExprBlock.add(def);
         }
     }
 
     public static void addExpression(ExprDef def, String line) {
-        // System.out.println("**AddExpression " + def.getClass().getName() + " " + def.asCode());
+        if (def instanceof MultiTypeExpr) {
+            endMultiTypeExpr();
+        }
+
+        if (def instanceof MultiTypeExpr) {
+            int sig = def.hashCode();
+            if (sig == lastMt) {
+                lastMt = sig;
+                return;
+            } 
+            lastMt = sig;
+        }
+
         def.setLine(line);
         if (currentExprBlock != null) {
             currentExprBlock.add(def);
         }
     }
+
+    public static MultiTypeExpr endMultiTypeExpr() {
+        // System.out.println("**endMultiTypeExpr " + multiTypeExpr + " " + in_mMultiTypeExprs.size());
+        if (in_mMultiTypeExprs.size() == 0) {
+            multiTypeExpr = null;
+        } else {
+            multiTypeExpr = in_mMultiTypeExprs.pop();
+        }
+        // return  multiTypeExpr == null ? newMultiTypeExpr() : multiTypeExpr;
+        return newMultiTypeExpr();
+    }
+
 
     public static void addNot(String hasnot) {
         if (hasnot == null || !hasnot.equals("!")) { 
@@ -291,7 +333,14 @@ public class DefFactory {
 
     public static ExprDef dropExpression() {
         if (currentExprBlock != null && currentExprBlock.size() > 0) {
-            return currentExprBlock.remove(currentExprBlock.size() -1);
+            ExprDef res = currentExprBlock.remove(currentExprBlock.size() -1);
+
+            // System.out.println("@@dropExpression " + res.getClass() + " " + res.expr);
+
+            if (res instanceof MultiTypeExpr) {
+                endMultiTypeExpr();
+            }
+            return res;
         }
 
         return null;
@@ -339,16 +388,32 @@ public class DefFactory {
     public static VariableDef newVarDef() {
         VariableDef def = new VariableDef();
 
+        // System.out.println("##Factory add var def " + def);
+
         addStatement(def);
         VAR_DEFS.add(def);
 
         return def;
     }
 
-    public static void newAssignExpr(String assignLeft, String assignOperator) {
-        AssignExpr def = new AssignExpr(assignLeft, assignOperator, dropExpression());
+    public static void newAssignExpr(String assignOperator) {
+        // System.out.println("@@newAssignExpr");
+        ExprDef right = dropExpression();
+        ExprDef left = dropExpression();
+
+        if (left instanceof FunctionCallExpr) {
+            left = dropExpression();
+        }
+
+        AssignExpr def = new AssignExpr(left, assignOperator, right);
         addStatement(def);
     }
+
+
+    // public static void newAssignExpr(String assignLeft, String assignOperator) {
+    //     AssignExpr def = new AssignExpr(assignLeft, assignOperator, dropExpression());
+    //     addStatement(def);
+    // }
 
     // array
     public static void newAssignExpr(String assignLeft, String indexValue, String assignOperator) {
@@ -362,16 +427,16 @@ public class DefFactory {
      * @param classDef
      * @return
      */
-	public static ClassDef resolveClass(String extends_, ClassDef classDef) {
+	// public static ClassDef resolveClass(String extends_, ClassDef classDef) {
 
-        for (ClassDef claz : CLASS_DEFS) {
-            if (claz.name.equals(extends_)) {
-                return claz;
-            }
-        }
+    //     for (ClassDef claz : CLASS_DEFS) {
+    //         if (claz.getFqn().equals(extends_)) {
+    //             return claz;
+    //         }
+    //     }
 
-		return null;
-	}
+	// 	return null;
+	// }
 
 	public static VariableDef resolveVariable(String string) {
         // fish around in the varible defs until we find a matching one
@@ -385,13 +450,39 @@ public class DefFactory {
 		return null;
 	}
 
+    public static ClassDef resolveClass(TypeIdDef typeIdDef) {
+        if (typeIdDef.isIs_array()) {
+            return resolveClass("Core.Array");
+        }
+        return resolveClass(typeIdDef.getName());
+    }
+
 	public static ClassDef resolveClass(String name) {
-        // System.out.println("@@DefFactory.resolveClass " + name + " : " + CLASS_DEFS);
+        // if (!name.contains(".")) {
+        //     System.out.println("[warn] resolveClass by shortname " + name);
+        // }
+
         for (ClassDef classDef : CLASS_DEFS) {
-            if (classDef.name.equals(name)) {
+            if (classDef.getShortname().equals(name)) {
                 return classDef;
             }
         }
+
+        for (ClassDef classDef : CLASS_DEFS) {
+            if (classDef.getFqn().equals(name)) {
+                return classDef;
+            }
+        }
+
+        for (ClassDef classDef : CLASS_DEFS) {
+            if (classDef.getCName().equals(name)) {
+                return classDef;
+            }
+        }
+
+        // System.out.println("[warn] can't resolveClass by shortname " + name + " : " + CLASS_DEFS) ;
+        // throw new RuntimeException("[warn] can't resolveClass by shortname " + name);
+
 		return null;
     }
     
@@ -413,7 +504,21 @@ public class DefFactory {
             return null;
         }
 
-        ClassDef cd = resolveClass(classvar.type.getName());
+        return resolveFunction(classvar.type, name);
+        // ClassDef cd = resolveClass(classvar.type.getName());
+
+        // if (cd != null) {
+        //     return cd.resolveFunction(name);
+        // }
+        // return null;
+	}
+
+    public static FunctionDef resolveFunction(TypeIdDef typeIdDef, String name) {
+        if (typeIdDef == null) {
+            return null;
+        }
+
+        ClassDef cd = resolveClass(typeIdDef.getName());
 
         if (cd != null) {
             return cd.resolveFunction(name);

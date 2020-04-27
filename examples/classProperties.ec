@@ -4,36 +4,36 @@ The release method is called when an object is destroyed, this is where you woul
 code to release and hardware, or resources which are "unmanaged".
 
 */
-class MyClass {
+class Default.MyClass (Core.Object) {
     properties {
-        i64 value = 0b_1111;
         String name;
+        i64 value = 0b_1111;
+        i64 value2 = 0b_1111;
+        
     }
-
     MyClass(=value) {
-        printf(`create %s %ld\n`, this.getClassName(), this.value);
+        printf(`create %s %ld\n`, getClassName(), value);
     }
-
     void myPrint() {
-        printf(`value=%ld, name=%s\n`, this.value, name.asStr());
+        // printf(`value=, name=%s\n`, name.asStr());
+        printf(`value=%ld, name=%s\n`, value, name.asStr());
     }
-
     void release() {
-        printf(`release %s %ld\n`, this.getClassName(), this.value);
+        printf(`release %s %ld\n`, getClassName(), value);
     }
 }
 
-class MySecondClass(MyClass) {
+class Default.MySecondClass(Default.MyClass) {
     MySecondClass(=value, =name) {
-        printf(`create %s\n`, this.getClassName());
+        printf(`create %s\n`, getClassName());
     }
 
     void release() {
-        printf(`release (override) %s %ld\n`, this.getClassName(), this.value);
+        printf(`release (override) %s %ld\n`, getClassName(), value);
     }
 }
 
-class MyOtherClass {
+class Default.MyOtherClass {
     properties {
         MyClass myClass;
     }
@@ -49,7 +49,7 @@ c1.myPrint();
 @mySecondClass = MySecondClass(100, "the name");
 mySecondClass.myPrint();
 
-// -------
+// // -------
 
 @myOtherClass = MyOtherClass();
 
@@ -60,12 +60,12 @@ loop (10) {
 
     printf(`loop %ld.\n`, $a);
 }
-throwException(`its gome to shit.`);
-printf(`After loop.\n`);
+// throwException(`its gome to shit.`);
+// printf(`After loop.\n`);
 
-MyClass(55);
-MySecondClass(56);
+// MyClass(55);
+// MySecondClass(56);
 
-printf(`At end.\n`);
+// printf(`At end.\n`);
 
 

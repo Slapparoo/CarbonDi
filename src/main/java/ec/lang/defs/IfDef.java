@@ -29,13 +29,13 @@ public class IfDef extends StatementDef implements ContainerDef {
             condition.resolve_01();
         }
 
+        blockDef.containedInBlock = containedInBlock;
         blockDef.resolve_01();
 
         for (IfDef ifDef : elseIfs) {
             ifDef.containedInBlock = containedInBlock;
             ifDef.resolve_01();
         }
-
 
         super.resolve_01();
     }

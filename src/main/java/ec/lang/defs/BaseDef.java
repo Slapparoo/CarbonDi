@@ -35,6 +35,10 @@ public class BaseDef {
     }
 
 
+    public String asDebug() {
+        return line;
+    }
+
     /**
      * 
      */
@@ -51,6 +55,11 @@ public class BaseDef {
     public void prepare_03() {
 
     }
+
+    public void optimise_04() {
+
+    }
+
 
     /**
      * verify variables, functions, types exsit etc

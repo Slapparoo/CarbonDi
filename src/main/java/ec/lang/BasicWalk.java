@@ -17,7 +17,7 @@ public class BasicWalk {
     ecLexer lexer = new ecLexer(new ANTLRFileStream(args[0]));
     ecParser parser = new ecParser(new CommonTokenStream(lexer));
     // adjust the line number
-    lexer.setLine(-110);
+    // lexer.setLine(-110);
 
     ParseTree tree = parser.program();
     ParseTreeWalker walker = new ParseTreeWalker();

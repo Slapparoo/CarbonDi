@@ -9,6 +9,6 @@ public class AnnonymousExpr extends ExprDef {
 
     @Override
     public String asCode() {
-        return "a__" + expr.replaceAll("\\$", "");
+        return "a__" + expr;
     }
 }

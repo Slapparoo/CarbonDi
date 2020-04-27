@@ -11,18 +11,20 @@ import ec.lang.defs.Enums.Accessor;
 
 public class ClassDef extends StatementDef implements ContainerDef, Castable {
 
-    public String name;
+    private ClassName classname;
+    private ClassName extendsclass;
+    // private ExprDef purename;
     public Enums.Accessor acccessor = Accessor.PUBLIC;
     public Enums.ClassType classType;
     public boolean is_final;
     public boolean is_signature = false;
     public String namespace;
-    public List<VariableDef> variableDefs = new ArrayList<>();
-    public List<FunctionDef> functionDefs = new ArrayList<>();
-    public List<String> implementations = new ArrayList<>();
-    public List<ConstructorDef> constructorDefs = new ArrayList<>();
-    public List<String> generics = new ArrayList<>();
-    public String extends_;
+    private  List<VariableDef> variableDefs = new ArrayList<>();
+    private List<FunctionDef> functionDefs = new ArrayList<>();
+    private List<String> implementations = new ArrayList<>();
+    private List<ConstructorDef> constructorDefs = new ArrayList<>();
+    private List<String> generics = new ArrayList<>();
+    
 
     public FileDef fileDef = null;
     public Accessor readAccessor = Accessor.PUBLIC;
@@ -32,14 +34,14 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
 
 
     public List<VariableDef> properties = new ArrayList<>();
+    public List<VariableDef> allProperties = new ArrayList<>();
 
-    public String filename;
 
     private BlockDef blockDef;
 
     public ClassDef parent = null;
 
-    private String classVar = null;
+    // private String classVar = null;
     private boolean is_class = true;
     private boolean is_stub; // should be mutually exclusive with isClass
 
@@ -56,7 +58,56 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
     static SortbySignature SortbySignature = new SortbySignature();
 
     public VariableDef resolveProperty(String name) {
+
+        // System.out.println("@@resolveProperty " + name + " " + properties);
         for (VariableDef var : properties) {
+            if (var.getName().equals(name)) {
+                return var;
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * If it has no params and returns a value it can be resolved as a getter
+     * if it has 1 param and returns void it can be resolved as a setter
+     * @param name
+     * @return
+     */
+    public FunctionDef resolveFunctionAsProperty(String name) {
+        FunctionDef fd = resolveFunction(name);
+        if (fd == null) {
+            return null;
+        }
+
+        boolean isVoid = fd.returnType.getName().equals("void");
+
+        if (fd.parameters.size() == 1 && !isVoid && !fd.is_static) {
+            return fd;
+        }
+
+        if (fd.parameters.size() == 0 && !isVoid && fd.is_static) {
+            return fd;
+        }
+
+        if (fd.parameters.size() == 2 && isVoid && !fd.is_static) {
+            return fd;
+        }
+
+        if (fd.parameters.size() == 1 && isVoid && fd.is_static) {
+            return fd;
+        }
+
+        return null;
+    }
+
+
+
+    // is this required?
+    public VariableDef resolveVariable(String name) {
+        System.out.println("@@classdef.resolveVariable " + name );
+        for (VariableDef var : variableDefs) {
             if (var.getName().equals(name)) {
                 return var;
             }
@@ -78,6 +129,15 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
         return null;
     }
 
+    public ConstructorDef resolveConstructor(String signature) {
+        for (ConstructorDef cd : constructorDefs) {
+            if (signature.equals(cd.getSignature())) {
+                return cd;
+            }
+        }
+        return null;
+    }
+
 
     public String getNamespace() {
         if (namespace == null) {
@@ -86,32 +146,28 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
         return namespace;
     }
 
+    public void addImplementation(String implmentation) {
+        implementations.add(implmentation);
+    }
+
+
+    public void addGenerics(String generic) {
+        generics.add(generic);
+    }
+
     @Override
     public void resolve_01() {
-        int i = name.lastIndexOf('.');
-        if (i > 0) {
-            namespace = name.substring(0, i);
-            name = name.substring(i+1);
-            classVar = name;
-
-            filename = namespace + "." + name;
-        }
-
-        // System.out.println("@@ClassDef.resolve " + name);
-        if (extends_ == null && !name.equals("Object") ) {
-            extends_ = "Object";
+        if (extendsclass == null && !getFqn().equals("Core.Object") ) {
+            setCastType("Core.Object");
         } 
-
-        // resolve extends to the parentClass
-        parent = DefFactory.resolveClass(extends_, this);
-
+        
         blockDef.isClass = true;
 
         if (blockDef == null) {
             return;
         }
 
-        DefFactory.FUNCT_DEFS.add(new FunctionDef(name, "create_" + name));
+        DefFactory.FUNCT_DEFS.add(new FunctionDef(classname.getShortName(), "create_" + getCName()));
 
         for (StatementDef statementDef : blockDef.statementDefs) {
             if (statementDef.getClass().equals(FunctionDef.class)) {
@@ -121,8 +177,8 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
             }
             if (statementDef.getClass().equals(ConstructorDef.class)) {
                 ConstructorDef cd = (ConstructorDef) statementDef;
-                if (!cd.name.equals(name)) {
-                    throw new RuntimeException("Invalid constructor name in class " + name + ", " + cd.name);
+                if (!cd.name.equals(classname.getShortName())) {
+                    throw new RuntimeException("Invalid constructor name in class " + classname + ", " + cd.name +", " + cd.asDebug());
                 }
                 constructorDefs.add((ConstructorDef) statementDef);
                 ((ConstructorDef) statementDef).classDef = this;
@@ -130,7 +186,7 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
         }
 
         // default constructor
-        ConstructorDef defaultConstructor = new ConstructorDef(name) {
+        ConstructorDef defaultConstructor = new ConstructorDef(classname.getShortName()) {
             @Override
             public String asCode() {
                 return "/* default constructor */";
@@ -148,15 +204,19 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
 
         };
 
+        defaultConstructor.classDef = this;
         constructorDefs.add(defaultConstructor);
 
         for (VariableDef variableDef : properties) {
-            variableDef.is_property = true;
+            // variableDef.is_property = true;
+            variableDef.classDef = this;
         }
 
-        addReturnFunction("getClassName", "\""+getClassVar()+"\"", new TypeIdDef("pointer"), true, true, true);
-        addReturnFunction("getClassPackage", "\""+getNamespace()+"\"", new TypeIdDef("pointer"), true, true, true);
-        addReturnFunction("getObjectDatasize", "sizeof("+getClassVar()+")", new TypeIdDef("u64"), true, true, true);
+        addReturnFunction("getClassName", "\""+getFqn()+"\"", new TypeIdDef("pointer"), true, true, true);
+        addReturnFunction("getClassShortName", "\""+getShortname()+"\"", new TypeIdDef("pointer"), true, true, true);
+        addReturnFunction("getClassCName", "\""+getCName()+"\"", new TypeIdDef("pointer"), true, true, true);
+        addReturnFunction("getClassPackage", "\""+classname.getPackageName()+"\"", new TypeIdDef("pointer"), true, true, true);
+        addReturnFunction("getObjectDatasize", "sizeof("+getCName()+")", new TypeIdDef("u64"), true, true, true);
 
         // add all parent constructors
         // we assume that resolce isready run on the parent so it will already have
@@ -169,7 +229,7 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
                 ConstructorDef nc;
                 try {
                     nc = (ConstructorDef) c.clone();
-                    nc.name = name;
+                    nc.name = classname.getShortName();
                     nc.classDef = this;
                     boolean exists = false;
                     nc.resolve_01();
@@ -242,13 +302,18 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
                 }
             }
 
+            if (statementDef.containedInBlock == null) {
+                blockDef.classDef = this;
+                statementDef.containedInBlock = blockDef;
+            }
+
             statementDef.resolve_01();
         }
 
         Collections.sort(constructorDefs, SortbySignature); 
 
         for (ConstructorDef c : constructorDefs) {
-            if (c.name.equals(name)) {
+            if (c.name.equals(classname.getShortName())) {
                 constructors.put(c.getSignature(), c);
             }
             
@@ -288,17 +353,61 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
             }
         }
 
+        for (VariableDef variableDef : properties) {
+            variableDef.containedInBlock = getBlockDef();
+            variableDef.classDef = this;
+            variableDef.resolve_01();
+        }
     }
 
-    public void setValues(String name, String isFinal, String isClass, String isStub, String isSig) {
-        this.name = name;
+    public class ClassName {
+        String fqn;
+
+        ClassName(String fqn) {
+            this.fqn = fqn;
+        }
+
+        String getFqn() {
+            return fqn;
+        }
+
+        String getShortName() {
+            return fqn.substring(fqn.lastIndexOf('.') +1);
+        }
+
+        String getPackageName() {
+            return fqn.substring(0, fqn.lastIndexOf('.'));
+        }
+
+        // Shortened predictable fqn
+        String getCName() {
+            return "c_" + Math.abs(getPackageName().hashCode()) + "_" + getShortName();
+        }
+
+        @Override
+        public String toString() {
+            return getFqn();
+        }
+    }
+
+
+    public void setName(String pure_name) {
+        if (pure_name.contains(".")) {
+            this.classname = new ClassName(pure_name);
+        } else {
+            if (namespace == null) {
+                namespace = "Default";
+            }
+
+            this.classname = new ClassName(namespace + "." + pure_name);
+        }
+    }
+
+    public void setValues(String isFinal, String isClass, String isStub, String isSig) {
         this.is_final = isFinal != null;
         this.is_class = isClass != null;
         this.is_stub = isStub != null;
-
         this.is_signature = isSig != null;
-
-        // System.out.println("@@newclass " + name);
     }
 
 
@@ -331,7 +440,7 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
 
         if (!is_static) {
             VariableDef param = new VariableDef();
-            param.setName("_refId");
+            param.setName("this");
             param.type = new TypeIdDef("num");
             funct.parameters.add(param);
         }
@@ -359,6 +468,8 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
         // change all the function sigs
 
         // generate the properties functions
+
+        boolean optimise = true;
         for(VariableDef var : properties) {
 
             if (isParentProperty(var)) {
@@ -367,16 +478,29 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
             variableDefs.add(var);
 
             String body ="";
-            if (var.is_static) {
-                body = "(("+getClassVar()+"ClassModel*)get"+getClassVar()+"ClassModel())->"+var.getName();
+
+            if (optimise) {
+                if (var.is_static) {
+                    body = "(("+getCName()+"_cm*)get"+getCName()+"_cm())->"+var.getName();
+                } else {
+                    body = "(("+getCName()+"*)useObject(this)->data)->"+var.getName();
+                }
             } else {
-                body = "(("+getClassVar()+"*)useObject(_refId)->data)->"+var.getName();
+                if (var.is_static) {
+                    body = "(("+getCName()+"_cm*)get"+getCName()+"_cm())->"+var.getName();
+                } else {
+                    body = "(("+getCName()+"*)useObject(this)->data)->"+var.getName();
+                }
             }
 
             FunctionDef funct = addReturnFunction("get_" + var.getName(), 
             body, 
             var.type, false, var.is_static, true
             );
+
+            if (optimise) {
+                funct.getBlockDef().includeEntryExit = false;
+            }
 
             funct.accessor = var.readAccessor;
             funct.is_property = true;
@@ -386,27 +510,27 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
             if (var.is_static) {
                 if (var.isPrimative()) {
                     // TODO use snippit factory
-                    body = "(("+getClassVar()+"ClassModel*)get"+getClassVar()+"ClassModel())->"+var.getName() + " = " + var.getName();
+                    body = "(("+getCName()+"_cm*)get"+getCName()+"_cm())->"+var.getName() + " = " + var.getName();
                 } else {
-                    body = "assignObject(&(("+getClassVar()+"ClassModel*)get"+getClassVar()+"ClassModel())->"+var.getName()+", "+var.getName()+")";
+                    body = "assignObject(&(("+getCName()+"_cm*)get"+getCName()+"_cm())->"+var.getName()+", "+var.getName()+")";
                 }
             } else {
                 if (var.isPrimative()) {
-                    body = "(("+getClassVar()+"*)useObject(_refId)->data)->" + var.getName() + " = " + var.getName();
+                    body = "(("+getCName()+"*)useObject(this)->data)->" + var.getName() + " = " + var.getName();
                 } else {
-                    body = "assignObject(&(("+getClassVar()+"*)useObject(_refId)->data)->" + var.getName()+", "+var.getName()+")";
+                    body = "assignObject(&(("+getCName()+"*)useObject(this)->data)->" + var.getName()+", "+var.getName()+")";
                 }
             }
     
     
-            FunctionDef setter =addVoidFunction("set_" + var.getName(), body, false, var.is_static, true);
+            FunctionDef setter = addVoidFunction("set_" + var.getName(), body, false, var.is_static, true);
 
             setter.parameters.add(var);
             setter.accessor = var.writeAccessor;
             setter.is_property = true;
 
             if (var.type == null) {
-                throw new RuntimeException("Unknown type " + namespace+"::"+name +"."+ var.getName());
+                throw new RuntimeException("Unknown type " + classname +" "+ var.getName());
             }
         }
 
@@ -419,30 +543,24 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
         return super.validate_02();
     }
 
-    public String getClassVar() {
-        if (classVar == null) {
-            classVar = name;
-        }
-        return classVar;
-    };
 
-    public String getClassFQN() {
-        return getNamespace() +"."+getClassVar();
-    }
+    // public String getClassFQN() {
+    //     return getNamespace() +"."+getClassVar();
+    // }
 
-    public String getClassFQNHash() {
-        return "a"+Math.abs(getClassFQN().hashCode())+ "_";
-    }
+    // public String getClassFQNHash() {
+    //     return "a"+Math.abs(getClassFQN().hashCode())+ "_";
+    // }
 
     public String getFreeMethod() {
         // every property that is not primative calls returnObject(id);
         // because of the flat model there is no need to mine into parents
-        String res = "void " + getClassFQNHash() + "_free(num _refId) {"
-        + " Object_ref *object_ref = useObject(_refId);";
+        String res = "void " + getCName()+ "_free(num this) {"
+        + " Object_ref *object_ref = useObject(this);";
 
         for (VariableDef variableDef : properties) {
             if (!variableDef.isPrimative()) {
-                res += "\n  returnObject((("+getClassVar()+"*)object_ref->data)->"+variableDef.getName()+");";
+                res += "\n  returnObject((("+getCName()+"*)object_ref->data)->"+variableDef.getName()+");";
             }
         }
         return res + "\n}";
@@ -450,10 +568,10 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
 
 
     public String asHeader() {
-        return "// generated EC compiled source"
-        +"\n#ifndef __"+getClassFQN().toUpperCase().replace('.','_')+"_H__"
-        + "\n#define __"+getClassFQN().toUpperCase().replace('.','_') +"_H__"
-        + "\n#include \"types.h\""
+        return "// generated EC compiled source " + classname
+        +"\n#ifndef __"+getCName().toUpperCase().replace('.','_')+"_H__"
+        + "\n#define __"+getCName().toUpperCase().replace('.','_') +"_H__"
+        + "\n#include \"Core.Core_main.h\""
         + getParentIncludes()
         + getDependancies()
         // @TODO include class dependancies
@@ -461,13 +579,13 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
         // content here
         + createDataModel()
         + createClassMethodsHeader()
-        + "typedef struct " + getClassVar() + " {\n"
+        + "typedef struct " + getCName()+ " {\n"
         // type lookup information is in the reference table (the same meory reference table)
         + getParentDataModel()
-        + getDataModelName() + "\n} " + getClassVar() +";"
-        + "\npointer get" +getClassVar() +"ClassModel();"
-        + "\nvoid populate" +getClassVar() +"ClassModel(pointer classModel);"
-        + "\nnum create_"+getClassVar() +"();"
+        + getDataModelName() + "\n} " + getCName() +";"
+        + "\npointer get" +getCName()+"_cm();"
+        + "\nvoid populate" +getCName()+"_cm(pointer classModel);"
+        + "\nnum create_"+getCName()+"();"
         + createConstructorsHeader()
         + "\n\n"
         + "\n#endif";
@@ -482,16 +600,16 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
         if (parent == null) {
             return "";
         }
-        return "\n#include \"" + parent.filename + ".h\"";
+        return "\n#include \"" + extendsclass.getFqn() + ".h\"";
     }
 
     private String getDataModelName() {
-        return ("__"+getClassFQN().replace('.', '_') +"_Data_").toUpperCase();
+        return ("__"+getCName().replace('.', '_') +"_Data_").toUpperCase();
     }
 
     private String getClassStructName() {
         return 
-            ("__"+getClassFQN().replace('.', '_') +"_Class_").toUpperCase();
+            ("__"+getCName().replace('.', '_') +"_Class_").toUpperCase();
     }
 
 
@@ -505,6 +623,7 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
     }
 
     public void addProperty(VariableDef variableDef) {
+        // System.out.println("@@ClassDef add " + classname.getFqn() + " " + variableDef);
         properties.add(variableDef);
     }
 
@@ -517,7 +636,7 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
                 res += "\n";
             }
             String n = funct.name;
-            funct.name = getClassFQNHash()+ funct.name;
+            funct.name = getCName()+ funct.name;
             res += funct.asCode();
             funct.name = n;
             first = false;
@@ -556,9 +675,9 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
 
     private String createClassModelHeader() {
         String res = "#define " + getClassStructName();
-        res += (name.equals("Object") ? "  \\\npointer *parent;" : "");
+        res += (getFqn().equals("Core.Object") ? "  \\\npointer *parent;" : "");
         for(FunctionDef funct : functionDefs) {
-            if ((funct.is_override || funct.is_parent) && !name.equals("Object")) {
+            if ((funct.is_override || funct.is_parent) && !getFqn().equals("Core.Object")) {
                 continue;
             }
             res += "  \\\n  "+funct.getExpandedSignature() +";";
@@ -578,7 +697,7 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
         String res = "";
         for(FunctionDef funct : functionDefs) {
             if (!funct.is_parent) {
-                res += "\n  thisClassModel->"+ funct.name +" = "+ getClassFQNHash() + funct.name +";";
+                res += "\n  thisClassModel->"+ funct.name +" = "+ getCName() + funct.name +";";
             }
         }
 
@@ -591,17 +710,17 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
             }
         }
 
-        res += "\n  thisClassModel->free = "+ getClassFQNHash() +"_free;";
+        res += "\n  thisClassModel->free = "+ getCName() +"_free;";
         return res;
 
     }
 
     private String createClassMethodsHeader() {
         return "\n" + createClassModelHeader()
-            + "\ntypedef struct "+ getClassVar() +"ClassModel {"
+            + "\ntypedef struct "+ getCName()+"_cm {"
             + "\n" + getParentClassModel()
             + getClassStructName()
-            +"\n} "+ getClassVar() +"ClassModel;\n\n"
+            +"\n} "+ getCName()+"_cm;\n\n"
             ;
     }
 
@@ -645,25 +764,28 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
 
     private String createInitMethod() {
         return  ""
-        + "\nnum create_"+getClassVar()+"() {"
-        + "\n  "+getClassVar()+" * _"+getClassVar()+" = ec_calloc(sizeof("+getClassVar()+"), sizeof(char));"
+        + "\nnum create_"+getCName()+"() {"
+        + "\n  "+getCName()+" * _"+getCName()+" = ec_calloc(sizeof("+getCName()+"), sizeof(char));"
         + populateDefaultValues()
-        + "\n  return createObject(_"+getClassVar()+", get"+getClassVar()+"ClassModel(), false);"
+        + "\n  return createObject(_"+getCName()+", get"+getCName()+"_cm(), false);"
         + "\n}\n"
-        + "\npointer _"+getClassVar() +"ClassModel = NULL;"
-        + "\npointer get" +getClassVar() +"ClassModel() {"
-        + "\n  if (_"+getClassVar()+"ClassModel == NULL) {"
-        + "\n    _"+getClassVar()+"ClassModel = ec_malloc(sizeof("+getClassVar()+"ClassModel));"
-        + "\n    registerClassModel(_"+getClassVar()+"ClassModel);"
-        + "\n    populate"+getClassVar()+"ClassModel(_"+getClassVar()+"ClassModel);"
+        + "\n"+getCName()+"_cm _"+getCName()+"_cm;"
+        + "\nboolean _"+getCName()+"_init = false;"
+        + "\npointer get" +getCName()+"_cm() {"
+        + "\n  if (!_"+getCName()+"_init) {"
+        // + "\n    _"+getCName()+"_cm = ec_malloc(sizeof("+getCName()+"_cm));"
+        + "\n    registerClassModel(&_"+getCName()+"_cm);"
+        + "\n    populate"+getCName()+"_cm(&_"+getCName()+"_cm);"
+        + "\n    _"+getCName()+"_init = true;"
         + "\n  }"
-        + "\n  return _"+getClassVar()+"ClassModel;"
+        + "\n  return &_"+getCName()+"_cm;"
         + "\n}\n"
         + "\n"+ createConstructorsCode()
-        + "\nvoid populate"+getClassVar()+"ClassModel(pointer classModel) {"
-        + "\n  populateObjectClassModel(classModel);"
+        + "\nvoid populate"+getCName()+"_cm(pointer classModel) {"
+        // @todo fix this
+        // + "\n  populateObjectClassModel(classModel);"
         + "\n "+ getPopulateParent()
-        + "\n  "+getClassVar()+"ClassModel* thisClassModel = ("+getClassVar()+"ClassModel*)classModel;"
+        + "\n  "+getCName()+"_cm* thisClassModel = ("+getCName()+"_cm*)classModel;"
         + "\n  thisClassModel->parent = "+getObjectClassModel()+";"
         + populateClassMethods() 
         + "\n}\n\n";
@@ -676,9 +798,9 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
                 continue;
             }
 
-            if (var.assignValue != null) {
+            if (var.assignValue != null && var.assignValue.expr != null) {
                 // "(("+name+"*)_"+getClassVar()+")->
-                res += "\n/*cdv1*/(("+name+"*)_"+getClassVar()+")->"+ var.getName() +" = "+ var.assignValue.asCode() +";";
+                res += "\n/*cdv1*/(("+getCName()+"*)_"+getCName()+")->"+ var.getName() +" = "+ var.assignValue.asCode() +";";
                 // TODO Arrays
             }
         }
@@ -688,22 +810,23 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
 
     private String getObjectClassModel() {
         if (parent != null) {
-            return "get"+parent.name +"ClassModel()";
+            
+            return "get"+extendsclass.getCName()+"_cm()";
         }
-        return "getObjectClassModel()";
+        return "getc_2106303_Object_cm()";
     }
 
     private String getPopulateParent() {
-        if (extends_ == null) return "";
-        return "populate"+extends_+"ClassModel(classModel);";
+        if (extendsclass == null) return "";
+        return "populate"+extendsclass.getCName()+"_cm(classModel);";
     }
 
     public String getContainedClassesAsCode() {
         String res = "";
 
         for (ClassDef classDef : fileDef.getClasses()) {
-            if (classDef.filename != null && !classDef.filename.equals(name)) {
-                res += "\n#include \"" + classDef.filename + ".h\""; 
+            if (classDef.classname != null && !classDef.getFqn().equals(getFqn())) {
+                res += "\n#include \"" + classDef.getFqn() + ".h\""; 
             }
         } 
         return res;
@@ -714,9 +837,9 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
             int value;
         }
         */
-        return  "// " + name + "\n"
-            + "#include \"types.h\""
-            + "\n#include \""+ getClassFQN()+ ".h\""
+        return  "// " + getFqn()+ "\n"
+            + "#include \"Core.Core_main.h\""
+            + "\n#include \""+ getFqn()+ ".h\""
             + getContainedClassesAsCode()
             +"\n\n"+ functionsAsCode()
             + "\n\n" + createInitMethod();
@@ -724,13 +847,13 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
 
     @Override
     public String asSignature() {
-        return  "// "+namespace + "::" + name + " Signature compiled"
+        return  "// "+getFqn() + " Signature compiled"
             // + "\nnamespace "+ getNamespace()+";"
             + "\n/* imports {} */\n"
             + "\n" + acccessor
             + (is_final ? " final" : "")
             + (is_class ? " class" : " stub")
-            + " signature " + getNamespace() + "." + name
+            + " signature " + getFqn()
             + instanceofAsSignature()
             +"{\n"
             + propertiesAsSignature()
@@ -774,7 +897,7 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
 
     private String instanceofAsSignature() {
         if (parent != null) {
-            return "(" + parent.name + ")";
+            return "(" + extendsclass.getFqn() + ")";
         }
         return "";
     }
@@ -795,7 +918,48 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
 
     @Override
     public void setCastType(String casttype) {
-        this.extends_ = casttype;
+        if (casttype.contains(".")) {
+            extendsclass = new ClassName(casttype);
+        } else {
+            ClassDef cd = DefFactory.resolveClass(casttype);
+            if (cd == null) {
+                throw new RuntimeException("Can't resolve parent class " + casttype + " for " + classname);
+            }
+            extendsclass = cd.extendsclass;
+        }
+
+        if (extendsclass == null) {
+            extendsclass = new ClassName("Core.Object");
+        }
+
+        parent = DefFactory.resolveClass(extendsclass.getFqn());
+        if (parent == null) {
+            throw new RuntimeException("Can't resolve parent class " + extendsclass + " for " + classname);
+        }
     }
 
+    public List<ConstructorDef> getConstructorDefs() {
+        return constructorDefs;
+    }
+
+    public String getShortname() {
+        return classname.getShortName();
+    }
+
+    public String getClassPackage() {
+        return classname.getPackageName();
+    }
+
+    public String getFqn() {
+        return classname.getFqn();
+    }
+
+    public String getCName() {
+        return classname.getCName();
+    }
+
+    @Override
+    public String toString() {
+        return getFqn();
+    }
 }

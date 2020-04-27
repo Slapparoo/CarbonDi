@@ -10,24 +10,22 @@ public class OperationExpr extends ExprDef {
     public void resolve_01() {
         super.resolve_01();
         left.containedInBlock = containedInBlock;
-        if (left instanceof TypeExpr) {
-            ((TypeExpr)left).isGet = true;
+        if (left instanceof MultiTypeExpr) {
+            ((MultiTypeExpr)left).setIsGet(true);
         }
         left.resolve_01();
         
         right.containedInBlock = containedInBlock;
-        if (right instanceof TypeExpr) {
-            ((TypeExpr)right).isGet = true;
+        if (right instanceof MultiTypeExpr) {
+            ((MultiTypeExpr)right).setIsGet(true);
         }
         right.resolve_01();
-
 
         this.thisType = left.thisType;
     }
 
     @Override
     public String asCode() {
-        // return " (operator) ";
-        return  (left == null ? "(left)" : left.asCode()) + " " + expr + " " + (right == null ? "" : right.asCode());
+        return  (left == null ? "(left)" : "/*oxa*/"+ left.asCode()) + " " + expr + " " + (right == null ? "" : "/*oxb*/"+ right.asCode());
     }
 }

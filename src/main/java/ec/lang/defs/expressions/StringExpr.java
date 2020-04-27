@@ -5,6 +5,7 @@ import ec.lang.defs.*;
 public class StringExpr extends ExprDef {
     boolean cstring = false;
     boolean resolved = false;
+    // boolean staticAlloc = false;
 
     @Override
     public void resolve_01() {
@@ -49,8 +50,6 @@ public class StringExpr extends ExprDef {
             thisType = new TypeIdDef("String");
         }
         super.resolve_01();
-
-        // System.out.println("@@StringExpr.resolve " + expr);
     }
 
     @Override
@@ -68,7 +67,7 @@ public class StringExpr extends ExprDef {
             return expr.replace('`', '"');
         }
         
-        return "/* se */ create_String$1(" +expr+ ")";
+        return "/*se*/ create_c_2106303_String$2(" +expr+ ", true)";
     }
 
     public StringExpr(String value) {

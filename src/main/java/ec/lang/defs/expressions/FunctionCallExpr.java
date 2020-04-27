@@ -13,218 +13,135 @@ import ec.lang.defs.SnippetFactory;
 import ec.lang.defs.TypeIdDef;
 import ec.lang.defs.VariableDef;
 
-public class FunctionCallExpr extends ExprDef {
+public class FunctionCallExpr extends ExprDef implements MultiTypeId {
     public List<ExprDef> params = new ArrayList<>();
     private String name;
     private boolean returnPrimative = true;
     private FunctionDefBase resolvedTo;
-    private boolean classMethod = false;
+    public boolean classMethod = false;
     private boolean staticMethod = false;
+    private String resolve02 = "";
 
     public String getSignature() {
         if (thisType == null) {
-            return "num (*"+ name + ")(" + getParamsSignature() + ")";
+            return "num (*" + name + ")(" + getParamsSignature() + ")";
         }
 
-        return (thisType.getName().equals("void") ? "void" : thisType.asCode())  
-        + (thisType.isIs_array() ? "*" : "")  
-        + " (*"+ name + ")(" + getParamsSignature() + ")";
+        return (thisType.getName().equals("void") ? "void" : thisType.asCode()) + (thisType.isIs_array() ? "*" : "")
+                + " (*" + name + ")(" + getParamsSignature() + ")";
     }
 
     public String getParamsSignature() {
         String res = "";
         boolean first = true;
 
-        for(ExprDef param : params) {
+        for (ExprDef param : params) {
             if (!first) {
                 res += ", ";
             }
-            res += param.thisType.getName();
+            if (param.thisType == null) {
+                res += '+' + name;
+            } else {
+                res += param.thisType.getName();
+            }
             first = false;
         }
         return res;
     }
 
-    @Override
-    public void resolve_01() {
+    // @Override
+    // public void resolve_01() {
 
-        if (containedInBlock == null) {
-            new NullPointerException("FunctionCallExpr containedInBlock == null" + name);
-        }
+    //     if (containedInBlock == null) {
+    //         new NullPointerException("FunctionCallExpr containedInBlock == null" + name);
+    //     }
 
-        for (ExprDef exprDef : params) {
-            if (exprDef instanceof TypeExpr) {
-                ((TypeExpr)exprDef).isGet = true;
-            }
-            exprDef.containedInBlock = containedInBlock;
-            exprDef.resolve_01();
-        }
+    //     for (ExprDef exprDef : params) {
+    //         if (exprDef instanceof TypeExpr) {
+    //             ((TypeExpr) exprDef).setIsGet(true);
+    //         }
+    //         exprDef.containedInBlock = containedInBlock;
+    //         exprDef.resolve_01();
+    //     }
 
-        if (name.contains(".")) {
-            String tokens[] = name.split("\\.");
+    //     // resolve constructors
+    //     for (ClassDef classDef : DefFactory.CLASS_DEFS) {
+    //         if (classDef.getShortname().equals(name)) {
+    //             resolvedTo = classDef.resolveConstructor(getSignature());
 
-            // easy
-            if (tokens.length == 2) {
-                String varName = tokens[0];
-                String methodName = tokens[1];
+    //             if (resolvedTo == null) {
+    //                 throw new RuntimeException("No matching function found " + getSignature() + " " + classDef.getFqn());
+    //             }
 
-                // how to get the class model name
-                // the variable needs to be resolved
-                String prependThis = "";
+    //             returnPrimative = false;
+    //             thisType = new TypeIdDef(name);
+    //         }
+    //     }
 
-                VariableDef variableDef = containedInBlock.resolveVariable(varName);
+    //     if (containedInBlock == null) {
+    //         throw new RuntimeException("containedInBlock == null");
+    //     }
 
-                if (!varName.equals("this") && variableDef == null) {
-                    VariableDef thisVar = containedInBlock.resolveVariable("this");
-                    if (thisVar != null) {
-                        prependThis = SnippetFactory.classModelStatement(thisVar.type.getName(), "this", thisVar.is_static)+"->get_" + tokens[0] + "(this)";
+    //     if (resolvedTo == null) {
+    //         VariableDef cd = containedInBlock.resolveVariable("this");
+    //         resolvedTo = DefFactory.resolveFunction(cd, name);
+    //         if (resolvedTo != null) {
+    //             thisType = ((FunctionDef) resolvedTo).returnType;
+    //             classMethod = true;
+    //         }
+    //     }
 
-                        ClassDef classDef = DefFactory.resolveClass(thisVar.type.getName());
-                        if (classDef == null) {
-                            throw new RuntimeException("Can't resolve class " + thisVar.type.getName());
-                        }
-                        // find the property
-                        for (VariableDef cp : classDef.properties) {
-                            if (cp.getName().equals(tokens[0])) {
-                                thisType = cp.type;
-                            }
-                        }
-                        // serach parents
-                        while (thisType == null) {
-                            classDef = classDef.parent;
-                            if (classDef == null) {
-                                throw new RuntimeException("Can't resolve class variable " + thisVar.type.getName() + " " + tokens[0]);
-                            }
-                            for (VariableDef cp : classDef.properties) {
-                                if (cp.getName().equals(tokens[0])) {
-                                    thisType = cp.type;
-                                }
-                            }
-                        }
-                    } 
-                }
-                if (prependThis.length() == 0) {
-                    ClassDef cd = DefFactory.resolveClass(varName);
-                    if (cd != null) {
-                        FunctionDef fd = cd.resolveFunction(methodName);
-                        if (fd != null) {
-                            if (!fd.is_static) {
-                                throw new RuntimeException("method is not static " + name);
-                            }
-                            resolvedTo = fd;
-                            staticMethod = true;
-                            name = varName;
-                        }
-                    } else {
-                        variableDef = containedInBlock.resolveVariable(varName);
-                        if (variableDef != null) {
-                            thisType = variableDef.type; 
-                            if (thisType.isIs_boxed()) {
-                                thisType = new TypeIdDef(thisType.getName().toLowerCase());
-                                thisType.setIs_array(variableDef.type.isIs_array());
-                            }
-                        } else {
-                            thisType = new TypeIdDef(getClassModelName(varName));
-                            thisType.resolve_01();
-                        }
-                    }
-                }
+    //     // resolve the return type
+    //     for (FunctionDef funct : DefFactory.FUNCT_DEFS) {
+    //         if (funct.name.equals(name)) {
 
-                if (resolvedTo == null) {
-                    if (prependThis.length() > 0) {
-                        name = SnippetFactory.classModelStatement(thisType.getName(), prependThis, false) + "->"+methodName;
-                        params.add(0, new ExprDef(prependThis));
-                        
-                    } else {
-                        if (thisType.isIs_array()) {
-                            name = "("+thisType.getName()+"*)"+SnippetFactory.classModelStatement("Array", varName, false) +"->"+methodName;
-                            params.add(0, new ExprDef(varName));
-                        } else {
-                            name = SnippetFactory.classModelStatement(thisType.getName(), varName, false) +"->"+methodName;
-                            params.add(0, new ExprDef(varName));
-                        }
-                    }
-                }
-            }
-        } else {
-            // resolve constructors
-            for (ClassDef classDef : DefFactory.CLASS_DEFS) {
-                if (classDef.name.equals(name)) {
-                    String sig = getSignature();
-                    for (ConstructorDef def : classDef.constructorDefs) {
-                        if (sig.equals(def.getSignature())) {
-                            resolvedTo = def;
-                        }
-                    }
+    //             thisType = funct.returnType;
 
-                    if (resolvedTo == null) {
-                        throw new RuntimeException("No matching function found " + sig + " " + classDef.name);
-                    }
+    //             if (name.equals("String")) {
+    //                 name = "/* fce */  create_String$1";
+    //             }
 
-                    returnPrimative = false; 
-                    thisType = new TypeIdDef(name);  
-                }
-            }
+    //             if (name.equals("I64")) {
+    //                 name = "Boxing_i64_create";
+    //                 thisType.setIs_boxed(true);
+    //             }
 
-            if (containedInBlock == null) {
-                throw new RuntimeException("containedInBlock == null");
-            }
+    //             break;
+    //         }
+    //     }
+    //     // }
 
-            if (resolvedTo == null) {
-                VariableDef cd = containedInBlock.resolveVariable("this");
-                resolvedTo = DefFactory.resolveFunction(cd, name);
-                if (resolvedTo != null) {
-                    thisType = ((FunctionDef)resolvedTo).returnType;
-                    classMethod = true;
-                }
-            }
+    //     super.resolve_01();
 
-            // resolve the return type
-            for (FunctionDef funct : DefFactory.FUNCT_DEFS) {
-                if (funct.name.equals(name)) {
-                    
-                    thisType = funct.returnType;
+    //     if (resolvedTo == null || resolve02.length() == 0) {
+    //         System.out.println("@@functioncall not resolved " + name  + " and why is resolve01 being called");
+    //         throw new RuntimeException("@@functioncall not resolved " + name );
+    //     }
+    // }
 
-                    if (name.equals("String")) {
-                        name = "/* fce */  create_String$1";
-                    }
+    // private String getClassModelName(String varName) {
+    //     // DefFactory lookup to return the Type by name
+    //     for (VariableDef var : containedInBlock.variableDefs) {
+    //         if (var.getName().equals(varName)) {
+    //             return var.type.getName();
+    //         }
+    //     }
 
-                    if (name.equals("I64")) {
-                        name = "Boxing_i64_create";
-                        thisType.setIs_boxed(true);
-                    }
+    //     for (VariableDef var : DefFactory.VAR_DEFS) {
+    //         if (var.getName().equals(varName)) {
+    //             return var.type.getName();
+    //         }
+    //     }
 
-                    break;
-                }
-            }
-        }
+    //     // a static refence?
+    //     ClassDef cd = DefFactory.resolveClass(varName);
+    //     if (cd != null) {
+    //         staticMethod = true;
+    //         return varName;
+    //     }
 
-        super.resolve_01();
-    }
-
-    private String getClassModelName(String varName) {
-        // DefFactory lookup to return the Type by name
-        for (VariableDef var : containedInBlock.variableDefs) {
-            if (var.getName().equals(varName)) {
-                return var.type.getName();
-            }
-        }
-
-        for (VariableDef var : DefFactory.VAR_DEFS) {
-            if (var.getName().equals(varName)) {
-                return var.type.getName();
-            }
-        }
-
-        // a static refence?
-        ClassDef cd = DefFactory.resolveClass(varName);
-        if (cd != null) {
-            staticMethod = true;
-            return varName;
-        }
-
-        throw new RuntimeException("Class not resolved " + varName);
-    }
+    //     throw new RuntimeException("Class not resolved " + varName);
+    // }
 
     public FunctionCallExpr() {
     }
@@ -233,9 +150,11 @@ public class FunctionCallExpr extends ExprDef {
         this.name = name;
     }
 
-    private String paramsAsCode(String res) {
-        // String res = "";
+    public String getName() {
+        return name;
+    }
 
+    private String paramsAsCode(String res) {
         for (ExprDef exprDef : params) {
             if (res.length() > 0) {
                 res += ", ";
@@ -249,27 +168,71 @@ public class FunctionCallExpr extends ExprDef {
     public String asCode() {
         if (resolvedTo != null) {
             if (resolvedTo instanceof ConstructorDef) {
-                return hasNot + "create_"+resolvedTo.getExpandedName() + "("+ paramsAsCode("") + ")" ; 
+                return hasNot + "/*cd1*/ create_" + resolvedTo.getExpandedName() + "(" + paramsAsCode("") + ")";
             } else {
-                if (staticMethod) {
-                    return hasNot +"/* functioncall 4 */ "
-                        + SnippetFactory.classModelStatement(name,"",true)
-                        +"->" + resolvedTo.getExpandedName()  + "("+ paramsAsCode("") + ")" ; 
-                } else  if (classMethod) {
+                if (resolvedTo.is_static) {
+                    return hasNot + "/*fc4*/ "
+                            + SnippetFactory.classModelStatement(resolvedTo.classDef.getCName(), "", true) + "->"
+                            + resolvedTo.getExpandedName() + "(" + paramsAsCode("") + ")";
+                } else if (classMethod) {
                     // ((MyStringClassModel *)useObject(this)->classmodel
-                    VariableDef cd = containedInBlock.resolveVariable("this");                    
-                    return hasNot +"/* functioncall 3 */"+ SnippetFactory.classModelStatement(cd.type.getName(), "this", false) 
-                        +"->" + resolvedTo.getExpandedName()  + "("+ paramsAsCode("this") + ")" ; 
+                    VariableDef cd = containedInBlock.resolveVariable("this");
+                    return hasNot + "/*fc3*/" + SnippetFactory.classModelStatement(cd.type.getName(), "this", false)
+                            + "->" + resolvedTo.getExpandedName() + "(" + paramsAsCode("this") + ")";
+                } else if (resolvedTo.classDef != null) {
+
+                    // @todo, create a local var for resolve02
+
+                    return hasNot + "/* switch from fc5 to te4*/"
+                    // if its an array use 
+                            + SnippetFactory.classModelStatement(resolvedTo.classDef.getCName(), resolve02, false)
+                            + "->" + resolvedTo.getExpandedName() + "(" + paramsAsCode(resolve02) + ")";
                 } else {
-                    return hasNot + "/* functioncall 1 */"+  resolvedTo.getExpandedName() + "("+ paramsAsCode("") + ")" ; 
+                    return hasNot + "/*fc1*/" + resolvedTo.getExpandedName() + "(" + paramsAsCode("") + ")";
                 }
             }
         }
-        return hasNot + "/* functioncall 2 "+expr+" */"+  name + "("+ paramsAsCode("") + ")" ; 
+        return hasNot + "/*fc2 " + expr + " */" + name + "(" + paramsAsCode("") + ")";
     }
 
     @Override
     public String toString() {
-        return "FunctionCallExpr [name=" + name + ", params=" + params + ", returnPrimative=" + returnPrimative + "]";
+        return "[FunctionCallExpr] " + name + "(" + getParamsSignature() + ")";
+    }
+
+    public void setFunctionDef(FunctionDefBase fd) {
+        resolvedTo = fd;
+
+        for (ExprDef exprDef : params) {
+            if (exprDef instanceof TypeExpr) {
+                ((TypeExpr) exprDef).setIsGet(true);
+            }
+            exprDef.containedInBlock = containedInBlock;
+            exprDef.resolve_01();
+        }
+    }
+
+    @Override
+    public void resolve_02(String red_id) {
+        // TODO Auto-generated method stub
+        resolve02 = red_id;
+
+        if (containedInBlock == null) {
+            new NullPointerException("FunctionCallExpr containedInBlock == null" + name);
+        }
+
+        for (ExprDef exprDef : params) {
+            if (exprDef instanceof TypeExpr) {
+                ((TypeExpr) exprDef).setIsGet(true);
+            }
+            exprDef.containedInBlock = containedInBlock;
+            exprDef.resolve_01();
+        }
+    }
+
+    @Override
+    public void setIsGet(boolean isGet) {
+        // TODO Auto-generated method stub
+
     }
 }

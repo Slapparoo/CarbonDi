@@ -1,39 +1,37 @@
 
 // primative
-@unboxed = 0x1_100_100;
+?unboxed = 0x1_100_100;
 
 // object
-@boxed1 = I64(unboxed);
+?boxed1 = I64(unboxed);
 
 // primative
-@unboxed1 = boxed1.value();
+?unboxed1 = boxed1.value;
 
 // object
-@boxed2 = boxed1;
+?boxed2 = boxed1;
 
 // primative
-@unboxed2 = boxed2.value();
-i64 unboxed3 = boxed2.value();
+?unboxed2 = boxed2.value;
+i64 unboxed3 = boxed2.value;
 
 // object
 I64 boxed3 = I64(0b_1111_0001);
 
-printf("\n%s, %li, %li, %li\n", boxed1.asStr(), unboxed1, unboxed2, boxed3.value()) ;
+printf(`\n%s, %li, %li, %li\n`, boxed1.asStr(), unboxed1, unboxed2, boxed3.value) ;
 
 // object
-@str1 = String( boxed1.asStr());
-printf("\n%s\n\n", str1.asStr()) ;
 
-@numbers Object[6];
-numbers[5] = String("value");
+?str1 = String( boxed1.asStr());
+?str2 = String(`String2`);
+?str3 = "String3";
+printf(`\n%s\n%s\n%s\n`, str1.asStr(), str2.asStr(), str3.asStr()) ;
 
-loop (5) {
-    numbers[$a] = I64($a);
-}
+testStrEqual(`str1`, `17826048`, str1.asStr());
+testStrEqual(`boxed1`, `17826048`, boxed1.asStr());
+testStrEqual(`boxed1.typename`, `i64`, boxed1.typename());
+testi64Equal(`boxed1.datatype`, 9, boxed1.datatype());
+testi64Equal(`boxed1.value`, 17826048, boxed1.value);
 
-loop (6) {
-    @b = numbers[$a];
-    printf("%s\n", b.asStr()) ;
-}
-
-@str2 = "String 2";
+boxed1.value = 0b_1111_0011;
+testi64Equal(`boxed1.value`, 0b_1111_0011, boxed1.value);

@@ -19,7 +19,7 @@ public class StatementDef extends BaseDef {
 
     public String asCode() {
         if (statement != null) {
-            return "/**(Statement)*/ " + statement.asCode() + ";";
+            return "/*st*/ " + statement.asCode() + ";";
         }
         return "(Undefined Statement) ";
     }

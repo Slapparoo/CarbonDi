@@ -1,8 +1,8 @@
-protected class SimpleObject {
+protected class Default.SimpleObject {
     properties {
         i64 count1 = 12;
-        i64 count3 = 27;
         static i64 count2 = 51;
+        i64 count3 = 27;
     }
 
     SimpleObject(=count1) {}
@@ -19,6 +19,7 @@ testi64Equal(`simpleObject.count1 1`, 11, simpleObject.count1);
 testi64Equal(`simpleObject.count2 1`, 51, simpleObject.count2);
 testi64Equal(`simpleObject.count3 1`, 27, simpleObject.count3);
 testi64Equal(`simpleObject.constNumber() 1`, 66, simpleObject.constNumber());
+testi64Equal(`simpleObject.constNumber() 1`, 66, SimpleObject.constNumber());
 
 simpleObject.count1 = 99;
 SimpleObject.count2 = 33;

@@ -1,6 +1,8 @@
 package ec.lang.defs.expressions;
 
-import ec.lang.defs.*;
+import ec.lang.defs.ExprDef;
+import ec.lang.defs.StatementDef;
+import ec.lang.defs.TypeIdDef;
 
 public class AssignExpr extends StatementDef {
     
@@ -22,98 +24,44 @@ public class AssignExpr extends StatementDef {
 
     @Override
     public void resolve_01() {
-        if (assignRight instanceof TypeExpr) {
-            ((TypeExpr)assignRight).isGet = true;
+        if (assignRight instanceof MultiTypeId) {
+            ((MultiTypeId)assignRight).setIsGet(true);;
         }
 
         assignRight.containedInBlock = containedInBlock;
         assignRight.resolve_01();
 
-        // System.out.println("@@AssignExpr.resolve " + assignLeft.expr);
-
-        assignLeft.containedInBlock = containedInBlock;
-        assignLeft.resolve_01();
-
-        // if (assignLeft.expr.contains(".")) {
-        //     classVar = true;
-        //     // resolve the class
-        //     String[] tokens = assignLeft.expr.split("\\.");
-
-        //     if (tokens.length == 2) {
-        //         // resolve object 
-        //         VariableDef var = containedInBlock.resolveVariable(tokens[0]);
-
-                
-        //         if (var == null) {
-        //             // static reference?
-        //             ClassDef cd = DefFactory.resolveClass(tokens[0]);
-        //             if (cd != null) {
-        //                 // "(("+getClassVar()+"ClassModel*)get"+getClassVar()+"ClassModel())->"
-        //                 assignLeft.expr = "(("+tokens[0]+"ClassModel*)get" + tokens[0] + "ClassModel())->set_" + tokens[1] + "("+assignRight.asCode()+")";
-        //             }
-                    
-        //             for (VariableDef def : cd.properties) {
-        //                 if (def.getName().equals(tokens[1])) {
-        //                     assignLeft.thisType = def.type;
-        //                     break;
-        //                 }
-        //             }  
-        //         } else {
-
-        //             //  ((SimpleObject1ClassModel *)useObject(_refId)->classmodel)->set_count1(_refId, count1);
-        //             assignLeft.expr = classModelStatement(var.type.getName(), tokens[0])+"->set_" + tokens[1] + "(" + tokens[0] + ", "+assignRight.asCode()+")";
-
-        //             // assignLeft.expr = "((" + var.type.getName() + "ClassModel*)useObject(" + tokens[0] + ")->classmodel)->set_" + tokens[1] + "(" + tokens[0] + ", "+assignRight.asCode()+")";
-        //             // type
-        //             ClassDef classDef = DefFactory.resolveClass(var.type.getName());
-        //             for (VariableDef def : classDef.properties) {
-        //                 if (def.getName().equals(tokens[1])) {
-        //                     assignLeft.thisType = def.type;
-        //                     break;
-        //                 }
-        //             }  
-        //         }
-        //     }
-
-
-            // String[] tokens = assignLeft.expr.split("\\.");
-/*
-            int i = 0;
-            if (tokens.length > 1) {
-                VariableDef var = null;
-                while (i < tokens.length -1) {
-                    System.out.println("@@resolving token " + tokens[i]);
-                    var = containedInBlock.resolveVariable(tokens[i]);
-
-                    if (var != null && var.type != null ) {
-                        System.out.println("@@resolving token " + tokens[i] + ", " + var.type.name);
-                    } else {
-                        System.out.println("@@resolving token " + tokens[i] + " not found.");
-                    }
-                    i++;
-                }
-
-                ClassDef classDef = DefFactory.resolveClass(var.type.name);
-                for (VariableDef def : classDef.properties) {
-                    System.out.println("@@resolving token " + tokens[i] + " " + def.getName());
-                    if (def.getName().equals(tokens[i])) {
-                        System.out.println("@@resolving token " + tokens[i] + " " + def.type);
-                        break;
-                    }
-                }  
-
+        if (assignOperator.expr.equals("=")) {
+            if (assignLeft instanceof MultiTypeId) {
+                ((MultiTypeId)assignLeft).setIsGet(false);;
             }
-            */
+        
+            assignLeft.containedInBlock = containedInBlock;
+            assignLeft.resolve_01();
+        } else {
+            if (assignLeft instanceof MultiTypeId) {
+                ((MultiTypeId)assignLeft).setIsGet(true);;
+            }
+        
+            assignLeft.containedInBlock = containedInBlock;
+            assignLeft.resolve_01();
 
-        // }
+            // throw new RuntimeException("Some assign types aren't implemented yet like " + assignOperator.expr);
+        }
+
+
+
+        
         super.resolve_01();
     }
 
 
-    public AssignExpr(String assignLeft, String assignOperator, ExprDef assignRight) {
-        this.assignLeft = new TypeExpr(assignLeft);
+    public AssignExpr(ExprDef assignLeft, String assignOperator, ExprDef assignRight) {
+        this.assignLeft = assignLeft;
         this.assignOperator = new TypeExpr(assignOperator);
         this.assignRight = assignRight;
+
+        // System.out.println("@@Assign " + this.assignLeft + " " + this.assignOperator + " " + this.assignRight);
     }
 
     public AssignExpr(String assignLeft, String indexValue, String assignOperator, ExprDef assignRight) {
@@ -126,20 +74,38 @@ public class AssignExpr extends StatementDef {
     // @Override
     public String asCode() {
         if (classVar) {
-            return "/* AssignExpr */" + assignLeft.asCode() + ";";
+            return "/*Ax1*/" + assignLeft.asCode() + ";";
         }
 
-        if (assignLeft instanceof TypeExpr) {
-            if (((TypeExpr)assignLeft).arrayIndex != null && !assignLeft.thisType.isPrimative()) {
-                return "/* AssignExpr array */" + assignLeft.asCode() + assignRight.asCode() + ");";
-            }
-
-            if (((TypeExpr)assignLeft).isProperty) {
-                return "/* AssignExpr array */" + assignLeft.asCode() + assignRight.asCode() + ");";
-            }
+        // TODO +=, -= ...
+        if (!assignOperator.expr.equals("=")) {
+            return "/*Ax7*/" + assignLeft.asCode() + assignOperator.asCode() + assignRight.asCode() + ";";
         }
 
 
-        return "/* AssignExpr */" + assignLeft.asCode() + assignOperator.asCode() + assignRight.asCode() + ";";
+        if (assignLeft instanceof MultiTypeExpr) {
+            MultiTypeExpr al = (MultiTypeExpr)assignLeft;
+            if (al.isProperty) {
+                return "/*Ax2*/" + al.asCode() + assignRight.asCode() + ");";
+            }
+
+            if (!assignLeft.thisType.isPrimative()) {
+                return "/*Ax3*/" + al.asCode() + assignRight.asCode() + ");";
+            }
+
+            // local var
+            if (al.type_id_list.size() == 1) {
+                return "/*Ax6*/" + assignLeft.asCode() + assignOperator.asCode() + assignRight.asCode() + ";";
+            }
+
+            if (!al.getIsGet() && !ArrayIndexExpr.ARRAY_TYPES.contains(al.thisType.getObjectType())   ) {
+                System.out.println("@@assignLeft ax5 " + assignLeft + " " + al.thisType);
+                return "/*Ax5*/" + al.asCode() + assignRight.asCode() + ");";
+            }
+        }
+
+        System.out.println("@@assignLeft " + assignLeft.getClass() + " " + assignLeft.expr);
+
+        return "/*Ax4*/" + assignLeft.asCode() + assignOperator.asCode() + assignRight.asCode() + ";";
     }
 }

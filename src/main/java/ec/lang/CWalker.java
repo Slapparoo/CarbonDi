@@ -93,9 +93,9 @@ public class CWalker extends ecBaseListener {
 
             for (ClassDef classDef : ctx.ff.getClasses()) {
                 if (!classDef.is_signature) {
-                    code += "\nclang "+params+" -c -I../c-bin/include -o obj/"+ classDef.getClassFQN() +".o "+classDef.getClassFQN()+".c";
+                    code += "\nclang "+params+" -c -I../c-bin/include -o obj/"+ classDef.getFqn() +".o "+classDef.getFqn()+".c";
                     // code += "\nclang "+params+" -c -I../c-lang-deps -o obj/"+ classDef.getClassFQN() +".o "+classDef.getClassFQN()+".c";
-                    code += "\nclang-format -style=file -i "+classDef.getClassFQN()+".c";
+                    code += "\nclang-format -style=file -i "+classDef.getFqn()+".c";
                 }
             }
             code += "\nclang "+params+" -c -I../c-bin/include -o obj/"+ ffilename +".o "+ffilename+".c";
@@ -149,14 +149,14 @@ public class CWalker extends ecBaseListener {
     public void exitClass_definition(final ecParser.Class_definitionContext ctx) {
         // ctx.cd.name
 
-        ctx.cd.filename = ctx.cd.getClassFQN();
+        // ctx.cd.filename = ctx.cd.getClassFQN();
         ctx.cd.resolve_01();
         ctx.cd.validate_02();
         ctx.cd.prepare_03();
-        System.out.println("#class Filename: " + ctx.cd.filename);
+        System.out.println("#class Filename: " + ctx.cd.getFqn());
 
         if (!ctx.cd.is_signature) {
-            try (FileOutputStream out = new FileOutputStream(dirname +"/"+ctx.cd.filename + ".h")) {
+            try (FileOutputStream out = new FileOutputStream(dirname +"/"+ctx.cd.getFqn() + ".h")) {
                 String header = ctx.cd.asHeader();
 
                 out.write(header.getBytes());
@@ -178,7 +178,7 @@ public class CWalker extends ecBaseListener {
             }
         
 
-            try (FileOutputStream out = new FileOutputStream(dirname +"/"+ctx.cd.filename + ".c")) {
+            try (FileOutputStream out = new FileOutputStream(dirname +"/"+ctx.cd.getFqn()+ ".c")) {
                 String code = ctx.cd.asCode();
 
                 out.write(code.getBytes());

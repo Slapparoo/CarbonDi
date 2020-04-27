@@ -1,6 +1,6 @@
 grammar ectypes;
 
-var_type : '@'  ;
+var_type : '?' ;
 
 builtin_primatives   
    : 'u8'
@@ -163,10 +163,10 @@ RANGE
    : ( NUM | ID | STRING ) '..' ( NUM | ID | STRING )
    ;
 
-type_id : ID  { /* System.out.println($ID); */} ;
+base_ident :  ID | ANONYMOUS ;
 
 ID
-   : LETTER ALPHA* ( '.' LETTER ALPHA*)*
+   : LETTER ALPHA* 
    ;
 
 
@@ -174,7 +174,6 @@ type_anonymous : ANONYMOUS ;
 
 ANONYMOUS
    : '$'[a-z]
-   | '$'[a-z] '.' ID
    ;
 
 type_num : NUM;

@@ -1,116 +1,135 @@
-// String
-#include "types.h"
+// Core.String
 #include "Core.String.h"
+#include "Core.Array.h"
+#include "Core.B8.h"
+#include "Core.BaseBoxing.h"
+#include "Core.Boxing.h"
+#include "Core.Core_main.h"
+#include "Core.Exception.h"
+#include "Core.F32.h"
+#include "Core.F64.h"
+#include "Core.I16.h"
+#include "Core.I32.h"
+#include "Core.I64.h"
+#include "Core.I8.h"
 #include "Core.Object.h"
-#include "Core.String.h"
+#include "Core.Pointer.h"
+#include "Core.RefArray.h"
+#include "Core.U16.h"
+#include "Core.U32.h"
+#include "Core.U64.h"
+#include "Core.U8.h"
 
-pointer a73668288_asStr(num this){
+pointer c_2106303_StringasStr(num this) {
 
-__onEnter();/*class ec.lang.defs.expressions.ReturnExpr*/ return __exitReturn_pointer(((StringClassModel*)useObject(this)->classmodel)->get_value(this));
+  u64 entry$ = __onEnter();
+  return __exitReturn_pointer_un(((c_2106303_String_cm *)useObject(this)->classmodel)->get_value(this), entry$);
 }
 
+num c_2106303_StringasString(num this) {
 
-num a73668288_asString(num this){
-
-__onEnter();/*class ec.lang.defs.expressions.ReturnExpr*/ return __exitReturn_ref(this);
+  u64 entry$ = __onEnter();
+  return __exitReturn_ref_un(this, entry$);
 }
 
+u64 c_2106303_Stringlength(num this) {
 
-pointer a73668288_getClassName(){
-/*class ec.lang.defs.DirectStatement*/   return  "String";
+  u64 entry$ = __onEnter();
+  return __exitReturn_u64_un(strlen(((c_2106303_String_cm *)useObject(this)->classmodel)->get_value(this)), entry$);
 }
 
+pointer c_2106303_StringgetClassName() { return "Core.String"; }
 
-pointer a73668288_getClassPackage(){
-/*class ec.lang.defs.DirectStatement*/   return  "Core";
+pointer c_2106303_StringgetClassShortName() { return "String"; }
+
+pointer c_2106303_StringgetClassCName() { return "c_2106303_String"; }
+
+pointer c_2106303_StringgetClassPackage() { return "Core"; }
+
+u64 c_2106303_StringgetObjectDatasize() { return sizeof(c_2106303_String); }
+
+pointer c_2106303_Stringget_value(num this) { return ((c_2106303_String *)useObject(this)->data)->value; }
+
+void c_2106303_Stringset_value(num this, pointer value) { ((c_2106303_String *)useObject(this)->data)->value = value; }
+
+void c_2106303_String_free(num this) { Object_ref *object_ref = useObject(this); }
+
+num create_c_2106303_String() {
+  c_2106303_String *_c_2106303_String = ec_calloc(sizeof(c_2106303_String), sizeof(char));
+  return createObject(_c_2106303_String, getc_2106303_String_cm(), false);
 }
 
-
-u64 a73668288_getObjectDatasize(){
-/*class ec.lang.defs.DirectStatement*/   return  sizeof(String);
-}
-
-
-
-
-
-
-
-
-
-pointer a73668288_get_value(num _refId){
-/*class ec.lang.defs.DirectStatement*/   return ((String*)useObject(_refId)->data)->value;
-}
-
-
-void a73668288_set_value(num _refId, pointer value){
-/*class ec.lang.defs.DirectStatement*/ 
-  ((String*)useObject(_refId)->data)->value = value;
-}
-
-
-void a73668288__free(num _refId) { Object_ref *object_ref = useObject(_refId);
-}
-
-
-
-num create_String() {
-  String * _String = ec_calloc(sizeof(String), sizeof(char));
-  return createObject(_String, getStringClassModel(), false);
-}
-
-pointer _StringClassModel = NULL;
-pointer getStringClassModel() {
-  if (_StringClassModel == NULL) {
-    _StringClassModel = ec_malloc(sizeof(StringClassModel));
-    registerClassModel(_StringClassModel);
-    populateStringClassModel(_StringClassModel);
+c_2106303_String_cm _c_2106303_String_cm;
+boolean _c_2106303_String_init = false;
+pointer getc_2106303_String_cm() {
+  if (!_c_2106303_String_init) {
+    registerClassModel(&_c_2106303_String_cm);
+    populatec_2106303_String_cm(&_c_2106303_String_cm);
+    _c_2106303_String_init = true;
   }
-  return _StringClassModel;
+  return &_c_2106303_String_cm;
 }
 
+num create_c_2106303_String$1(pointer str) {
+  num this = create_c_2106303_String();
 
-num create_String$1(/* param */pointer value) {
-num this =  create_String();
+  {
 
-((StringClassModel *)useObject(this)->classmodel)->set_value(this, value);
-{
+    __onEnter();
+    i64 len = strlen(str) + 1;
+    ((c_2106303_String_cm *)useObject(this)->classmodel)
+        ->set_value(this, ((c_2106303_String_cm *)useObject(this)->classmodel)->alloc(this, len));
+    strcpy(((c_2106303_String_cm *)useObject(this)->classmodel)->get_value(this), str);
 
-__onEnter();/*class ec.lang.defs.VariableDef*/ num len = /* functioncall 2 */strlen(value) + 1;
-/*class ec.lang.defs.expressions.AssignExpr*/ /* AssignExpr */((StringClassModel*)useObject(this)->classmodel)->set_value(this, /* functioncall 3 */((StringClassModel*)useObject(this)->classmodel)->alloc(this, len));
-/*class ec.lang.defs.StatementDef*/ /**(Statement)*/ /* functioncall 2 */strcpy(((StringClassModel*)useObject(this)->classmodel)->get_value(this), value);
+    __onExit();
+  }
 
-__onExit();}
-
-return this;
-}
-num create_String$2(/* param */pointer value, pointer str2) {
-num this =  create_String();
-
-((StringClassModel *)useObject(this)->classmodel)->set_value(this, value);
-{
-
-__onEnter();/*class ec.lang.defs.VariableDef*/ num len = /* functioncall 2 */strlen(value) + /* functioncall 2 */strlen(str2) + 1;
-/*class ec.lang.defs.expressions.AssignExpr*/ /* AssignExpr */((StringClassModel*)useObject(this)->classmodel)->set_value(this, /* functioncall 3 */((StringClassModel*)useObject(this)->classmodel)->alloc(this, len));
-/*class ec.lang.defs.StatementDef*/ /**(Statement)*/ /* functioncall 2 */strcpy(((StringClassModel*)useObject(this)->classmodel)->get_value(this), value);
-/*class ec.lang.defs.StatementDef*/ /**(Statement)*/ /* functioncall 2 */strcat(((StringClassModel*)useObject(this)->classmodel)->get_value(this), str2);
-
-__onExit();}
-
-return this;
-}
-void populateStringClassModel(pointer classModel) {
-  populateObjectClassModel(classModel);
- populateObjectClassModel(classModel);
-  StringClassModel* thisClassModel = (StringClassModel*)classModel;
-  thisClassModel->parent = getObjectClassModel();
-  thisClassModel->asStr = &a73668288_asStr;
-  thisClassModel->asString = &a73668288_asString;
-  thisClassModel->getClassName = &a73668288_getClassName;
-  thisClassModel->getClassPackage = &a73668288_getClassPackage;
-  thisClassModel->getObjectDatasize = &a73668288_getObjectDatasize;
-  thisClassModel->get_value = &a73668288_get_value;
-  thisClassModel->set_value = &a73668288_set_value;
-  thisClassModel->free = &a73668288__free;
+  return this;
 }
 
+num create_c_2106303_String$2(pointer str, boolean staticAlloc) {
+    num this = create_c_2106303_String();
+    if (staticAlloc) {
+      ((c_2106303_String_cm *)useObject(this)->classmodel)->set_value(this, str);
+    } else {
+      i64 len = strlen(str) + 1;
+      ((c_2106303_String_cm *)useObject(this)->classmodel)
+          ->set_value(this, ((c_2106303_String_cm *)useObject(this)->classmodel)->alloc(this, len));
+      strcpy(((c_2106303_String_cm *)useObject(this)->classmodel)->get_value(this), str);
+    }
+
+  return this;
+}
+num create_c_2106303_String$3(pointer str, pointer str2) {
+  num this = create_c_2106303_String();
+
+  {
+
+    __onEnter();
+    i64 len = strlen(str) + strlen(str2) + 1;
+    ((c_2106303_String_cm *)useObject(this)->classmodel)
+        ->set_value(this, ((c_2106303_String_cm *)useObject(this)->classmodel)->alloc(this, len));
+    strcpy(((c_2106303_String_cm *)useObject(this)->classmodel)->get_value(this), str);
+    strcat(((c_2106303_String_cm *)useObject(this)->classmodel)->get_value(this), str2);
+
+    __onExit();
+  }
+
+  return this;
+}
+void populatec_2106303_String_cm(pointer classModel) {
+  populatec_2106303_Object_cm(classModel);
+  c_2106303_String_cm *thisClassModel = (c_2106303_String_cm *)classModel;
+  thisClassModel->parent = getc_2106303_Object_cm();
+  thisClassModel->asStr = c_2106303_StringasStr;
+  thisClassModel->asString = c_2106303_StringasString;
+  thisClassModel->length = c_2106303_Stringlength;
+  thisClassModel->getClassName = c_2106303_StringgetClassName;
+  thisClassModel->getClassShortName = c_2106303_StringgetClassShortName;
+  thisClassModel->getClassCName = c_2106303_StringgetClassCName;
+  thisClassModel->getClassPackage = c_2106303_StringgetClassPackage;
+  thisClassModel->getObjectDatasize = c_2106303_StringgetObjectDatasize;
+  thisClassModel->get_value = c_2106303_Stringget_value;
+  thisClassModel->set_value = c_2106303_Stringset_value;
+  thisClassModel->free = c_2106303_String_free;
+}

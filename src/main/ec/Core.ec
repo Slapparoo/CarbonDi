@@ -1,6 +1,6 @@
 namespace Core;
 
-public class Object {
+public class signature Object {
     public Object();
 
     public final pointer getObjectData() {
@@ -36,104 +36,135 @@ public class Object {
 }
 
 
-// class String {
-//     (public, private)properties {
-//         (public, private) pointer value;
-//     }
+class Core.String (Core.Object) {
+    (public, private)properties {
+        (public, private) pointer value;
+    }
 
-//     /**
-//     * DefaULT
-//     */
-//     String(=value) {
-//         num len = strlen(value) + 1;
-//         this.value = alloc(len);
-//         strcpy(this.value, value);
-//     }
+    /**
+    * DefaULT
+    */
+    String(pointer str) {
+        i64 len = strlen(str) + 1;
+        value = alloc(len);
+        strcpy(value, str);
+    }
 
-//     /**
-//     * String Concatenation
-//     */
-//     String(=value, pointer str2) {
-//         num len = strlen(value) + strlen(str2) + 1;
-//         this.value = alloc(len);
-//         strcpy(this.value, value);
-//         strcat(this.value, str2);
-//     }
+    /**
+    * for strings which are defined in code c will statically allocate
+    * the memory for them
+    */
+    String(pointer str, boolean staticAlloc) {
+        if (staticAlloc) {
+            value = str;
+        } else {
+            i64 len = strlen(str) + 1;
+            value = alloc(len);
+            strcpy(value, str);
+        }
+    }
 
-//     hidden String();
+    /**
+    * String Concatenation
+    */
+    String(pointer str, pointer str2) {
+        i64 len = strlen(str) + strlen(str2) + 1;
+        value = alloc(len);
+        strcpy(value, str);
+        strcat(value, str2);
+    }
 
-//     pointer asStr() {
-//         return value;
-//     }
+    private String();
 
-//     String asString() {
-//         return this;
-//     }
-// }
+    pointer asStr() {
+        return value;
+    }
 
-// public class Exception {
-//     (public, private) properties {
-//         String message;
-//     }
-//     private Exception();
-//     public Exception(=message);
-// }
+    String asString() {
+        return this;
+    }
 
+    u64 length() {
+      return strlen(value);
+    }
+}
 
-  // u64 (*length)(num); \
-  // u64 (*capacity)(num); \
-  // pointer (*array)(num); \
-  // primative_types (*type)(num); \
-  // pointer (*typename)(num); \
-  // pointer (*get)(num, u64); \
-  // void (*set)(num, u64, pointer); \
-  // u64 (*memsize)(num); \
-  // void (*setObject)(num, u64, num); 
+public class Core.Exception (Core.Object) {
+    (public, private) properties {
+        String message;
+        Exception root;
+    }
+    private Exception();
+    public Exception(=message);
+    public Exception(=root, =message);
+}
 
+public class signature Core.Array(Core.Object){
+  (public,public) properties {
+    (public,public) pointer values;
+    (public,public) u64 length;
+    (public,public) u64 capacity;
+    (public,public) int dataType;
+    (public,public) u64 dataSize;
+    (public,public) boolean managed;
+  }
 
-  // pointer array;
-  // u64 length;
-  // u64 capacity;
-  // primative_types type;
-  // u64 dataSize;
-  // boolean managed;
+  private Array();
+  public Array(u64 capacity, int dataType, u64 dataSize);
+  public Array(u64 capacity, int dataType, u64 dataSize, pointer values);
 
+  public pointer get(u64 b);
+  public void set(u64 b, pointer c);
+  public u64 memsize();
+  public pointer typename();
+  public static final pointer getClassName();
+  public static final pointer getClassPackage();
+  public static final u64 getObjectDatasize();
+  public final pointer getObjectData();
+  public pointer asStr();
+  public void printTo(pointer stream);
+  public String asString();
+  public i64 hashCode();
+  public boolean equals(Object other);
+  hidden final void free();
+  hidden void release();
+  public final pointer alloc(u64 size);
+}// Core::RefArray Signature compiled
+/* imports {} */
 
-// public class Array {
-//   (public, private) properties {
-//     pointer values;
-//     u64 length;
-//     u64 capacity;
-//     int dataType;
-//     u64 dataSize;
-//     // u64 memsize;
-//     // pointer typename;
-//     boolean managed;
-//   }
+public class signature Core.RefArray(Core.Array){
+  (public,public) properties {
+    (public,public) pointer values;
+    (public,public) u64 length;
+    (public,public) u64 capacity;
+    (public,public) int dataType;
+    (public,public) u64 dataSize;
+    (public,public) boolean managed;
+  }
 
-//   hidden Array();
-//   public Array(=capacity, =dataType, =dataSize) {
-//     this.managed = true;
-//   }
-//   // unmanaged
-//   public Array(=capacity, =dataType, =dataSize, =values) {
-//     this.managed = false;
-//   }
+  /* default constructor */
+  public RefArray(u64 length);
+  hidden RefArray(u64 capacity, int dataType, u64 dataSize);
+  hidden RefArray(u64 capacity, int dataType, u64 dataSize, pointer values);
 
-//   pointer get(u64 b) {return null;}
-
-//   void set(u64 b, pointer c) {}
-//   u64 memsize() {return capacity;}
-//   pointer typename() {return `u8`;}
-// }
-
-// public class RefArray(Array) {
-//   public RefArray(=length);
-//   hidden RefArray(=capacity, =dataType, =dataSize);
-//   hidden RefArray(=capacity, =dataType, =dataSize, =values);
-
-//   void setObject(u64 index, num object) {}
-// }
+  public void setObject(u64 index, num object);
+  public static final pointer getClassName();
+  public static final pointer getClassPackage();
+  public static final u64 getObjectDatasize();
+  public pointer get(u64 b);
+  public void set(u64 b, pointer c);
+  public u64 memsize();
+  public pointer typename();
+  public final pointer getObjectData();
+  public pointer asStr();
+  public void printTo(pointer stream);
+  public String asString();
+  public i64 hashCode();
+  public boolean equals(Object other);
+  hidden final void free();
+  hidden void release();
+  public final pointer alloc(u64 size);
+}
 
 // public class DynamicArray (Array) {
 //   pointer get(num b);
@@ -141,131 +172,623 @@ public class Object {
 //   void setObject(num b, num c);
 // }
 
-// stub Boxing {
-//    /* primative_types */
-//   static int datatype();
-//   static pointer typename(); 
-// };
+public class Core.Boxing (Core.Object) {
+   /* primative_types */
+  (public, private) properties {
+    static int b8_ = 1; 
+    static int i8_ = 2; 
+    static int u8_ = 3; 
+    static int i16_ = 4; 
+    static int u16_ = 5; 
+    static int i32_ = 6; 
+    static int u32_ = 7; 
+    static int f32_ = 8; 
+    static int i64_ = 9; 
+    static int u64_ = 10; 
+    static int f64_ = 11; 
+    static int pointer_ = 12; 
+  }
+}
 
-// /**
-// * b8 otherwise known as boolean
-// */
 
-// final class B8 (Boxing) {
-//   properties {
-//     b8 value; 
+public class Core.BaseBoxing (Core.Object) {
+  static int datatype() { return 0; }
+  static pointer typename() {return `undefined`;} 
+}
+
+
+
+/**
+* b8 otherwise known as boolean
+*/
+
+public final class Core.B8 (Core.BaseBoxing) {
+  (public, public) properties {
+    b8 value; 
+  }
+
+  private B8();
+
+  public static int datatype() {
+    return Boxing.b8_;
+  }
+
+  public static pointer typename() {
+      return `b8`;
+  }
+
+  public B8(=value);
+
+  public pointer asStr() {
+    if (value) {
+      return `true`;
+    } else {
+      return `false`;
+    }
+  };
+}
+
+public final class Core.U8 (Core.BaseBoxing) {
+  (public, public) properties {
+    u8 value; 
+  }
+
+  public static int datatype() {
+    return Boxing.u8_;
+  }
+
+  public static pointer typename() {
+    return `u8`;
+  }
+
+  public U8(=value);
+
+  public pointer asStr() {
+    sprintf(getTmpBuffer(), `%u`, value);
+    return getTmpBuffer();      
+  }
+}
+
+public final class Core.I8 (Core.BaseBoxing) {
+  (public, public) properties {
+    i8 value; 
+  }
+
+  public I8(=value) {}
+
+  public static int datatype() {
+    return Boxing.i8_;
+  }
+
+  public static pointer typename() {
+    return `i8`;
+  }
+
+  public pointer asStr() {
+    sprintf(getTmpBuffer(), `%i`, value);
+    return getTmpBuffer();      
+  }
+}
+
+public final class Core.I16 (Core.BaseBoxing) {
+  (public, public) properties {
+    i16 value; 
+  }
+
+  public I16(=value) {}
+
+  public static int datatype() {
+    return Boxing.i16_;
+  }
+
+  public static pointer typename() {
+    return `i16`;
+  }
+
+  public pointer asStr() {
+    sprintf(getTmpBuffer(), `%i`, value);
+    return getTmpBuffer();      
+  }
+}
+
+public final class Core.U16 (Core.BaseBoxing) {
+  (public, public) properties {
+    u16 value; 
+  }
+
+  public U16(=value) {}
+
+  public static int datatype() {
+    return Boxing.u16_;
+  }
+
+  public static pointer typename() {
+    return `u16`;
+  }
+
+  public pointer asStr() {
+    sprintf(getTmpBuffer(), `%u`, value);
+    return getTmpBuffer();      
+  }
+}
+
+public final class Core.I32 (Core.BaseBoxing) {
+  (public, public) properties {
+    i32 value; 
+  }
+
+  public I32(=value) {}
+
+  public static int datatype() {
+    return Boxing.i32_;
+  }
+
+  public static pointer typename() {
+    return `i32`;
+  }
+
+  public pointer asStr() {
+    sprintf(getTmpBuffer(), `%i`, value);
+    return getTmpBuffer();      
+  }
+}
+
+public final class Core.U32 (Core.BaseBoxing) {
+  (public, public) properties {
+    u32 value; 
+  }
+
+  public U32(=value) {}
+
+  public static int datatype() {
+    return Boxing.u32_;
+  }
+
+  public static pointer typename() {
+    return `u32`;
+  }
+
+  public pointer asStr() {
+    sprintf(getTmpBuffer(), `%u`, value);
+    return getTmpBuffer();      
+  }
+}
+
+public final class Core.F32 (Core.BaseBoxing) {
+  (public, public) properties {
+    f32 value; 
+  }
+
+  public F32(=value) {}
+
+  public static int datatype() {
+    return Boxing.f32_;
+  }
+
+  public static pointer typename() {
+    return `f32`;
+  }
+
+  public pointer asStr() {
+    sprintf(getTmpBuffer(), `%f`, value);
+    return getTmpBuffer();      
+  }
+}
+
+public final class Core.I64 (Core.BaseBoxing) {
+  (public, public) properties {
+    i64 value; 
+  }
+
+  public I64(=value) {}
+
+  public static int datatype() {
+    return Boxing.i64_;
+  }
+
+  public static pointer typename() {
+    return `i64`;
+  }
+
+  public pointer asStr() {
+    sprintf(getTmpBuffer(), `%li`, value);
+    return getTmpBuffer();      
+  }
+}
+
+public final class Core.U64 (Core.BaseBoxing) {
+  (public, public) properties {
+    u64 value; 
+  }
+
+  public U64(=value) {}
+
+  public static int datatype() {
+    return Boxing.u64_;
+  }
+
+  public static pointer typename() {
+    return `u64`;
+  }
+
+  public pointer asStr() {
+    sprintf(getTmpBuffer(), `%lu`, value);
+    return getTmpBuffer();      
+  }
+}
+
+public final class Core.F64 (Core.BaseBoxing) {
+  (public, public) properties {
+    f64 value; 
+  }
+
+  public F64(=value) {}
+
+  public static int datatype() {
+    return Boxing.f64_;
+  }
+
+  public static pointer typename() {
+    return `f64`;
+  }
+
+  public pointer asStr() {
+    sprintf(getTmpBuffer(), `%lf`, value);
+    return getTmpBuffer();      
+  }
+}
+
+public final class Core.Pointer (Core.BaseBoxing) {
+  (public, public) properties {
+    pointer value; 
+  }
+
+  public Pointer(=value) {}
+
+  public static int datatype() {
+    return Boxing.pointer_;
+  }
+
+  public static pointer typename() {
+    return `pointer`;
+  }
+
+  public pointer asStr() {
+    sprintf(getTmpBuffer(), `%p`, value);
+    return getTmpBuffer();      
+  }
+}
+
+
+
+/**
+All singing all dancing Dynamic array can be used as 
+* stack
+* queue
+* list
+* buffer
+* lifo
+* fifo
+
+*/
+
+public class Core.DynamicArray (Core.Array){
+    (public,public) properties {
+        // pointer values;
+        // u64 length;
+        // u64 capacity;
+        // int dataType;
+        // u64 dataSize;
+        // boolean managed;
+        u64 startIndex;
+        u64 endIndex;
+
+        static u64 initialSize = 64;
+        static u64 growBy = 64;
+        static u64 slideAmount = 8;
+    }
+
+    // public DynamicArray(=capacity);
+
+    public pointer getValue(u64 index)
+    // ;
+    {
+        if (index >= length) {
+            throwException(`[error] index array out of bounds`);
+        }
+        return get(startIndex + index);
+    }
+
+    public void setValue(u64 index, pointer value)
+    // ;
+    {
+        if (index >= length) {
+            throwException(`[error] index array out of bounds`);
+        }
+        set(startIndex + index, value);
+    }
+
+    public void addTail(pointer value)
+    // ;
+    {
+        if (endIndex == capacity) {
+            if (startIndex > slideAmount) {
+                slideLeft();
+            } else {
+                addCapacityTail();
+            }
+        }
+        length++;
+        set(endIndex++, value);
+    }
+
+    public void addHead(pointer value)
+    // ;
+    {
+        if (startIndex == 0) {
+            if (endIndex < capacity - slideAmount) {
+                slideRight();
+            } else {
+                addCapacityHead();
+            }
+        }
+        length++;
+        set(--startIndex, value);
+    }
+
+    public void insert(u64 index, pointer value)
+    // ;
+    {
+        if (index > length) {
+            throwException("[error] index array out of bounds");
+        }
+
+        if (index == startIndex) {
+            return addHead(value);
+        }
+
+        if (index == endIndex) {
+            return addTail(value);
+        }
+
+        // move left or move right
+        if (index - startIndex > endIndex - index) {
+            // closer to the end
+            // check capacity   
+            if (endIndex + 1 == capacity) {
+                addCapacityTail();
+            }         
+            
+            // move tail
+            // dest, source, size
+            endIndex++;
+            u64 ix = index + 1;
+            memmove(values[ix], values[index], (endIndex - index) * dataSize); 
+        } else {
+            // move head
+            if (startIndex == 0) {
+                addCapacityHead();
+            }
+            startIndex--;
+            u64 ix = startIndex + 1;
+            memmove(values[startIndex], values[ix], (index - startIndex) * dataSize); 
+        }
+        length++;
+        set(index, value);
+    }
+
+    public pointer removeHead() 
+    // ;
+    {
+        if (length == 0) {
+            throwException("[error] index array out of bounds");
+        }
+        pointer res = get(startIndex++);
+        length--;
+
+        if (startIndex > growBy) {
+            reduceCapacityHead();
+        }
+
+        return res;
+    }
+    
+    public pointer removeTail() 
+    // ;
+    {
+        if (length == 0) {
+            throwException("[error] index array out of bounds");
+        }
+        pointer res = get(endIndex--);
+        length--;
+
+        if (endIndex + growBy < capacity) {
+            reduceCapacityTail();
+        }
+
+        return res;
+    }
+
+    public pointer remove(u64 index, pointer value) 
+    // ;
+    {
+        if (length == 0 || index < startIndex || index > endIndex ) {
+            throwException("[error] index array out of bounds");
+        }
+
+        if (index == startIndex) {
+            return removeHead();
+        }
+
+        if (index == endIndex) {
+            return removeTail();
+        }
+
+        pointer result = get(index);
+
+        // move left or move right
+        if (index - startIndex > endIndex - index) {
+            // move tail
+            u64 ix = index +1;
+            memmove(values[index], values[ix], (endIndex - index) * dataSize); 
+            endIndex--;
+        } else {
+            // move head
+            u64 ix = startIndex +1;
+            memmove(values[ix], values[startIndex], (index - startIndex) * dataSize); 
+            startIndex++;
+        }
+        //@todo capicity check
+
+        length--;
+        return result;
+    }
+
+    public pointer peekTail() 
+    // ;
+    {
+        if (length == 0) {
+            throwException("[error] index array out of bounds");
+        }
+        return get(endIndex);
+    }
+
+    public pointer peekHead() 
+    {
+        if (length == 0) {
+            throwException("[error] index array out of bounds");
+        }
+        return get(startIndex);
+    }
+
+    private void addCapacityHead() 
+    // ;
+    {
+        // maybe slighty tricky
+        // not great for large arrays
+        values = realloc(values, (capacity + growBy) * dataSize);
+        if (values == null) {
+            throwException("[error] out of memory exception.");
+        }
+
+        capacity += growBy;
+        // realign
+        // dest, source, size
+        memmove(values[growBy], values[0], length * dataSize); 
+        startIndex += growBy;
+        endIndex += growBy;
+    }
+
+    private void addCapacityTail() 
+    // ;
+    {
+        values = realloc(values, (capacity + growBy) * dataSize);
+        if (values == null) {
+            throwException("[error] out of memory exception.");
+        }
+
+        capacity += growBy;
+    }
+
+    private void reduceCapacityHead() 
+    // ;
+    {
+        realignLeft();
+        values = realloc(values, (capacity - growBy) * dataSize);
+        if (values == null) {
+            throwException("[error] out of memory exception.");
+        }
+
+        capacity -= growBy;
+    }
+
+    private void reduceCapacityTail() 
+    // ;
+    {
+        values = realloc(values, (capacity - growBy) * dataSize);
+        if (values == null) {
+            throwException("[error] out of memory exception.");
+        }
+
+        capacity -= growBy;
+    }
+
+    private void realignLeft() 
+    // ;
+    {
+        // check if startIndex > slideAmount?
+        // check Capacity?
+
+        // realign left
+        memmove(values[0], values[startIndex], length * dataSize); 
+        startIndex = 0;
+        endIndex = length;
+    }
+
+
+    private void slideLeft() 
+    // ;
+    {
+        // check if startIndex > slideAmount?
+        // check Capacity?
+        
+        // slide left - may still leave headroom
+        // bounds check
+        u64 newStart = 0;
+        if (startIndex >= slideAmount) {
+            newStart = startIndex - slideAmount;
+        }
+        memmove(values[newStart], values[startIndex], length * dataSize); 
+        startIndex = newStart;
+        endIndex = length;
+    }
+
+    private void slideRight() 
+    // ;
+    {
+        // check if startIndex > slideAmount?
+        // check Capacity?
+        u64 newStart =  startIndex - (capacity - length);
+        if (endIndex + slideAmount <= capacity) {
+            newStart = startIndex + slideAmount;
+        }
+
+        memmove(values[newStart], values[startIndex], length * dataSize); 
+        startIndex = newStart;
+        endIndex = newStart + length;
+    }
+}
+
+// public final class Core.Observer (Core.Object) {
+//   (public, public) properties {
+//     u64 key; 
+//     u64 event;
 //   }
 
-//   private B8();
+//   public void handleEvent() {
 
-//   static int datatype() {
-//     return _b8;
+//   }
+// }
+
+// public final class Core.Observerable (Core.Object) {
+//   (public, public) properties {
+//     u64 key; 
+//     // u64 event;
+//     Observer[] listeners;
 //   }
 
-//   static pointer typename() {
-//       return `b8`;
+//   public onEvent(u64 event) {
+//     loop(listeners) {
+//       if ($a.event == event) {
+//         $a.handleEvent();
+//       }
+//     }
 //   }
 
-//   public B8(=value) {}
+// }
 
-//   // pointer asStr() {
-//   //   // if (this.value) {
-//   //     return `true`;
-//   //   // } else {
-//   //   //   return `false`;
-//   //   // }
-//   // };
-// };
+// Observe(myI8, value, Event.afterSet);
 
-// final class U8 (Boxing) {
-//   properties {
-//     u8 value; 
-//   }
-
-//   static int datatype() {
-//       return _u8;
-//   }
-
-//   static pointer typename() {
-//     return `u8`;
-//   }
-
-//   public U8(=value) {}
-
-//   pointer asStr() {
-//     sprintf(tmpbuffer, `%u`, this.value);
-//     return tmpbuffer;      
-//   }
-// };
-
-// final class I8 (Boxing) {
-//   properties {
-//     i8 value; 
-//   }
-
-//   public I8(=value) {}
-
-//   static int datatype() {
-//       return _u8;
-//   }
-
-//   static pointer typename() {
-//     return `u8`;
-//   }
-
-//   pointer asStr() {
-//     sprintf(tmpbuffer, `%i`, this.value);
-//     return tmpbuffer;      
-//   }
-// };
-
-// class I16 (Boxing) {
-//   properties {
-//     i16 value; 
-//   }
-// };
-
-// class U16 (Boxing) {
-//   properties {
-//     u16 value; 
-//   }
-// };
-
-// class I32 (Boxing) {
-//   properties {
-//     i32 value; 
-//   }
-// };
-
-// class U32 (Boxing) {
-//   properties {
-//     u32 value; 
-//   }
-// };
-
-// class F32 (Boxing) {
-//   properties {
-//     f32 value; 
-//   }
-// };
-
-// class I64 (Boxing) {
-//   properties {
-//     i64 value; 
-//   }
-// };
-
-// class U64 (Boxing) {
-//   properties {
-//     u64 value; 
-//   }
-// };
-
-// class F64 (Boxing) {
-//   properties {
-//     f64 value; 
-//   }
-// };
 
 // // class F80 (Boxing) {
 // //   properties {

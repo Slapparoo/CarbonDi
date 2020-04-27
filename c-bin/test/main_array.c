@@ -1,20 +1,22 @@
-#include "Core.Array.h"
-#include "Core.RefArray.h"
-#include "Core.String.h"
+#include "Core.Core_main.h"
+
 
 void ti8() {
   printf("ti8\n");
   __onEnter();
   // t1 i8
-  num bananas = create_Array$1(10, _i8, sizeof(i8));
-  ArrayClassModel* acm = (ArrayClassModel*)getArrayClassModel();
+  num bananas = create_c_2106303_Array$1(10, ((c_2106303_Boxing_cm*) getc_2106303_Boxing_cm())->i8_, sizeof(i8));
+  c_2106303_Array_cm* acm = (c_2106303_Array_cm*)getc_2106303_Array_cm();
   printf("length=%ld\n", acm->get_length(bananas));
   printf("capacity=%ld\n", acm->get_capacity(bananas));
   printf("type=%d\n", acm->get_dataType(bananas));
   printf("memsize=%ld\n", acm->memsize(bananas));
   printf("typename=%s\n", acm->typename(bananas));
 
-  i8 *_bannans = ((Array *)useObject(bananas)->data)->values;
+  printf("print_log ");
+  print_log(1, bananas);
+
+  i8 *_bannans = ((c_2106303_Array *)useObject(bananas)->data)->values;
   _bannans[0] = 10;
 
   printf("_bannans[0]=%d\n", _bannans[0]);
@@ -32,15 +34,15 @@ void tu16() {
   printf("tu16\n");
   __onEnter();
   // t1 i8
-  num bananas = create_Array$1(10, _u16, sizeof(u16));
-  ArrayClassModel* acm = (ArrayClassModel*)getArrayClassModel();
+  num bananas = create_c_2106303_Array$1(10, ((c_2106303_Boxing_cm*) getc_2106303_Boxing_cm())->u16_, sizeof(u16));
+  c_2106303_Array_cm* acm = (c_2106303_Array_cm*)getc_2106303_Array_cm();
   printf("length=%ld\n", acm->get_length(bananas));
   printf("capacity=%ld\n", acm->get_capacity(bananas));
   printf("type=%d\n", acm->get_dataType(bananas));
   printf("memsize=%ld\n", acm->memsize(bananas));
   printf("typename=%s\n", acm->typename(bananas));
 
-  u16 *_bannans = ((Array *)useObject(bananas)->data)->values;
+  u16 *_bannans = ((c_2106303_Array *)useObject(bananas)->data)->values;
   _bannans[0] = 10;
 
   printf("_bannans[0]=%d\n", _bannans[0]);
@@ -58,15 +60,15 @@ void ti32() {
   printf("ti32\n");
   __onEnter();
   // t1 i32
-  num bananas = create_Array$1(10, _i32, sizeof(i32));
-  ArrayClassModel* acm = (ArrayClassModel*)getArrayClassModel();
+  num bananas = create_c_2106303_Array$1(10, ((c_2106303_Boxing_cm*) getc_2106303_Boxing_cm())->i32_, sizeof(i32));
+  c_2106303_Array_cm* acm = (c_2106303_Array_cm*)getc_2106303_Array_cm();
   printf("length=%ld\n", acm->get_length(bananas));
   printf("capacity=%ld\n", acm->get_capacity(bananas));
   printf("type=%d\n", acm->get_dataType(bananas));
   printf("memsize=%ld\n", acm->memsize(bananas));
   printf("typename=%s\n", acm->typename(bananas));
 
-  i32 *_bannans = ((Array *)useObject(bananas)->data)->values;
+  i32 *_bannans = ((c_2106303_Array *)useObject(bananas)->data)->values;
   _bannans[0] = 10;
 
   printf("_bannans[0]=%d\n", _bannans[0]);
@@ -83,9 +85,11 @@ void tf64() {
   printf("tf64\n");
   __onEnter();
   // t1 i32
-  num bananas = create_Array$1(100, _f64, sizeof(f64));
+  
 
-  ArrayClassModel* acm = (ArrayClassModel*)getArrayClassModel();
+  num bananas = create_c_2106303_Array$1(100, ((c_2106303_Boxing_cm*) getc_2106303_Boxing_cm())->f64_, sizeof(f64));
+
+  c_2106303_Array_cm* acm = (c_2106303_Array_cm*)getc_2106303_Array_cm();
   printf("length=%ld\n", acm->get_length(bananas));
   printf("capacity=%ld\n", acm->get_capacity(bananas));
   printf("type=%d\n", acm->get_dataType(bananas));
@@ -93,7 +97,7 @@ void tf64() {
   printf("typename=%s\n", acm->typename(bananas));
   printf("asStr=%s\n", acm->asStr(bananas));
 
-  f64 *_bannans = ((Array *)useObject(bananas)->data)->values;
+  f64 *_bannans = ((c_2106303_Array *)useObject(bananas)->data)->values;
   _bannans[0] = 10.10;
 
   printf("_bannans[0]=%f\n", _bannans[0]);
@@ -112,19 +116,22 @@ void tString() {
   printf("tString\n");
   __onEnter();
   // t1 i32
-  num bananas = create_RefArray$1(10);
-  RefArrayClassModel* acm = (RefArrayClassModel*)getRefArrayClassModel();
+  num bananas = create_c_2106303_RefArray$1(10);
+  c_2106303_RefArray_cm* acm = (c_2106303_RefArray_cm*)getc_2106303_RefArray_cm();
   printf("length=%ld\n", acm->get_length(bananas));
   printf("capacity=%ld\n", acm->get_capacity(bananas));
   printf("type=%d\n", acm->get_dataType(bananas));
   printf("memsize=%ld\n", acm->memsize(bananas));
   printf("typename=%s\n", acm->typename(bananas));
 
-  num *_bannans = ((Array *)useObject(bananas)->data)->values;
+  num *_bannans = ((c_2106303_RefArray *)useObject(bananas)->data)->values;
 
-  num val = create_String$1("hello");
-  num val2 = create_String$1("hello2");
-  num val3 = create_String$1("hello2");
+  num val = create_c_2106303_String$2("hello", true);
+  num val2 = create_c_2106303_String$2("hello2", true);
+  num val3 = create_c_2106303_String$2("hello2", true);
+
+
+  print_log(4, val, val2, val3, 0);
 
   // printf("_bannans[0]=%ld\n", _bannans[0]);
 
@@ -135,7 +142,7 @@ void tString() {
   acm->setObject(bananas, 1, val3);
   printf("_bannans[1]=%ld\n", _bannans[1]);
 
-  num apples = create_RefArray$1(10);
+  num apples = create_c_2106303_RefArray$1(10);
   acm->setObject(apples, 1, val2);
   acm->setObject(bananas, 2, apples);
 
@@ -149,9 +156,9 @@ void tString() {
 void tunmanaged(pointer name) {
   __onEnter();
   // t1 i32
-  num a = create_Array$2(9, _i8, 1, name);
+  num a = create_c_2106303_Array$2(strlen(name)+1, ((c_2106303_Boxing_cm*) getc_2106303_Boxing_cm())->i8_, 1, name);
   printf("tunmanaged\n");
-  RefArrayClassModel* acm = (RefArrayClassModel*)getRefArrayClassModel();
+  c_2106303_Array_cm* acm = (c_2106303_Array_cm*)getc_2106303_Array_cm();
   printf("length=%ld\n", acm->get_length(a));
   printf("capacity=%ld\n", acm->get_capacity(a));
   printf("type=%d\n", acm->get_dataType(a));

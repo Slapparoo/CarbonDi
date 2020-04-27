@@ -1,0 +1,7 @@
+
+clang -std=gnu17 -O3 -g -c -I../c-bin/include -o obj/Default.MyFunctionAsProperty.o Default.MyFunctionAsProperty.c
+clang-format -style=file -i Default.MyFunctionAsProperty.c
+clang -std=gnu17 -O3 -g -c -I../c-bin/include -o obj/Default.functionAsProperty_main.o Default.functionAsProperty_main.c
+clang-format -style=file -i Default.functionAsProperty_main.c
+clang -std=gnu17 -O3 -g -I../c-bin/include ../c-bin/obj/*.o obj/*.o  -o Default.functionAsProperty_main Default.functionAsProperty_main.run.c
+clang-format -style=file -i Default.functionAsProperty_main.run.c

@@ -1,12 +1,23 @@
 loop returns
+(defect) __onreturn doesn't match __on entry, on return exit needs its depth
 bundle all 'Core'/package ec's into a single 'library' file
+track pointers/pointer to pointers so they can be changed or remove exposing them
 imports
+constructor params polluting in global varibales
+constructor functions
+swicth @ for ?
+
+auto expand to String on printf if %s
+oberserver for properties (async message queue)
+functions as properties getter and setter
+threads
 
 (defect) parent constructors in header RefArray
 super
 accessors
 unit tests / framework
 precompiler
+on the fly binary data structure, suitable for copy to c-struct
 
 instanceof implements -> parents
 primative compatability check

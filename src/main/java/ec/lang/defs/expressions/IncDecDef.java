@@ -1,5 +1,7 @@
 package ec.lang.defs.expressions;
 
+import ec.lang.defs.ExprDef;
+
 // import ec.lang.defs.*;
 
 public class IncDecDef extends TypeExpr {
@@ -9,8 +11,23 @@ public class IncDecDef extends TypeExpr {
 
     public String prefix = null;
     public String suffix = null;
+    public ExprDef expression = null;
+
+    @Override
+    public void resolve_01() {
+        // TODO Auto-generated method stub
+        expression.containedInBlock = containedInBlock;
+
+        if (expression instanceof MultiTypeExpr) {
+            ((MultiTypeExpr)expression).directAccess = true;
+        }
+        expression.resolve_01();
+
+
+        super.resolve_01();
+    }
 
     public String asCode() {
-        return (prefix == null ? "" : prefix) +expr+(suffix == null ? "" : suffix);
+        return (prefix == null ? "" : prefix) +expression.asCode()+(suffix == null ? "" : suffix);
     }
 }

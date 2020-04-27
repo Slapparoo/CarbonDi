@@ -4,6 +4,13 @@
         "core.array.h": "c",
         "type_traits": "c",
         "core.refarray.h": "c",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "core.string.h": "c",
+        "core.core_main.h": "c",
+        "types.h": "c",
+        "core.object.h": "c",
+        "core.exception.h": "c",
+        "core.b8.h": "c",
+        "core.boxing.h": "c"
     }
 }

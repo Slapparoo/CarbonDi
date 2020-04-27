@@ -1,4 +1,4 @@
-class MyClass {
+class Default.MyClass {
     properties {
         num value;
         String name;
@@ -13,7 +13,7 @@ class MyClass {
     }
 }
 
-class MySecondClass(MyClass) {
+class Default.MySecondClass(Default.MyClass) {
     // num someValue() {
     //     return 0x4;
     // }

@@ -34,6 +34,8 @@ public class ConstExpr extends ExprDef {
 
     @Override
     public void resolve_01() {
+        // System.out.println("@@COnst resolve " + expr);
+
         if (type != null) {
             thisType = new TypeIdDef(type);
         } else {
@@ -43,16 +45,25 @@ public class ConstExpr extends ExprDef {
 
         if (expr.startsWith("$")) {
             // annonymous var
-            expr = "a__" + expr.replaceAll("\\$", "");
+            // todo why here and not anonymousExpr
+            expr = "a__" + expr;
         }
+
         super.resolve_01();
     }
 
     @Override
     public String asCode() {
         if (type == null) {
-            // throw new RuntimeException("/* undefined */ " + expr);
-            return "/* undefined */ " + expr;
+
+            try {
+                new Integer(expr);
+                return "/*cn*/ "+ expr;
+            } catch (NumberFormatException nfe) {
+                throw new RuntimeException("/* undefined */ " + expr);
+            }
+
+            // return "/* undefined */ " + expr;
         }
         if (expr.startsWith("0x") || type.equals("float")) {
             return "/* csf */" + expr.replaceAll("_", "");

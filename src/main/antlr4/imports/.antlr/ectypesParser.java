@@ -52,8 +52,8 @@ public class ectypesParser extends Parser {
 		RULE_keyword_plan = 52, RULE_keyword_class = 53, RULE_keyword_properties = 54, 
 		RULE_keyword_stub = 55, RULE_keyword_lambda = 56, RULE_keyword_true = 57, 
 		RULE_keyword_false = 58, RULE_keyword_namespace = 59, RULE_keyword_global = 60, 
-		RULE_type_range = 61, RULE_type_id = 62, RULE_type_anonymous = 63, RULE_type_num = 64, 
-		RULE_type_float = 65, RULE_type_string = 66, RULE_eol = 67;
+		RULE_type_range = 61, RULE_base_ident = 62, RULE_type_anonymous = 63, 
+		RULE_type_num = 64, RULE_type_float = 65, RULE_type_string = 66, RULE_eol = 67;
 	public static final String[] ruleNames = {
 		"var_type", "builtin_primatives", "builtin_values", "comparator", "assign", 
 		"predicate", "operator_mul", "operator_add", "operator_plus", "operator_minus", 
@@ -69,12 +69,12 @@ public class ectypesParser extends Parser {
 		"keyword_final", "keyword_void", "keyword_signature", "keyword_enum", 
 		"keyword_plan", "keyword_class", "keyword_properties", "keyword_stub", 
 		"keyword_lambda", "keyword_true", "keyword_false", "keyword_namespace", 
-		"keyword_global", "type_range", "type_id", "type_anonymous", "type_num", 
+		"keyword_global", "type_range", "base_ident", "type_anonymous", "type_num", 
 		"type_float", "type_string", "eol"
 	};
 
 	private static final String[] _LITERAL_NAMES = {
-		null, "'@'", "'u8'", "'i8'", "'u16'", "'i16'", "'u32'", "'i32'", "'f32'", 
+		null, "'?'", "'u8'", "'i8'", "'u16'", "'i16'", "'u32'", "'i32'", "'f32'", 
 		"'u64'", "'i64'", "'f64'", "'f128'", "'f80'", "'boolean'", "'b8'", "'num'", 
 		"'pointer'", "'int'", "'null'", "'<'", "'>'", "'=='", "'>='", "'<='", 
 		"'!='", "'==='", "'&='", "'~='", "'||'", "'&&'", "'+='", "'*='", "'/='", 
@@ -2085,24 +2085,32 @@ public class ectypesParser extends Parser {
 		return _localctx;
 	}
 
-	public static class Type_idContext extends ParserRuleContext {
-		public Token ID;
+	public static class Base_identContext extends ParserRuleContext {
 		public TerminalNode ID() { return getToken(ectypesParser.ID, 0); }
-		public Type_idContext(ParserRuleContext parent, int invokingState) {
+		public TerminalNode ANONYMOUS() { return getToken(ectypesParser.ANONYMOUS, 0); }
+		public Base_identContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_type_id; }
+		@Override public int getRuleIndex() { return RULE_base_ident; }
 	}
 
-	public final Type_idContext type_id() throws RecognitionException {
-		Type_idContext _localctx = new Type_idContext(_ctx, getState());
-		enterRule(_localctx, 124, RULE_type_id);
+	public final Base_identContext base_ident() throws RecognitionException {
+		Base_identContext _localctx = new Base_identContext(_ctx, getState());
+		enterRule(_localctx, 124, RULE_base_ident);
+		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(277);
-			((Type_idContext)_localctx).ID = match(ID);
-			 /* System.out.println(((Type_idContext)_localctx).ID); */
+			_la = _input.LA(1);
+			if ( !(_la==ID || _la==ANONYMOUS) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -2130,7 +2138,7 @@ public class ectypesParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(280);
+			setState(279);
 			match(ANONYMOUS);
 			}
 		}
@@ -2159,7 +2167,7 @@ public class ectypesParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(282);
+			setState(281);
 			match(NUM);
 			}
 		}
@@ -2188,7 +2196,7 @@ public class ectypesParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(284);
+			setState(283);
 			match(FLOAT);
 			}
 		}
@@ -2219,7 +2227,7 @@ public class ectypesParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(286);
+			setState(285);
 			_la = _input.LA(1);
 			if ( !(_la==STRING || _la==CSTRING) ) {
 			_errHandler.recoverInline(this);
@@ -2256,7 +2264,7 @@ public class ectypesParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(288);
+			setState(287);
 			match(EOL);
 			}
 		}
@@ -2272,7 +2280,7 @@ public class ectypesParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3j\u0125\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3j\u0124\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
@@ -2289,15 +2297,15 @@ public class ectypesParser extends Parser {
 		"\37\3\37\3 \3 \3!\3!\3\"\3\"\3#\3#\3$\3$\3%\3%\3&\3&\3\'\3\'\3(\3(\3)"+
 		"\3)\3*\3*\3+\3+\3,\3,\3-\3-\3.\3.\3/\3/\3\60\3\60\3\61\3\61\3\62\3\62"+
 		"\3\63\3\63\3\64\3\64\3\65\3\65\3\66\3\66\3\67\3\67\38\38\39\39\3:\3:\3"+
-		";\3;\3<\3<\3=\3=\3>\3>\3?\3?\3@\3@\3@\3A\3A\3B\3B\3C\3C\3D\3D\3E\3E\3"+
-		"E\2\2F\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\62\64\668:<"+
-		">@BDFHJLNPRTVXZ\\^`bdfhjlnprtvxz|~\u0080\u0082\u0084\u0086\u0088\2\b\3"+
-		"\2\4\24\3\2\26 \3\2&\'\3\2(*\3\2/\60\3\2ef\2\u00ec\2\u008a\3\2\2\2\4\u008c"+
-		"\3\2\2\2\6\u0091\3\2\2\2\b\u0093\3\2\2\2\n\u009b\3\2\2\2\f\u009d\3\2\2"+
-		"\2\16\u009f\3\2\2\2\20\u00a3\3\2\2\2\22\u00a5\3\2\2\2\24\u00a7\3\2\2\2"+
-		"\26\u00a9\3\2\2\2\30\u00ad\3\2\2\2\32\u00af\3\2\2\2\34\u00b5\3\2\2\2\36"+
-		"\u00b7\3\2\2\2 \u00b9\3\2\2\2\"\u00bb\3\2\2\2$\u00bd\3\2\2\2&\u00bf\3"+
-		"\2\2\2(\u00c1\3\2\2\2*\u00c3\3\2\2\2,\u00c5\3\2\2\2.\u00c7\3\2\2\2\60"+
+		";\3;\3<\3<\3=\3=\3>\3>\3?\3?\3@\3@\3A\3A\3B\3B\3C\3C\3D\3D\3E\3E\3E\2"+
+		"\2F\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\62\64\668:<>@B"+
+		"DFHJLNPRTVXZ\\^`bdfhjlnprtvxz|~\u0080\u0082\u0084\u0086\u0088\2\t\3\2"+
+		"\4\24\3\2\26 \3\2&\'\3\2(*\3\2/\60\3\2ab\3\2ef\2\u00eb\2\u008a\3\2\2\2"+
+		"\4\u008c\3\2\2\2\6\u0091\3\2\2\2\b\u0093\3\2\2\2\n\u009b\3\2\2\2\f\u009d"+
+		"\3\2\2\2\16\u009f\3\2\2\2\20\u00a3\3\2\2\2\22\u00a5\3\2\2\2\24\u00a7\3"+
+		"\2\2\2\26\u00a9\3\2\2\2\30\u00ad\3\2\2\2\32\u00af\3\2\2\2\34\u00b5\3\2"+
+		"\2\2\36\u00b7\3\2\2\2 \u00b9\3\2\2\2\"\u00bb\3\2\2\2$\u00bd\3\2\2\2&\u00bf"+
+		"\3\2\2\2(\u00c1\3\2\2\2*\u00c3\3\2\2\2,\u00c5\3\2\2\2.\u00c7\3\2\2\2\60"+
 		"\u00c9\3\2\2\2\62\u00cb\3\2\2\2\64\u00cd\3\2\2\2\66\u00cf\3\2\2\28\u00d1"+
 		"\3\2\2\2:\u00d3\3\2\2\2<\u00d5\3\2\2\2>\u00d7\3\2\2\2@\u00d9\3\2\2\2B"+
 		"\u00db\3\2\2\2D\u00dd\3\2\2\2F\u00df\3\2\2\2H\u00e1\3\2\2\2J\u00e3\3\2"+
@@ -2306,8 +2314,8 @@ public class ectypesParser extends Parser {
 		"^\u00f7\3\2\2\2`\u00f9\3\2\2\2b\u00fb\3\2\2\2d\u00fd\3\2\2\2f\u00ff\3"+
 		"\2\2\2h\u0101\3\2\2\2j\u0103\3\2\2\2l\u0105\3\2\2\2n\u0107\3\2\2\2p\u0109"+
 		"\3\2\2\2r\u010b\3\2\2\2t\u010d\3\2\2\2v\u010f\3\2\2\2x\u0111\3\2\2\2z"+
-		"\u0113\3\2\2\2|\u0115\3\2\2\2~\u0117\3\2\2\2\u0080\u011a\3\2\2\2\u0082"+
-		"\u011c\3\2\2\2\u0084\u011e\3\2\2\2\u0086\u0120\3\2\2\2\u0088\u0122\3\2"+
+		"\u0113\3\2\2\2|\u0115\3\2\2\2~\u0117\3\2\2\2\u0080\u0119\3\2\2\2\u0082"+
+		"\u011b\3\2\2\2\u0084\u011d\3\2\2\2\u0086\u011f\3\2\2\2\u0088\u0121\3\2"+
 		"\2\2\u008a\u008b\7\3\2\2\u008b\3\3\2\2\2\u008c\u008d\t\2\2\2\u008d\5\3"+
 		"\2\2\2\u008e\u0092\7\25\2\2\u008f\u0092\5t;\2\u0090\u0092\5v<\2\u0091"+
 		"\u008e\3\2\2\2\u0091\u008f\3\2\2\2\u0091\u0090\3\2\2\2\u0092\7\3\2\2\2"+
@@ -2347,11 +2355,10 @@ public class ectypesParser extends Parser {
 		"\3\2\2\2\u010b\u010c\7[\2\2\u010cs\3\2\2\2\u010d\u010e\7\\\2\2\u010eu"+
 		"\3\2\2\2\u010f\u0110\7]\2\2\u0110w\3\2\2\2\u0111\u0112\7^\2\2\u0112y\3"+
 		"\2\2\2\u0113\u0114\7_\2\2\u0114{\3\2\2\2\u0115\u0116\7`\2\2\u0116}\3\2"+
-		"\2\2\u0117\u0118\7a\2\2\u0118\u0119\b@\1\2\u0119\177\3\2\2\2\u011a\u011b"+
-		"\7b\2\2\u011b\u0081\3\2\2\2\u011c\u011d\7c\2\2\u011d\u0083\3\2\2\2\u011e"+
-		"\u011f\7d\2\2\u011f\u0085\3\2\2\2\u0120\u0121\t\7\2\2\u0121\u0087\3\2"+
-		"\2\2\u0122\u0123\7j\2\2\u0123\u0089\3\2\2\2\7\u0091\u009b\u00a3\u00ad"+
-		"\u00b5";
+		"\2\2\u0117\u0118\t\7\2\2\u0118\177\3\2\2\2\u0119\u011a\7b\2\2\u011a\u0081"+
+		"\3\2\2\2\u011b\u011c\7c\2\2\u011c\u0083\3\2\2\2\u011d\u011e\7d\2\2\u011e"+
+		"\u0085\3\2\2\2\u011f\u0120\t\b\2\2\u0120\u0087\3\2\2\2\u0121\u0122\7j"+
+		"\2\2\u0122\u0089\3\2\2\2\7\u0091\u009b\u00a3\u00ad\u00b5";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

@@ -6,10 +6,7 @@
 			"include": "#keywords"
 		},
 		{
-			"include": "#strings1"
-		},
-		{
-			"include": "#strings2"
+			"include": "#strings"
 		},
 		{
 			"include": "#control"
@@ -25,6 +22,9 @@
 		},
 		{
 			"include": "#function"
+		},
+		{
+			"include": "#constant"
 		},
 		{
 			"include": "#linecomment"
@@ -46,7 +46,6 @@
 				"match": "//.*"
 			}]
 		},
-
 		"keywords": {
 			"patterns": [{
 				"name": "keyword.control.ec",
@@ -63,13 +62,11 @@
 			"patterns": [{
 				"name": "variable",
 				"match": "\\b(void|boolean|num|String|i8|u8|i16|u16|i32|u32|i64|u64|f32|f64|f80|f128)\\b"
-			}]
-		},
-		"variable2":{
-			"patterns": [{
+			},{
 				"name": "variable",
 				"match": "(@[a-zA-Z_]*|\\$[a-zA-Z])"
-			}]
+			}
+		]
 		},
 		"function":{
 			"patterns": [{
@@ -77,20 +74,36 @@
 				"match": "[a-zA-Z_]([\\.a-zA-Z0-9_]*)?\\("
 			}]
 		},
-		"strings1": {
+		"strings": {
 			"patterns": [
 				{
 					"name": "string",
 					"match": "\".*?\""
-				}
-			]
-		},
-		"strings2": {
-			"patterns": [
+				},
 				{
 					"name": "string",
 					"match": "'.*?'"
+				},{
+					"name": "entity.name.class",
+					"match": "`.*?`"
 				}
+
+			]
+		},
+		"constant": {
+			"patterns": [
+				{
+					"name": "constant.numeric",
+					"match": "[0-9][0-9_]*"
+				},
+				{
+					"name": "constant.numeric",
+					"match": "0x[0-9_]+"
+				},{
+					"name": "constant.numeric",
+					"match": "0b[0-9_]+"
+				}
+
 			]
 		}
 	},

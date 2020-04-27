@@ -1,4 +1,4 @@
-#include "types.h"
+#include "Core.Core_main.h"
 
 void someMethod() {
   printf("Message 1\n");

@@ -57,7 +57,7 @@ public class FileDef extends BaseDef implements ContainerDef {
 
                 boolean exists = false;
                 for (ClassDef classDef : classes) {
-                    if (cd.filename.equals(classDef.filename)) {
+                    if (cd.getFqn().equals(classDef.getFqn())) {
                         exists = true;
                         break;
                     }
@@ -139,7 +139,7 @@ public class FileDef extends BaseDef implements ContainerDef {
         + "#ifndef __" + getFqn() +"_"  
         + "\n#define __" + getFqn() +"_"
         + "\n#define __" + name.trim() + "_" + namespace.trim().replace('.', '_') + "__"
-        + "\n#include \"types.h\""
+        + "\n#include \"Core.Core_main.h\""
         + getContainedClasses()
         + getMethodsAsHeader()
         + "\n#endif";
@@ -165,7 +165,9 @@ public class FileDef extends BaseDef implements ContainerDef {
     public String getContainedClasses() {
         String res = "";
         for (ClassDef classDef : classes) {
-            res += "\n#include \"" + classDef.filename + ".h\""; 
+            if (!classDef.getClassPackage().equals("Core")) {
+                res += "\n#include \"" + classDef.getFqn() + ".h\""; 
+            }
         }
 
         return res;

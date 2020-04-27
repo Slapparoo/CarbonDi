@@ -10,11 +10,14 @@ public class ReturnExpr extends StatementDef {
     @Override
     public void resolve_01() {
         resolved = true;
-        statement.containedInBlock = containedInBlock;
-        statement.resolve_01();
 
-        if (statement instanceof TypeExpr) {
-            ((TypeExpr)statement).isGet = true;
+        if (statement != null) {
+            statement.containedInBlock = containedInBlock;
+            statement.resolve_01();
+
+            if (statement instanceof TypeExpr) {
+                ((TypeExpr)statement).setIsGet(true);
+            }
         }
 
         containedInBlock.hasReturn = true;
@@ -27,18 +30,27 @@ public class ReturnExpr extends StatementDef {
             resolve_01();
         }
 
-        if (statement.thisType == null) {
-            return "return __exitReturn_num(" + statement.asCode() + ");";
+        if (statement == null) {
+            return "return __exitReturn_void_un(entry$);";
         }
 
+        if (statement.thisType.isVoid()) {
+            return statement.asCode()+"; return __exitReturn_void_un(entry$);";
+        }
+
+        if (statement.thisType == null) {
+            return "return __exitReturn_num_un(" + statement.asCode() + ", entry$);";
+        }
+
+
         if (statement.thisType.isIs_array()) {
-            return "return __exitReturn_ref(" + statement.asCode() + ");";
+            return "return __exitReturn_ref_un(" + statement.asCode() + ", entry$);";
         }
 
         if (statement.thisType.isPrimative()) {
-            return "return __exitReturn_" + statement.thisType.getName() + "(" + statement.asCode() + ");";
+            return "return __exitReturn_" + statement.thisType.getName() + "_un(" + statement.asCode() + ", entry$);";
         } else {
-            return "return __exitReturn_ref(" + statement.asCode() + ");";
+            return "return __exitReturn_ref_un(" + statement.asCode() + ", entry$);";
         }
     }
 }

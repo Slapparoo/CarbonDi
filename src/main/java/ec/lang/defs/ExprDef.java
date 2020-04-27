@@ -9,11 +9,6 @@ public class ExprDef extends BaseDef {
         return "thisType " + (thisType == null ? "(undefined)" : thisType.toString());
     }
 
-    @Override
-    public void resolve_01() {
-        super.resolve_01();
-    }
-
     public String asHeader() {
         return "";
     }
@@ -23,10 +18,20 @@ public class ExprDef extends BaseDef {
             return "(incomplete expr)";
         }
 
-        // @TODO this needs to improve
 
         if (expr.matches("\\$[a-z]")) {
-            return expr.replaceAll("(\\$)([a-z])", "$2__a") ;
+            
+            if (thisType.isIs_array()) {
+                if (thisType.getObjectType().equals("RefArray")) {
+                    // TODO add RefArray
+                    System.out.println("@@ExprDef (RefArray not implemented) " + this.getClass() + " " + expr);
+                    return hasNot + "*a__" + expr;
+                }
+                
+                return hasNot + "*a__" + expr;
+            } else {
+                return hasNot + "a__" + expr;
+            }
         }
 
         return hasNot + expr;
@@ -41,6 +46,6 @@ public class ExprDef extends BaseDef {
 
     @Override
     public String toString() {
-        return "ExprDef ln="+getLine()+" [expr=" + expr + ", thisType=" + thisType + "] " + super.toString();
+        return "["+this.getClass().getSimpleName()+"] " + expr;
     }
 }

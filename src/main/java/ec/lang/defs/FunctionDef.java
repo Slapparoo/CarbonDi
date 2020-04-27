@@ -10,13 +10,13 @@ import ec.lang.defs.expressions.ReturnExpr;
 
 public class FunctionDef extends FunctionDefBase implements ContainerDef, Cloneable {
     public TypeIdDef returnType;
-    public boolean is_static = false;
     public boolean is_property = false;
     public boolean is_parent = false;
 
     private static Set<String> STD_OBJECT_METHODS = new HashSet<>();
 
     static {
+        // Todo remove
         STD_OBJECT_METHODS.addAll(Arrays.asList(new String[] {"asStr", "printTo", "asString", "hashCode", "equals", "release"}));
     }
 
@@ -82,9 +82,10 @@ public class FunctionDef extends FunctionDefBase implements ContainerDef, Clonea
             String initSignature = getSignature();
 
             if (!is_static) {
+                // System.out.println("@@FunctionDef add this " + name );
                 VariableDef param = new VariableDef();
                 param.setName("this");
-                param.type = new TypeIdDef(classDef.name);
+                param.type = new TypeIdDef(classDef.getFqn());
                 parameters.add(0, param);
             }
 
@@ -98,19 +99,16 @@ public class FunctionDef extends FunctionDefBase implements ContainerDef, Clonea
             } else {
 
                 while (cp != null) {
-                    
-                    for (FunctionDef functionDef : classDef.parent.functionDefs) {
-                        if (functionDef.name.equals(name) && !is_parent) {
-                            // System.out.println("@@Function override " + name + " " + thisSignature + " == " + functionDef.getSignature());
-                            if (thisSignature.equals(functionDef.getSignature()) || initSignature.equals(functionDef.getSignature())) {
-                                is_override = true;
-                                break;
-                            } else {
-                                // System.err.println(thisSignature + ", " + is_parent + " != " + functionDef.getSignature()  + ", " + functionDef.is_parent);
-                                throw new RuntimeException("method signature overloads are not currently supported, a method with the name " + name + " already exists " + functionDef.getParamsSignature());
-                            }
+                    FunctionDef functionDef = cp.resolveFunction(name);
+
+                    if (functionDef != null && !is_parent) {
+                        if (thisSignature.equals(functionDef.getSignature()) || initSignature.equals(functionDef.getSignature())) {
+                            is_override = true;
+                        } else {
+                            throw new RuntimeException("method signature overloads are not currently supported, a method with the name " + name + " already exists " + functionDef.getParamsSignature());
                         }
                     }
+
                     if (is_override) {
                         break;
                     }
@@ -121,7 +119,7 @@ public class FunctionDef extends FunctionDefBase implements ContainerDef, Clonea
         
         for (VariableDef  param : parameters) {
             if (getBlockDef() != null) {
-                getBlockDef().variableDefs.add(param);
+                getBlockDef().addVariable(param);
             }
         }
 
@@ -164,7 +162,9 @@ public class FunctionDef extends FunctionDefBase implements ContainerDef, Clonea
     }
 
     private String contentAsCode() {
-
+        if (getBlockDef() != null) {
+            getBlockDef().functionBlock = true;
+        }
         if (classDef == null) {
             return (getBlockDef() == null ? "" : getBlockDef().asCode()) +"\n" ;
         } else {
@@ -189,7 +189,9 @@ public class FunctionDef extends FunctionDefBase implements ContainerDef, Clonea
         }
 
         // System.out.println("*function asCode " + name );
-        return (returnType.getName().equals("void") ? "void" : returnType.asCode()) + (returnType.isIs_array() ? "[]" : "")  + " "+ name + "(" + paramsAsCode() + ")" + contentAsCode() ;
+        return (returnType.getName().equals("void") ? "void" : returnType.asCode()) + (returnType.isIs_array() ? "[]" : "")  
+            + " "+ name + "(" + paramsAsCode() + ")" 
+            + contentAsCode() ;
     }
 
     private String paramsAsSignature() {

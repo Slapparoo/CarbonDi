@@ -81,7 +81,7 @@ public class ConstructorDef extends FunctionDefBase implements ContainerDef, Clo
         }
 
         return "num create_"+getExpandedName()+"("+ paramsAsHeader() +") {"
-        + "\nnum this =  create_"+ name + "();"
+        + "\nnum this =  create_"+ classDef.getCName()+ "();"
         + "\n" +getSetValuesAsCode()
         + "\n" +getBlockasCode()
         + "\nreturn this;\n}";
@@ -108,8 +108,8 @@ public class ConstructorDef extends FunctionDefBase implements ContainerDef, Clo
     private String getSetValuesAsCode() {
         String res = "";
         for (VariableDef def : parameters) {
-            if (def.is_property) {
-                res += "\n(("+name+"ClassModel *)useObject(this)->classmodel)->set_"+def.getName()+"(this, "+def.getName()+");";
+            if (def.classDef != null) {
+                res += "\n"+SnippetFactory.classModelStatement(name, "this", false)+"->set_"+def.getName()+"(this, "+def.getName()+");";
             }
         }
         return res;
@@ -127,7 +127,8 @@ public class ConstructorDef extends FunctionDefBase implements ContainerDef, Clo
             VariableDef def_this = new VariableDef();
             def_this.setName("this");
             def_this.type = new TypeIdDef(name);
-            getBlockDef().variableDefs.add(def_this);
+
+            getBlockDef().addVariable(def_this);
         }
 
         ClassDef cp = classDef.parent;
@@ -136,18 +137,17 @@ public class ConstructorDef extends FunctionDefBase implements ContainerDef, Clo
         String thisSignature = "name";
 
         while (cp != null) {
-            
-            for (FunctionDef functionDef : classDef.parent.functionDefs) {
-                if (functionDef.name.equals(name)) {
-                    System.out.println("@@Function override " + name + " " + thisSignature + " == " + functionDef.getParamsSignature());
-                    if (thisSignature. equals(functionDef.getParamsSignature())) {
-                        is_override = true;
-                        break;
-                    } else {
-                        throw new RuntimeException("method signature overrides are not currently supported, a method with the name " + name + " already exists " + functionDef.getParamsSignature());
-                    }
+            FunctionDef functionDef = cp.resolveFunction(name);
+
+            if (functionDef != null) {
+                System.out.println("@@Function override " + name + " " + thisSignature + " == " + functionDef.getParamsSignature());
+                if (thisSignature.equals(functionDef.getParamsSignature())) {
+                    is_override = true;
+                } else {
+                    throw new RuntimeException("method signature overrides are not currently supported, a method with the name " + name + " already exists " + functionDef.getParamsSignature());
                 }
             }
+
             if (is_override) {
                 break;
             }
@@ -155,19 +155,21 @@ public class ConstructorDef extends FunctionDefBase implements ContainerDef, Clo
         }
         
         for (VariableDef  param : parameters) {
-            if (param.is_property) {
-                for (VariableDef def : classDef.properties) {
-                    if (def.getName().equals(param.getName())) {
-                        param.type = def.type;
-                        // System.out.println("@@Constructor param type resolved " + param.getName() + " "+ def.type);
-                        break;
-                    }
-                } 
+            param.isParam = true;
+            // System.out.println("@@Constructor param type resolving " + param.getName() +" "+ param.type + " "+ param.is_property);
+            
+            if (param.equalsParam) {
+                VariableDef def =  classDef.resolveProperty(param.getName());
+                if (def != null) {
+                    param.type = def.type;
+                    param.classDef = classDef;
+                }
             }
 
+            param.containedInBlock = containedInBlock;
             param.resolve_01();
             if (getBlockDef() != null) {
-                getBlockDef().variableDefs.add(param);
+                getBlockDef().addVariable(param);
             }
         }
 

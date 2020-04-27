@@ -17,6 +17,10 @@ public abstract class FunctionDefBase extends StatementDef implements ContainerD
     public boolean is_override = false;
     public boolean is_static = false;
 
+    public void setIsStatic(boolean iss) {
+        is_static = iss;
+    }
+
     public int indexNumber = 0;
 
     public abstract String getSignature();
@@ -24,10 +28,24 @@ public abstract class FunctionDefBase extends StatementDef implements ContainerD
     public abstract String getExpandedSignature();
 
     public String getExpandedName() {
-        if (indexNumber > 0) {
-            return name + "$" + indexNumber;
+        if (this instanceof ConstructorDef) {
+            if (indexNumber > 0) {
+                return classDef.getCName() + "$" + indexNumber;
+            }
+            return classDef.getCName();                
         }
-        return name;
+
+        if (classDef == null) {
+            if (indexNumber > 0) {
+                return name + "$" + indexNumber;
+            }
+            return name;
+        } else {
+                if (indexNumber > 0) {
+                    return name + "$" + indexNumber;
+                }
+                return name;
+        }
     }
 
     public String getParamsSignature() {
