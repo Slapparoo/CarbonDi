@@ -1,7 +1,7 @@
 EC lang
 ==
 
-EC is a binary compilable general perpose computer language, it is based on the 'C fammily of langauges' syntax so anyone who is familier with C, C++, Java, C#, Pascal, JavaScript etc should be able to pick the langaue quite quickly. One of the design principals is that the language is low level enough that you can write an OS with it, but also general enough that is is highly productive and can be used for any general purpose task.
+EC is a binary compilable general purpose computer language, it is based on the 'C family of langauges' syntax so anyone who is familier with C, C++, Java, C#, Pascal, JavaScript etc should be able to pick the langaue quite quickly. One of the design principals is that the language is low level enough that you can write an OS with it, but also general enough that is is highly productive and can be used for any general purpose task.
 
 The langauge it self allows for a combination of procedual programming or OO programming.
 
