@@ -23,10 +23,10 @@ class Default.MyFunctionAsProperty (Core.Object) {
 
 myFunctionAsProperty.setName = "the name";
 
-printf(`MyFunctionAsProperty %s\n`, myFunctionAsProperty.getName.asStr);
-printf(`MyFunctionAsProperty package %s\n`, myFunctionAsProperty.getClassPackage);
-printf(`MyFunctionAsProperty shortname %s\n`, myFunctionAsProperty.getClassShortName);
-printf(`MyFunctionAsProperty classname %s\n`, myFunctionAsProperty.getClassName);
-printf(`MyFunctionAsProperty cname %s\n`, myFunctionAsProperty.getClassCName);
+External.stdio.printf(`MyFunctionAsProperty %s\n`, myFunctionAsProperty.getName.asStr);
+External.stdio.printf(`MyFunctionAsProperty package %s\n`, myFunctionAsProperty.getClassPackage);
+External.stdio.printf(`MyFunctionAsProperty shortname %s\n`, myFunctionAsProperty.getClassShortName);
+External.stdio.printf(`MyFunctionAsProperty classname %s\n`, myFunctionAsProperty.getClassName);
+External.stdio.printf(`MyFunctionAsProperty cname %s\n`, myFunctionAsProperty.getClassCName);
 
-print_log(3, myFunctionAsProperty, myFunctionAsProperty.name, myFunctionAsProperty.getName);
+External.stdio.print_log(3, myFunctionAsProperty, myFunctionAsProperty.name, myFunctionAsProperty.getName);

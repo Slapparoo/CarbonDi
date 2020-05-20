@@ -5,6 +5,7 @@
 #include "Core.BaseBoxing.h"
 #include "Core.Boxing.h"
 #include "Core.Core_main.h"
+#include "Core.DynamicArray.h"
 #include "Core.Exception.h"
 #include "Core.F32.h"
 #include "Core.F64.h"
@@ -59,20 +60,20 @@ u64 c_1085510111_MyClassgetObjectDatasize() { return sizeof(c_1085510111_MyClass
 
 num c_1085510111_MyClassget_name(num this) { return ((c_1085510111_MyClass *)useObject(this)->data)->name; }
 
-void c_1085510111_MyClassset_name(num this, num name) {
-  assignObject(&((c_1085510111_MyClass *)useObject(this)->data)->name, name);
+void c_1085510111_MyClassset_name(num this, num a__$a) {
+  /*cda2*/ assignObject(&((c_1085510111_MyClass *)useObject(this)->data) /*cda3*/->name, a__$a);
 }
 
 i64 c_1085510111_MyClassget_value(num this) { return ((c_1085510111_MyClass *)useObject(this)->data)->value; }
 
-void c_1085510111_MyClassset_value(num this, i64 value) {
-  ((c_1085510111_MyClass *)useObject(this)->data)->value = value;
+void c_1085510111_MyClassset_value(num this, i64 a__$a) {
+  /*cda1*/ ((c_1085510111_MyClass *)useObject(this)->data)->value = a__$a;
 }
 
 i64 c_1085510111_MyClassget_value2(num this) { return ((c_1085510111_MyClass *)useObject(this)->data)->value2; }
 
-void c_1085510111_MyClassset_value2(num this, i64 value2) {
-  ((c_1085510111_MyClass *)useObject(this)->data)->value2 = value2;
+void c_1085510111_MyClassset_value2(num this, i64 a__$a) {
+  /*cda1*/ ((c_1085510111_MyClass *)useObject(this)->data)->value2 = a__$a;
 }
 
 void c_1085510111_MyClass_free(num this) {

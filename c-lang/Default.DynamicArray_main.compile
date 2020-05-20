@@ -1,7 +1,0 @@
-
-clang -std=gnu17 -O3 -g -c -I../c-bin/include -o obj/Default.NewDynamicArray.o Default.NewDynamicArray.c
-clang-format -style=file -i Default.NewDynamicArray.c
-clang -std=gnu17 -O3 -g -c -I../c-bin/include -o obj/Default.DynamicArray_main.o Default.DynamicArray_main.c
-clang-format -style=file -i Default.DynamicArray_main.c
-clang -std=gnu17 -O3 -g -I../c-bin/include ../c-bin/obj/*.o obj/*.o  -o Default.DynamicArray_main Default.DynamicArray_main.run.c
-clang-format -style=file -i Default.DynamicArray_main.run.c

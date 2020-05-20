@@ -18,6 +18,7 @@ builtin_primatives
    | 'boolean' | 'b8'
    | 'num'
    | 'pointer'
+   | keyword_function
    | 'int' // i32
    ;
 
@@ -136,7 +137,7 @@ keyword_plan        : 'plan' ;
 keyword_class       : 'class' ;
 keyword_properties  : 'properties' ;
 keyword_stub        : 'stub' ;
-// keyword_function    : 'function' ;
+keyword_function    : 'function' ;
 // keyword_type        : 'type' ;
 // keyword_array       : 'array' ;
 // keyword_map         : 'map' ;

@@ -10,7 +10,7 @@
  num myClass;
 #define __C_1085510111_MYOTHERCLASS_CLASS_  \
   num (*get_myClass)(num);  \
-  void (*set_myClass)(num, num);
+  void (*set_myClass)(num,num);
 typedef struct c_1085510111_MyOtherClass_cm {
 
 __C_2106303_OBJECT_CLASS_

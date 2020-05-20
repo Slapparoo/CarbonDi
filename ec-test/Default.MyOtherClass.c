@@ -5,6 +5,7 @@
 #include "Core.BaseBoxing.h"
 #include "Core.Boxing.h"
 #include "Core.Core_main.h"
+#include "Core.DynamicArray.h"
 #include "Core.Exception.h"
 #include "Core.F32.h"
 #include "Core.F64.h"
@@ -37,8 +38,8 @@ num c_1085510111_MyOtherClassget_myClass(num this) {
   return ((c_1085510111_MyOtherClass *)useObject(this)->data)->myClass;
 }
 
-void c_1085510111_MyOtherClassset_myClass(num this, num myClass) {
-  assignObject(&((c_1085510111_MyOtherClass *)useObject(this)->data)->myClass, myClass);
+void c_1085510111_MyOtherClassset_myClass(num this, num a__$a) {
+  /*cda2*/ assignObject(&((c_1085510111_MyOtherClass *)useObject(this)->data) /*cda3*/->myClass, a__$a);
 }
 
 void c_1085510111_MyOtherClass_free(num this) {

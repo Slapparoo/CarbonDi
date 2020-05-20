@@ -13,16 +13,19 @@ public class RangeExpr extends ExprDef {
         expr = range;
     }
 
+    public long startRange() {
+        return Long.parseLong(start);
+    }
+
+    public long endRange() {
+        return Long.parseLong(end);
+    }
+
     @Override
     public void resolve_01() {
-        System.out.println("@@RangeExpr.resolve " + expr);
-
         String[] tokens = expr.split("\\.\\.");
         start = tokens[0];
         end = tokens[1];
-
-        System.out.println("@@RangeExpr.resolve " + tokens.length + ", " + start + ", " + end);
-
         super.resolve_01();
     }
 

@@ -11,9 +11,9 @@
 #define __C_3556498_CLASS2_CLASS_  \
   i64 (*length)(num);  \
   void (*myPrint)(num);  \
-  i64 (*addto)(num, i64);  \
+  i64 (*addto)(num,i64);  \
   num (*get_package)(num);  \
-  void (*set_package)(num, num);
+  void (*set_package)(num,num);
 typedef struct c_3556498_Class2_cm {
 
 __C_2106303_OBJECT_CLASS_

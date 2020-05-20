@@ -4,7 +4,7 @@ void classMethods_49504825_main() {
 
   __onEnter(); /*va1*/
   num c1 = /*cd1*/ create_c_1085510111_MyClass();
-  /*va1*/ num number =
+  /*va1*/ i64 number =
       /* switch from fc5 to te4*/ ((c_1085510111_MyClass_cm *)useObject(/*te8*/ c1)->classmodel)->someValue(/*te8*/ c1);
   /*Ax2*/ /*te14b*/ ((c_1085510111_MyClass_cm *)useObject(/*te8*/ c1)->classmodel)
       ->set_value(/*te8*/ c1, /*te8*/ number);

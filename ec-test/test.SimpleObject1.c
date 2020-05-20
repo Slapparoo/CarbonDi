@@ -5,6 +5,7 @@
 #include "Core.BaseBoxing.h"
 #include "Core.Boxing.h"
 #include "Core.Core_main.h"
+#include "Core.DynamicArray.h"
 #include "Core.Exception.h"
 #include "Core.F32.h"
 #include "Core.F64.h"
@@ -45,14 +46,14 @@ u64 c_3556498_SimpleObject1getObjectDatasize() { return sizeof(c_3556498_SimpleO
 
 i64 c_3556498_SimpleObject1get_number(num this) { return ((c_3556498_SimpleObject1 *)useObject(this)->data)->number; }
 
-void c_3556498_SimpleObject1set_number(num this, i64 number) {
-  ((c_3556498_SimpleObject1 *)useObject(this)->data)->number = number;
+void c_3556498_SimpleObject1set_number(num this, i64 a__$a) {
+  /*cda1*/ ((c_3556498_SimpleObject1 *)useObject(this)->data)->number = a__$a;
 }
 
 num c_3556498_SimpleObject1get_name(num this) { return ((c_3556498_SimpleObject1 *)useObject(this)->data)->name; }
 
-void c_3556498_SimpleObject1set_name(num this, num name) {
-  assignObject(&((c_3556498_SimpleObject1 *)useObject(this)->data)->name, name);
+void c_3556498_SimpleObject1set_name(num this, num a__$a) {
+  /*cda2*/ assignObject(&((c_3556498_SimpleObject1 *)useObject(this)->data) /*cda3*/->name, a__$a);
 }
 
 void c_3556498_SimpleObject1_free(num this) {

@@ -192,7 +192,7 @@ u64 __onEnter() {
 void __onExit() {
   // pop until 0
   enterExitRatio--;
-  debug_println("%ld, enterExitRatio=%ld", refStackIndex, enterExitRatio);
+  // debug_println("%ld, enterExitRatio=%ld", refStackIndex, enterExitRatio);
 
   num id = refStack[--refStackIndex];
   while (id > 0) {
@@ -212,7 +212,7 @@ void __onExit() {
 
   time_println("raw=%ld cpu=%ld", t_raw, t_id);
 #endif  
-  debug_println("<--%s","");
+  // debug_println("<--%s","");
 };
 
 void __unWindTo(u64 checkPoint) {
@@ -235,7 +235,7 @@ void __unWindTo(u64 checkPoint) {
 
 
   enterExitRatio--;
-  debug_println("currentIndex=%lu, unwindto=%lu ", refStackIndex, checkPoint);
+  // debug_println("currentIndex=%lu, unwindto=%lu ", refStackIndex, checkPoint);
 
   if (checkPoint == refStackIndex) {
     return;
@@ -329,7 +329,7 @@ pointer __exitReturn_pointer_un(pointer a, u64 checkPoint) {
 
 num __exitReturn_ref_un(num a, u64 checkPoint) {
   // increase the ref counter, unwind the stack, then put back on stack
-  // so it it does get freed
+  // so it does'nt get freed
   borrowOnReturnObject(a);
   __unWindTo(checkPoint);
   refStack[refStackIndex++] = a;
@@ -341,7 +341,7 @@ void __exitReturn_void_un(u64 checkPoint) {
 }
 
 
-//****************
+//**************** old -->
 
 i64 __exitReturn_i64(i64 a) {
   __onExit();
@@ -426,9 +426,9 @@ num __exitReturn_ref(num a) {
 }
 
 
-//*************
+//************* <--
 void registerClassModel(pointer classmodel) {
-  debug_println("pointer %ld, %p", _class_models_index, classmodel);
+  // debug_println("pointer %ld, %p", _class_models_index, classmodel);
 
   if (_class_models_index == PM_LIST_LENGTH) {
     // free(classmodel);
@@ -446,7 +446,7 @@ void registerClassModel(pointer classmodel) {
 void __onFinalExit() {
   // release exceptionstack;
   while (exceptionInformationIndex >= 0) {
-    debug_println("free exceptionInformationIndex %ld, %p", exceptionInformationIndex, exceptionInformation[exceptionInformationIndex]);
+    // debug_println("free exceptionInformationIndex %ld, %p", exceptionInformationIndex, exceptionInformation[exceptionInformationIndex]);
     ec_free(exceptionInformation[exceptionInformationIndex]);
     exceptionInformationIndex--;
   }
@@ -484,7 +484,7 @@ num createObject(pointer object_data, pointer class_model, boolean is_stack) {
     throwException("Out of memory Exception [Object allocation space] (2).");
   }
 
-  debug_println("%s::%s ref:%ld", ((c_2106303_Object_cm*)class_model)->getClassPackage(0), ((c_2106303_Object_cm*)class_model)->getClassName(0), id);
+  // debug_println("%s::%s ref:%ld", ((c_2106303_Object_cm*)class_model)->getClassPackage(0), ((c_2106303_Object_cm*)class_model)->getClassName(0), id);
 
   struct Object_ref *ref = (Object_ref *)ec_malloc(sizeof(struct Object_ref));
 
@@ -585,7 +585,7 @@ void throwException(pointer message) {
 
 jmp_buf *catchException() {
 
-  debug_println("sizeof jmp_buf %lu, ExceptionInformation %lu", sizeof(jmp_buf), sizeof(ExceptionInformation));
+  // debug_println("sizeof jmp_buf %lu, ExceptionInformation %lu", sizeof(jmp_buf), sizeof(ExceptionInformation));
 
   exceptionInformationIndex++;
   ExceptionInformation *ei = ec_malloc(sizeof(ExceptionInformation));
@@ -599,10 +599,10 @@ void afterCatchException() {
   ExceptionInformation *ei = exceptionInformation[exceptionInformationIndex];
   printf(ANSI_RED "Error : %s\n" ANSI_DEFAULT , ei->message);
 
-  debug_println("exceptionInformation %p, %lu, %p", ei->buf, ei->currentStack, ei->message);
+  // debug_println("exceptionInformation %p, %lu, %p", ei->buf, ei->currentStack, ei->message);
 
   __unWindTo(ei->currentStack);
-  debug_println("free exceptionInformationIndex %ld, %p", exceptionInformationIndex, ei);
+  // debug_println("free exceptionInformationIndex %ld, %p", exceptionInformationIndex, ei);
   ec_free(ei);
   exceptionInformationIndex--;
 }

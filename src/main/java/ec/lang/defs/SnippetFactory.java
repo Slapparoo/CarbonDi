@@ -45,4 +45,44 @@ public class SnippetFactory {
         return "((" + cd.getCName() + "*)useObject(" + varname + ")->data)";
     }
 
+
+    public static FunctionDef addReturnFunction(String functionName, String returnvalue, TypeIdDef returnType,  boolean isOverride, boolean is_static, boolean is_final) {
+        return addFunction(functionName,
+            new DirectStatement("  return  "+returnvalue+";"),
+            returnType, isOverride, is_static, is_final
+            );
+    }
+
+    public static FunctionDef addVoidFunction(String functionName, String body,  
+        boolean isOverride, boolean is_static, boolean is_final) {
+        return addFunction(functionName, 
+            new DirectStatement(body+";"),
+            new TypeIdDef("void"), isOverride, is_static, is_final
+            );
+    }
+
+    public static FunctionDef addFunction(String functionName, DirectStatement body, 
+        TypeIdDef returnType,  boolean isOverride, boolean is_static, boolean is_final) {
+        FunctionDef funct = new FunctionDef();
+        funct.name = functionName;
+        funct.accessor = Enums.Accessor.PUBLIC;
+        funct.returnType = returnType;
+        funct.setBlockDef(new BlockDef());
+        funct.getBlockDef().includeEntryExit = false;
+        funct.getBlockDef().statementDefs.add(body);
+        funct.is_static = is_static;
+        funct.is_final = is_final;
+
+        if (!is_static) {
+            VariableDef param = new VariableDef();
+            param.setName("this");
+            param.type = new TypeIdDef("num");
+            funct.addParameter(param);
+        }
+        funct.is_override = isOverride;
+        // functionDefs.add(funct);
+        return funct;
+    }
+
+
 }

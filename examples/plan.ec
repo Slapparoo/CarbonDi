@@ -1,6 +1,3 @@
-imports {
-    extern_c library.stdio;
-}
 
 plan Array1 {
     T geti(u64 index);

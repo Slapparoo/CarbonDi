@@ -12,9 +12,9 @@
 #define __C_3556498_CLASS1_CLASS_  \
   i64 (*constNumber)();  \
   i64 (*get_count1)(num);  \
-  void (*set_count1)(num, i64);  \
+  void (*set_count1)(num,i64);  \
   i64 (*get_count2)(num);  \
-  void (*set_count2)(num, i64);
+  void (*set_count2)(num,i64);
 typedef struct c_3556498_Class1_cm {
 
 __C_2106303_OBJECT_CLASS_

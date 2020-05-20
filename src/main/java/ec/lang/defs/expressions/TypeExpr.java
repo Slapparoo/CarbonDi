@@ -3,6 +3,7 @@ package ec.lang.defs.expressions;
 import ec.lang.defs.ClassDef;
 import ec.lang.defs.ExprDef;
 import ec.lang.defs.SnippetFactory;
+import ec.lang.defs.TypeIdDef;
 import ec.lang.defs.VariableDef;
 
 public class TypeExpr extends ExprDef implements MultiTypeId {
@@ -18,21 +19,36 @@ public class TypeExpr extends ExprDef implements MultiTypeId {
 
     @Override
     public void resolve_02(String red_id) {
-        // TODO Auto-generated method stub
-        
+        super.resolve_01();
+    }
+
+    @Override
+    public void resolve_01() {
+        super.resolve_01();
+    }
+
+    @Override
+    public void prepare_03() {
+        if (variableDef == null) {
+            if (expr.startsWith("$")) {
+                // FIXME
+                variableDef = new VariableDef();
+                variableDef.type = new TypeIdDef("i64");
+                thisType= variableDef.type;
+            }
+        }
+        if (variableDef != null && variableDef.is_static) {
+            prepare_03("");
+        }
+        super.prepare_03();
     }
 
     public void prepare_03(String ref_id) {
         if (variableDef == null) {
-            throw new RuntimeException("variableDef == null " + expr + " " + getLine());
+            throw new RuntimeException("variableDef == null " + expr + " " + isResolved() + " " + getLine()  );
         }
 
         if (arrayIndex != null) {
-            // // arrayIndex.resolve_01();
-            // if (thisType == null) {
-            //     resolvedExpr = "/* thisType == null  " + arrayIndex.asCode() + " */" + super.asCode();
-            // }
-
             boolean isStatic = (variableDef != null ? variableDef.is_static : false);
 
             if (thisType.isPrimative()) {
@@ -53,28 +69,57 @@ public class TypeExpr extends ExprDef implements MultiTypeId {
         }        
         // array
 
+        if (memberOf != null && containedInBlock.directAccess.contains(expr)) {
+            // System.out.println("@@direct access " + expr);
+            directAccess = true;
+        }
+
         if (variableDef.is_static) {
             is_static = true;
             // isProperty = true;
-            if (isGet) {
-                if (variableDef.functionDef == null) {
-                    resolvedExpr = "/*te14*/"
-                    + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true) 
-                    + "->get_" + expr + "()";
+            if (directAccess) {
+                if (isGet) {
+                    if (variableDef.functionDef == null) {
+                        resolvedExpr = "/*te14da*/"
+                        + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true) 
+                        + "->" + expr ;
+                    } else {
+                        resolvedExpr = "/*te141da*/"
+                        + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true) 
+                        + "->" + expr + "()";
+                    }
                 } else {
-                    resolvedExpr = "/*te141*/"
-                    + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true) 
-                    + "->" + expr + "()";
+                    if (variableDef.functionDef == null) {
+                        resolvedExpr = "/*te14cda*/"
+                        + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true) 
+                        + "->" + expr ;
+                    } else {
+                        resolvedExpr = "/*te14c1da*/"
+                        + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true) 
+                        + "->" + expr + "(";
+                    }
                 }
             } else {
-                if (variableDef.functionDef == null) {
-                    resolvedExpr = "/*te14c*/"
-                    + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true) 
-                    + "->set_" + expr + "(";
+                if (isGet) {
+                    if (variableDef.functionDef == null) {
+                        resolvedExpr = "/*te14*/"
+                        + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true) 
+                        + "->get_" + expr + "()";
+                    } else {
+                        resolvedExpr = "/*te141*/"
+                        + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true) 
+                        + "->" + expr + "()";
+                    }
                 } else {
-                    resolvedExpr = "/*te14c1*/"
-                    + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true) 
-                    + "->" + expr + "(";
+                    if (variableDef.functionDef == null) {
+                        resolvedExpr = "/*te14c*/"
+                        + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true) 
+                        + "->set_" + expr + "(";
+                    } else {
+                        resolvedExpr = "/*te14c1*/"
+                        + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true) 
+                        + "->" + expr + "(";
+                    }
                 }
             }
         } else {
@@ -90,7 +135,7 @@ public class TypeExpr extends ExprDef implements MultiTypeId {
             }
 
             // Direct static Access?
-            if (memberOf.getShortname().endsWith(variableDef.getName())) {
+            if (memberOf.getShortname().equals(variableDef.getName())) {
                 resolvedExpr = "/*te14f*/"
                 + expr;
 
@@ -172,7 +217,7 @@ public class TypeExpr extends ExprDef implements MultiTypeId {
 
     public TypeExpr(String value, String indexValue) {
         expr = value;
-        if (indexValue.matches("[0-9_]")) {
+        if (indexValue.matches("[0-9_]*")) {
             arrayIndex = new ConstExpr(indexValue);
         } else {
             arrayIndex = new TypeExpr(indexValue);
@@ -181,15 +226,11 @@ public class TypeExpr extends ExprDef implements MultiTypeId {
 
     @Override
     public String toString() {
-        return "[TypeExpr] " + expr;
+        return expr;
     }
 
     @Override
     public void setIsGet(boolean isGet) {
-        // TODO Auto-generated method stub
-
-        // System.out.println("@@setisget " + isGet + " " + expr);
         this.isGet = isGet;
-
     }
 }

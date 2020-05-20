@@ -5,6 +5,7 @@
 #include "Core.BaseBoxing.h"
 #include "Core.Boxing.h"
 #include "Core.Core_main.h"
+#include "Core.DynamicArray.h"
 #include "Core.Exception.h"
 #include "Core.F32.h"
 #include "Core.F64.h"

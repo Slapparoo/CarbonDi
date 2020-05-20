@@ -3,9 +3,12 @@ package ec.lang.defs;
 public class StatementDef extends BaseDef {
     public ExprDef statement;
     
-    // public String asHeader() {
-    //     return "";
-    // }
+    public String asHeader() {
+        if (statement != null) {
+            return statement.asHeader();
+        }
+        return "";
+    }
 
     @Override
     public void resolve_01() {

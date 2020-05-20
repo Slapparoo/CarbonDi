@@ -2,7 +2,6 @@ package ec.lang.defs.expressions;
 
 import ec.lang.defs.ExprDef;
 import ec.lang.defs.StatementDef;
-import ec.lang.defs.TypeIdDef;
 
 public class AssignExpr extends StatementDef {
     
@@ -13,14 +12,14 @@ public class AssignExpr extends StatementDef {
 
     private boolean classVar = false;
 
-    private String classModelStatement(String className, String varname) {
+    // private String classModelStatement(String className, String varname) {
 
-        if (TypeIdDef.isPrimative(className) ) {
-            throw new RuntimeException("Not a class type " + className + ", " + varname);
-        }
+    //     if (TypeIdDef.isPrimative(className) ) {
+    //         throw new RuntimeException("Not a class type " + className + ", " + varname);
+    //     }
 
-        return "(("+className+"ClassModel*)useObject("+varname+")->classmodel)";
-    }
+    //     return "(("+className+"ClassModel*)useObject("+varname+")->classmodel)";
+    // }
 
     @Override
     public void resolve_01() {
@@ -99,12 +98,17 @@ public class AssignExpr extends StatementDef {
             }
 
             if (!al.getIsGet() && !ArrayIndexExpr.ARRAY_TYPES.contains(al.thisType.getObjectType())   ) {
-                System.out.println("@@assignLeft ax5 " + assignLeft + " " + al.thisType);
-                return "/*Ax5*/" + al.asCode() + assignRight.asCode() + ");";
+                
+                // prepare_03 not called yet
+                al.asCode();
+                // System.out.println("@@al " + al + " " + al.directAccess);
+                if (!al.directAccess) {
+                    return "/*Ax5*/" + al.asCode() + assignRight.asCode() + ");";
+                }
             }
         }
 
-        System.out.println("@@assignLeft " + assignLeft.getClass() + " " + assignLeft.expr);
+        // System.out.println("@@assignLeft " + assignLeft.getClass() + " " + assignLeft.expr);
 
         return "/*Ax4*/" + assignLeft.asCode() + assignOperator.asCode() + assignRight.asCode() + ";";
     }

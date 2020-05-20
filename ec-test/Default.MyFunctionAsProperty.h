@@ -9,10 +9,10 @@
 #define __C_1085510111_MYFUNCTIONASPROPERTY_DATA_  \
  num name;
 #define __C_1085510111_MYFUNCTIONASPROPERTY_CLASS_  \
-  void (*setName)(num, num);  \
+  void (*setName)(num,num);  \
   num (*getName)(num);  \
   num (*get_name)(num);  \
-  void (*set_name)(num, num);
+  void (*set_name)(num,num);
 typedef struct c_1085510111_MyFunctionAsProperty_cm {
 
 __C_2106303_OBJECT_CLASS_

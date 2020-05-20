@@ -5,6 +5,17 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "bashdb",
+            "request": "launch",
+            "showDebugOutput": false,
+            "name": "Bash-Debug (hardcoded script name)",
+            "cwd": "${workspaceFolder}/c-lang",
+            "program": "${workspaceFolder}/c-lang/Default.${fileBasenameNoExtension}_main.compile",
+            "args": []
+        },
+
+
+        {
             "type": "java",
             "name": "Debug (Launch) with Arguments Prompt",
             "request": "launch",
@@ -17,14 +28,7 @@
             "request": "launch",
             "mainClass": "ec.lang.BasicWalk",
             "projectName": "ec",
-            "args": "examples/if.ec"
-        },
-        {
-            "type": "java",
-            "name": "CodeLens (Launch) - BasicWalk",
-            "request": "launch",
-            "mainClass": "ec.lang.BasicWalk",
-            "projectName": "tinyc"
+            "args": "${file} c-lang",
         },
         {
             "type": "java",
@@ -32,19 +36,5 @@
             "request": "launch",
             "mainClass": "${file}"
         },
-        {
-            "type": "java",
-            "name": "Debug (Launch)-BasicVisit<tinyc>",
-            "request": "launch",
-            "mainClass": "BasicVisit",
-            "projectName": "tinyc"
-        },
-        {
-            "type": "java",
-            "name": "Debug (Launch)-BasicWalk<tinyc>",
-            "request": "launch",
-            "mainClass": "BasicWalk",
-            "projectName": "tinyc"
-        }
     ]
 }

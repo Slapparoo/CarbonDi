@@ -8,6 +8,10 @@ import ec.lang.defs.*;
 import ec.lang.defs.expressions.*;
 }
 
+@members {
+   int pure_count = 0;
+   int assingable_count = 0;
+}
 
 program locals [FileDef ff = DefFactory.newFileDef()]
    : namespace_definition? imports_definition? statement +
@@ -21,6 +25,7 @@ statement locals[StatementDef st]
    | if_definition
    | block_statement
    | loop_definition
+   | switch_statement
    | exception_block_definition
    | extended_expr  ';' { EndExpr xd = DefFactory.newEndExpr();}
    | ';' {EndExpr xd = DefFactory.newEndExpr();}
@@ -66,9 +71,12 @@ expr locals[ExprDef xd]
    // | type_anonymous { $xd = DefFactory.newAnnonymousExpr($type_anonymous.text); } 
    | type_float { $xd = DefFactory.newConstExpr($type_float.text, "float"); } 
    | builtin_values { $xd = DefFactory.newConstExpr($builtin_values.text, "builtin"); } 
+   | inline_function
    | paren_expr 
    | array_values
    ) { DefFactory.addNot($nt.text);}
+   | ( keyword_break { $xd = DefFactory.newExprDef("break"); } 
+   | keyword_continue { $xd = DefFactory.newExprDef("continue"); }  )
    | expr { $xd = DefFactory.newOperationExpr();} comparator {$xd.expr = $comparator.text; } expr {((OperationExpr)$xd).right = DefFactory.dropExpression(); }
    | {$xd = DefFactory.newIncDecDef();} assignable_to { ((IncDecDef)$xd).expression = DefFactory.dropExpression(); } predicate {((IncDecDef)$xd).suffix = $predicate.text; }
    | {$xd = DefFactory.newIncDecDef();} predicate {((IncDecDef)$xd).prefix = $predicate.text; } assignable_to { ((IncDecDef)$xd).expression = DefFactory.dropExpression(); }
@@ -79,6 +87,9 @@ expr locals[ExprDef xd]
    | expr { $xd = DefFactory.newOperationExpr();} operator_shift {$xd.expr = $operator_shift.text; } expr {((OperationExpr)$xd).right = DefFactory.dropExpression();}
    ;
 
+encapsulation_override locals[EncapsulationDef ed = DefFactory.newEncapsulationDef()]
+   : pure_type {$ed.setName($pure_type.text);} block_statement ;
+
 extended_expr locals [StatementDef xe]
    : expr { $xe=DefFactory.newStatementDef(); }
    | keyword_return  expr  {$xe = DefFactory.newReturnExpr(1);} 
@@ -86,47 +97,64 @@ extended_expr locals [StatementDef xe]
    | variable_definition
    | keyword_return_add '(' ( expr | builtin_values | assignable_value ) ')'
    // needs cast
-   | assignable_to {DefFactory.endMultiTypeExpr();} aa=assign ( expr | assignable_value ) {DefFactory.newAssignExpr($aa.text);}
+   | assignable_to aa=assign ( expr | assignable_value ) {DefFactory.newAssignExpr($aa.text);}
+   | assignable_to aa=assign inline_function {DefFactory.newAssignExpr($aa.text);}
+   ;
+
+array_index : my_assignable_from | type_num  { DefFactory.newConstExpr($type_num.text); }  ;
+
+assignable_to 
+   :     {DefFactory.newMultiTypeExpr("assignable_to");} 
+      my_assignable_to 
+         {DefFactory.endMultiTypeExpr();}
    ;
 
 // can't end in function call
 // assignable_to
-assignable_to locals [MultiTypeExpr type_id_list = DefFactory.newMultiTypeExpr()] 
-   :   ( assignable_from '.')?
-   ( idn=base_ident {$type_id_list.addExpr(new TypeExpr($idn.text), $idn.start.toString());} 
-   | idn=base_ident 
-      keyword_lbracket asv=array_index keyword_rbracket 
-        {$type_id_list.addExpr(new ArrayIndexExpr($idn.text, DefFactory.dropExpression(), $asv.text), $idn.start.toString()); } 
-      )
-      
-        { DefFactory.addExpression($type_id_list, $type_id_list.getLine());} ;
-
-array_index : assignable_from | type_num  { DefFactory.newConstExpr($type_num.text); }  ;
+my_assignable_to
+   : ( my_assignable_from '.')?
+   ( idn=base_ident 
+      {DefFactory.addExpr(new TypeExpr($idn.text), $idn.start.toString());} 
+   | idn=base_ident keyword_lbracket asv=array_index keyword_rbracket 
+      {DefFactory.addExpr(new ArrayIndexExpr($idn.text, DefFactory.dropExpression(), $asv.text), $idn.start.toString()); } 
+   )
+   ;
+pure_type 
+   :     { DefFactory.newMultiTypeExpr("pure_type");}
+      my_pure_type 
+         { DefFactory.endMultiTypeExpr();}
+   ;
 
 // can't contain a function call or array
-pure_type locals [MultiTypeExpr type_id_list = DefFactory.newMultiTypeExpr()] 
-   :  idn=base_ident {$type_id_list.addExpr(new TypeExpr($idn.text), $idn.start.toString());} 
-   ('.' pure_type )*   { DefFactory.addExpression($type_id_list, $type_id_list.getLine());};
+my_pure_type 
+   :  idn=base_ident 
+         {DefFactory.addExpr(new TypeExpr($idn.text), $idn.start.toString());} 
+      ('.' my_pure_type )* 
+   ;
+
+assignable_from 
+   :     {DefFactory.newMultiTypeExpr("assignable_from");}
+      my_assignable_from 
+         { DefFactory.endMultiTypeExpr();}
+   ;
 
 // can end with function call
-assignable_from locals [MultiTypeExpr type_id_list = DefFactory.newMultiTypeExpr()] 
+my_assignable_from 
    :  
-   ( idn=base_ident {$type_id_list.addExpr(new TypeExpr($idn.text), $idn.start.toString());} 
-     | function_call   
-     | idn=base_ident 
-     keyword_lbracket asv=array_index keyword_rbracket
-       {$type_id_list.addExpr(new ArrayIndexExpr($idn.text, DefFactory.dropExpression(), $asv.text), $idn.start.toString()); } 
-   ) ('.' assignable_from )*  { DefFactory.addExpression($type_id_list, $type_id_list.getLine());} ;
+   ( idn=base_ident 
+         {DefFactory.addExpr(new TypeExpr($idn.text), $idn.start.toString());} 
+   | my_function_call   
+   | idn=base_ident keyword_lbracket asv=array_index keyword_rbracket
+         {DefFactory.addExpr(new ArrayIndexExpr($idn.text, DefFactory.dropExpression(), $asv.text), $idn.start.toString()); } 
+   ) ('.' my_assignable_from )*  
+   ;
 
-function_call locals [FunctionCallExpr fc = DefFactory.newFunctionCallExpr()]
+my_function_call locals [FunctionCallExpr fc = DefFactory.newFunctionCallExpr()]
    :  
    base_ident {$fc.setName($base_ident.text);} 
       keyword_lparen ( expr {$fc.params.add(DefFactory.dropExpression());} 
        ( keyword_comma expr {$fc.params.add(DefFactory.dropExpression());} )*)? keyword_rparen
-      { 
-        $assignable_from::type_id_list = DefFactory.newMultiTypeExpr();   
-        $assignable_from::type_id_list.addExpr($fc, $base_ident.start.toString()); 
-      }       
+       { DefFactory.addExpr($fc, $base_ident.start.toString()) ;}
    ;
 
 function_definition 
@@ -136,6 +164,38 @@ function_definition
 function_implementation 
    : function_description {DefFactory.startFunctImpl();} block_statement {DefFactory.in_funct = null;}
    ;
+
+switch_statement locals[SwitchDef sw]
+   : keyword_switch '(' assignable_from ')' {$sw = DefFactory.newSwitchStatement();}  
+   '{' ( ( ( keyword_case ( type_num { DefFactory.newConstExpr($type_num.text); }  
+      | type_range {DefFactory.addExpression(new RangeExpr($type_range.text));} ) )  
+      {DefFactory.addCaseStatement();}   
+   |  ( keyword_default { DefFactory.newExprDef("default"); DefFactory.addCaseStatement();} )) ':' statement* {DefFactory.endCaseStatement();}  )*  '}'
+   ;
+
+// ?x := void(int, int, int) = (a,b,c) {}
+// ?x := void(int, int, int);
+// x = (a,b,c) {}
+// function x := void(int, int, int) = (a,b,c) {}
+// function x := void(int, int, int) = (){$a, $b, $c}
+
+
+// int getValues(function x := int(int));
+
+// ?x = getValues((a) {return a;});
+// ?x = getValues(() {return $a;});
+// mlClass.newname = (a) {this.name = a;};
+
+function_variable
+   : (keyword_function | '?' ) pure_type ':=' function_signature  ( '=' inline_function )?  ;
+
+function_signature
+   // : '(' ( builtin_or_type | 'void' ) ')(' ID ')(' ( (builtin_or_type | '..') (',' ( builtin_or_type | '..') )* )? ')'
+   : ( builtin_or_type | 'void' ) '(' ( (builtin_or_type | '..') (',' ( builtin_or_type | '..') )* )? ')'
+   ;
+
+inline_function
+   : ('(' ( ID ( ',' ID )*) ')')? block_statement ;
 
 constructor_definition locals[ConstructorDef cd = DefFactory.newConstructorDef()] :   
 
@@ -172,8 +232,8 @@ function_description locals[FunctionDef fd = DefFactory.newFunctDef()]
          {$fd.is_final = $keyword_final.text != null;} 
       function_return_type 
          {$fd.returnType = new TypeIdDef($function_return_type.text);} 
-      base_ident  
-         {$fd.name = $base_ident.text;} 
+      pure_type  
+         {$fd.name = $pure_type.text;} 
       keyword_lparen ( 
       parameter_definition ( 
          
@@ -189,12 +249,12 @@ function_description locals[FunctionDef fd = DefFactory.newFunctDef()]
    ;
 variable_definition locals[VariableDef vd = DefFactory.newVarDef()]
 
-   : ti1=builtin_or_type_or_var nm=base_ident keyword_lbracket tn2=type_num? keyword_rbracket  
+   : ti1=builtin_or_type_or_var nm=base_ident keyword_lbracket tn2=num_or_type? keyword_rbracket  
       {$vd.setValues("rule1", $nm.text, $ti1.text, true, null, $tn2.text, null, null);}
    // array looking at specif memory address
    | ti=builtin_primatives nm=base_ident keyword_lbracket tn=num_or_type? keyword_rbracket ':' ra=num_or_type 
       {$vd.setValues("rule4", $nm.text, $ti.text, true, null, $tn.text, $ra.text, null);}
-   | ti2=builtin_or_type keyword_lbracket tn2=type_num? keyword_rbracket nm=base_ident                   
+   | ti2=builtin_or_type keyword_lbracket tn2=num_or_type? keyword_rbracket nm=base_ident                   
       {$vd.setValues("rule5", $nm.text, $ti2.text, true, null, $tn2.text, null, null);}
    | ti1=builtin_or_type_or_var nm=base_ident keyword_lbracket keyword_rbracket (keyword_equals ct=cast_type? ( as=assignable_from | array_values ))?
       {$vd.setValues("rule6", $nm.text, $ti1.text, true, $ct.text, null, null, null, $as.text, null);}
@@ -202,12 +262,13 @@ variable_definition locals[VariableDef vd = DefFactory.newVarDef()]
       {$vd.setValues("rule7", $nm.text, $ti2.text, true, $ct.text, null, null, null, $as.text, null);}
    | ti1=builtin_or_type_or_var nm=base_ident ( keyword_equals ct=cast_type? ( as1=assignable_value | ex=expr ))?
       {$vd.setValues("rule8", $nm.text, $ti1.text, false, $ct.text, null, null, null, $as1.text, DefFactory.dropExpression());}
-   | var_type nm=base_ident  keyword_equals? ti2=builtin_or_type keyword_lbracket tn2=type_num keyword_rbracket  
+   | var_type nm=base_ident  keyword_equals? ti2=builtin_or_type keyword_lbracket tn2=num_or_type keyword_rbracket  
       {$vd.setValues("rule2", $nm.text, $ti2.text, true, null, $tn2.text, null, null);}
+   | function_variable
    ;
 
 /** convenience stuff */
-num_or_type: (type_num | pure_type {DefFactory.dropExpression();}  );
+num_or_type : pure_type {DefFactory.dropExpression();} | type_num  ;
 builtin_or_type: (builtin_primatives | pure_type {DefFactory.dropExpression();}  );
 builtin_or_type_or_var: var_type | builtin_or_type ;
 function_return_type : (keyword_void | pure_type {DefFactory.dropExpression();} | builtin_primatives) ( keyword_lbracket keyword_rbracket )? ;   
@@ -230,12 +291,13 @@ parameter_definition locals[VariableDef vd = DefFactory.newParamDef()]
    | ti2=builtin_or_type keyword_lbracket keyword_rbracket nm=base_ident (keyword_equals ct=cast_type? as1=assignable_value )? 
       {$vd.setValues(null, $nm.text, $ti2.text, true, $ct.text, null, null, $nm.start.toString(), $as1.text, null);}
    | keyword_ampersand? builtin_primatives nm=base_ident?  
+   | function_variable
    ;
 
 array_values
 // @todo create array_values class
    : keyword_lbracket ( assignable_value  ( keyword_comma assignable_value  )* )? keyword_rbracket
-   | function_call
+   | assignable_from
    ;
 
 class_definition locals[ClassDef cd = DefFactory.newClassDef()]
@@ -256,6 +318,7 @@ class_block locals[BlockDef bd = DefFactory.newBlockDef("class")]
 class_body
    : function_implementation
    | function_definition
+   | encapsulation_override
    // | accessor_definition
    | constructor_definition
    | ';'

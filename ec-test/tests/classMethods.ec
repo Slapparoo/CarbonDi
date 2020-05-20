@@ -1,10 +1,10 @@
-class Default.MyClass {
+class MyClass {
     properties {
-        num value;
+        i64 value;
         String name;
     }
 
-    num someValue() {
+    i64 someValue() {
         return 0x3;
     }
 
@@ -13,10 +13,10 @@ class Default.MyClass {
     }
 }
 
-class Default.MySecondClass(Default.MyClass) {
-    // num someValue() {
-    //     return 0x4;
-    // }
+class MySecondClass(Default.MyClass) {
+    i64 someValue() {
+        return 0x4;
+    }
 }
 
 ?c1 = MyClass(); 

@@ -1,12 +1,16 @@
 package ec.lang.defs;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class BlockDef extends StatementDef implements ContainerDef {
     public List<StatementDef> statementDefs = new ArrayList<>();
     // tracked for validation
     private List<VariableDef> variableDefs = new ArrayList<>();
+
+    // private List<FunctionDef> functionDefs = new ArrayList<>();
 
     public boolean includeEntryExit = true;
     public boolean hasReturn = false;
@@ -14,18 +18,68 @@ public class BlockDef extends StatementDef implements ContainerDef {
     public ClassDef classDef = null;
     public boolean functionBlock = false;
 
+    public Set<String> directAccess = new HashSet<>();
+
     public String asHeader() {
-        return "";
+        String res = "";
+        for (StatementDef exprDef : statementDefs) {
+            res += exprDef.asHeader();
+        }
+        return res;
+    }
+
+    @Override
+    public void prepare_03() {
+        for (StatementDef exprDef : statementDefs) {
+            if (exprDef instanceof ContainerDef) {
+                ((ContainerDef)exprDef).getBlockDef().directAccess.addAll(directAccess);
+            }
+        }
     }
 
     @Override
     public void resolve_01() {
+
+        // for (StatementDef statementDef : statementDefs) {
+        //     statementDef.containedInBlock = this;
+        //     // System.out.println(this.containedInBlock);
+        //     System.out.println("@@statementDef.getClass() " + statementDef.getClass());
+        //     if (statementDef instanceof FunctionDef) {
+        //         System.out.println("@@function");
+        //         functionDefs.add((FunctionDef) statementDef);
+        //         statementDef.resolve_01();
+        //     }
+        // }
+
+
         for (StatementDef statementDef : statementDefs) {
             statementDef.containedInBlock = this;
             // System.out.println(this.containedInBlock);
             statementDef.resolve_01();
         }
         super.resolve_01();
+    }
+
+    public String statementsAsCode() {
+        String res = "";
+
+        for (StatementDef exprDef : statementDefs) {
+            // exprDef.containedInBlock = this;
+            // exprDef.resolve_01();
+
+            if (exprDef instanceof ContainerDef) {
+                ((ContainerDef)exprDef).getBlockDef().includeEntryExit = includeEntryExit;
+                ((ContainerDef)exprDef).getBlockDef().directAccess.addAll(directAccess);
+            }
+
+            if (exprDef instanceof VariableDef) {
+                res +=  exprDef.asCode() +";\n";
+            } else {
+                res +=  exprDef.asCode() +"\n";
+            }
+        }
+
+        return res;
     }
 
     public String asCode() {
@@ -39,17 +93,7 @@ public class BlockDef extends StatementDef implements ContainerDef {
             }
         }
 
-        for (StatementDef exprDef : statementDefs) {
-            if (exprDef instanceof ContainerDef) {
-                ((ContainerDef)exprDef).getBlockDef().includeEntryExit = includeEntryExit;
-            }
-
-            if (exprDef instanceof VariableDef) {
-                res +=  exprDef.asCode() +";\n";
-            } else {
-                res +=  exprDef.asCode() +"\n";
-            }
-        }
+        res += statementsAsCode();
         
         if (includeEntryExit && !hasReturn) {
             res += "\n__onExit();";
@@ -58,12 +102,24 @@ public class BlockDef extends StatementDef implements ContainerDef {
         return res + "}\n";
     }
 
+
+    // public FunctionDef resolveFunction(String name) {
+    //     for (FunctionDef fd : functionDefs) {
+    //         if (fd.name.equals(name)) {
+    //             return fd;
+    //         }
+    //     }
+    //     if (containedInBlock != null) {
+    //         return containedInBlock.resolveFunction(name);
+    //     } 
+
+    //     return null;
+    // }
+
     @Override
     public List<VariableDef> variableDefs() {
         return variableDefs;
     }
-
-    
 
     public void addVariable(VariableDef variableDef) {
         VariableDef existingVar = resolveVariable(variableDef.getName());
@@ -77,7 +133,7 @@ public class BlockDef extends StatementDef implements ContainerDef {
                 if (existingVar.type.getName().equals(variableDef.type.getName()) ) {
 
                 } else {
-                    if (VariableDef.VAR_CHARS.contains(existingVar.type.getName())) {
+                    if (existingVar.type.getName().equals("?")) {
                         System.out.println("Redefine this " + variableDef.type + " " + existingVar.type);                        
                         existingVar.type = variableDef.type;
                         return;
@@ -89,6 +145,11 @@ public class BlockDef extends StatementDef implements ContainerDef {
                 System.out.println("Variable with the same name already exists in block " + variableDef.getName() + " " + variableDef.type + " " + existingVar.type);
             }
         }
+
+        if (variableDef.getName().length() == 0) {
+            variableDef.setName("$" + getNextAnnoymous());
+        }
+
         variableDefs.add(variableDef);
     }
 
@@ -103,7 +164,15 @@ public class BlockDef extends StatementDef implements ContainerDef {
     }
 
 	public VariableDef resolveVariable(String name) {
+
         for (VariableDef variableDef : variableDefs) {
+
+            if (name.equals("$a")) {
+                if (variableDef.getName().equals("a__" +name )) {
+                    return variableDef;
+                }
+            }
+    
             if (variableDef.getName().equals(name)) {
                 return variableDef;
             }
@@ -119,5 +188,16 @@ public class BlockDef extends StatementDef implements ContainerDef {
 		return DefFactory.resolveVariable(name);
 	}
 
+    private char currentAnnoymous = 'a';
 
+	public char getNextAnnoymous() {
+        if (containedInBlock != null && currentAnnoymous == 'a') {
+            currentAnnoymous = containedInBlock.currentAnnoymous;
+        }
+
+        if (currentAnnoymous == 'z') {
+            throw new RuntimeException("used up all anonymous values");
+        }
+        return currentAnnoymous++;
+	}
 }

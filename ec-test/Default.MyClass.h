@@ -13,11 +13,11 @@
 #define __C_1085510111_MYCLASS_CLASS_  \
   void (*myPrint)(num);  \
   num (*get_name)(num);  \
-  void (*set_name)(num, num);  \
+  void (*set_name)(num,num);  \
   i64 (*get_value)(num);  \
-  void (*set_value)(num, i64);  \
+  void (*set_value)(num,i64);  \
   i64 (*get_value2)(num);  \
-  void (*set_value2)(num, i64);
+  void (*set_value2)(num,i64);
 typedef struct c_1085510111_MyClass_cm {
 
 __C_2106303_OBJECT_CLASS_

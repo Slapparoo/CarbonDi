@@ -18,7 +18,6 @@ public class Default.NewDynamicArray (Core.Array){
         static u64 initialSize = 8;
         static u64 growBy = 8;
         static u64 slideAmount = 4;
-        
     }
 
     public NewDynamicArray(=dataType, =dataSize) {
@@ -27,6 +26,10 @@ public class Default.NewDynamicArray (Core.Array){
         startIndex = initialSize /2;
         endIndex = startIndex;
         length = 0;
+    }
+
+    public void size(u64 newszie) {
+        // resize
     }
 
     public pointer getValue(u64 index) {

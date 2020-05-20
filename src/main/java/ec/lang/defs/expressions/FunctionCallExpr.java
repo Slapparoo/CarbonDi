@@ -3,32 +3,31 @@ package ec.lang.defs.expressions;
 import java.util.ArrayList;
 import java.util.List;
 
-import ec.lang.defs.ClassDef;
 import ec.lang.defs.ConstructorDef;
-import ec.lang.defs.DefFactory;
 import ec.lang.defs.ExprDef;
-import ec.lang.defs.FunctionDef;
 import ec.lang.defs.FunctionDefBase;
 import ec.lang.defs.SnippetFactory;
-import ec.lang.defs.TypeIdDef;
 import ec.lang.defs.VariableDef;
 
 public class FunctionCallExpr extends ExprDef implements MultiTypeId {
     public List<ExprDef> params = new ArrayList<>();
     private String name;
-    private boolean returnPrimative = true;
     private FunctionDefBase resolvedTo;
     public boolean classMethod = false;
-    private boolean staticMethod = false;
     private String resolve02 = "";
+    public boolean isExternal = false;
+
+    public static String FUNCTION_SIG_FORMAT = "%s (*%s)(%s)";
+
+    private String sigReturnType() {
+        if (thisType == null) {
+            return "num";
+        }
+        return (thisType.getName().equals("void") ? "void" : thisType.asCode()) + (thisType.isIs_array() ? "*" : "");
+    }
 
     public String getSignature() {
-        if (thisType == null) {
-            return "num (*" + name + ")(" + getParamsSignature() + ")";
-        }
-
-        return (thisType.getName().equals("void") ? "void" : thisType.asCode()) + (thisType.isIs_array() ? "*" : "")
-                + " (*" + name + ")(" + getParamsSignature() + ")";
+        return String.format(FUNCTION_SIG_FORMAT,sigReturnType(), name, getParamsSignature());
     }
 
     public String getParamsSignature() {
@@ -37,10 +36,10 @@ public class FunctionCallExpr extends ExprDef implements MultiTypeId {
 
         for (ExprDef param : params) {
             if (!first) {
-                res += ", ";
+                res += ",";
             }
             if (param.thisType == null) {
-                res += '+' + name;
+                res += "<unknown>";
             } else {
                 res += param.thisType.getName();
             }
@@ -49,99 +48,6 @@ public class FunctionCallExpr extends ExprDef implements MultiTypeId {
         return res;
     }
 
-    // @Override
-    // public void resolve_01() {
-
-    //     if (containedInBlock == null) {
-    //         new NullPointerException("FunctionCallExpr containedInBlock == null" + name);
-    //     }
-
-    //     for (ExprDef exprDef : params) {
-    //         if (exprDef instanceof TypeExpr) {
-    //             ((TypeExpr) exprDef).setIsGet(true);
-    //         }
-    //         exprDef.containedInBlock = containedInBlock;
-    //         exprDef.resolve_01();
-    //     }
-
-    //     // resolve constructors
-    //     for (ClassDef classDef : DefFactory.CLASS_DEFS) {
-    //         if (classDef.getShortname().equals(name)) {
-    //             resolvedTo = classDef.resolveConstructor(getSignature());
-
-    //             if (resolvedTo == null) {
-    //                 throw new RuntimeException("No matching function found " + getSignature() + " " + classDef.getFqn());
-    //             }
-
-    //             returnPrimative = false;
-    //             thisType = new TypeIdDef(name);
-    //         }
-    //     }
-
-    //     if (containedInBlock == null) {
-    //         throw new RuntimeException("containedInBlock == null");
-    //     }
-
-    //     if (resolvedTo == null) {
-    //         VariableDef cd = containedInBlock.resolveVariable("this");
-    //         resolvedTo = DefFactory.resolveFunction(cd, name);
-    //         if (resolvedTo != null) {
-    //             thisType = ((FunctionDef) resolvedTo).returnType;
-    //             classMethod = true;
-    //         }
-    //     }
-
-    //     // resolve the return type
-    //     for (FunctionDef funct : DefFactory.FUNCT_DEFS) {
-    //         if (funct.name.equals(name)) {
-
-    //             thisType = funct.returnType;
-
-    //             if (name.equals("String")) {
-    //                 name = "/* fce */  create_String$1";
-    //             }
-
-    //             if (name.equals("I64")) {
-    //                 name = "Boxing_i64_create";
-    //                 thisType.setIs_boxed(true);
-    //             }
-
-    //             break;
-    //         }
-    //     }
-    //     // }
-
-    //     super.resolve_01();
-
-    //     if (resolvedTo == null || resolve02.length() == 0) {
-    //         System.out.println("@@functioncall not resolved " + name  + " and why is resolve01 being called");
-    //         throw new RuntimeException("@@functioncall not resolved " + name );
-    //     }
-    // }
-
-    // private String getClassModelName(String varName) {
-    //     // DefFactory lookup to return the Type by name
-    //     for (VariableDef var : containedInBlock.variableDefs) {
-    //         if (var.getName().equals(varName)) {
-    //             return var.type.getName();
-    //         }
-    //     }
-
-    //     for (VariableDef var : DefFactory.VAR_DEFS) {
-    //         if (var.getName().equals(varName)) {
-    //             return var.type.getName();
-    //         }
-    //     }
-
-    //     // a static refence?
-    //     ClassDef cd = DefFactory.resolveClass(varName);
-    //     if (cd != null) {
-    //         staticMethod = true;
-    //         return varName;
-    //     }
-
-    //     throw new RuntimeException("Class not resolved " + varName);
-    // }
 
     public FunctionCallExpr() {
     }
@@ -166,7 +72,7 @@ public class FunctionCallExpr extends ExprDef implements MultiTypeId {
 
     @Override
     public String asCode() {
-        if (resolvedTo != null) {
+        if (resolvedTo != null  && !isExternal) {
             if (resolvedTo instanceof ConstructorDef) {
                 return hasNot + "/*cd1*/ create_" + resolvedTo.getExpandedName() + "(" + paramsAsCode("") + ")";
             } else {
@@ -213,10 +119,7 @@ public class FunctionCallExpr extends ExprDef implements MultiTypeId {
     }
 
     @Override
-    public void resolve_02(String red_id) {
-        // TODO Auto-generated method stub
-        resolve02 = red_id;
-
+    public void resolve_01() {
         if (containedInBlock == null) {
             new NullPointerException("FunctionCallExpr containedInBlock == null" + name);
         }
@@ -228,11 +131,19 @@ public class FunctionCallExpr extends ExprDef implements MultiTypeId {
             exprDef.containedInBlock = containedInBlock;
             exprDef.resolve_01();
         }
+        
+        super.resolve_01();
+    }
+
+    @Override
+    public void resolve_02(String red_id) {
+        resolve02 = red_id;
+
+        resolve_01();
     }
 
     @Override
     public void setIsGet(boolean isGet) {
-        // TODO Auto-generated method stub
 
     }
 }

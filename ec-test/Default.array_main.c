@@ -4,7 +4,7 @@ num getNumbers(num howMany) {
 
   u64 entry$ = __onEnter();
   num result = create_c_2106303_Array$1(10, ((c_2106303_Boxing_cm *)getc_2106303_Boxing_cm())->i8_, sizeof(i8));
-  return __exitReturn_ref_un(/*te8*/ result, entry$);
+  /*rx2*/ return __exitReturn_ref_un(/*te8*/ result, entry$);
 }
 
 num getOtherNumbers() {
@@ -12,7 +12,7 @@ num getOtherNumbers() {
   u64 entry$ = __onEnter();
   num result = create_c_2106303_Array$1(10, ((c_2106303_Boxing_cm *)getc_2106303_Boxing_cm())->i8_, sizeof(i8));
   /*va1*/ i8 otherNos = /*te8*/ result;
-  return __exitReturn_ref_un(/*te8*/ otherNos, entry$);
+  /*rx2*/ return __exitReturn_ref_un(/*te8*/ otherNos, entry$);
 }
 
 void array_695922764_main() {
@@ -21,15 +21,15 @@ void array_695922764_main() {
   num numbers = create_c_2106303_Array$1(10, ((c_2106303_Boxing_cm *)getc_2106303_Boxing_cm())->i8_, sizeof(i8));
   num anarray = create_c_2106303_Array$1(10, ((c_2106303_Boxing_cm *)getc_2106303_Boxing_cm())->i8_, sizeof(i8));
   num anarray2 = create_c_2106303_Array$1(10, ((c_2106303_Boxing_cm *)getc_2106303_Boxing_cm())->i8_, sizeof(i8));
-  /*Ax4*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 0L) /*te8*/ = 's';
-  /*Ax4*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 1) /*te8*/ = 't';
-  /*Ax4*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 2) /*te8*/ = 'r';
-  /*Ax4*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 3) /*te8*/ = 'i';
-  /*Ax4*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 4) /*te8*/ = 'n';
-  /*Ax4*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 5) /*te8*/ = 'g';
-  /*Ax4*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 6) /*te8*/ = '\n';
+  /*Ax6*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 0L) /*te8*/ = 's';
+  /*Ax6*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 1) /*te8*/ = 't';
+  /*Ax6*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 2) /*te8*/ = 'r';
+  /*Ax6*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 3) /*te8*/ = 'i';
+  /*Ax6*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 4) /*te8*/ = 'n';
+  /*Ax6*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 5) /*te8*/ = 'g';
+  /*Ax6*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 6) /*te8*/ = '\n';
   /*va1*/ i8 otherNumbers = /*te8*/ numbers;
-  /*Ax4*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(otherNumbers)->classmodel)->get(otherNumbers, 0) /*te8*/ =
+  /*Ax6*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(otherNumbers)->classmodel)->get(otherNumbers, 0) /*te8*/ =
       'S';
   /*va1*/ num moreNumbers = /*fc2 null */ getNumbers(3);
   /*va1*/ num someMoreNumbers = /*fc2 null */ getOtherNumbers();

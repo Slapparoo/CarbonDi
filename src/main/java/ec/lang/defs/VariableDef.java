@@ -1,9 +1,7 @@
 package ec.lang.defs;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import ec.lang.defs.Enums.Accessor;
 import ec.lang.defs.expressions.MultiTypeExpr;
@@ -12,7 +10,7 @@ import ec.lang.defs.expressions.TypeExpr;
 public class VariableDef extends StatementDef {
     String debugValue;
 
-    private String name;
+    private String name = "";
     public TypeIdDef type = null;
     public TypeIdDef cast_to;
 
@@ -30,19 +28,11 @@ public class VariableDef extends StatementDef {
 
     public boolean equalsParam = false;
 
+
     public ExprDef assignValue; 
 
     // for class member functions which can be used as a property
     public FunctionDef functionDef = null;
-
-    public static Set<String> VAR_CHARS = new HashSet();
-
-    static {
-        // VAR_CHARS.add("@");
-        // VAR_CHARS.add("~");
-        VAR_CHARS.add("?");
-        // VAR_CHARS.add("$");
-    }
 
     // used for constructors
     public List<ExprDef> params = new ArrayList<>();
@@ -59,7 +49,9 @@ public class VariableDef extends StatementDef {
     public void setValues(String accessor, String name, String type, boolean isArray, String castTo, String size, String reference, String line, String assignable, ExprDef expr) {
         assignValue = expr;
         this.setValues(accessor, name, type, isArray, castTo, size, reference, line);
-        // System.out.println("@@Assign line = " + line);
+
+        // System.out.println("@@assign " + accessor + " " + name + " " + type + " " + isArray + " " + castTo + " " + size + " " + reference + " " + line);
+        // System.out.println("@@Assign = " + size);
     }
 
     public void setValues2(String accessor, String name, String type, boolean isArray, String castTo, String size, String reference, String line, String assignable, ExprDef expr, String isStatic) {
@@ -145,7 +137,11 @@ public class VariableDef extends StatementDef {
             System.out.println("type == null " + name);
         }
 
-        if (VAR_CHARS.contains(type.getName())) {
+        if (type.getName() == null) {
+            System.out.println("type.name == null " + name);
+        }
+
+        if (type.getName().equals("?") ) {
             // equals something - so the type of the equals
             // System.out.println("@@resolve type " + name);
             if (assignValue == null) {
@@ -162,11 +158,15 @@ public class VariableDef extends StatementDef {
                 if (assignValue instanceof MultiTypeExpr && type.isIs_array()) {
                     MultiTypeExpr av = (MultiTypeExpr) assignValue;
                     // this is ambiguous - nad doesn't always work
-                    type.setIs_array(av.arrayIndex != null);
-                    System.out.println("@@assignValue " + name + " " + type);
+
+                    //// @TODO this doesn't work for function returns
+
+                    if (!av.isFunction) {
+                        type.setIs_array(av.arrayIndex != null);
+                    }
                 }
             } else {
-                System.out.println("@@Not resolved " + name + ", " + assignValue.getClass() + " " + assignValue.toString());
+                System.out.println("@@Not resolved " + name + ", " + assignValue.getClass() + " " + assignValue);
             }
         }
 
@@ -183,10 +183,8 @@ public class VariableDef extends StatementDef {
         }
 
         if (classDef == null && !type.isPrimative()) {
-            System.out.println("[warn] no class type for variable " + name);
-
+            System.out.println("[warn] no class type for variable " + name + " " + type);
         }
-
     }
 
     public void setCastTo(String castTo) {
@@ -198,12 +196,26 @@ public class VariableDef extends StatementDef {
     }
 
     public String getName() {
-        if (name == null) {
-            is_annoymous = true;
-            name = "a" + FileDef.getNextValueNumber();
+        // if (name == null) {
+        //     is_annoymous = true;
+        //     name = "a__$a";
+        //     return name;
+        // }
+
+        // if (name.matches("\\$[a-z]")) {
+        //     return "a__" + name;
+        // }
+        return name;
+    }
+
+
+    public String getNameAsCode() {
+        if (name.matches("\\$[a-z]")) {
+            return "a__" + name;
         }
         return name;
     }
+
        
     public String asHeader() {
 
@@ -211,15 +223,15 @@ public class VariableDef extends StatementDef {
         //     return "";
         // }
         if (type.isIs_array()) {
-            return "num " + getName();
+            return "num " + getNameAsCode();
         } else {
-            return type.asCode() + " " + getName();
+            return type.asCode() + " " + getNameAsCode();
         }
     }
 
     public String asCode() {
         if (type == null) {
-            return "(incomplete) " + getName();
+            return "(incomplete) " + getNameAsCode();
         }
 
         String aa = (assignValue == null ? ";" : assignValue.asCode());
@@ -240,24 +252,25 @@ public class VariableDef extends StatementDef {
 
                 if (arraySize.length() == 0)  {
                     type.setObjectType("DynamicArray");
-                    return "num " + getName() + " = create_c_2106303_NewDynamicArray$1(" 
+                    return "num " + getNameAsCode() + " = create_c_2106303_NewDynamicArray$1(" 
                     + "((c_2106303_Boxing_cm*) getc_2106303_Boxing_cm())->"
                     + type.asCode() + "_, sizeof("+type.asCode() +"))";
                 }
 
+                String tp = type.getName();
 
-                return "num " + getName() + " = create_c_2106303_Array$1(" 
+                return "num " + getNameAsCode() + " = create_c_2106303_Array$1(" 
                     + arraySize
                     + ", ((c_2106303_Boxing_cm*) getc_2106303_Boxing_cm())->"
-                    + type.asCode() + "_, sizeof("+type.asCode() +"))";
+                    + tp + "_, sizeof("+tp +"))";
 
             } else if (type.getObjectType().equals("RefArray")) {
-                return "num " + getName() + " = create_c_2106303_RefArray$1(" + arraySize+ ")";
+                return "num " + getNameAsCode() + " = create_c_2106303_RefArray$1(" + arraySize+ ")";
             } 
 
-            return "num " + getName() + " = create_c_2106303_"+type.getObjectType()+"$1(" + arraySize+ ", _"+type.asCode() + ", sizeof("+type.asCode() +"))";
+            return "num " + getNameAsCode() + " = create_c_2106303_"+type.getObjectType()+"$1(" + arraySize+ ", _"+type.asCode() + ", sizeof("+type.asCode() +"))";
         } else {
-            return "/*va1*/"+ type.asCode() + " " + getName() + av;
+            return "/*va1*/"+ type.asCode() + " " + getNameAsCode() + av;
         }
     }
 
@@ -265,11 +278,11 @@ public class VariableDef extends StatementDef {
     public String asSignature() {
         return "("+readAccessor+","+writeAccessor+") "  
         + (is_static ? " static " : "")
-        + type.asSignature() + " " + getName() + ";";
+        + type.asSignature() + " " + getNameAsCode() + ";";
     }
 
     public String asParameterSignature() {
-        return type.asSignature() + " " + getName();
+        return type.asSignature() + " " + getNameAsCode();
         
     }
 

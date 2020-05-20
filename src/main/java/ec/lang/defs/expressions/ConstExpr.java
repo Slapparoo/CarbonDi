@@ -52,6 +52,7 @@ public class ConstExpr extends ExprDef {
         super.resolve_01();
     }
 
+    @SuppressWarnings( "deprecation" )
     @Override
     public String asCode() {
         if (type == null) {

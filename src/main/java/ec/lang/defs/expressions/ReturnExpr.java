@@ -44,13 +44,13 @@ public class ReturnExpr extends StatementDef {
 
 
         if (statement.thisType.isIs_array()) {
-            return "return __exitReturn_ref_un(" + statement.asCode() + ", entry$);";
+            return "/*rx1*/ return __exitReturn_ref_un(" + statement.asCode() + ", entry$);";
         }
 
         if (statement.thisType.isPrimative()) {
             return "return __exitReturn_" + statement.thisType.getName() + "_un(" + statement.asCode() + ", entry$);";
         } else {
-            return "return __exitReturn_ref_un(" + statement.asCode() + ", entry$);";
+            return "/*rx2*/ return __exitReturn_ref_un(" + statement.asCode() + ", entry$);";
         }
     }
 }

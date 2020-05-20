@@ -1,0 +1,5 @@
+
+clang -std=gnu17 -O3 -g -c -I../c-bin/include -o obj/Default.file_main.o Default.file_main.c
+clang-format -style=file -i Default.file_main.c
+clang -std=gnu17 -O3 -g -I../c-bin/include ../c-bin/obj/*.o obj/*.o  -o Default.file_main Default.file_main.run.c
+clang-format -style=file -i Default.file_main.run.c

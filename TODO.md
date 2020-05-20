@@ -1,41 +1,32 @@
+fix switch blocks
+fix loop - remove - loop
+io
+
+C style params array
+Core.External = static methods, with direct calls
+function pointers  (<returnType>(*<name>)(parameters)) just like in c
+onchange, onvalidate, onget to array (wsomehow write code not generate code)
+inline class
+inline function
+DynamicArray
+threads
 loop returns
-(defect) __onreturn doesn't match __on entry, on return exit needs its depth
-bundle all 'Core'/package ec's into a single 'library' file
-track pointers/pointer to pointers so they can be changed or remove exposing them
 imports
 constructor params polluting in global varibales
 constructor functions
-swicth @ for ?
-
+track pointers/pointer to pointers so they can be changed or remove exposing them
 auto expand to String on printf if %s
-oberserver for properties (async message queue)
-functions as properties getter and setter
-threads
-
-(defect) parent constructors in header RefArray
 super
-accessors
 unit tests / framework
 precompiler
-on the fly binary data structure, suitable for copy to c-struct
-
 instanceof implements -> parents
 primative compatability check
-
 (defect) internal block is not output
-
-
-basic langauge support library in ec - String, Exception, Array, Boxing
-DynamicArray
 enum
-class static properties, 
-
 create object with a passed array - so it doen't alllocate its own data
 line numbers - $statement.start
 casting
-class unique names, Constructor unique names
 
-function pointers  (<returnType>(*<name>)(parameters)) just like in c
 memcopy - data pointer and size - expose array
 use Array for string etc
 multi parameter methods (Array?)  last param - Type name..., functionmame(String names...)
@@ -44,21 +35,18 @@ exceptions Stack per type or one stack of handlers and you rifle though until fo
 init array values - with auto boxing
 std print
 generics
-getters setters onset? event
-validate_01
-prepare_01
 json
 threads
+optimise_04
 v2 class static constructors (String.new(Pointer)), 
 
-re-factor types.h, re-implement string, use string
 
-Other base lang features, loop swicth, if etc....
 initialise struct type defs - with defined values or default null value
 StructType blah = {1, 4, ""};
-switch
 
-// done
+on the fly binary data structure, suitable for copy to c-struct
+
+** done **
 inherit constructors
 constructor overrides
 hashcode, equals
@@ -75,3 +63,19 @@ safe memory allocate
 where do main line methods get declared? declare them as public
 if
 operands
+basic langauge support library in ec - String, Exception, Array, Boxing
+re-factor types.h, re-implement string, use string
+bundle all 'Core'/package ec's into a single 'library' file
+functions as properties getter and setter
+class unique names, Constructor unique names
+class static properties, 
+validate_01
+prepare_01
+(defect) parent constructors in header RefArray
+switch @ for ?
+property function overrides, accessors
+getters setters onset? event
+oberserver for properties (async message queue)
+observer implementation
+switch
+Other base lang features, loop swicth, if etc....

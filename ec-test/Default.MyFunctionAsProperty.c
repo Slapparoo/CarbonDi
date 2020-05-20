@@ -5,6 +5,7 @@
 #include "Core.BaseBoxing.h"
 #include "Core.Boxing.h"
 #include "Core.Core_main.h"
+#include "Core.DynamicArray.h"
 #include "Core.Exception.h"
 #include "Core.F32.h"
 #include "Core.F64.h"
@@ -31,7 +32,7 @@ void c_1085510111_MyFunctionAsPropertysetName(num this, num name) {
 
 num c_1085510111_MyFunctionAsPropertygetName(num this) {
 
-  u64 entry$ = __onEnter();
+  u64 entry$ = __onEnter(); /*rx2*/
   return __exitReturn_ref_un(
       /*te14a*/ ((c_1085510111_MyFunctionAsProperty_cm *)useObject(/*te8*/ this)->classmodel)->get_name(/*te8*/ this),
       entry$);
@@ -51,8 +52,8 @@ num c_1085510111_MyFunctionAsPropertyget_name(num this) {
   return ((c_1085510111_MyFunctionAsProperty *)useObject(this)->data)->name;
 }
 
-void c_1085510111_MyFunctionAsPropertyset_name(num this, num name) {
-  assignObject(&((c_1085510111_MyFunctionAsProperty *)useObject(this)->data)->name, name);
+void c_1085510111_MyFunctionAsPropertyset_name(num this, num a__$a) {
+  /*cda2*/ assignObject(&((c_1085510111_MyFunctionAsProperty *)useObject(this)->data) /*cda3*/->name, a__$a);
 }
 
 void c_1085510111_MyFunctionAsProperty_free(num this) {

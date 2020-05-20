@@ -2,8 +2,8 @@ package ec.lang.defs.expressions;
 
 import ec.lang.defs.*;
 
-public class AnnonymousExpr extends ExprDef {
-    public AnnonymousExpr(String value) {
+public class AnonymousExpr extends ExprDef {
+    public AnonymousExpr(String value) {
         expr = value;
     }
 

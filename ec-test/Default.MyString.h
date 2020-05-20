@@ -10,7 +10,7 @@
  pointer value;
 #define __C_1085510111_MYSTRING_CLASS_  \
   pointer (*get_value)(num);  \
-  void (*set_value)(num, pointer);
+  void (*set_value)(num,pointer);
 typedef struct c_1085510111_MyString_cm {
 
 __C_2106303_OBJECT_CLASS_

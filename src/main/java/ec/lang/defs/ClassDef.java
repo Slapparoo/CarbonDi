@@ -19,12 +19,17 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
     public boolean is_final;
     public boolean is_signature = false;
     public String namespace;
-    private  List<VariableDef> variableDefs = new ArrayList<>();
+    public  List<VariableDef> variableDefs = new ArrayList<>();
     private List<FunctionDef> functionDefs = new ArrayList<>();
+    private List<EncapsulationDef> encapsulationDefs = new ArrayList<>();
     private List<String> implementations = new ArrayList<>();
     private List<ConstructorDef> constructorDefs = new ArrayList<>();
     private List<String> generics = new ArrayList<>();
     
+
+    public List<FunctionDef> getFunctionDefs() {
+        return Collections.unmodifiableList(functionDefs);
+    } 
 
     public FileDef fileDef = null;
     public Accessor readAccessor = Accessor.PUBLIC;
@@ -43,7 +48,7 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
 
     // private String classVar = null;
     private boolean is_class = true;
-    private boolean is_stub; // should be mutually exclusive with isClass
+    private boolean is_stub = false; // should be mutually exclusive with isClass
 
     public static class SortbySignature implements Comparator<FunctionDefBase> {
         // Used for sorting in ascending order of
@@ -58,10 +63,11 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
     static SortbySignature SortbySignature = new SortbySignature();
 
     public VariableDef resolveProperty(String name) {
-
         // System.out.println("@@resolveProperty " + name + " " + properties);
         for (VariableDef var : properties) {
+            
             if (var.getName().equals(name)) {
+                // System.out.println("@@resolveProperty " + name);
                 return var;
             }
         }
@@ -83,19 +89,19 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
 
         boolean isVoid = fd.returnType.getName().equals("void");
 
-        if (fd.parameters.size() == 1 && !isVoid && !fd.is_static) {
+        if (fd.getParameters().size() == 1 && !isVoid && !fd.is_static) {
             return fd;
         }
 
-        if (fd.parameters.size() == 0 && !isVoid && fd.is_static) {
+        if (fd.getParameters().size() == 0 && !isVoid && fd.is_static) {
             return fd;
         }
 
-        if (fd.parameters.size() == 2 && isVoid && !fd.is_static) {
+        if (fd.getParameters().size() == 2 && isVoid && !fd.is_static) {
             return fd;
         }
 
-        if (fd.parameters.size() == 1 && isVoid && fd.is_static) {
+        if (fd.getParameters().size() == 1 && isVoid && fd.is_static) {
             return fd;
         }
 
@@ -175,6 +181,12 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
                 functionDefs.add((FunctionDef) statementDef);
                 ((FunctionDef) statementDef).classDef = this;
             }
+
+            if (statementDef instanceof EncapsulationDef) {
+                encapsulationDefs.add((EncapsulationDef) statementDef);
+                ((EncapsulationDef) statementDef).classDef = this;
+            }
+
             if (statementDef.getClass().equals(ConstructorDef.class)) {
                 ConstructorDef cd = (ConstructorDef) statementDef;
                 if (!cd.name.equals(classname.getShortName())) {
@@ -212,15 +224,20 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
             variableDef.classDef = this;
         }
 
-        addReturnFunction("getClassName", "\""+getFqn()+"\"", new TypeIdDef("pointer"), true, true, true);
-        addReturnFunction("getClassShortName", "\""+getShortname()+"\"", new TypeIdDef("pointer"), true, true, true);
-        addReturnFunction("getClassCName", "\""+getCName()+"\"", new TypeIdDef("pointer"), true, true, true);
-        addReturnFunction("getClassPackage", "\""+classname.getPackageName()+"\"", new TypeIdDef("pointer"), true, true, true);
-        addReturnFunction("getObjectDatasize", "sizeof("+getCName()+")", new TypeIdDef("u64"), true, true, true);
+        FunctionDef funct = SnippetFactory.addReturnFunction("getClassName", "\""+getFqn()+"\"", new TypeIdDef("pointer"), true, true, true);
+        funct.classDef = this; functionDefs.add(funct);
+        funct = SnippetFactory.addReturnFunction("getClassShortName", "\""+getShortname()+"\"", new TypeIdDef("pointer"), true, true, true);
+        funct.classDef = this; functionDefs.add(funct);
+        funct = SnippetFactory.addReturnFunction("getClassCName", "\""+getCName()+"\"", new TypeIdDef("pointer"), true, true, true);
+        funct.classDef = this; functionDefs.add(funct);
+        funct = SnippetFactory.addReturnFunction("getClassPackage", "\""+classname.getPackageName()+"\"", new TypeIdDef("pointer"), true, true, true);
+        funct.classDef = this; functionDefs.add(funct);
+        funct = SnippetFactory.addReturnFunction("getObjectDatasize", "sizeof("+getCName()+")", new TypeIdDef("u64"), true, true, true);
+        funct.classDef = this; functionDefs.add(funct);
 
         // add all parent constructors
-        // we assume that resolce isready run on the parent so it will already have
-        // resolced all teh constructors
+        // we assume that resolve is already run on the parent so it will already have
+        // resolved all the constructors
         if (parent != null) {
             properties.addAll(parent.properties);
             // constructorDefs.addAll(parent.constructorDefs);
@@ -258,10 +275,11 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
                     nc.classDef = this;
                     boolean exists = false;
                     nc.is_parent = true;
-                    if (nc.parameters.size() > 0) {
-
-                        if (nc.parameters.get(0).getName().equals("this") || nc.parameters.get(0).getName().equals("_refId")) {
-                            nc.parameters.remove(0);
+                    if (nc.getParameters().size() > 0) {
+                        // why is this being removed? - because its the parent, and the object type is 
+                        // for the parent, we want this object type
+                        if (nc.getParameters().get(0).getName().equals("this") || nc.getParameters().get(0).getName().equals("_refId")) {
+                            nc.getParameters().remove(0);
                         }
                     }
                     
@@ -295,10 +313,11 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
                 ((BlockDef)statementDef).classDef = this;
             }
 
-            if (statementDef instanceof FunctionDef) {
-                if (((FunctionDef)statementDef).getBlockDef() != null) {
-                    ((FunctionDef)statementDef).getBlockDef().isClass = true;
-                    ((FunctionDef)statementDef).getBlockDef().classDef = this;
+            if (statementDef instanceof FunctionDef || statementDef instanceof EncapsulationDef) {
+                if (((FunctionDefBase)statementDef).getBlockDef() != null) {
+                    ((FunctionDefBase)statementDef).getBlockDef().isClass = true;
+                    ((FunctionDefBase)statementDef).getBlockDef().classDef = this;
+                    statementDef.containedInBlock = blockDef;
                 }
             }
 
@@ -411,44 +430,6 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
     }
 
 
-    private FunctionDef addReturnFunction(String functionName, String returnvalue, TypeIdDef returnType,  boolean isOverride, boolean is_static, boolean is_final) {
-        return addFunction(functionName,
-            new DirectStatement("  return  "+returnvalue+";"),
-            returnType, isOverride, is_static, is_final
-            );
-    }
-
-    private FunctionDef addVoidFunction(String functionName, String body,  
-        boolean isOverride, boolean is_static, boolean is_final) {
-        return addFunction(functionName, 
-            new DirectStatement(body+";"),
-            new TypeIdDef("void"), isOverride, is_static, is_final
-            );
-    }
-
-    private FunctionDef addFunction(String functionName, DirectStatement body, 
-        TypeIdDef returnType,  boolean isOverride, boolean is_static, boolean is_final) {
-        FunctionDef funct = new FunctionDef();
-        funct.name = functionName;
-        funct.accessor = Enums.Accessor.PUBLIC;
-        funct.returnType = returnType;
-        funct.setBlockDef(new BlockDef());
-        funct.getBlockDef().includeEntryExit = false;
-        funct.getBlockDef().statementDefs.add(body);
-        funct.is_static = is_static;
-        funct.is_final = is_final;
-
-        if (!is_static) {
-            VariableDef param = new VariableDef();
-            param.setName("this");
-            param.type = new TypeIdDef("num");
-            funct.parameters.add(param);
-        }
-        funct.is_override = isOverride;
-        functionDefs.add(funct);
-        return funct;
-    }
-
 
     @Override
     public void prepare_03() {
@@ -467,65 +448,105 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
 
         // change all the function sigs
 
+
+        // mark override accessors as parent so they don't get created
+
         // generate the properties functions
 
         boolean optimise = true;
         for(VariableDef var : properties) {
-
             if (isParentProperty(var)) {
                 continue;
             }
-            variableDefs.add(var);
 
-            String body ="";
-
-            if (optimise) {
-                if (var.is_static) {
-                    body = "(("+getCName()+"_cm*)get"+getCName()+"_cm())->"+var.getName();
-                } else {
-                    body = "(("+getCName()+"*)useObject(this)->data)->"+var.getName();
-                }
-            } else {
-                if (var.is_static) {
-                    body = "(("+getCName()+"_cm*)get"+getCName()+"_cm())->"+var.getName();
-                } else {
-                    body = "(("+getCName()+"*)useObject(this)->data)->"+var.getName();
+            EncapsulationDef overrideSetter = null;
+            EncapsulationDef overrideGetter = null;
+            EncapsulationDef hasOnChange = null;
+            EncapsulationDef hasOnGet = null;
+            for (EncapsulationDef encapsulationDef : encapsulationDefs) {
+                if (encapsulationDef.getPropertyName().equals(var.getName())) {
+                    if (encapsulationDef.hasGetter()) {
+                        overrideGetter = encapsulationDef;
+                    } else if (encapsulationDef.hasSetter()) {
+                        overrideSetter = encapsulationDef;
+                    } else if (encapsulationDef.isOnChange()) {
+                        hasOnChange = encapsulationDef;
+                    } else if (encapsulationDef.isOnGet()) {
+                        hasOnGet = encapsulationDef;
+                    }
                 }
             }
 
-            FunctionDef funct = addReturnFunction("get_" + var.getName(), 
+            variableDefs.add(var);
+
+            String body ="";
+            String dataAccess = "";
+
+            if (overrideGetter != null) {
+                // overrideGetter.containedInBlock = funct.getBlockDef();
+                overrideGetter.resolve_01();
+                overrideGetter.prepare_03();
+                overrideGetter.optimise_04();
+            } else {
+                dataAccess = SnippetFactory.dataModelStatement(getCName(), "this", var.is_static);
+                body = dataAccess + "->"+var.getName();
+            }
+
+            FunctionDef funct = SnippetFactory.addReturnFunction("get_" + var.getName(), 
             body, 
             var.type, false, var.is_static, true
             );
 
-            if (optimise) {
-                funct.getBlockDef().includeEntryExit = false;
+            funct.classDef = this;
+            if (overrideGetter != null) {
+                funct.setBlockDef(overrideGetter.getBlockDef());
+            } else {
+                if (optimise) {
+                    funct.getBlockDef().includeEntryExit = false;
+                }
             }
+
+            functionDefs.add(funct);
+
 
             funct.accessor = var.readAccessor;
             funct.is_property = true;
             // private FunctionDef addVoidFunction(String functionName, String body,  
             // boolean isOverride, boolean is_static, boolean is_final) {
 
-            if (var.is_static) {
-                if (var.isPrimative()) {
-                    // TODO use snippit factory
-                    body = "(("+getCName()+"_cm*)get"+getCName()+"_cm())->"+var.getName() + " = " + var.getName();
-                } else {
-                    body = "assignObject(&(("+getCName()+"_cm*)get"+getCName()+"_cm())->"+var.getName()+", "+var.getName()+")";
-                }
+            dataAccess = SnippetFactory.dataModelStatement(getCName(), "this", var.is_static);
+            if (var.isPrimative()) {
+                body = "/*cda1*/"+ dataAccess +"->"+var.getName() + " = a__$a";
             } else {
-                if (var.isPrimative()) {
-                    body = "(("+getCName()+"*)useObject(this)->data)->" + var.getName() + " = " + var.getName();
-                } else {
-                    body = "assignObject(&(("+getCName()+"*)useObject(this)->data)->" + var.getName()+", "+var.getName()+")";
-                }
+                body = "/*cda2*/ assignObject(&"+dataAccess+"/*cda3*/->"+var.getName()+", a__$a)";
             }
-    
-    
-            FunctionDef setter = addVoidFunction("set_" + var.getName(), body, false, var.is_static, true);
+        
+            FunctionDef setter = SnippetFactory.addVoidFunction("set_" + var.getName(), body, false, var.is_static, true);
+            functionDefs.add(setter);
 
-            setter.parameters.add(var);
+            if (overrideSetter != null) {
+                overrideSetter.containedInBlock = funct.getBlockDef();
+                overrideSetter.resolve_01();
+                overrideSetter.prepare_03();
+                overrideSetter.optimise_04();
+                // overrideSetter.getBlockDef().statementDefs.add(0, new DirectStatement(body + ";\n"));
+                setter.setBlockDef(overrideSetter.getBlockDef());
+            }
+
+            if (hasOnChange != null) {
+                hasOnChange.containedInBlock = funct.getBlockDef();
+                hasOnChange.resolve_01();
+                hasOnChange.prepare_03();
+                hasOnChange.optimise_04();
+                setter.getBlockDef().statementDefs.add(0, hasOnChange.getBlockDef());
+            }
+
+            VariableDef param = new VariableDef();
+            // param.setName("$a");
+            param.type = var.type;
+
+            setter.classDef = this;
+            setter.addParameter(param);
             setter.accessor = var.writeAccessor;
             setter.is_property = true;
 
@@ -539,18 +560,8 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
 
     @Override
     public boolean validate_02() {
-        // TODO Auto-generated method stub
         return super.validate_02();
     }
-
-
-    // public String getClassFQN() {
-    //     return getNamespace() +"."+getClassVar();
-    // }
-
-    // public String getClassFQNHash() {
-    //     return "a"+Math.abs(getClassFQN().hashCode())+ "_";
-    // }
 
     public String getFreeMethod() {
         // every property that is not primative calls returnObject(id);
@@ -642,6 +653,18 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
             first = false;
         }
 
+        // for(EncapsulationDef funct : encapsulationDefs) {
+        //     if (!first) {
+        //         res += "\n";
+        //     }
+        //     String n = funct.name;
+        //     funct.name = getCName()+ funct.getFunctioname();
+        //     res += funct.asCode();
+        //     funct.name = n;
+        //     first = false;
+        // }
+
+
         res += "\n" + getFreeMethod() + "\n";
 
         return res;
@@ -683,6 +706,10 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
             res += "  \\\n  "+funct.getExpandedSignature() +";";
         }
 
+        // for(EncapsulationDef funct : encapsulationDefs) {
+        //     res += "  \\\n  "+funct.getExpandedSignature() +";";
+        // }
+
         for(VariableDef var : variableDefs) {
             if (!var.is_static ) {
                 continue;
@@ -700,6 +727,10 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
                 res += "\n  thisClassModel->"+ funct.name +" = "+ getCName() + funct.name +";";
             }
         }
+
+        // for(EncapsulationDeffor(EncapsulationDef funct : encapsulationDefs) {
+        //     res += "\n  thisClassModel->"+ funct.name +" = "+ getCName() + funct.name +";";
+        // }
 
         for(VariableDef var : variableDefs) {
             if (isParentProperty(var) || !var.is_static) {

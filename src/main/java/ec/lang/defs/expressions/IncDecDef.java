@@ -15,7 +15,6 @@ public class IncDecDef extends TypeExpr {
 
     @Override
     public void resolve_01() {
-        // TODO Auto-generated method stub
         expression.containedInBlock = containedInBlock;
 
         if (expression instanceof MultiTypeExpr) {

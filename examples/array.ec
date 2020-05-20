@@ -1,12 +1,18 @@
 
-num[] getNumbers(num howMany) {
-    i8[10] result;        
+
+// the net result from the following 3 statements is the same
+?content1 i8[10];
+i8 content2[10];
+?content3 = i8[10];
+
+i8[] getNumbers(num howMany) {
+    ?result i8[howMany];        
     return result;
 }
 
-num[] getOtherNumbers() {
-    i8[10] result;        
-    ?otherNos = result;
+i8[] getOtherNumbers() {
+    ?result2 i8[10];        
+    ?otherNos = result2;
     return otherNos;
 }
 
@@ -25,11 +31,15 @@ numbers[6] = `\n`;
 ?otherNumbers = numbers;
 otherNumbers[0] = `S`;
 printf(`Othernumbers %s\n`, otherNumbers.values );
+testi64Equal(`otherNumbers`, 10, otherNumbers.length);
 
 // ?secondArray = [1,2,3,4,5];
 // printf(`secondArray 1 %ld\n`, secondArray[0]);
 
 ?moreNumbers = getNumbers(3);
+testi64Equal(`moreNumbers`, 3, moreNumbers.length);
+
+
 ?someMoreNumbers = getOtherNumbers();
 ?anumber =  numbers[0];
 

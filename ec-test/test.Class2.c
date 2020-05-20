@@ -5,6 +5,7 @@
 #include "Core.BaseBoxing.h"
 #include "Core.Boxing.h"
 #include "Core.Core_main.h"
+#include "Core.DynamicArray.h"
 #include "Core.Exception.h"
 #include "Core.F32.h"
 #include "Core.F64.h"
@@ -67,8 +68,8 @@ u64 c_3556498_Class2getObjectDatasize() { return sizeof(c_3556498_Class2); }
 
 num c_3556498_Class2get_package(num this) { return ((c_3556498_Class2 *)useObject(this)->data)->package; }
 
-void c_3556498_Class2set_package(num this, num package) {
-  assignObject(&((c_3556498_Class2 *)useObject(this)->data)->package, package);
+void c_3556498_Class2set_package(num this, num a__$a) {
+  /*cda2*/ assignObject(&((c_3556498_Class2 *)useObject(this)->data) /*cda3*/->package, a__$a);
 }
 
 void c_3556498_Class2_free(num this) {

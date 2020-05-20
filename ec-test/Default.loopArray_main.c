@@ -4,13 +4,13 @@ void loopArray_1241149816_main() {
 
   __onEnter();
   num numbers = create_c_2106303_Array$1(10, ((c_2106303_Boxing_cm *)getc_2106303_Boxing_cm())->i8_, sizeof(i8));
-  /*Ax4*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 0L) /*te8*/ = 's';
-  /*Ax4*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 1) /*te8*/ = 't';
-  /*Ax4*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 2) /*te8*/ = 'r';
-  /*Ax4*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 3) /*te8*/ = 'i';
-  /*Ax4*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 4) /*te8*/ = 'n';
-  /*Ax4*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 5) /*te8*/ = 'g';
-  /*Ax4*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 6) /*te8*/ = '\n';
+  /*Ax6*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 0L) /*te8*/ = 's';
+  /*Ax6*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 1) /*te8*/ = 't';
+  /*Ax6*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 2) /*te8*/ = 'r';
+  /*Ax6*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 3) /*te8*/ = 'i';
+  /*Ax6*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 4) /*te8*/ = 'n';
+  /*Ax6*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 5) /*te8*/ = 'g';
+  /*Ax6*/ /*at3*/ *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 6) /*te8*/ = '\n';
   /*st*/ /*fc2 null */ printf(
       "numbers %s",
       /*te14a*/ ((c_2106303_Array_cm *)useObject(/*te8*/ numbers)->classmodel)->get_values(/*te8*/ numbers));
@@ -31,7 +31,7 @@ void loopArray_1241149816_main() {
         __onExit();
       }
 
-      /*Ax4*/ /*te8*/ *a__$a /*te8*/ = 0;
+      /*Ax6*/ /*te8*/ *a__$a /*te8*/ = 0;
 
       __onExit();
     }

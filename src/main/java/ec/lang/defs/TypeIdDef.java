@@ -9,7 +9,6 @@ import java.util.Set;
  * 
  */
 public class TypeIdDef extends BaseDef {
-
     private String name;
     private boolean is_array = false;
     private boolean is_boxed = false;
@@ -20,16 +19,14 @@ public class TypeIdDef extends BaseDef {
     static {
         // All ref objects become i64
         PRIMATIVES.addAll(Arrays.asList(new String[] { "i64", "u64", "u32", "i32", "u16", "i16", "b8", "i8", "u8", "f32",
-                "f64", "f128", "f80", "boolean", "num", "int", "pointer"
+                "f64", "f128", "f80", "boolean", "num", "int", "pointer", "function"
         }));
     }
 
     @Override
     public void resolve_01() {
         super.resolve_01();
-        System.out.println("@@TypeIdDef.resolve " + name + ", is_array="+ is_array + ", isPrimative=" + isPrimative());
     }
-
 
     public TypeIdDef() {
     }
@@ -48,11 +45,13 @@ public class TypeIdDef extends BaseDef {
     }
 
     private String getMappedType(String type) {
+        if (is_array) {
+            return "num";
+        }
         return PRIMATIVES.contains(type) ? type : "num";
     }
 
     public String asCode() {
-        // @TODO if it is a return type void is valid
         return getMappedType(name);
     }
 
@@ -60,7 +59,6 @@ public class TypeIdDef extends BaseDef {
     public String asSignature() {
         return name;
     }
-
 
 	public static boolean isPrimative(String name) {
 		return PRIMATIVES.contains(name);
@@ -107,6 +105,9 @@ public class TypeIdDef extends BaseDef {
         this.objectType = objectType;
     }
 
+    public boolean isFunction() {
+        return name.equals("function");
+    }
 
 	public boolean isVoid() {
         if (name == null || objectType == null) {

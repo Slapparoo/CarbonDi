@@ -68,7 +68,7 @@ public class LoopDef extends StatementDef implements ContainerDef {
         if (counter == null) {
             counter = new VariableDef();
             counter.setName("$a");
-            counter.type = new TypeIdDef("num");
+            counter.type = new TypeIdDef("i64");
             counter.containedInBlock = blockDef;
             counter.resolve_01();
             blockDef.addVariable(counter);
@@ -88,7 +88,7 @@ public class LoopDef extends StatementDef implements ContainerDef {
 
 // TODO correct name 
 // TODO validate name
-
+// FIX variable name
         if (loopOver instanceof ParenExpr) {
             ParenExpr p = (ParenExpr) loopOver;
             System.out.println("@@loop.asCode " + p.enclosed.getClass() + ", " + p.enclosed.asCode());
@@ -127,14 +127,19 @@ public class LoopDef extends StatementDef implements ContainerDef {
                 || p.enclosed instanceof FunctionCallExpr) {
                 String ex = p.enclosed.asCode();
                 // do nothing for 0
-                return "if ("+ex+" > 0) {"
-                 + "\nfor (num a__$a = 0; a__$a < "+ex+"; a__$a++)"
-                + blockDef.asCode()
-                + "\n} else if ("+ex+" < 0) {"
-                + "\nnum a__$a = "+ex+" *-1 -1;"
-                + "\nfor (; a__$a >= 0; a__$a--)"
-                + blockDef.asCode()
-                + "\n}";
+                return 
+                // "if ("+ex+" > 0) {"
+                //  + "\nfor (num a__$a = 0; a__$a < "+ex+"; a__$a++)"
+                // + blockDef.asCode()
+                // + "\n} else if ("+ex+" < 0) {"
+                // + "\nnum a__$a = "+ex+" *-1 -1;"
+                // + "\nfor (; a__$a >= 0; a__$a--)"
+                // + blockDef.asCode()
+                // + "\n}";
+
+                "\nfor (num a__$a = 0; a__$a < "+ex+"; a__$a++)"
+               + blockDef.asCode();
+
             }
 
             

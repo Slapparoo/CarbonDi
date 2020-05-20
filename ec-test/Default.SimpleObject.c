@@ -5,6 +5,7 @@
 #include "Core.BaseBoxing.h"
 #include "Core.Boxing.h"
 #include "Core.Core_main.h"
+#include "Core.DynamicArray.h"
 #include "Core.Exception.h"
 #include "Core.F32.h"
 #include "Core.F64.h"
@@ -41,24 +42,24 @@ i64 c_1085510111_SimpleObjectget_count1(num this) {
   return ((c_1085510111_SimpleObject *)useObject(this)->data)->count1;
 }
 
-void c_1085510111_SimpleObjectset_count1(num this, i64 count1) {
-  ((c_1085510111_SimpleObject *)useObject(this)->data)->count1 = count1;
+void c_1085510111_SimpleObjectset_count1(num this, i64 a__$a) {
+  /*cda1*/ ((c_1085510111_SimpleObject *)useObject(this)->data)->count1 = a__$a;
 }
 
 i64 c_1085510111_SimpleObjectget_count2() {
   return ((c_1085510111_SimpleObject_cm *)getc_1085510111_SimpleObject_cm())->count2;
 }
 
-void c_1085510111_SimpleObjectset_count2(i64 count2) {
-  ((c_1085510111_SimpleObject_cm *)getc_1085510111_SimpleObject_cm())->count2 = count2;
+void c_1085510111_SimpleObjectset_count2(i64 a__$a) {
+  /*cda1*/ ((c_1085510111_SimpleObject_cm *)getc_1085510111_SimpleObject_cm())->count2 = a__$a;
 }
 
 i64 c_1085510111_SimpleObjectget_count3(num this) {
   return ((c_1085510111_SimpleObject *)useObject(this)->data)->count3;
 }
 
-void c_1085510111_SimpleObjectset_count3(num this, i64 count3) {
-  ((c_1085510111_SimpleObject *)useObject(this)->data)->count3 = count3;
+void c_1085510111_SimpleObjectset_count3(num this, i64 a__$a) {
+  /*cda1*/ ((c_1085510111_SimpleObject *)useObject(this)->data)->count3 = a__$a;
 }
 
 void c_1085510111_SimpleObject_free(num this) { Object_ref *object_ref = useObject(this); }

@@ -12,10 +12,10 @@ void printName(String value) {
     printf(`name=%s\n`, value.asStr());
 }
 
-@name2 = getAName();
+?name2 = getAName();
 
 loop (10) {
-    @name = getName(String(`Ma Name`));
+    ?name = getName(String(`Ma Name`));
     printf(`l=%ld\n`, $a);
     printName(name);
 }

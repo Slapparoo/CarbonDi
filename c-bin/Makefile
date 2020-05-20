@@ -8,7 +8,7 @@ MAINS    := $(shell find $(OBJDIR) -name "main*.e")
 GENDIR	   := gen
 INCLUDEDIR := include
 OBJDIR     := obj
-PARAMS   := -std=gnu17 -O3 -g -I$(INCLUDEDIR) 
+PARAMS   := -std=gnu17 -O3 -I$(INCLUDEDIR) 
 
 OBJ := $(SRC:%.c=$(OBJDIR)/%.o)
 MAIN := $(SRCMAIN:%.c=$(OBJDIR)/%.e)

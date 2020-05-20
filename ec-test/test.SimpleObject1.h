@@ -10,11 +10,11 @@
  i64 number; \
  num name;
 #define __C_3556498_SIMPLEOBJECT1_CLASS_  \
-  i64 (*addNumber)(num, i64);  \
+  i64 (*addNumber)(num,i64);  \
   i64 (*get_number)(num);  \
-  void (*set_number)(num, i64);  \
+  void (*set_number)(num,i64);  \
   num (*get_name)(num);  \
-  void (*set_name)(num, num);
+  void (*set_name)(num,num);
 typedef struct c_3556498_SimpleObject1_cm {
 
 __C_2106303_OBJECT_CLASS_

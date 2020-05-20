@@ -10,7 +10,7 @@ public abstract class FunctionDefBase extends StatementDef implements ContainerD
     public FileDef fileDef; // probably never null?
     public String name;
     public List<String> exceptions = new ArrayList<>();
-    public List<VariableDef> parameters = new ArrayList<>();
+    private List<VariableDef> parameters = new ArrayList<>();
     private BlockDef blockDef;
     public Enums.Accessor accessor = Accessor.PUBLIC;
     public boolean is_final = false;
@@ -27,6 +27,8 @@ public abstract class FunctionDefBase extends StatementDef implements ContainerD
 
     public abstract String getExpandedSignature();
 
+    public abstract String asEcSignature();
+
     public String getExpandedName() {
         if (this instanceof ConstructorDef) {
             if (indexNumber > 0) {
@@ -41,10 +43,10 @@ public abstract class FunctionDefBase extends StatementDef implements ContainerD
             }
             return name;
         } else {
-                if (indexNumber > 0) {
-                    return name + "$" + indexNumber;
-                }
-                return name;
+            if (indexNumber > 0) {
+                return name + "$" + indexNumber;
+            }
+            return name;
         }
     }
 
@@ -55,7 +57,7 @@ public abstract class FunctionDefBase extends StatementDef implements ContainerD
         for(VariableDef param : parameters) {
             // System.out.println("@@FunctionDefBase " + param);
             if (!first) {
-                res += ", ";
+                res += ",";
             }
             // res += param.type.asCode();
             if (param.type == null) {
@@ -74,9 +76,8 @@ public abstract class FunctionDefBase extends StatementDef implements ContainerD
         boolean first = true;
 
         for(VariableDef param : parameters) {
-            // System.out.println("@@FunctionDefBase " + param);
             if (!first) {
-                res += ", ";
+                res += ",";
             }
             res += param.type.asCode();
             first = false;
@@ -98,6 +99,41 @@ public abstract class FunctionDefBase extends StatementDef implements ContainerD
         if (accessor == null) {
             accessor = Accessor.PUBLIC;
         }
+
+        for (VariableDef parameter : getParameters()) {
+            if (parameter.getName().length() == 0) {
+                if (getBlockDef() != null) {
+                    parameter.setName("$" + getBlockDef().getNextAnnoymous());
+                }
+            }
+        }
+
         super.resolve_01();
+    }
+
+    public List<VariableDef> getParameters() {
+        return parameters;
+    }
+
+    public void insertThis() {
+        VariableDef param = new VariableDef();
+        param.setName("this");
+        param.type = new TypeIdDef(classDef.getFqn());
+        parameters.add(0, param);
+   }
+
+    public void addParameter(VariableDef parameter) {
+        if (parameter.getName().length() == 0) {
+            if (getBlockDef() == null && containedInBlock == null) {
+                // well
+                // System.out.println("Annonymous param with null block..");
+            } 
+
+            if (getBlockDef() != null) {
+                parameter.setName("$" + getBlockDef().getNextAnnoymous());
+            }
+        }
+
+        this.parameters.add(parameter);
     }
 }

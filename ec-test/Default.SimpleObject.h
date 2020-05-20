@@ -12,11 +12,11 @@
 #define __C_1085510111_SIMPLEOBJECT_CLASS_  \
   i64 (*constNumber)();  \
   i64 (*get_count1)(num);  \
-  void (*set_count1)(num, i64);  \
+  void (*set_count1)(num,i64);  \
   i64 (*get_count2)();  \
   void (*set_count2)(i64);  \
   i64 (*get_count3)(num);  \
-  void (*set_count3)(num, i64);  \
+  void (*set_count3)(num,i64);  \
   i64 count2;
 typedef struct c_1085510111_SimpleObject_cm {
 

@@ -472,45 +472,56 @@ All singing all dancing Dynamic array can be used as
 
 */
 
-public class Core.DynamicArray (Core.Array){
+
+
+/**
+All singing all dancing Dynamic array can be used as 
+* stack
+* queue
+* list
+* buffer
+* lifo
+* fifo
+
+*/
+
+public class Default.NewDynamicArray (Core.Array){
     (public,public) properties {
-        // pointer values;
-        // u64 length;
-        // u64 capacity;
-        // int dataType;
-        // u64 dataSize;
-        // boolean managed;
         u64 startIndex;
         u64 endIndex;
 
-        static u64 initialSize = 64;
-        static u64 growBy = 64;
-        static u64 slideAmount = 8;
+        static u64 initialSize = 8;
+        static u64 growBy = 8;
+        static u64 slideAmount = 4;
+        
     }
 
-    // public DynamicArray(=capacity);
+    public NewDynamicArray(=dataType, =dataSize) {
+        capacity = initialSize;
+        values = alloc(capacity * dataSize);
+        startIndex = initialSize /2;
+        endIndex = startIndex;
+        length = 0;
+    }
 
-    public pointer getValue(u64 index)
-    // ;
-    {
-        if (index >= length) {
+    public pointer getValue(u64 index) {
+        debug_println(`add %s`, `here`);
+        if (index >= capacity) {
             throwException(`[error] index array out of bounds`);
         }
-        return get(startIndex + index);
+        return get(index);
     }
 
-    public void setValue(u64 index, pointer value)
-    // ;
-    {
-        if (index >= length) {
+    public void setValue(u64 index, pointer value) {
+        debug_println(`add %lu, %lu`, index, capacity);
+        if (index >= capacity) {
             throwException(`[error] index array out of bounds`);
         }
-        set(startIndex + index, value);
+        set(index, value);
     }
 
-    public void addTail(pointer value)
-    // ;
-    {
+    public void addTail(pointer value) {
+        debug_println(`add %s`, `here`);
         if (endIndex == capacity) {
             if (startIndex > slideAmount) {
                 slideLeft();
@@ -519,12 +530,11 @@ public class Core.DynamicArray (Core.Array){
             }
         }
         length++;
-        set(endIndex++, value);
+        setValue(endIndex++, value);
     }
 
-    public void addHead(pointer value)
-    // ;
-    {
+    public void addHead(pointer value) {
+        debug_println(`add %s`, `here`);
         if (startIndex == 0) {
             if (endIndex < capacity - slideAmount) {
                 slideRight();
@@ -533,22 +543,23 @@ public class Core.DynamicArray (Core.Array){
             }
         }
         length++;
-        set(--startIndex, value);
+        setValue(--startIndex, value);
     }
 
-    public void insert(u64 index, pointer value)
-    // ;
-    {
+    public void insert(u64 index, pointer value) {
+        debug_println(`insert %lu`, index);
         if (index > length) {
-            throwException("[error] index array out of bounds");
+            throwException(`[error] index array out of bounds`);
         }
 
         if (index == startIndex) {
-            return addHead(value);
+            addHead(value);
+            return;
         }
 
         if (index == endIndex) {
-            return addTail(value);
+            addTail(value);
+            return;
         }
 
         // move left or move right
@@ -563,7 +574,7 @@ public class Core.DynamicArray (Core.Array){
             // dest, source, size
             endIndex++;
             u64 ix = index + 1;
-            memmove(values[ix], values[index], (endIndex - index) * dataSize); 
+            memmove(EC_ADDRESS(EC_ARRAY(ix, values)), EC_ADDRESS(EC_ARRAY(index, values)), (endIndex - index) * dataSize); 
         } else {
             // move head
             if (startIndex == 0) {
@@ -571,49 +582,53 @@ public class Core.DynamicArray (Core.Array){
             }
             startIndex--;
             u64 ix = startIndex + 1;
-            memmove(values[startIndex], values[ix], (index - startIndex) * dataSize); 
+            memmove(EC_ADDRESS(EC_ARRAY(startIndex, values)), EC_ADDRESS(EC_ARRAY(ix, values)), (index - startIndex) * dataSize); 
         }
         length++;
         set(index, value);
     }
 
-    public pointer removeHead() 
-    // ;
-    {
+    public pointer removeHead() {
+        debug_println(`remove %lu`, startIndex);
         if (length == 0) {
-            throwException("[error] index array out of bounds");
+            throwException(`[error] index array out of bounds`);
         }
-        pointer res = get(startIndex++);
-        length--;
+        if (startIndex >= endIndex) {
+            throwException(`[error] index array out of bounds index overlap.`);
+        }
 
-        if (startIndex > growBy) {
+        if (capacity - length > growBy + slideAmount) {
             reduceCapacityHead();
         }
 
-        return res;
+        length--;
+        return get(startIndex++);
     }
     
-    public pointer removeTail() 
-    // ;
-    {
+    public pointer removeTail() {
+        debug_println(`remove endIndex=%lu, length=%lu, capacity=%lu`, endIndex, length, capacity);
         if (length == 0) {
-            throwException("[error] index array out of bounds");
+            throwException(`[error] index array out of bounds`);
         }
-        pointer res = get(endIndex--);
+        if (startIndex >= endIndex) {
+            throwException(`[error] index array out of bounds index overlap.`);
+        }
+
+
+        pointer res = get(--endIndex);
         length--;
 
-        if (endIndex + growBy < capacity) {
+        if (capacity - length > growBy + slideAmount) {
             reduceCapacityTail();
         }
 
         return res;
     }
 
-    public pointer remove(u64 index, pointer value) 
-    // ;
-    {
+    public pointer remove(u64 index, pointer value) {
+        debug_println(`remove %s`, `here`);
         if (length == 0 || index < startIndex || index > endIndex ) {
-            throwException("[error] index array out of bounds");
+            throwException(`[error] index array out of bounds`);
         }
 
         if (index == startIndex) {
@@ -630,12 +645,12 @@ public class Core.DynamicArray (Core.Array){
         if (index - startIndex > endIndex - index) {
             // move tail
             u64 ix = index +1;
-            memmove(values[index], values[ix], (endIndex - index) * dataSize); 
+            memmove(EC_ADDRESS(EC_ARRAY(index, values)), EC_ADDRESS(EC_ARRAY(ix, values)), (endIndex - index) * dataSize); 
             endIndex--;
         } else {
             // move head
             u64 ix = startIndex +1;
-            memmove(values[ix], values[startIndex], (index - startIndex) * dataSize); 
+            memmove(EC_ADDRESS(EC_ARRAY(ix, values)), EC_ADDRESS(EC_ARRAY(startIndex, values)), (index - startIndex) * dataSize); 
             startIndex++;
         }
         //@todo capicity check
@@ -644,108 +659,116 @@ public class Core.DynamicArray (Core.Array){
         return result;
     }
 
-    public pointer peekTail() 
-    // ;
-    {
+    public pointer peekTail() {
+        debug_println(`peek %s`, `here`);
         if (length == 0) {
-            throwException("[error] index array out of bounds");
+            throwException(`[error] index array out of bounds`);
         }
         return get(endIndex);
     }
 
-    public pointer peekHead() 
-    {
+    public pointer peekHead() {
+        debug_println(`peek %s`, `here`);
         if (length == 0) {
-            throwException("[error] index array out of bounds");
+            throwException(`[error] index array out of bounds`);
         }
         return get(startIndex);
     }
 
-    private void addCapacityHead() 
-    // ;
-    {
+    private void addCapacityHead() {
+        debug_println(`grow %s`, `here`);
         // maybe slighty tricky
         // not great for large arrays
         values = realloc(values, (capacity + growBy) * dataSize);
         if (values == null) {
-            throwException("[error] out of memory exception.");
+            throwException(`[error] out of memory exception.`);
         }
 
         capacity += growBy;
         // realign
         // dest, source, size
-        memmove(values[growBy], values[0], length * dataSize); 
+        memmove(EC_ADDRESS(EC_ARRAY(growBy, values)), EC_ADDRESS(EC_ARRAY(0, values)), length * dataSize); 
         startIndex += growBy;
         endIndex += growBy;
     }
 
-    private void addCapacityTail() 
-    // ;
-    {
+    private void addCapacityTail() {
+        debug_println(`grow %s`, `here`);
         values = realloc(values, (capacity + growBy) * dataSize);
         if (values == null) {
-            throwException("[error] out of memory exception.");
+            throwException(`[error] out of memory exception.`);
         }
 
         capacity += growBy;
     }
 
-    private void reduceCapacityHead() 
-    // ;
-    {
+    private void reduceCapacityHead() {
+        if (capacity <= initialSize) {
+            return;
+        }
+
         realignLeft();
+        u64 oldCapacity = capacity;
+        u64 requestAmount = (capacity - growBy) * dataSize;
+
+        values = realloc(values, requestAmount);
+        if (values == null) {
+            throwException(`[error] out of memory exception.`);
+        }
+
+        capacity -= growBy;
+
+        debug_println(`shrink length=%lu, requestedAmount=%lu, oldCapacity=%lu, capacity=%lu`, 
+             length, requestAmount, oldCapacity, capacity);
+
+    }
+
+    private void reduceCapacityTail() {
+        debug_println(`shrink %s`, `here`);
         values = realloc(values, (capacity - growBy) * dataSize);
         if (values == null) {
-            throwException("[error] out of memory exception.");
+            throwException(`[error] out of memory exception.`);
         }
 
         capacity -= growBy;
     }
 
-    private void reduceCapacityTail() 
-    // ;
-    {
-        values = realloc(values, (capacity - growBy) * dataSize);
-        if (values == null) {
-            throwException("[error] out of memory exception.");
-        }
-
-        capacity -= growBy;
-    }
-
-    private void realignLeft() 
-    // ;
-    {
+    private void realignLeft() {
+        debug_println(`align %s`, `here`);
         // check if startIndex > slideAmount?
         // check Capacity?
+        pointer dest = EC_ADDRESS(EC_ARRAY(0, values));
+        pointer source = EC_ADDRESS(EC_ARRAY(startIndex, values));
+        u64 amount = length * dataSize;
+
+        debug_println(`align %p == %p, %p, amount=%lu, length=%lu, dataSize=%lu, capacity=%lu`, 
+            dest, values, source, amount, length, dataSize, capacity);
 
         // realign left
-        memmove(values[0], values[startIndex], length * dataSize); 
+        memmove(values, source, amount); 
         startIndex = 0;
         endIndex = length;
     }
 
 
-    private void slideLeft() 
-    // ;
-    {
+    private void slideLeft() {
+        debug_println(`slide %s`, `here`);
         // check if startIndex > slideAmount?
         // check Capacity?
         
         // slide left - may still leave headroom
         // bounds check
         u64 newStart = 0;
-        if (startIndex >= slideAmount) {
+        if (startIndex+1 >= slideAmount) {
             newStart = startIndex - slideAmount;
         }
-        memmove(values[newStart], values[startIndex], length * dataSize); 
+        memmove(EC_ADDRESS(EC_ARRAY(newStart, values)), EC_ADDRESS(EC_ARRAY(startIndex, values)), length * dataSize); 
         startIndex = newStart;
-        endIndex = length;
+        endIndex = startIndex + length;
     }
 
-    private void slideRight() 
-    // ;
-    {
+    private void slideRight() {
+        debug_println(`slide %s`, `here`);
         // check if startIndex > slideAmount?
         // check Capacity?
         u64 newStart =  startIndex - (capacity - length);
@@ -753,7 +776,7 @@ public class Core.DynamicArray (Core.Array){
             newStart = startIndex + slideAmount;
         }
 
-        memmove(values[newStart], values[startIndex], length * dataSize); 
+        memmove(EC_ADDRESS(EC_ARRAY(newStart, values)), EC_ADDRESS(EC_ARRAY(startIndex, values)), length * dataSize); 
         startIndex = newStart;
         endIndex = newStart + length;
     }

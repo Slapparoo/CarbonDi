@@ -5,6 +5,7 @@
 #include "Core.BaseBoxing.h"
 #include "Core.Boxing.h"
 #include "Core.Core_main.h"
+#include "Core.DynamicArray.h"
 #include "Core.Exception.h"
 #include "Core.F32.h"
 #include "Core.F64.h"
@@ -30,7 +31,7 @@ pointer c_1085510111_MyStringasStr(num this) {
 
 num c_1085510111_MyStringasString(num this) {
 
-  u64 entry$ = __onEnter();
+  u64 entry$ = __onEnter(); /*rx2*/
   return __exitReturn_ref_un(/*te8*/ this, entry$);
 }
 
@@ -46,8 +47,8 @@ u64 c_1085510111_MyStringgetObjectDatasize() { return sizeof(c_1085510111_MyStri
 
 pointer c_1085510111_MyStringget_value(num this) { return ((c_1085510111_MyString *)useObject(this)->data)->value; }
 
-void c_1085510111_MyStringset_value(num this, pointer value) {
-  ((c_1085510111_MyString *)useObject(this)->data)->value = value;
+void c_1085510111_MyStringset_value(num this, pointer a__$a) {
+  /*cda1*/ ((c_1085510111_MyString *)useObject(this)->data)->value = a__$a;
 }
 
 void c_1085510111_MyString_free(num this) { Object_ref *object_ref = useObject(this); }

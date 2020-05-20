@@ -10,6 +10,13 @@
         "limits": "cpp",
         "type_traits": "cpp",
         "default.class_main.h": "c",
-        "core.string.h": "c"
-    }
+        "core.string.h": "c",
+        "types.h": "c",
+        "core.object.h": "c",
+        "core.core_main.h": "c",
+        "core.array.h": "c",
+        "core.dynamicarray.h": "c",
+        "default.dynamicarray_main.h": "c"
+    },
+    "java.configuration.updateBuildConfiguration": "automatic"
 }

@@ -9,28 +9,28 @@ Being binary compilable means that the performance should be comparable to other
 
 Being binary compilable means that it can use existing C libraries.
 
-No pointers
+Some pointers
 --
 Primatives are passed by by register or on the stack (as a copy) and Objects are passed by reference.
 
 The reference is not a pointer it is a reference for the memory manager.
 
 String is an object
-```
+```javascript
 boolean checkName(String name) {
     return name != null;
 }
 ```
 
 Array is an Object
-```
+```javascript
 boolean checkLength(u8[] nums) {
     return nums != null && nums.length > 0;
 }
 ```
 
 Same method with an annonymous parameter
-```
+```javascript
 boolean checkLength(u8[]) {
     return $a != null && $a.length > 0;
 }
@@ -41,13 +41,15 @@ There is a default memory manager, but it can be replaced/integrated with a cust
 To update the value of a parameter inside a function a refernce is passed using the &
 
 i.e
-```
+__remove this__ use boxing and pass the corrosponding Object wrapper
+***
+```javascript
 void addone(&num counter) {
     counter++;
 }
 
 // define variable as number the default type is i64, so count with be an i64
-@counter = 10;
+?counter = 10;
 
 addOne(counter);
 
@@ -60,14 +62,14 @@ String for charator arrays
 
 i64 for numbers;
 
-`@number = 10;`
+`?number = 10;`
 
 number will be an i64 
 <i>On a 64bit archtecture this is the way cpu's will deal with numbers the registers are 64bit when you push a value on the stack it will be 64bit (you can't push 32bits), so defining it as a smaller number like a 32bit is false economy (or a fools errand) as it will be moved from memory to cpu and vise versa, as a 64bit.</i>
 
 change it with a cast or by defintion
-`@number = (num.u8)10;`
-`@number = (u8)10;`
+`?number = (num.u8)10;`
+`?number = (u8)10;`
 `u8 number = 10;`
 
 Primative types
@@ -75,7 +77,7 @@ Primative types
 
 the number indicate the number of bits so both i8 and u8 are 8bit numbers
 u16 and i16 are 16bit numbers etc.
-```
+```javascript
 num = i64;
 num.i = i64;
 num.u = u64;
@@ -104,8 +106,8 @@ Primative number types can be treated as a boolean for conditional logic, except
 `non 0 == true`
 
 i.e 
-```
-@number = 10;
+```javascript
+?number = 10;
 
 if (number) {... in this case this will be executed}
 if (!number) {... doesn't get executed}
@@ -160,7 +162,7 @@ annonymous params
 --
 methods and loops can have annonymous params starting with `$` and going from `a..z` i.e
 `$a, $b, $c`
-```
+```javascript
 num add(num, num) {
     return $a + $b;
 }
@@ -168,16 +170,27 @@ num add(num, num) {
 
 Strings
 --
+
+Strings internaly are a String Object which is a wrapper for a C style zero terminated char *
+
+There is also the option to declare a C style zero terminated char* directly using the \` quotes
+
 <code style="color:orange">'asdkf;"asd'</code>
 <code style="color:orange">"asdfs 'sadf"</code>
 Multiline
 <code style="color:orange">'''asld;
 asdl;'''</code>
 
+A C Style zer terminated String
+\`String value\`
+```javascript
+External.stdio.printf(`print this %lu`, value);
+```
+
 switch
 --
 switch includes range
-```
+```javascript
 switch(ch) {
     case 'a'..'z','A'..'Z','0'..'9' : ...; break;
     defaulf:
@@ -201,7 +214,7 @@ definition
 example 
 
 Using all defaults:
-```
+```javascript
 class Person {
     properties {
         String name;
@@ -209,7 +222,7 @@ class Person {
 }
 ```
 or
-```
+```javascript
 class Person {
     (,)properties {
         (,)String name;
@@ -219,7 +232,7 @@ class Person {
 ```
 
 Specific accessors
-```
+```javascript
 class Person {
     (public, private) properties {
         (protected, protected) String name;
@@ -233,7 +246,7 @@ With accessor and mutator overrides overides
 so in the following example if I defined the following property to count all the unique ip address on the internet, then after some time I realise there are more than 256 of them, I can change number to a u16. 
 </i>
 
-```
+```javascript
 class Person {
     (public, private) properties {
         (protected, protected) u8 number;
@@ -255,11 +268,11 @@ Derived type
 --
 All types must be resolve able at compile time
 
-@varname = value;
+?varname = value;
 var varname = value;
 
 i.e
-@count = 10;
+?count = 10;
 var count = 10;
 
 loops
@@ -282,22 +295,22 @@ Loop return
 The $return is the type of the cast
 
 Boolean loop, loop until true
-```
-@hasOne = (boolean)loop(items) {
+```javascript
+?hasOne = (boolean)loop(items) {
     $return = $a.value;
 }
 ```
 num loop, loop for all
-```
-@count = (num)loop(items) {
+```javascript
+?count = (num)loop(items) {
     if ($a.value) {
         $return++;
     }
 }
 ```
 Array loop, loop for all
-```
-@subSet = (Item[])loop(items) {
+```javascript
+?subSet = (Item[])loop(items) {
     if ($a.value) {
         $return.add($a);
     }
@@ -305,20 +318,20 @@ Array loop, loop for all
 ```
 
 and should it support?
-`@hasOne = (boolean)loop(items) {$a.value;}`
+`?hasOne = (boolean)loop(items) {$a.value;}`
 // if true inc
-`@count = (num)loop(items) {$a.value;}`
+`?count = (num)loop(items) {$a.value;}`
 // if true add `$a` to result
-`@subSet = (Item[])loop(items) {$a.value;}`
+`?subSet = (Item[])loop(items) {$a.value;}`
 
 New class instances
 ---
 
 The keyword new is not required
 
-```
+```javascript
 MyClass myClass();
-@myClass = MyClass();
+?myClass = MyClass();
 ```
 
 Comments
@@ -326,6 +339,83 @@ Comments
 `/** Comments are markdown */` 
 `/* standard text */` 
 `//` line comment
+
+Functions
+---
+
+Usage model
+
+The variable type is function, but the method description also needs to be defined
+
+`function x;` is invalid as there is no function definition
+
+the definition is <return_type>([parameters..])
+
+Multi parameter definition
+.. is any Object (not primative)
+int.. is any number of int
+Object.. == ..
+String.. any number of String
+
+As parameters can be annoymous (they must be typed but naming is optional)
+
+so void(int, int, int) with create a function definiton that accepts 3 int parameters and returns nothing, 
+the implementaion can use annonymous params where in the function body \$a is the first param, \$b is the second etc.. up to \$z
+
+```javascript
+() {
+    $a + $b + $c;
+}
+```
+or
+```javascript
+(a, b, c) {
+    a + b + c;
+}
+```
+
+```javascript
+function x := void(int, int, int) = (a,b,c) {}
+?x := void(int, int, int) = (a,b,c) {}
+?x := void(int, int, int);
+x = (a,b,c) {}
+function x := void(int, int, int) = (){$a, $b, $c}
+
+
+int getValues(function x := int(int));
+
+?x = getValues((a) {return a;});
+?x = getValues(() {return $a;});
+mlClass.newname = (a) {this.name = a;};
+```
+
+Using 'External' c functions
+---
+External is not really the right word, the compiler generates C code, all C functions an libraries are that are available at compile time can be referenced.
+
+External function calls are not validated to the EC compiler they are validated by the C compiler. (this may have to change in the future).
+
+Using external may lead to resource leaks, so ensure you manage resources related to external calls.
+
+This gives the option to include exsiting or new C Libraries.
+
+Don't confuse C with C++.
+
+The convention is
+`External.<c header>.<function and parameters>`
+
+The `#include` for the C header file will be generated
+
+i.e
+```javascript
+int res = External.stdio.printf(`hello world!`);
+i64 value = External.stdlib.atol(`1001`);
+```
+
+To prototype an external function use standard function prototyping.
+```javascript
+function External.stdio.printf := int(pointer, ..);
+```
 
 Class Internals
 ---
@@ -342,7 +432,7 @@ The Object reference table will contain a reference to the object type and the o
 
 Static functions and non-oo functions will be access directly - constructors are static functions.
 
-
+```javascript
 struct MyClassFunctionPointers {
     BaseClass super;
     // this classes function pointers and all parent classes function pointers rolled up
@@ -353,6 +443,6 @@ struct MyClassFunctionPointers {
     equals(ObjectReference);
 
 } ClassFunctionPointers;
-
+```
 
 

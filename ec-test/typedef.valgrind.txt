@@ -1,14 +1,14 @@
-==3983== Memcheck, a memory error detector
-==3983== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==3983== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
-==3983== Command: ec-test/Default.typedef_main
-==3983== 
-==3983== error calling PR_SET_PTRACER, vgdb might block
-==3983== 
-==3983== HEAP SUMMARY:
-==3983==     in use at exit: 0 bytes in 0 blocks
-==3983==   total heap usage: 10 allocs, 10 frees, 1,408 bytes allocated
-==3983== 
-==3983== All heap blocks were freed -- no leaks are possible
-==3983== 
-==3983== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==1557== Memcheck, a memory error detector
+==1557== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==1557== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==1557== Command: ec-test/Default.typedef_main
+==1557== 
+==1557== error calling PR_SET_PTRACER, vgdb might block
+==1557== 
+==1557== HEAP SUMMARY:
+==1557==     in use at exit: 0 bytes in 0 blocks
+==1557==   total heap usage: 10 allocs, 10 frees, 1,408 bytes allocated
+==1557== 
+==1557== All heap blocks were freed -- no leaks are possible
+==1557== 
+==1557== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

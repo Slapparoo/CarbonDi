@@ -1,21 +1,14 @@
 package ec.lang;
 
-import ec.lang.model.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.RuleNode;
-import org.antlr.v4.runtime.tree.TerminalNode;
 
-public class CVisit extends ecBaseVisitor {
+import ec.lang.model.ecBaseVisitor;
+import ec.lang.model.ecParser;
+
+public class CVisit extends ecBaseVisitor<Object> {
 
     @Override
     public Object visitStatement(ecParser.StatementContext ctx) {
-        // TODO Auto-generated method stub
         System.out.println("ctx:" +ecParser.ruleNames[ctx.getRuleIndex()] + " " + ctx.getRuleIndex());
         System.out.println("ctx:" +ctx.getText());
         return super.visitStatement(ctx);
@@ -26,14 +19,6 @@ public class CVisit extends ecBaseVisitor {
     public Object visitJson_obj(ecParser.Json_objContext ctx) {
         System.out.println("json_object:" +ctx.getText());
         return super.visitJson_obj(ctx);
-    }
-
-    
-    @Override
-    public Object visitFunction_call(ecParser.Function_callContext ctx) {
-        System.out.println("function:" +ctx.getText());
-        System.out.println("chidren:" +ctx.getChildCount());
-        return super.visitFunction_call(ctx);
     }
 
     @Override

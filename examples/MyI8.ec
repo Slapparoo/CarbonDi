@@ -22,21 +22,21 @@ final class myI8 {
   }
 
   pointer summaryStr() {
-    sprintf(tmpBuffer, `(%s::%s) datatype=%i, typename=%s, range=%i..%i, value=%i`, this.getPackage(), this.getName(), this.datatype(), this.typename(), this.min(), this.max(), this.value);
-    return tmpBuffer;      
+    sprintf(getTmpBuffer(), `(%s::%s) datatype=%i, typename=%s, range=%i..%i, value=%i`, this.getPackage(), this.getName(), this.datatype(), this.typename(), this.min(), this.max(), this.value);
+    return getTmpBuffer();      
   }
 
   pointer myasStr() {
-    sprintf(tmpBuffer, `%i`, this.value);
-    return tmpBuffer;      
+    sprintf(getTmpBuffer(), `%i`, this.value);
+    return getTmpBuffer();      
   }
 };
 
 i8 value = 12;
 i8 value2 = 129;
-@number1 = myI8(value);
-@number2 = myI8(value2);
+?number1 = myI8(value);
+?number2 = myI8(value2);
 
-printf(`number1=%s\n`, number1.myasStr());
-printf(`%s\n`, number1.summaryStr());
-printf(`%s\n`, number2.summaryStr());
+External.stdio.printf(`number1=%s\n`, number1.myasStr());
+External.stdio.printf(`%s\n`, number1.summaryStr());
+External.stdio.printf(`%s\n`, number2.summaryStr());

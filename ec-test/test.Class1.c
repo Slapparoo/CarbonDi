@@ -5,6 +5,7 @@
 #include "Core.BaseBoxing.h"
 #include "Core.Boxing.h"
 #include "Core.Core_main.h"
+#include "Core.DynamicArray.h"
 #include "Core.Exception.h"
 #include "Core.F32.h"
 #include "Core.F64.h"
@@ -40,11 +41,15 @@ u64 c_3556498_Class1getObjectDatasize() { return sizeof(c_3556498_Class1); }
 
 i64 c_3556498_Class1get_count1(num this) { return ((c_3556498_Class1 *)useObject(this)->data)->count1; }
 
-void c_3556498_Class1set_count1(num this, i64 count1) { ((c_3556498_Class1 *)useObject(this)->data)->count1 = count1; }
+void c_3556498_Class1set_count1(num this, i64 a__$a) {
+  /*cda1*/ ((c_3556498_Class1 *)useObject(this)->data)->count1 = a__$a;
+}
 
 i64 c_3556498_Class1get_count2(num this) { return ((c_3556498_Class1 *)useObject(this)->data)->count2; }
 
-void c_3556498_Class1set_count2(num this, i64 count2) { ((c_3556498_Class1 *)useObject(this)->data)->count2 = count2; }
+void c_3556498_Class1set_count2(num this, i64 a__$a) {
+  /*cda1*/ ((c_3556498_Class1 *)useObject(this)->data)->count2 = a__$a;
+}
 
 void c_3556498_Class1_free(num this) { Object_ref *object_ref = useObject(this); }
 

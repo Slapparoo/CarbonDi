@@ -64,7 +64,7 @@ public class StringExpr extends ExprDef {
             } else if (expr.equals("`\\n`") || expr.equals("`\\r`") || expr.equals("`\\t`")) {
                 return expr.replace('`', '\'');
             }
-            return expr.replace('`', '"');
+            return expr.replace('`', '"').replaceAll("'", "");
         }
         
         return "/*se*/ create_c_2106303_String$2(" +expr+ ", true)";
