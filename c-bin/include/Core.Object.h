@@ -17,6 +17,7 @@ pointer *parent;  \
   void (*free)(num);  \
   void (*release)(num);  \
   pointer (*alloc)(num, u64);  \
+  pointer (*realloc)(num, pointer, u64);  \
   pointer (*getClassName)();  \
   pointer (*getClassShortName)();  \
   pointer (*getClassCName)();  \

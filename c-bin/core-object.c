@@ -58,6 +58,23 @@ pointer Object_alloc(num ref, u64 amount) {
   return res;
 }
 
+pointer Object_realloc(num ref, pointer ptr, u64 amount) {
+  debug_println("realloc %ld %p %lud ", ref, ptr, amount);
+
+  if (ref == 0) {
+    throwException("Bad memory allocation request, invalid Id, realloc");
+  }
+
+  pointer res = ec_realloc(ptr, amount);
+
+  if (res != ptr) {
+    updateMemoryAllocation(ptr, res);
+  }
+
+  return res;
+}
+
+
 void Object_free(num ref) {
   debug_println("%ld", ref);
 }
@@ -96,6 +113,7 @@ void populateObjectClassModel(pointer _classModel) {
   classModel->getClassPackage = Object_getPackage;
   classModel->getObjectDatasize = Object_datasize;
   classModel->alloc = Object_alloc;
+  classModel->realloc = Object_realloc;
   
   classModel->hashCode = &Object_hashCode;
   classModel->equals = &Object_equals;

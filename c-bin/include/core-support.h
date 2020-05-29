@@ -36,7 +36,7 @@
 // 
 // #define EC_ARRAY(index, array, type) *(type*)array[index]
 #define EC_ARRAY(index, array) array[index]
-#define EC_POINTER(index, type) *(type*)array
+#define EC_SETVALUE_i8(index, array, value) *(i8*)&array[index] = value
 
 #define EC_VALUE_i64(ptrvalue) *(i64*)ptrvalue
 #define EC_VALUE_u64(ptrvalue) *(u64*)ptrvalue
@@ -108,6 +108,7 @@ num __currentStackIndex();
 
 void registerClassModel(pointer);
 void registerMemoryAllocation(num ref, pointer mem);
+void updateMemoryAllocation(pointer oldp, pointer newp);
 
 void assignObject(num *var, num ref_id);
 Object_ref *borrowObject(num ref);
@@ -171,6 +172,7 @@ void afterCatchException();
 pointer ec_malloc(size_t size);
 pointer ec_calloc(size_t length, size_t size);
 void ec_free(pointer p);
+pointer ec_realloc(pointer ptr, size_t size);
 
 pointer Object_alloc(num, u64);
 void print_log(int count, ...);

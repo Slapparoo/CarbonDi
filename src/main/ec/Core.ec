@@ -33,10 +33,15 @@ public class signature Object {
     public final pointer alloc(u64 size) {
       return Object_alloc(this, size);
     }
+
+    public final pointer realloc(pointer ptr, u64 size) {
+      return Object_realloc(this, ptr, size);
+    }
+
 }
 
 
-class Core.String (Core.Object) {
+public class Core.MyString (Core.Object) {
     (public, private)properties {
         (public, private) pointer value;
     }
@@ -44,49 +49,60 @@ class Core.String (Core.Object) {
     /**
     * DefaULT
     */
-    String(pointer str) {
-        i64 len = strlen(str) + 1;
+    MyString(pointer str) {
+        i64 len = External.stdio.strlen(str) + 1;
         value = alloc(len);
-        strcpy(value, str);
+        External.stdio.strcpy(value, str);
     }
 
     /**
     * for strings which are defined in code c will statically allocate
     * the memory for them
     */
-    String(pointer str, boolean staticAlloc) {
+    MyString(pointer str, boolean staticAlloc) {
         if (staticAlloc) {
             value = str;
         } else {
-            i64 len = strlen(str) + 1;
-            value = alloc(len);
-            strcpy(value, str);
+            i64 len = External.stdio.strlen(str) + 1;
+            this.value = alloc(len);
+            External.stdio.strcpy(value, str);
         }
     }
 
     /**
     * String Concatenation
     */
-    String(pointer str, pointer str2) {
-        i64 len = strlen(str) + strlen(str2) + 1;
-        value = alloc(len);
-        strcpy(value, str);
-        strcat(value, str2);
+    MyString(pointer str, pointer str2) {
+        i64 len = External.stdio.strlen(str) + External.stdio.strlen(str2) + 1;
+        this.value = alloc(len);
+        External.stdio.strcpy(value, str);
+        External.stdio.strcat(value, str2);
     }
 
-    private String();
+    private MyString();
 
-    pointer asStr() {
-        return value;
+    public pointer asStr() {
+        return this.value;
     }
 
-    String asString() {
+    public MyString asString() {
         return this;
     }
 
-    u64 length() {
-      return strlen(value);
+    public u64 length() {
+      return External.stdio.strlen(value);
     }
+
+    public void appendStr(pointer str) {
+        i64 len = External.stdio.strlen(value) + External.stdio.strlen(str) + 1;
+        this.value = realloc(value, len);
+        External.stdio.strcat(value, str);
+    }
+
+    public void appendString(String str) {
+      appendStr(str.asStr);
+    }
+
 }
 
 public class Core.Exception (Core.Object) {

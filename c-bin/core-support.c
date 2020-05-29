@@ -30,6 +30,15 @@ void printClassModels() {
   }
 }
 
+void updateMemoryAllocation(pointer oldp, pointer newp) {
+  for (u64 i = 0; i < PM_LIST_LENGTH; i++) {
+    if (memoryAllocsPointer[i] == oldp) {
+      memoryAllocsPointer[i] = newp;
+      break;
+    }
+  }
+}
+
 void registerMemoryAllocation(num ref, pointer mem) {
   boolean registed = false;
   for (u64 i = 0; i < PM_LIST_LENGTH; i++) {
@@ -635,6 +644,17 @@ pointer ec_calloc(size_t length, size_t size) {
   _inflight_mem[inflightMemIndex] = res;
   return res;
 }
+
+
+pointer ec_realloc(pointer ptr, size_t size) {
+  pointer res = realloc(ptr, size);
+  if (res == NULL) {
+    // if this gets throw the system is unstable and the application should be stopped
+    throwException("Out of memory Exception [heap realloc].");
+  } 
+  return res;
+}
+
 
 void ec_free(pointer p) {
 

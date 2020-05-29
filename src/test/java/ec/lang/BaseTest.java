@@ -26,7 +26,7 @@ public class BaseTest {
 
 
     @BeforeAll
-    private static void preLoad() throws IOException {
+    public static void preLoad() throws IOException {
         lex(new ecLexer(new ANTLRInputStream(new FileInputStream("c-bin/Core.signature.ec"))));
 
         ClassDef classDef = DefFactory.resolveClass("Object");

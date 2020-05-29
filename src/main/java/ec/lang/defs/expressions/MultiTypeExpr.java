@@ -316,6 +316,7 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
                     var.type = fd.returnType;
                     var.is_static = fd.is_static;
                     tx.variableDef = var;
+                    return;
                 }
             }
 
@@ -349,6 +350,11 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
             throw new RuntimeException("containedInBlock == null " + this + " " + tx.expr);
         }
 
+        // if (tx.expr.equals("External")) {
+        //     isExternal = true;
+        //     return;
+        // }
+
         tx.variableDef = containedInBlock.resolveVariable(tx.expr);
 
         // System.out.println(" 6 " + this + " " + tx.expr + " " + tx.variableDef);
@@ -374,9 +380,9 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
             return;
         }
 
-        if (tx.expr.equals("External")) {
-            isExternal = true;
-        }
+        // if (tx.expr.equals("External")) {
+        //     isExternal = true;
+        // }
 
         // static class?
 
@@ -447,6 +453,10 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
                 isFunction = true;
             } else if (exprDef instanceof TypeExpr) {
                 TypeExpr typeExpr = (TypeExpr) exprDef;
+
+                if (exprDef.expr.equals("External")) {
+                    isExternal = true;
+                }
                 resolveExpr(typeExpr, variableDef);
                 thisType = typeExpr.thisType;
                 variableDef = typeExpr.variableDef;
@@ -454,6 +464,11 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
                 // System.out.println("@@multi " + this + " " + typeExpr.expr + " " + variableDef.getName() + " " + variableDef.type.getName() + " " + variableDef.getLine());
             } else if (exprDef instanceof ArrayIndexExpr) {
                 TypeExpr typeExpr = (TypeExpr) exprDef;
+
+                if (exprDef.expr.equals("External")) {
+                    isExternal = true;
+                }
+
                 resolveExpr(typeExpr, variableDef);
                 thisType = typeExpr.thisType;
                 variableDef = typeExpr.variableDef;

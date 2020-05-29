@@ -1,10 +1,26 @@
-fix switch blocks
-fix loop - remove - loop
-io
+loop returns
+loop types
+cast
+
+function definitiations
+int External.stdio.printf(pointer, ...);
+
+function implmentations
+    String.myThing = () {}
+    
+*definition*
+int sort(int[] list, int compare(int, int)) {
+    ...
+    compare(list[a], list[b]);
+}
+*implmentation*
+sort(array, (a, b) {return a-b;});
+sort(array, () {return $a-$b;});
+
 
 C style params array
 Core.External = static methods, with direct calls
-function pointers  (<returnType>(*<name>)(parameters)) just like in c
+ternary asdas? asd : asd;
 onchange, onvalidate, onget to array (wsomehow write code not generate code)
 inline class
 inline function

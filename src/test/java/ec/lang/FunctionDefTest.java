@@ -21,7 +21,7 @@ public class FunctionDefTest {
         assertEquals("void (*name)()", functionDef.getSignature());
         assertEquals("void (*name)()", functionDef.getSignatureAsCode());
         assertEquals("void (*name)()", functionDef.getExpandedSignature());
-        assertEquals("function name:=void()", functionDef.asEcSignature());
+        assertEquals("void name()", functionDef.asEcSignature());
         assertEquals("\npublic void name();", functionDef.asSignature());
     }
 
@@ -40,7 +40,7 @@ public class FunctionDefTest {
         assertEquals("void (*name)(num)", functionDef.getSignature());
         assertEquals("void (*name)(num)", functionDef.getSignatureAsCode());
         assertEquals("void (*name)(num)", functionDef.getExpandedSignature());
-        assertEquals("function name:=void(num)", functionDef.asEcSignature());
+        assertEquals("void name(num)", functionDef.asEcSignature());
         assertEquals("\npublic void name(num this);", functionDef.asSignature());
     }
 
@@ -64,7 +64,8 @@ public class FunctionDefTest {
         assertEquals("void (*name)(num,pointer)", functionDef.getSignature());
         assertEquals("void (*name)(num,pointer)", functionDef.getSignatureAsCode());
         assertEquals("void (*name)(num,pointer)", functionDef.getExpandedSignature());
-        assertEquals("function name:=void(num,pointer)", functionDef.asEcSignature());
+        // assertEquals("function name:=void(num,pointer)", functionDef.asEcSignature());
+        assertEquals("void name(num,pointer)", functionDef.asEcSignature());
         assertEquals("\npublic void name(num this, pointer str);", functionDef.asSignature());
     }
 
@@ -89,9 +90,9 @@ public class FunctionDefTest {
         assertEquals("int (*name)(int)", functionDef.getSignature());
         assertEquals("int (*name)(int)", functionDef.getSignatureAsCode());
         assertEquals("int (*name)(int)", functionDef.getExpandedSignature());
-        assertEquals("function name:=int(int)", functionDef.asEcSignature());
+        assertEquals("int name(int)", functionDef.asEcSignature());
         assertEquals("\npublic int name(int val);", functionDef.asSignature());
-        assertEquals("int name(int val){\n\nu64 entry$ = __onEnter();int x = val;\nreturn __exitReturn_int_un(x, entry$);\n}\n\n",
+        assertEquals("/*fd1*/int name(int val){\n\nu64 entry$ = __onEnter();int x = val;\nreturn __exitReturn_int_un(x, entry$);\n}\n\n",
             functionDef.asCode());
     }
 }

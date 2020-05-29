@@ -14,6 +14,7 @@ public class signature Core.Object{
   hidden final void free();
   hidden void release();
   public final pointer alloc(u64 size);
+  public final pointer realloc(pointer ptr, u64 size);
   public static final pointer getClassName();
   public static final pointer getClassShortName();
   public static final pointer getClassCName();

@@ -37,9 +37,13 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
     }
 
     public String asEcSignature() {
-        // function x := void(int, int, int)
-        return "function " + name + ":=" + (returnType.getName().equals("void") ? "void" : returnType.asCode())
-            + "(" + getParamsSignature() + ")";
+        // old function x := void(int, int, int)
+        // return "function " + name + ":=" + (returnType.getName().equals("void") ? "void" : returnType.asCode())
+        //     + "(" + getParamsSignature() + ")";
+        return  (returnType.getName().equals("void") ? "void" : returnType.asCode())
+        + " " + name
+        + "(" + getParamsSignature() + ")";
+
     }
 
 
@@ -73,7 +77,9 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
     @Override
     public void resolve_01() {
         if (isResolved()) {
-            throw new RuntimeException("Already resolved..");
+            // throw new RuntimeException("Already resolved..");
+            System.out.println("Already resolved.. " + name);
+            return;
         }
         super.resolve_01();
 

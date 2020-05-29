@@ -7,12 +7,12 @@ u64 filesize(pointer fp){
     return sz;
 }
 
-i8[] fileread(String filename) {
-    pointer fp = External.stdio.fopen(filename.asStr, `'r'`);
+i8[] fileread(String filename) { 
+    pointer fp = External.stdio.fopen(filename.asStr(), `'r'`);
     if (fp == null) {
         External.core.throwException(`[openfile] error opening file.`);
     }
-    u64 size = filesize(fp);
+    ?size = filesize(fp);
     ?szp1 = size+1;
     ?buffer = i8[szp1]; // +1 so we can have a null terminated str
     ?result = External.stdio.fread(buffer.values, 1, size, fp);

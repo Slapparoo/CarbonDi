@@ -125,7 +125,7 @@ public class TypeExpr extends ExprDef implements MultiTypeId {
         } else {
             if (memberOf == null) {
                 if (ref_id != null) {
-                    throw new RuntimeException("ref_id != null " + expr + ", " + ref_id );
+                    throw new RuntimeException("ref_id != null - " + expr + ", " + ref_id);
                 }
 
                 resolvedExpr = "/*te14e*/"
