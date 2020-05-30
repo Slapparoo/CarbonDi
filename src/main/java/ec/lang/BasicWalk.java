@@ -1,14 +1,19 @@
 package ec.lang;
 
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.apache.commons.io.FileUtils;
 
 import ec.lang.model.ecBaseListener;
 import ec.lang.model.ecLexer;
@@ -55,7 +60,6 @@ public class BasicWalk {
   }
 
   public static void main(String[] args) throws Exception {
-
     preLoad();
 
     ecLexer lexer = new ecLexer(new ANTLRFileStream(args[0]));
@@ -65,11 +69,11 @@ public class BasicWalk {
     ParseTreeWalker walker = new ParseTreeWalker();
 
     String dirname = ".";
-    if (args.length == 2) {
+    if (args.length >= 2) {
       dirname = args[1];
     }
 
-    CWalker cWalker = new CWalker(args[0], dirname);
+    CWalker cWalker = new CWalker(args, dirname);
     walker.walk(cWalker, tree);
   }
 }

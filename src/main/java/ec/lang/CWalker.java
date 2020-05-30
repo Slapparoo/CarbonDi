@@ -6,9 +6,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 
 import ec.lang.defs.ClassDef;
 import ec.lang.model.ecBaseListener;
@@ -20,10 +24,17 @@ public class CWalker extends ecBaseListener {
     String dirname;
     String filename;
     FileOutputStream ecOutputStream;
+    
+    public List<String> tempFiles = new ArrayList<>();
+    final Set<String> params;
+    final String[] args;
 
-    public CWalker(final String filename, final String dirname) throws Exception {
+    public CWalker(String[] args, final String dirname) throws Exception {
         this.dirname = dirname;
-        this.filename = filename;
+        this.filename = args[0];
+        this.args = args;
+
+        params = new HashSet<>(Arrays.asList(args));
 
         File f = new File(filename);
         int i = f.getName().lastIndexOf('.');
@@ -71,10 +82,10 @@ public class CWalker extends ecBaseListener {
         if (!f.exists()) {
             throw new IOException("Script not found "+ f.getAbsolutePath());
         }
-        runCode(dirname, "sh -c ./" + filename);
+        runCode(dirname, Arrays.asList("sh", "-c", "./" + filename));
     }
 
-    public void runCode(String dirname, String filename) throws IOException {
+    public void runCode(String dirname, List<String> filename) throws IOException {
         ProcessBuilder processBuilder = new ProcessBuilder();
 
         processBuilder.directory(new File(dirname));
@@ -122,9 +133,11 @@ public class CWalker extends ecBaseListener {
             File f = new File("c-lang");
             if (f.exists() && f.isDirectory()) {
                 FileUtils.cleanDirectory(f);
-                File fObj = new File(f, "obj");
-                fObj.mkdir();
+                
             }
+            // f.mkdir();
+            File fObj = new File(f, "obj");
+            fObj.mkdirs();
 
         } catch (IOException e) {
             System.err.println("Error running. clean script ./clean-c-lang.sh");
@@ -162,6 +175,7 @@ public class CWalker extends ecBaseListener {
         // ctx.ff.prepare_03();
 
         try (FileOutputStream out = new FileOutputStream(dirname + "/" + ffilename + ".h")) {
+            tempFiles.add(dirname + "/" + ffilename + ".h");
             String header = ctx.ff.asHeader();
 
             out.write(header.getBytes());
@@ -171,6 +185,7 @@ public class CWalker extends ecBaseListener {
         }
 
         try (FileOutputStream out = new FileOutputStream(dirname + "/" + ffilename + ".c")) {
+            tempFiles.add(dirname + "/" + ffilename + ".c");
             String code = ctx.ff.asCode();
 
             out.write(code.getBytes());
@@ -180,6 +195,7 @@ public class CWalker extends ecBaseListener {
         }
 
         try (FileOutputStream out = new FileOutputStream(dirname + "/" + ffilename + ".compile")) {
+            tempFiles.add(dirname + "/" + ffilename + ".compile");
 
             // String code = "echo starting compile..";
             String code = "";
@@ -217,6 +233,7 @@ public class CWalker extends ecBaseListener {
         }
 
         try (FileOutputStream out = new FileOutputStream(dirname + "/" + ffilename + ".run.c")) {
+            tempFiles.add(dirname + "/" + ffilename + ".run.c");
 
             String code = "#define DEBUG 1" + "\n#include \"" + ctx.ff.filename + ".h\"\n\nint main() { "
                     + "int res = 0;" + "\nif (!setjmp(*catchException())) {" + ctx.ff.mainName() + ";"
@@ -241,12 +258,19 @@ public class CWalker extends ecBaseListener {
         }
 
         try {
-            runCode(dirname, "./"+ffilename + ".compile");
-            runCode(dirname, "./"+ffilename);
+            runCode(dirname, Arrays.asList("sh", "./"+ffilename + ".compile"));
+            runCode(dirname, Arrays.asList("./"+ ffilename));
         } catch (IOException e) {
             System.err.println("Error running. " + dirname + "/" + ffilename);
             System.err.println(e.getMessage());
             e.printStackTrace();
+        }
+
+        if (params.contains("-clean")) {
+            for (String string : tempFiles) {
+                System.out.println("delete " + string);
+                FileUtils.deleteQuietly(new File(string));
+            }
         }
     }
 
