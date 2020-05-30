@@ -1,5 +1,0 @@
-
-clang -std=gnu17 -O3 -g -c -I../c-bin/include -o obj/Default.array_main.o Default.array_main.c
-clang-format -style=file -i Default.array_main.c
-clang -std=gnu17 -O3 -g -I../c-bin/include ../c-bin/obj/*.o obj/*.o  -o Default.array_main Default.array_main.run.c
-clang-format -style=file -i Default.array_main.run.c

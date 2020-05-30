@@ -1,9 +1,0 @@
-
-clang -std=gnu17 -O3 -g -c -I../c-bin/include -o obj/Default.MyClass.o Default.MyClass.c
-clang-format -style=file -i Default.MyClass.c
-clang -std=gnu17 -O3 -g -c -I../c-bin/include -o obj/Default.MySecondClass.o Default.MySecondClass.c
-clang-format -style=file -i Default.MySecondClass.c
-clang -std=gnu17 -O3 -g -c -I../c-bin/include -o obj/Default.classMethods_main.o Default.classMethods_main.c
-clang-format -style=file -i Default.classMethods_main.c
-clang -std=gnu17 -O3 -g -I../c-bin/include ../c-bin/obj/*.o obj/*.o  -o Default.classMethods_main Default.classMethods_main.run.c
-clang-format -style=file -i Default.classMethods_main.run.c
