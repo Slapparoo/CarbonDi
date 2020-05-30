@@ -1,6 +1,7 @@
 
 CC       := clang
-VALGRIND := ../../../valgrind-3.15.0/coregrind/valgrind -s --track-origins=yes --leak-check=full --error-exitcode=2
+#VALGRIND := valgrind -s --track-origins=yes --leak-check=full --error-exitcode=2
+VALGRIND := valgrind  --track-origins=yes --leak-check=full --error-exitcode=2
 SRCDIR 	 := .
 SRC      := $(shell find $(SRCDIR) -name "*.c" -not -name "main*.c" )
 SRCMAIN  := $(shell find $(SRCDIR) -name "main*.c")

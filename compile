@@ -5,7 +5,6 @@ JAVA=/usr/lib/jvm/java-11-openjdk-amd64/bin/java
 cat examples/$1.ec > c-lang/$1.ec
 
 #/usr/lib/jvm/java-11-openjdk-amd64/bin/java -Dfile.encoding=UTF-8 @/tmp/cp_35lbmltlo5sxoyz655ps47hy1.argfile ec.lang.BasicWalk examples/class.ec c-lang
-echo "$JAVA @/tmp/cp_35lbmltlo5sxoyz655ps47hy1.argfile ec.lang.BasicWalk c-lang/$1.ec c-lang"
-$JAVA @/tmp/cp_35lbmltlo5sxoyz655ps47hy1.argfile ec.lang.BasicWalk c-lang/$1.ec c-lang
-
-cat examples/$1.ec > c-lang/$1.ec
+echo "$JAVA @java.argfile ec.lang.BasicWalk c-lang/$1.ec c-lang"
+$JAVA @java.argfile ec.lang.BasicWalk c-lang/$1.ec c-lang
+# $JAVA @java.argfile ec.lang.BasicWalk c-lang/$1.ec c-lang -clean

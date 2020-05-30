@@ -1,4 +1,7 @@
 #!/bin/sh 
+
+VALGRIND=valgrind
+
 {
 echo "rm c-lang/*"
 rm ec-test/*
@@ -13,16 +16,17 @@ do
     echo ${filename}
     # poormans pre-processor preppend the signatures to the class
     # screws up the line numbers
-    cat c-bin/Core.signature.ec ec-test/tests/${filename}.ec > ec-test/${filename}.ec
+    #cat c-bin/Core.signature.ec ec-test/tests/${filename}.ec > ec-test/${filename}.ec
+    cat ec-test/tests/${filename}.ec > ec-test/${filename}.ec
 
     # /usr/lib/jvm/java-11-openjdk-amd64/bin/java -Dfile.encoding=UTF-8 @/tmp/cp_35lbmltlo5sxoyz655ps47hy1.argfile ec.lang.BasicWalk ec-test/${filename}.ec ec-test 
-    /usr/lib/jvm/java-11-openjdk-amd64/bin/java -Dfile.encoding=UTF-8 @/tmp/cp_35lbmltlo5sxoyz655ps47hy1.argfile ec.lang.BasicWalk ec-test/${filename}.ec ec-test > /dev/null
+    /usr/lib/jvm/java-11-openjdk-amd64/bin/java -Dfile.encoding=UTF-8 @java.argfile ec.lang.BasicWalk ec-test/${filename}.ec ec-test > /dev/null
 
     if [ -e ec-test/Default.${filename}_main.compile ]
     then
         cd ec-test/; ./Default.${filename}_main.compile > /dev/null ; cd ..
-        echo ../../valgrind-3.15.0/coregrind/valgrind -s --track-origins=yes --error-exitcode=2 --leak-check=full ec-test/Default.${filename}_main 
-        ../../valgrind-3.15.0/coregrind/valgrind -s --track-origins=yes --error-exitcode=2 --leak-check=full ec-test/Default.${filename}_main 2> ec-test/${filename}.valgrind.txt
+        echo $VALGRIND --track-origins=yes --error-exitcode=2 --leak-check=full ec-test/Default.${filename}_main 
+        $VALGRIND --track-origins=yes --error-exitcode=2 --leak-check=full ec-test/Default.${filename}_main 2> ec-test/${filename}.valgrind.txt
         echo $?
     fi
 done

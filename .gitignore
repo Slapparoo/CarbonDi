@@ -3,7 +3,11 @@
 **/*~
 **/*.o
 **/gen/*
-/target
+target/**
+c-lang/**
+c-bin/**
+ec-test/obj/**
+ec-test/*.txt
 /.antlr
 /.settings
 
