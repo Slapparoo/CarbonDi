@@ -42,7 +42,7 @@ public class ArrayIndexExpr extends TypeExpr {
 
         if (thisType.isPrimative()) {
             isGet = true;
-            return "/*at3*/*(" + thisType.asCode() + "*)"
+            return "/*at3*/*(" + thisType.getName() + "*)"
                     + SnippetFactory.classModelStatement("Array", super.expr, isStatic) + "->get(" + super.expr
                     + ", " + arrayIndex.asCode() + ")";
         } else {
