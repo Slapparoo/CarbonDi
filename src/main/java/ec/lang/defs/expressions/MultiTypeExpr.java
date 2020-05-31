@@ -101,7 +101,6 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
             String res = "";
             // @todo fix this the external should be able to allow depth ? ->
 
-
             ExprDef exprDef = type_id_list.get(type_id_list.size() -1);
 
             if (exprDef instanceof FunctionCallExpr) {
@@ -202,7 +201,8 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
         // resolve constructors
         ClassDef classDef = DefFactory.resolveClass(fcd.getName());
         if (classDef != null) {
-            FunctionDefBase resolvedTo = classDef.resolveConstructor(fcd.getSignature());
+            // FunctionDefBase resolvedTo = classDef.resolveConstructor(fcd.getSignature());
+            FunctionDefBase resolvedTo = classDef.resolveConstructor(fcd);
 
             if (resolvedTo == null) {
                 for (ConstructorDef cd : classDef.getConstructorDefs()) {
@@ -311,11 +311,12 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
             if (tx.variableDef == null) {
                 FunctionDef fd = classDef.resolveFunctionAsProperty(tx.expr);
                 if (fd != null) {
-                    VariableDef var = new VariableDef(); 
-                    var.functionDef = fd;
-                    var.type = fd.returnType;
-                    var.is_static = fd.is_static;
-                    tx.variableDef = var;
+                    tx.variableDef = new VariableDef(fd);
+
+                    tx.memberOf = classDef;
+                    tx.thisType = tx.variableDef.type;
+                    lastVar = tx.variableDef;
+
                     return;
                 }
             }
@@ -323,9 +324,7 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
             if (tx.variableDef == null) {
 
                 if (isExternal) {
-                    tx.variableDef = new VariableDef();
-                    tx.variableDef.setName(tx.expr);
-                    tx.variableDef.type = new TypeIdDef("External");
+                    tx.variableDef = new VariableDef(tx.expr, "External");
                     tx.variableDef.is_static = true;
 
                     classDef.properties.add(tx.variableDef);
@@ -367,17 +366,19 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
 
         // check if it is and internal class property
         // System.out.println("@@resolve class 7 ");
-        VariableDef var = containedInBlock.resolveVariable("this");
-        if (var != null) {
-            // add this in
-            // tx.
-            // System.out.println("@@resolve class 7.1 ");
-            TypeExpr thisExpr = new TypeExpr("this");
-            thisExpr.variableDef = var;
-            type_id_list.add(0, thisExpr);
+        if (!isExternal) {
+            VariableDef var = containedInBlock.resolveVariable("this");
+            if (var != null) {
+                // add this in
+                // tx.
+                // System.out.println("@@resolve class 7.1 ");
+                TypeExpr thisExpr = new TypeExpr("this");
+                thisExpr.variableDef = var;
+                type_id_list.add(0, thisExpr);
 
-            resolveExpr(tx, var);
-            return;
+                resolveExpr(tx, var);
+                return;
+            }
         }
 
         // if (tx.expr.equals("External")) {
@@ -445,6 +446,10 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
             if (last != null) {
                 last.setIsGet(true);
                 isProperty = true;
+            // } else {
+            //     if (exprDef.expr != null && exprDef.expr.equals("External")) {
+            //         System.out.println("@@found External " + this);
+            //     }
             }
 
             ((MultiTypeId) exprDef).setIsGet(isGet);

@@ -175,7 +175,7 @@ public class CWalker extends ecBaseListener {
         // ctx.ff.prepare_03();
 
         try (FileOutputStream out = new FileOutputStream(dirname + "/" + ffilename + ".h")) {
-            tempFiles.add(dirname + "/" + ffilename + ".h");
+            // tempFiles.add(dirname + "/" + ffilename + ".h");
             String header = ctx.ff.asHeader();
 
             out.write(header.getBytes());

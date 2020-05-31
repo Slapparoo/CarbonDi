@@ -1,7 +1,9 @@
 package ec.lang.defs;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import ec.lang.defs.expressions.ConstExpr;
 import ec.lang.defs.expressions.FunctionCallExpr;
@@ -38,12 +40,15 @@ public class LoopDef extends StatementDef implements ContainerDef {
     public VariableDef variable;
 
 
+    private Set<String> COMPARATORS = new HashSet<>(Arrays.asList("<", ">", "==", ">=", "<=", "!=", "===", "&=", "~=", "||", "&&"));
+
     @Override
     public void resolve_01() {
         // System.out.println("@@LoopDef.resolve ");
         super.resolve_01();
 
         loopOver.containedInBlock = this.containedInBlock;
+        blockDef.containedInBlock = this.containedInBlock;
         if (loopOver.containedInBlock == null) {
             throw new NullPointerException("loopOver.containedInBlock == null");
         }
@@ -123,7 +128,6 @@ public class LoopDef extends StatementDef implements ContainerDef {
 
             } else if (p.enclosed instanceof TypeExpr 
                 || p.enclosed instanceof ConstExpr 
-                || p.enclosed instanceof OperationExpr
                 || p.enclosed instanceof FunctionCallExpr) {
                 String ex = p.enclosed.asCode();
                 // do nothing for 0
@@ -140,6 +144,32 @@ public class LoopDef extends StatementDef implements ContainerDef {
                 "\nfor (num a__$a = 0; a__$a < "+ex+"; a__$a++)"
                + blockDef.asCode();
 
+            } else if (p.enclosed instanceof OperationExpr) {
+                System.out.println("@@loopover " + p.enclosed);
+                OperationExpr operationExpr = (OperationExpr) p.enclosed;
+                if (COMPARATORS.contains(operationExpr.expr)) {
+                    String ex = p.enclosed.asCode();
+                    return 
+                        "\nwhile ("+ex+")"
+                        + blockDef.asCode();
+                } else {
+                    String ex = p.enclosed.asCode();
+                    // do nothing for 0
+                    return 
+                    // "if ("+ex+" > 0) {"
+                    //  + "\nfor (num a__$a = 0; a__$a < "+ex+"; a__$a++)"
+                    // + blockDef.asCode()
+                    // + "\n} else if ("+ex+" < 0) {"
+                    // + "\nnum a__$a = "+ex+" *-1 -1;"
+                    // + "\nfor (; a__$a >= 0; a__$a--)"
+                    // + blockDef.asCode()
+                    // + "\n}";
+    
+                    "\nfor (num a__$a = 0; a__$a < "+ex+"; a__$a++)"
+                   + blockDef.asCode();
+    
+                }
+                
             }
 
             

@@ -136,4 +136,22 @@ public abstract class FunctionDefBase extends StatementDef implements ContainerD
 
         this.parameters.add(parameter);
     }
+
+    public boolean isCallable(TypeIdDef returnType,  List<ExprDef> params) {
+        if (params.size() != parameters.size()) {
+            return false;
+        }
+
+        // if (returnType.) {
+
+        // }
+
+        for (int i = 0; i < params.size(); i++) {
+            if (!parameters.get(i).compatableWith(params.get(i))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

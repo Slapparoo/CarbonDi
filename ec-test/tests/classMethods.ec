@@ -14,9 +14,9 @@ class MyClass {
 }
 
 class MySecondClass(Default.MyClass) {
-    i64 someValue() {
-        return 0x4;
-    }
+    // i64 someValue() {
+    //     return 0x4;
+    // }
 }
 
 ?c1 = MyClass(); 

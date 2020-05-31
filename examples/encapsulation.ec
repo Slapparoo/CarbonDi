@@ -33,6 +33,7 @@ protected class Default.Encapsulation (Core.Object) {
         printf(`count1 onChange new=%li, existing=%li\n`, $a, count1);
     }
 
+    // not implemnted
     count3.onGet {
         printf(`count3 onGet =%li\n`, count3);
     }
@@ -52,7 +53,7 @@ encapsulation.printMe();
 encapsulation.count1 = 77;
 
 testi64Equal(`count1`, 77, encapsulation.count1);
-testi64Equal(`count2`, 205, encapsulation.count2);
+testi64Equal(`count2`, 205, encapsulation.count2);  // 100 + 100 + 5
 testi64Equal(`count3`, 10, encapsulation.count3);
 
 

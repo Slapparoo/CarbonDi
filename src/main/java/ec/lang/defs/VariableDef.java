@@ -37,6 +37,20 @@ public class VariableDef extends StatementDef {
     // used for constructors
     public List<ExprDef> params = new ArrayList<>();
 
+    public VariableDef() {}
+
+    public VariableDef(String name, String type) {
+        this.name = name;
+        this.type = new TypeIdDef(type);
+    }
+
+    // Function as property
+    public VariableDef(FunctionDef functionDef) {
+        this.functionDef = functionDef;
+        type = functionDef.returnType;
+        is_static = functionDef.is_static;
+    }
+
     public String printType() {
         return "thisType " + (type == null ? "(undefined)" : type.toString()) + printAssignType();
     }
@@ -91,7 +105,7 @@ public class VariableDef extends StatementDef {
         }
 
         this.setLine(line);
-        // System.out.println("@@vardef " + name + " " + toString());
+        // System.out.println("@@vardef " + name + " *" + assignValue + "* "  + toString());
     }
 
     @Override
@@ -301,4 +315,17 @@ public class VariableDef extends StatementDef {
                 + ", cast_to=" + cast_to + ", indexSize=" + indexSize + ", is_annoymous=" + is_annoymous
                 + ", name=" + name + ", params=" + params + ", type=" + type + " line="+getLine()+" ]";
     }
+
+	public boolean compatableWith(ExprDef exprDef) {
+        if (exprDef.thisType.getName().equals(type.getName())) {
+            return true;
+        }
+
+        if (isPrimative()) {
+            System.out.println(exprDef.thisType.getName() + " = " + type.getName()  + " " + PrimativeTypes.areCompatable32(exprDef.thisType.getName(), type.getName())); 
+            return PrimativeTypes.areCompatable32(exprDef.thisType.getName(), type.getName());
+        }
+
+		return false;
+	}
 }

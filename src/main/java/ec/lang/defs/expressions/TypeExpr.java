@@ -101,6 +101,9 @@ public class TypeExpr extends ExprDef implements MultiTypeId {
                 }
             } else {
                 if (isGet) {
+
+                    System.out.println(variableDef);
+
                     if (variableDef.functionDef == null) {
                         resolvedExpr = "/*te14*/"
                         + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true) 
@@ -111,7 +114,7 @@ public class TypeExpr extends ExprDef implements MultiTypeId {
                         + "->" + expr + "()";
                     }
                 } else {
-                    if (variableDef.functionDef == null) {
+                    if (variableDef.functionDef == null) { 
                         resolvedExpr = "/*te14c*/"
                         + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true) 
                         + "->set_" + expr + "(";

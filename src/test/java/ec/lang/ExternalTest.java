@@ -25,19 +25,21 @@ public class ExternalTest {
     @Test
     public void testExternalInClass() throws IOException {
         String ecCode = ""
-        + "public class Default.AsExternal {"
-        + "public void getSomeLength1() { External.stdio.strlen(p);}"
-        + "public int getSomeLength2() { pointer p; return  External.stdio.strlen(p);}"
+        + "public class Default.AsExternal (Core.Object) {"
+        + "public void getSomeLength1(pointer p) { External.stdio.strlen(p);}"
+        // + "public int getSomeLength2() { pointer p; return  External.stdio.strlen(p);}"
         + "}";
 
         BaseTest.preLoad();
         BaseTest.lex(new ecLexer(new ANTLRInputStream(ecCode)));
 
         ClassDef classDef = DefFactory.resolveClass("AsExternal");
-        System.out.println(classDef.asCode());
+        // System.out.println(classDef.asCode());
+        System.out.println(classDef.asHeader());
 
         System.out.println(DefFactory.getCurrentBlock().statementDefs.size());
-        System.out.println(DefFactory.getCurrentBlock().asCode());
+        // System.out.println(DefFactory.getCurrentBlock().asCode());
+        System.out.println(DefFactory.getCurrentBlock().asHeader());
     }
 
     

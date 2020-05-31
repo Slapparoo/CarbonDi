@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import ec.lang.defs.Enums.Accessor;
+import ec.lang.defs.expressions.FunctionCallExpr;
 
 public class ClassDef extends StatementDef implements ContainerDef, Castable {
 
@@ -138,6 +139,16 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
     public ConstructorDef resolveConstructor(String signature) {
         for (ConstructorDef cd : constructorDefs) {
             if (signature.equals(cd.getSignature())) {
+                return cd;
+            }
+        }
+        return null;
+    }
+
+
+    public ConstructorDef resolveConstructor(FunctionCallExpr functionCallExpr) {
+        for (ConstructorDef cd : constructorDefs) {
+            if (cd.isCallable(null, functionCallExpr.params)) {
                 return cd;
             }
         }

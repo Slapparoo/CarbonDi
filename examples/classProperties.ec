@@ -43,18 +43,18 @@ String getAString() {
     return "the new name";
 }
 
-@c1 = MyClass();
+?c1 = MyClass();
 c1.name = getAString();
 c1.myPrint();
-@mySecondClass = MySecondClass(100, "the name");
+?mySecondClass = MySecondClass(100, "the name");
 mySecondClass.myPrint();
 
 // // -------
 
-@myOtherClass = MyOtherClass();
+?myOtherClass = MyOtherClass();
 
 loop (10) {
-    @myClass = MyClass();
+    ?myClass = MyClass();
     myClass.value = $a;
     myOtherClass.myClass = myClass;
 

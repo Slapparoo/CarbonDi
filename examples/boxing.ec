@@ -28,11 +28,11 @@ External.stdio.printf(`\n%s, %li, %li, %li\n`, boxed1.asStr, unboxed1, unboxed2,
 
 External.stdio.printf(`\n%s\n%s\n%s\n`, str1.asStr(), str2.asStr(), str3.asStr()) ;
 
-External.stdio.testStrEqual(`str1`, `17826048`, str1.asStr());
-External.stdio.testStrEqual(`boxed1`, `17826048`, boxed1.asStr());
-External.stdio.testStrEqual(`boxed1.typename`, `i64`, boxed1.typename());
-External.stdio.testi64Equal(`boxed1.datatype`, 9, boxed1.datatype());
-External.stdio.testi64Equal(`boxed1.value`, 17826048, boxed1.value);
+External.core.testStrEqual(`str1`, `17826048`, str1.asStr());
+External.core.testStrEqual(`boxed1`, `17826048`, boxed1.asStr());
+External.core.testStrEqual(`boxed1.typename`, `i64`, boxed1.typename());
+External.core.testi64Equal(`boxed1.datatype`, 9, boxed1.datatype());
+External.core.testi64Equal(`boxed1.value`, 17826048, boxed1.value);
 
 boxed1.value = 0b_1111_0011;
-External.stdio.testi64Equal(`boxed1.value`, 0b_1111_0011, boxed1.value);
+External.core.testi64Equal(`boxed1.value`, 0b_1111_0011, boxed1.value);

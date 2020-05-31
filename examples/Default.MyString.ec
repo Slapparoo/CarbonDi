@@ -111,17 +111,21 @@ public class Default.MyString (Core.Object) {
     Array with the offsets of all instances of the sub strings
     */
     // public i64[] findAll(pointer str7) {
-    //     u64 capacity = 64;
     //     int datatype = 10;
-    //     u64 datasize = 64;
-    //     DynamicArray offsets = DynamicArray(capacity, datatype, datasize);
+    //     DynamicArray offsets = DynamicArray(64, datatype, 8);
 
-    //     i64 offset = findStr(0, str7);
+    //     ?offset = findStr(0, str7);
+
+    //     printf(`loop %li\n`, offset);
 
     //     loop (offset > 0) {
+    //         printf(`loop %li`, offset);
     //         offsets.addHead(EC_ADDRESS(offset));
     //         offset = findStr(offset + 1, str7);
     //     }
+    //     // offsets.addHead(str7);
+    //     printf(`%s %li\n`, offsets.asStr, offsets.length);
+
 
     //     return offsets;
     // }
@@ -179,6 +183,8 @@ myString.append(" ");
 myString.appendStr(no64.asStr());
 myString.println();
 
+// ?list = myString.findAll(`String`);
+
 myString.trunc(3, 9);
 myString.println();
 
@@ -191,3 +197,8 @@ i64 cmp3 = myString.compare("String");
 i64 cmp4 = myString.compare("My String");
 
 printf(`cmp3 %li, cmp4 %li\n`, cmp3, cmp4);
+// printf(`%s\n`, list.asStr);
+
+// loop (list) {
+//     printf(`%li\n`, $a);
+// }

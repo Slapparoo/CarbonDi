@@ -260,6 +260,8 @@ variable_definition locals[VariableDef vd = DefFactory.newVarDef()]
       {$vd.setValues("rule6", $nm.text, $ti1.text, true, $ct.text, null, null, null, $as.text, null);}
    | ti2=builtin_or_type keyword_lbracket keyword_rbracket nm=base_ident (keyword_equals ct=cast_type? ( as=assignable_from | array_values ))?
       {$vd.setValues("rule7", $nm.text, $ti2.text, true, $ct.text, null, null, null, $as.text, null);}
+   | ti1=builtin_or_type_or_var nm=base_ident
+      {$vd.setValues("rule8", $nm.text, $ti1.text, false, null, null, null, null, null, null);}
    | ti1=builtin_or_type_or_var nm=base_ident ( keyword_equals ct=cast_type? ( as1=assignable_value | ex=expr ))?
       {$vd.setValues("rule8", $nm.text, $ti1.text, false, $ct.text, null, null, null, $as1.text, DefFactory.dropExpression());}
    | var_type nm=base_ident  keyword_equals? ti2=builtin_or_type keyword_lbracket tn2=num_or_type keyword_rbracket  

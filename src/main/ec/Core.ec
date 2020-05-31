@@ -41,69 +41,69 @@ public class signature Object {
 }
 
 
-public class Core.MyString (Core.Object) {
-    (public, private)properties {
-        (public, private) pointer value;
-    }
+// public class Core.MyString (Core.Object) {
+//     (public, private)properties {
+//         (public, private) pointer value;
+//     }
 
-    /**
-    * DefaULT
-    */
-    MyString(pointer str) {
-        i64 len = External.stdio.strlen(str) + 1;
-        value = alloc(len);
-        External.stdio.strcpy(value, str);
-    }
+//     /**
+//     * DefaULT
+//     */
+//     MyString(pointer str) {
+//         i64 len = External.stdio.strlen(str) + 1;
+//         value = alloc(len);
+//         External.stdio.strcpy(value, str);
+//     }
 
-    /**
-    * for strings which are defined in code c will statically allocate
-    * the memory for them
-    */
-    MyString(pointer str, boolean staticAlloc) {
-        if (staticAlloc) {
-            value = str;
-        } else {
-            i64 len = External.stdio.strlen(str) + 1;
-            this.value = alloc(len);
-            External.stdio.strcpy(value, str);
-        }
-    }
+//     /**
+//     * for strings which are defined in code c will statically allocate
+//     * the memory for them
+//     */
+//     MyString(pointer str, boolean staticAlloc) {
+//         if (staticAlloc) {
+//             value = str;
+//         } else {
+//             i64 len = External.stdio.strlen(str) + 1;
+//             this.value = alloc(len);
+//             External.stdio.strcpy(value, str);
+//         }
+//     }
 
-    /**
-    * String Concatenation
-    */
-    MyString(pointer str, pointer str2) {
-        i64 len = External.stdio.strlen(str) + External.stdio.strlen(str2) + 1;
-        this.value = alloc(len);
-        External.stdio.strcpy(value, str);
-        External.stdio.strcat(value, str2);
-    }
+//     /**
+//     * String Concatenation
+//     */
+//     MyString(pointer str, pointer str2) {
+//         i64 len = External.stdio.strlen(str) + External.stdio.strlen(str2) + 1;
+//         this.value = alloc(len);
+//         External.stdio.strcpy(value, str);
+//         External.stdio.strcat(value, str2);
+//     }
 
-    private MyString();
+//     private MyString();
 
-    public pointer asStr() {
-        return this.value;
-    }
+//     public pointer asStr() {
+//         return value;
+//     }
 
-    public MyString asString() {
-        return this;
-    }
+//     public MyString asString() {
+//         return this;
+//     }
 
-    public u64 length() {
-      return External.stdio.strlen(value);
-    }
+//     public u64 length() {
+//       return External.stdio.strlen(value);
+//     }
 
-    public void appendStr(pointer str) {
-        i64 len = External.stdio.strlen(value) + External.stdio.strlen(str) + 1;
-        this.value = realloc(value, len);
-        External.stdio.strcat(value, str);
-    }
+//     public void appendStr(pointer str) {
+//         i64 len = External.stdio.strlen(value) + External.stdio.strlen(str) + 1;
+//         this.value = realloc(value, len);
+//         External.stdio.strcat(value, str);
+//     }
 
-    public void appendString(String str) {
-      appendStr(str.asStr);
-    }
+//     public void appendString(String str) {
+//       appendStr(str.asStr);
+//     }
 
-}
+// }
 
 public class Core.Exception (Core.Object) {
     (public, private) properties {

@@ -10,6 +10,7 @@
 #include "Core.RefArray.h"
 #include "Core.Boxing.h"
 #include "Core.BaseBoxing.h"
+#include "Core.DynamicArray.h"
 #include "Core.B8.h"
 #include "Core.U8.h"
 #include "Core.I8.h"
