@@ -102,7 +102,7 @@ public class TypeExpr extends ExprDef implements MultiTypeId {
             } else {
                 if (isGet) {
 
-                    System.out.println(variableDef);
+                    // System.out.println(variableDef);
 
                     if (variableDef.functionDef == null) {
                         resolvedExpr = "/*te14*/"

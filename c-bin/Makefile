@@ -1,9 +1,8 @@
 
 CC       := clang
-#VALGRIND := valgrind -s --track-origins=yes --leak-check=full --error-exitcode=2
 VALGRIND := valgrind  --track-origins=yes --leak-check=full --error-exitcode=2
 SRCDIR 	 := .
-SRC      := $(shell find $(SRCDIR) -name "*.c" -not -name "main*.c" )
+SRC      := $(shell find $(SRCDIR) -name "*.c" -not -name "main*.c"  -maxdepth 1  )
 SRCMAIN  := $(shell find $(SRCDIR) -name "main*.c")
 MAINS    := $(shell find $(OBJDIR) -name "main*.e")
 GENDIR	   := gen

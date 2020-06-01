@@ -1,6 +1,7 @@
 package ec.lang.defs.expressions;
 
 import ec.lang.defs.ExprDef;
+import ec.lang.defs.OperatorTypes;
 import ec.lang.defs.StatementDef;
 
 public class AssignExpr extends StatementDef {
@@ -11,15 +12,6 @@ public class AssignExpr extends StatementDef {
     public ExprDef assignRight;
 
     private boolean classVar = false;
-
-    // private String classModelStatement(String className, String varname) {
-
-    //     if (TypeIdDef.isPrimative(className) ) {
-    //         throw new RuntimeException("Not a class type " + className + ", " + varname);
-    //     }
-
-    //     return "(("+className+"ClassModel*)useObject("+varname+")->classmodel)";
-    // }
 
     @Override
     public void resolve_01() {
@@ -77,7 +69,12 @@ public class AssignExpr extends StatementDef {
         }
 
         // TODO +=, -= ...
-        if (!assignOperator.expr.equals("=")) {
+        if (OperatorTypes.ASSIGNEQUALS.contains(assignOperator.expr)) {
+            if (assignLeft instanceof MultiTypeExpr ) {
+                MultiTypeExpr al = (MultiTypeExpr) assignLeft;
+                al.directAccess = true;
+            }
+
             return "/*Ax7*/" + assignLeft.asCode() + assignOperator.asCode() + assignRight.asCode() + ";";
         }
 

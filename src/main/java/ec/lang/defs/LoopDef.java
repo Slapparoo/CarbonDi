@@ -40,8 +40,6 @@ public class LoopDef extends StatementDef implements ContainerDef {
     public VariableDef variable;
 
 
-    private Set<String> COMPARATORS = new HashSet<>(Arrays.asList("<", ">", "==", ">=", "<=", "!=", "===", "&=", "~=", "||", "&&"));
-
     @Override
     public void resolve_01() {
         // System.out.println("@@LoopDef.resolve ");
@@ -147,7 +145,7 @@ public class LoopDef extends StatementDef implements ContainerDef {
             } else if (p.enclosed instanceof OperationExpr) {
                 System.out.println("@@loopover " + p.enclosed);
                 OperationExpr operationExpr = (OperationExpr) p.enclosed;
-                if (COMPARATORS.contains(operationExpr.expr)) {
+                if (OperatorTypes.COMPARATORS.contains(operationExpr.expr)) {
                     String ex = p.enclosed.asCode();
                     return 
                         "\nwhile ("+ex+")"

@@ -62,7 +62,7 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
               }
               first = false;
             } 
-            return "\n" + accessor + " " 
+            return "\n /*fns1*/" + accessor + " " 
             + (is_static ? "static " : "")
             + (is_final ? "final " : "")
             + (returnType.getName().equals("void") ? "void" : returnType.asSignature()) + " " +name+"("+ paramsAsSignature() +") "+ex+";";
@@ -101,7 +101,9 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
                     if (thisSignature.equals(functionDef.getSignature()) || initSignature.equals(functionDef.getSignature())) {
                         is_override = true;
                     } else {
-                        throw new RuntimeException("method signature overloads are not currently supported, a method with the name " + name + " already exists " + functionDef.getParamsSignature());
+                        System.out.println(getLine());   
+                        System.out.println("method signature overloads are not currently supported, a method with the name " + name + " already exists " + functionDef.getParamsSignature());   
+                        // throw new RuntimeException("method signature overloads are not currently supported, a method with the name " + name + " already exists " + functionDef.getParamsSignature());
                     }
                 }
 
@@ -123,18 +125,8 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
 
             for (StatementDef def : getBlockDef().statementDefs) {
                 if (def instanceof ReturnExpr) {
-                    // don't select return null
                     if (def.statement.thisType == null) {
                         def.statement.thisType = returnType;
-                    } else if (!def.statement.thisType.getName().equals(returnType.getName())) {
-                        // def.statement.thisType = returnType;
-                        returnType = def.statement.thisType;
-                    // } else {
-                    //     if (returnType.getName().equals("null")) {
-
-                    //     } else {
-                    //         returnType = def.statement.thisType;                         
-                    //     }
                     }
                 }
             }
@@ -196,13 +188,20 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
     private String paramsAsSignature() {
         String res = "";
         boolean first = true;
-        boolean thisParam = classDef != null && !is_static;
+        // boolean thisParam = classDef != null && !is_static && is_override;
+
+        
+        
 
         for(VariableDef param : getParameters()) {
-            if (thisParam) {
-                thisParam = false;
+            if (param.getName().equals("this")) {
                 continue;
-            } 
+            }
+
+            // if (thisParam) {
+            //     thisParam = false;
+            //     continue;
+            // } 
             if (!first) {
                 res += ", ";
             }

@@ -6,6 +6,8 @@ public class OperationExpr extends ExprDef {
     public ExprDef left;
     public ExprDef right;
 
+
+
     @Override
     public void resolve_01() {
         super.resolve_01();
@@ -21,7 +23,11 @@ public class OperationExpr extends ExprDef {
         }
         right.resolve_01();
 
-        this.thisType = left.thisType;
+        if (OperatorTypes.COMPARATORS.contains(expr)) {
+            this.thisType = new TypeIdDef("b8");
+        } else {
+            this.thisType = left.thisType;
+        }
     }
 
     @Override

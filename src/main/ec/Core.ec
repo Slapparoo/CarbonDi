@@ -1,6 +1,6 @@
 namespace Core;
 
-public class signature Object {
+public class signature Core.Object {
     public Object();
 
     public final pointer getObjectData() {
@@ -40,70 +40,68 @@ public class signature Object {
 
 }
 
+public class Core.String (Core.Object) {
+    (public, private)properties {
+        (public, private) pointer value;
+    }
 
-// public class Core.MyString (Core.Object) {
-//     (public, private)properties {
-//         (public, private) pointer value;
-//     }
+    /**
+    * DefaULT
+    */
+    String(pointer str) {
+        i64 len = External.stdio.strlen(str) + 1;
+        value = this.alloc(len);
+        External.stdio.strcpy(value, str);
+    }
 
-//     /**
-//     * DefaULT
-//     */
-//     MyString(pointer str) {
-//         i64 len = External.stdio.strlen(str) + 1;
-//         value = alloc(len);
-//         External.stdio.strcpy(value, str);
-//     }
+    /**
+    * for strings which are defined in code c will statically allocate
+    * the memory for them
+    */
+    String(pointer str, boolean staticAlloc) {
+        if (staticAlloc) {
+            value = str;
+        } else {
+            i64 len = External.stdio.strlen(str) + 1;
+            this.value = this.alloc(len);
+            External.stdio.strcpy(value, str);
+        }
+    }
 
-//     /**
-//     * for strings which are defined in code c will statically allocate
-//     * the memory for them
-//     */
-//     MyString(pointer str, boolean staticAlloc) {
-//         if (staticAlloc) {
-//             value = str;
-//         } else {
-//             i64 len = External.stdio.strlen(str) + 1;
-//             this.value = alloc(len);
-//             External.stdio.strcpy(value, str);
-//         }
-//     }
+    /**
+    * String Concatenation
+    */
+    String(pointer str, pointer str2) {
+        i64 len = External.stdio.strlen(str) + External.stdio.strlen(str2) + 1;
+        this.value = this.alloc(len);
+        External.stdio.strcpy(value, str);
+        External.stdio.strcat(value, str2);
+    }
 
-//     /**
-//     * String Concatenation
-//     */
-//     MyString(pointer str, pointer str2) {
-//         i64 len = External.stdio.strlen(str) + External.stdio.strlen(str2) + 1;
-//         this.value = alloc(len);
-//         External.stdio.strcpy(value, str);
-//         External.stdio.strcat(value, str2);
-//     }
+    private String();
 
-//     private MyString();
+    // public pointer asStr() {
+    //     return value;
+    // }
 
-//     public pointer asStr() {
-//         return value;
-//     }
+    public String asString() {
+        return this;
+    }
 
-//     public MyString asString() {
-//         return this;
-//     }
+    public u64 length() {
+      return External.stdio.strlen(value);
+    }
 
-//     public u64 length() {
-//       return External.stdio.strlen(value);
-//     }
+    public void appendStr(pointer str) {
+        i64 len = External.stdio.strlen(value) + External.stdio.strlen(str) + 1;
+        this.value = realloc(value, len);
+        External.stdio.strcat(value, str);
+    }
 
-//     public void appendStr(pointer str) {
-//         i64 len = External.stdio.strlen(value) + External.stdio.strlen(str) + 1;
-//         this.value = realloc(value, len);
-//         External.stdio.strcat(value, str);
-//     }
-
-//     public void appendString(String str) {
-//       appendStr(str.asStr);
-//     }
-
-// }
+    public void appendString(String str) {
+      appendStr(str.asStr());
+    }
+}
 
 public class Core.Exception (Core.Object) {
     (public, private) properties {
@@ -149,14 +147,14 @@ public class signature Core.Array(Core.Object){
 /* imports {} */
 
 public class signature Core.RefArray(Core.Array){
-  (public,public) properties {
-    (public,public) pointer values;
-    (public,public) u64 length;
-    (public,public) u64 capacity;
-    (public,public) int dataType;
-    (public,public) u64 dataSize;
-    (public,public) boolean managed;
-  }
+  // (public,public) properties {
+  //   (public,public) pointer values;
+  //   (public,public) u64 length;
+  //   (public,public) u64 capacity;
+  //   (public,public) int dataType;
+  //   (public,public) u64 dataSize;
+  //   (public,public) boolean managed;
+  // }
 
   /* default constructor */
   public RefArray(u64 length);
@@ -501,7 +499,7 @@ All singing all dancing Dynamic array can be used as
 
 */
 
-public class Default.NewDynamicArray (Core.Array){
+public class Core.NewDynamicArray (Core.Array){
     (public,public) properties {
         u64 startIndex;
         u64 endIndex;

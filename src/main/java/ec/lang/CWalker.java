@@ -27,14 +27,14 @@ public class CWalker extends ecBaseListener {
     
     public List<String> tempFiles = new ArrayList<>();
     final Set<String> params;
-    final String[] args;
+    final List<String> args;
 
-    public CWalker(String[] args, final String dirname) throws Exception {
+    public CWalker(List<String> args, final String dirname) throws Exception {
         this.dirname = dirname;
-        this.filename = args[0];
+        this.filename = args.get(0);
         this.args = args;
 
-        params = new HashSet<>(Arrays.asList(args));
+        params = new HashSet<>(args);
 
         File f = new File(filename);
         int i = f.getName().lastIndexOf('.');
@@ -47,10 +47,25 @@ public class CWalker extends ecBaseListener {
             fName = fName.substring(i + 1);
         }
 
+        try {
+            File f2 = new File(dirname);
+            if (f2.exists() && f.isDirectory()) {
+                FileUtils.cleanDirectory(f2);
+            }
+            File fObj = new File(f2, "obj");
+            fObj.mkdirs();
+
+        } catch (IOException e) {
+            System.err.println("Error running pre-clean " + dirname);
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+        }
+
+
         String ffilename = fName + ".signature";
 
         if (!ffilename.equals("signature.signature")) {
-            System.out.println("signature Filename: " + dirname + "/" + ffilename + ", " + dirname + "/" + filename);
+            System.out.println("signature Filename: " + dirname + "/" + ffilename + ", " + filename);
             ecOutputStream = new FileOutputStream(dirname + "/" + ffilename + ".ec");
         }
     }
@@ -124,26 +139,6 @@ public class CWalker extends ecBaseListener {
 
     @Override
     public void enterProgram(ProgramContext ctx) {
-        try {
-            System.out.println("rm c-lang/*");
-            // rm c-lang/*
-            // echo "rm c-lang/obj/*"
-            // rm c-lang/obj/*
-
-            File f = new File("c-lang");
-            if (f.exists() && f.isDirectory()) {
-                FileUtils.cleanDirectory(f);
-                
-            }
-            // f.mkdir();
-            File fObj = new File(f, "obj");
-            fObj.mkdirs();
-
-        } catch (IOException e) {
-            System.err.println("Error running. clean script ./clean-c-lang.sh");
-            System.err.println(e.getMessage());
-            e.printStackTrace();
-        }
         super.enterProgram(ctx);
     }
 
@@ -202,29 +197,40 @@ public class CWalker extends ecBaseListener {
 
             String params = "-std=gnu17 -O3 -g";
 
+
+
+            String compiler = "clang";
+            for (String string : args) {
+                if (string.startsWith("-CC")) {
+                    compiler = string.substring(3);
+                }
+                if (string.startsWith("-CO")) {
+                    params = string.substring(3);
+                }
+
+            }
+
             for (ClassDef classDef : ctx.ff.getClasses()) {
                 if (!classDef.is_signature) {
-                    code += "\nclang " + params + " -c -I../c-bin/include -o obj/" + classDef.getFqn() + ".o "
+                    code += "\n"+compiler+" " + params + " -c -I../c-bin/include -o obj/" + classDef.getFqn() + ".o "
                             + classDef.getFqn() + ".c";
 
-                    // runCode(dirname, "clang " + params + " -c -I../c-bin/include -o obj/" + classDef.getFqn() + ".o " + classDef.getFqn() + ".c");
-                    // code += "\nclang "+params+" -c -I../c-lang-deps -o obj/"+
-                    // classDef.getClassFQN() +".o "+classDef.getClassFQN()+".c";
-                    code += "\nclang-format -style=file -i " + classDef.getFqn() + ".c";
+                    if (params.contains("-CF")) {
+                        code += "\nclang-format -style=file -i " + classDef.getFqn() + ".c";
+                    }
                 }
             }
-            code += "\nclang " + params + " -c -I../c-bin/include -o obj/" + ffilename + ".o " + ffilename + ".c";
-            // code += "\nclang "+params+" -c -I../c-lang-deps -o obj/"+ ffilename +".o
-            // "+ffilename+".c";
-            code += "\nclang-format -style=file -i " + ffilename + ".c";
+            code += "\n"+compiler+" " + params + " -c -I../c-bin/include -o obj/" + ffilename + ".o " + ffilename + ".c";
+            if (params.contains("-CF")) {
+                code += "\nclang-format -style=file -i " + ffilename + ".c";
+            }
 
-            code += "\nclang " + params + " -I../c-bin/include ../c-bin/obj/*.o obj/*.o  -o " + ffilename + " "
+            code += "\n"+compiler+" " + params + " -I../c-bin/include ../c-bin/obj/*.o obj/*.o  -o " + ffilename + " "
                     + ffilename + ".run.c";
 
-            // code += "\necho $?\nenv";
-            // code += "\nclang "+params+" -I../c-lang-deps -I../c-bin ../c-lang-deps/*.o
-            // obj/*.o -o "+ ffilename +" "+ffilename+".run.c";
-            code += "\nclang-format -style=file -i " + ffilename + ".run.c";
+            if (params.contains("-CF")) {
+                code += "\nclang-format -style=file -i " + ffilename + ".run.c";
+            }
 
             out.write(code.getBytes());
             out.flush();
@@ -258,8 +264,10 @@ public class CWalker extends ecBaseListener {
         }
 
         try {
-            runCode(dirname, Arrays.asList("sh", "./"+ffilename + ".compile"));
-            runCode(dirname, Arrays.asList("./"+ ffilename));
+            if (!params.contains("-nogen")) {
+                runCode(dirname, Arrays.asList("sh", "./"+ffilename + ".compile"));
+                runCode(dirname, Arrays.asList("./"+ ffilename));
+            }
         } catch (IOException e) {
             System.err.println("Error running. " + dirname + "/" + ffilename);
             System.err.println(e.getMessage());
@@ -281,6 +289,7 @@ public class CWalker extends ecBaseListener {
         ctx.cd.prepare_03();
         System.out.println("#class Filename: " + ctx.cd.getFqn());
 
+
         if (!ctx.cd.is_signature) {
             try (FileOutputStream out = new FileOutputStream(dirname + "/" + ctx.cd.getFqn() + ".h")) {
                 String header = ctx.cd.asHeader();
@@ -297,11 +306,24 @@ public class CWalker extends ecBaseListener {
                 if (ecOutputStream != null) {
                     ecOutputStream.write(header.getBytes());
                     ecOutputStream.flush();
+
                 }
             } catch (Exception e) {
                 System.err.println("Error writing to ecfile.");
                 e.printStackTrace(System.err);
             }
+
+            if (params.contains("-OE")) {
+                try (FileOutputStream out = new FileOutputStream(dirname + "/" + ctx.cd.getFqn() + ".ec")) {
+                    String code = ctx.cd.asSignature();
+
+                    out.write(code.getBytes());
+                    out.flush();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
 
             try (FileOutputStream out = new FileOutputStream(dirname + "/" + ctx.cd.getFqn() + ".c")) {
                 String code = ctx.cd.asCode();
@@ -310,6 +332,18 @@ public class CWalker extends ecBaseListener {
                 out.flush();
             } catch (Exception e) {
                 throw new RuntimeException(e);
+            }
+        } else if (params.contains("-incsig")) {
+            String header = ctx.cd.asSignature();
+
+            try {
+                if (ecOutputStream != null) {
+                    ecOutputStream.write(header.getBytes());
+                    ecOutputStream.flush();
+                }
+            } catch (Exception e) {
+                System.err.println("Error writing to ecfile.");
+                e.printStackTrace(System.err);
             }
         }
     }
