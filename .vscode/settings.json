@@ -16,7 +16,16 @@
         "core.core_main.h": "c",
         "core.array.h": "c",
         "core.dynamicarray.h": "c",
-        "default.dynamicarray_main.h": "c"
+        "default.dynamicarray_main.h": "c",
+        "climits": "c",
+        "cmath": "c",
+        "cstdarg": "c",
+        "cstdint": "c",
+        "cstdio": "c",
+        "cstdlib": "c",
+        "*.tcc": "c",
+        "cinttypes": "c",
+        "typeinfo": "c"
     },
     "java.configuration.updateBuildConfiguration": "automatic"
 }

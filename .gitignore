@@ -10,4 +10,4 @@ ec-test/obj/**
 ec-test/*.txt
 /.antlr
 /.settings
-
+c-bin/obj/test/*.e

@@ -115,7 +115,7 @@ keyword_in          : 'in' ;
 keyword_try         : 'try' ;
 keyword_catch       : 'catch' ;
 keyword_finally     : 'finally' ;
-keyword_throw       : 'throw' ;
+// keyword_throw       : 'throw' ;
 keyword_throws      : 'throws' ;
 // keyword_asm_x64     : 'asm_x64' ;
 keyword_break       : 'break' ;

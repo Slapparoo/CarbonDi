@@ -88,6 +88,9 @@ typedef struct ExceptionInformation {
   jmp_buf buf;
   u64 currentStack;
   pointer message;  // exception object
+  num exception;
+  pointer classCName;
+  num callStack; // DynamicArray Str
   // stacktrace
 } ExceptionInformation;
 
@@ -118,25 +121,25 @@ void returnObject(num ref);
 num createObject(pointer object_data, pointer class_model, boolean is_stack);
 
 // to be removed ==>
-i64 __exitReturn_i64(i64);
-u64 __exitReturn_u64(u64);
-u32 __exitReturn_u32(u32);
-i32 __exitReturn_i32(i32);
-u16 __exitReturn_u16(u16);
-i16 __exitReturn_i16(i16);
-i8 __exitReturn_i8(i8);
-u8 __exitReturn_u8(u8);
-f32 __exitReturn_f32(f32);
-f64 __exitReturn_f64(f64);
-#ifdef __SUPPORT_QUADMATH_
-f128 __exitReturn_f128(f128);
-f80 __exitReturn_f80(f80);
-#endif
-boolean __exitReturn_boolean(boolean);
-num __exitReturn_num(num);
-num __exitReturn_ref(num);
-int __exitReturn_int(int);
-pointer __exitReturn_pointer(pointer);
+// i64 __exitReturn_i64(i64);
+// u64 __exitReturn_u64(u64);
+// u32 __exitReturn_u32(u32);
+// i32 __exitReturn_i32(i32);
+// u16 __exitReturn_u16(u16);
+// i16 __exitReturn_i16(i16);
+// i8 __exitReturn_i8(i8);
+// u8 __exitReturn_u8(u8);
+// f32 __exitReturn_f32(f32);
+// f64 __exitReturn_f64(f64);
+// #ifdef __SUPPORT_QUADMATH_
+// f128 __exitReturn_f128(f128);
+// f80 __exitReturn_f80(f80);
+// #endif
+// boolean __exitReturn_boolean(boolean);
+// num __exitReturn_num(num);
+// num __exitReturn_ref(num);
+// int __exitReturn_int(int);
+// pointer __exitReturn_pointer(pointer);
 
 //*** <==
 i64 __exitReturn_i64_un(i64 a, u64 checkPoint);
@@ -168,6 +171,14 @@ extern ExceptionInformation  *exceptionInformation[];
 void throwException(pointer message);
 jmp_buf* catchException();
 void afterCatchException();
+
+void throw(num exception);
+void newThrowException(num exception);
+jmp_buf *newCatchException(pointer cname);
+i64 getExceptionIndex();
+void cleanExceptionIndex(i64 index);
+num getException();
+void newAfterCatchException();
 
 pointer ec_malloc(size_t size);
 pointer ec_calloc(size_t length, size_t size);

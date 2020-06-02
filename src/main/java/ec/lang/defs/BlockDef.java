@@ -11,6 +11,8 @@ public class BlockDef extends StatementDef implements ContainerDef {
     private List<VariableDef> variableDefs = new ArrayList<>();
 
     // private List<FunctionDef> functionDefs = new ArrayList<>();
+    private char currentAnnoymous = 'a';
+    private int internalUnique = 0;
 
     public boolean includeEntryExit = true;
     public boolean hasReturn = false;
@@ -39,22 +41,8 @@ public class BlockDef extends StatementDef implements ContainerDef {
 
     @Override
     public void resolve_01() {
-
-        // for (StatementDef statementDef : statementDefs) {
-        //     statementDef.containedInBlock = this;
-        //     // System.out.println(this.containedInBlock);
-        //     System.out.println("@@statementDef.getClass() " + statementDef.getClass());
-        //     if (statementDef instanceof FunctionDef) {
-        //         System.out.println("@@function");
-        //         functionDefs.add((FunctionDef) statementDef);
-        //         statementDef.resolve_01();
-        //     }
-        // }
-
-
         for (StatementDef statementDef : statementDefs) {
             statementDef.containedInBlock = this;
-            // System.out.println(this.containedInBlock);
             statementDef.resolve_01();
         }
         super.resolve_01();
@@ -64,9 +52,6 @@ public class BlockDef extends StatementDef implements ContainerDef {
         String res = "";
 
         for (StatementDef exprDef : statementDefs) {
-            // exprDef.containedInBlock = this;
-            // exprDef.resolve_01();
-
             if (exprDef instanceof ContainerDef) {
                 ((ContainerDef)exprDef).getBlockDef().includeEntryExit = includeEntryExit;
                 ((ContainerDef)exprDef).getBlockDef().directAccess.addAll(directAccess);
@@ -101,20 +86,6 @@ public class BlockDef extends StatementDef implements ContainerDef {
         
         return res + "}\n";
     }
-
-
-    // public FunctionDef resolveFunction(String name) {
-    //     for (FunctionDef fd : functionDefs) {
-    //         if (fd.name.equals(name)) {
-    //             return fd;
-    //         }
-    //     }
-    //     if (containedInBlock != null) {
-    //         return containedInBlock.resolveFunction(name);
-    //     } 
-
-    //     return null;
-    // }
 
     @Override
     public List<VariableDef> variableDefs() {
@@ -154,6 +125,15 @@ public class BlockDef extends StatementDef implements ContainerDef {
     }
 
 
+    public VariableDef addAnnoymous(TypeIdDef typeIdDef) {
+        VariableDef variableDef = new VariableDef();
+        variableDef.setName("$" + getNextAnnoymous());
+        variableDef.type = typeIdDef;
+
+        variableDefs.add(variableDef);
+        return variableDef;
+    }
+
     public BlockDef getBlockDef() {
         return this;
     }
@@ -188,8 +168,6 @@ public class BlockDef extends StatementDef implements ContainerDef {
 		return DefFactory.resolveVariable(name);
 	}
 
-    private char currentAnnoymous = 'a';
-
 	public char getNextAnnoymous() {
         if (containedInBlock != null && currentAnnoymous == 'a') {
             currentAnnoymous = containedInBlock.currentAnnoymous;
@@ -199,5 +177,13 @@ public class BlockDef extends StatementDef implements ContainerDef {
             throw new RuntimeException("used up all anonymous values");
         }
         return currentAnnoymous++;
-	}
+    }
+    
+	public int getNextinternalUnique() {
+        if (containedInBlock != null && internalUnique == 0)  {
+            internalUnique = containedInBlock.getNextinternalUnique();
+        }
+
+        return internalUnique++;
+    }
 }

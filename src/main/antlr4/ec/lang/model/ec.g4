@@ -6,6 +6,7 @@ import ectypes;
 // package ec.lang.model;
 import ec.lang.defs.*;
 import ec.lang.defs.expressions.*;
+import ec.lang.defs.TryCatchDef.CatchBlock;
 }
 
 @members {
@@ -357,12 +358,24 @@ plan_body
    : (property_accessor? keyword_properties property_body)?  function_definition+
    ;
 
-exception_block_definition
-   : keyword_try block_statement catch_block_definition*  ( keyword_finally block_statement)?
+exception_block_definition locals[TryCatchDef tryCatchDef = DefFactory.newTryCatchDef()]
+   : try_block_definition
+      catch_block_definition* 
+      finally_block_definition?
+      {DefFactory.endTryCatch();}
    ;
 
-catch_block_definition
-   : keyword_catch  keyword_lparen pure_type (keyword_comma pure_type)* keyword_rparen  block_statement
+try_block_definition 
+   : {DefFactory.newTryBlockDef();} keyword_try keyword_lbrace statement* keyword_rbrace {DefFactory.dropBlock();} ;
+
+finally_block_definition 
+   : {DefFactory.newFinallyDef();} keyword_finally keyword_lbrace statement* keyword_rbrace {DefFactory.dropBlock();} ;
+      
+catch_block_definition locals[CatchBlock catchBlock = DefFactory.newCatchDef()]
+   : keyword_catch  keyword_lparen 
+      pure_type {$catchBlock.addException($pure_type.text);} (keyword_comma pure_type {$catchBlock.addException($pure_type.text);})* 
+      keyword_rparen  
+      keyword_lbrace statement* keyword_rbrace {DefFactory.dropBlock();}
    ;
 
 imports_definition

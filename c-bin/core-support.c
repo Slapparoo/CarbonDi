@@ -1,6 +1,8 @@
 #include "Core.Core_main.h"
 #include <stdarg.h>
 
+
+// @TODO these stacks need to have one per thread
 Object_ref *poorMansMap[PM_LIST_LENGTH];
 num refStack[PM_LIST_LENGTH];
 u64 refStackIndex = 0;
@@ -244,7 +246,7 @@ void __unWindTo(u64 checkPoint) {
 
 
   enterExitRatio--;
-  // debug_println("currentIndex=%lu, unwindto=%lu ", refStackIndex, checkPoint);
+  debug_println("currentIndex=%lu, unwindto=%lu, enterExitRatio=%li", refStackIndex, checkPoint, enterExitRatio);
 
   if (checkPoint == refStackIndex) {
     return;
@@ -350,89 +352,89 @@ void __exitReturn_void_un(u64 checkPoint) {
 }
 
 
-//**************** old -->
+// //**************** old -->
 
-i64 __exitReturn_i64(i64 a) {
-  __onExit();
-  return a;
-}
+// i64 __exitReturn_i64(i64 a) {
+//   __onExit();
+//   return a;
+// }
 
-u64 __exitReturn_u64(u64 a) {
-  __onExit();
-  return a;
-}
-
-
-u32 __exitReturn_u32(u32 a) {
-  __onExit();
-  return a;
-}
-
-i32 __exitReturn_i32(i32 a) {
-  __onExit();
-  return a;
-}
-u16 __exitReturn_u16(u16 a) {
-  __onExit();
-  return a;
-}
-i16 __exitReturn_i16(i16 a) {
-  __onExit();
-  return a;
-}
-i8 __exitReturn_i8(i8 a) {
-  __onExit();
-  return a;
-}
-u8 __exitReturn_u8(u8 a) {
-  __onExit();
-  return a;
-}
-f32 __exitReturn_f32(f32 a) {
-  __onExit();
-  return a;
-}
-f64 __exitReturn_f64(f64 a) {
-  __onExit();
-  return a;
-}
-#ifdef __SUPPORT_QUADMATH_
-f128 __exitReturn_f128(f128 a) {
-  __onExit();
-  return a;
-}
-f80 __exitReturn_f80(f80 a) {
-  __onExit();
-  return a;
-}
-#endif
-boolean __exitReturn_boolean(boolean a) {
-  __onExit();
-  return a;
-}
-num __exitReturn_num(num a) {
-  __onExit();
-  return a;
-}
-
-int __exitReturn_int(int a) {
-__onExit();
-  return a;
-}
-
-pointer __exitReturn_pointer(pointer a) {
-  __onExit();
-  return a;
-}
+// u64 __exitReturn_u64(u64 a) {
+//   __onExit();
+//   return a;
+// }
 
 
-num __exitReturn_ref(num a) {
-  // be sure to record the reference
-  borrowOnReturnObject(a);
-  __onExit();
-  refStack[refStackIndex++] = a;
-  return a;
-}
+// u32 __exitReturn_u32(u32 a) {
+//   __onExit();
+//   return a;
+// }
+
+// i32 __exitReturn_i32(i32 a) {
+//   __onExit();
+//   return a;
+// }
+// u16 __exitReturn_u16(u16 a) {
+//   __onExit();
+//   return a;
+// }
+// i16 __exitReturn_i16(i16 a) {
+//   __onExit();
+//   return a;
+// }
+// i8 __exitReturn_i8(i8 a) {
+//   __onExit();
+//   return a;
+// }
+// u8 __exitReturn_u8(u8 a) {
+//   __onExit();
+//   return a;
+// }
+// f32 __exitReturn_f32(f32 a) {
+//   __onExit();
+//   return a;
+// }
+// f64 __exitReturn_f64(f64 a) {
+//   __onExit();
+//   return a;
+// }
+// #ifdef __SUPPORT_QUADMATH_
+// f128 __exitReturn_f128(f128 a) {
+//   __onExit();
+//   return a;
+// }
+// f80 __exitReturn_f80(f80 a) {
+//   __onExit();
+//   return a;
+// }
+// #endif
+// boolean __exitReturn_boolean(boolean a) {
+//   __onExit();
+//   return a;
+// }
+// num __exitReturn_num(num a) {
+//   __onExit();
+//   return a;
+// }
+
+// int __exitReturn_int(int a) {
+// __onExit();
+//   return a;
+// }
+
+// pointer __exitReturn_pointer(pointer a) {
+//   __onExit();
+//   return a;
+// }
+
+
+// num __exitReturn_ref(num a) {
+//   // be sure to record the reference
+//   borrowOnReturnObject(a);
+//   __onExit();
+//   refStack[refStackIndex++] = a;
+//   return a;
+// }
 
 
 //************* <--
@@ -582,11 +584,11 @@ void testStrEqual(pointer message, pointer expected, pointer actual) {
   }
 }
 
+// ********** Old Exception ==>
 
 /**
  * this will need to evolve a bit - change to getting passed and exception
  */ 
-
 void throwException(pointer message) {
   exceptionInformation[exceptionInformationIndex]->message = message;
   longjmp(exceptionInformation[exceptionInformationIndex]->buf, 1);
@@ -600,6 +602,9 @@ jmp_buf *catchException() {
   ExceptionInformation *ei = ec_malloc(sizeof(ExceptionInformation));
   exceptionInformation[exceptionInformationIndex] = ei;
   ei->currentStack = __currentStackIndex();
+  ei->classCName = NULL;
+  ei->exception = 0;
+
 
   return &ei->buf;
 }
@@ -615,6 +620,111 @@ void afterCatchException() {
   ec_free(ei);
   exceptionInformationIndex--;
 }
+
+// ********** <== Old Exception
+
+// ********** new Exception ==>
+
+/**
+ * @TODO there needs to be a stack per thread
+ * 
+ * 
+ * Called by Throw
+ */
+void throw(num exception) {
+  newThrowException(exception);
+}
+
+void newThrowException(num exception) {
+  // borrow the object so the ref counter is incremented
+  pointer cname = ((c_2106303_Object_cm*)borrowObject(exception)->classmodel)->getClassCName();
+  debug_println("ExceptionInformation %s", cname);
+
+  // iterate through until the exception is matched
+  int i = exceptionInformationIndex;
+
+  while (i > 0) {
+    debug_println("loop %i %s %i", i, exceptionInformation[i]->classCName, strcmp(exceptionInformation[i]->classCName, cname));
+    if (!strcmp(exceptionInformation[i]->classCName, cname)) {
+      exceptionInformationIndex = i;
+      exceptionInformation[i]->exception = exception;
+      longjmp(exceptionInformation[i]->buf, 1);
+    }
+    ec_free(exceptionInformation[i]);
+    i--;
+  }
+
+  // catch not found, call the default exception handler
+  exceptionInformationIndex = 0;
+  exceptionInformation[exceptionInformationIndex]->exception = exception;
+  longjmp(exceptionInformation[exceptionInformationIndex]->buf, 1);
+}
+
+/**
+ * Exceptions are stored in a stack, set up the catchs
+ */ 
+jmp_buf *newCatchException(pointer cname) {
+  exceptionInformationIndex++;
+  ExceptionInformation *ei = ec_malloc(sizeof(ExceptionInformation));
+  exceptionInformation[exceptionInformationIndex] = ei;
+  ei->currentStack = __currentStackIndex();
+  ei->classCName = cname;
+  ei->exception = 0;
+
+  debug_println("sizeof jmp_buf %lu, ExceptionInformation %lu cname %s, index=%li", sizeof(jmp_buf), sizeof(ExceptionInformation), cname, exceptionInformationIndex);
+  return &ei->buf;
+}
+
+num getException() {
+  return exceptionInformation[exceptionInformationIndex]->exception;
+}
+
+/**
+ * pops the catch off the exception stack - because it does an unwind you can cut in at any offset
+ */ 
+void newAfterCatchException() {
+  ExceptionInformation *ei = exceptionInformation[exceptionInformationIndex];
+  // printf(ANSI_RED "Error : %s\n" ANSI_DEFAULT , ei->message);
+
+  if (ei->classCName == NULL) {
+    debug_println("exceptionInformation %p, %lu, index=%li", ei->buf, ei->currentStack, exceptionInformationIndex);
+  } else {
+    debug_println("exceptionInformation %p, %lu, %s index=%li", ei->buf, ei->currentStack, ei->classCName, exceptionInformationIndex);
+  }
+
+  if (ei->exception != 0) {
+    returnObject(ei->exception);
+  }
+
+  __unWindTo(ei->currentStack);
+  // debug_println("free exceptionInformationIndex %ld, %p", exceptionInformationIndex, ei);
+  ec_free(ei);
+  exceptionInformationIndex--;
+}
+
+/**
+ * clean the stack to index
+ */
+void cleanExceptionIndex(i64 index) {
+  // debug_println("orIndex=%li, index=%li", index, exceptionInformationIndex);
+  while (exceptionInformationIndex > index +1 && exceptionInformationIndex > 0) {
+    debug_println("orIndex=%li, index=%li", index, exceptionInformationIndex);
+    ExceptionInformation *ei = exceptionInformation[exceptionInformationIndex];
+    if (ei->exception != 0) {
+      returnObject(ei->exception);
+    }
+    ec_free(ei);
+    exceptionInformationIndex--;
+  }
+
+  newAfterCatchException();
+}
+
+i64 getExceptionIndex() {
+  return exceptionInformationIndex;
+}
+
+// ********** <== new exception
 
 pointer ec_malloc(size_t size) {
   pointer res = malloc(size);

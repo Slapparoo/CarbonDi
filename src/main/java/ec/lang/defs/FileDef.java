@@ -76,25 +76,6 @@ public class FileDef extends BaseDef implements ContainerDef {
 
         // resolve
         blockDef.resolve_01();
-
-        // for (StatementDef statementDef : blockDef.statementDefs) {
-        //     // System.out.println("@@FileDef.resolve " + statementDef.getClass().getName());
-        //     statementDef.resolve_01();
-        // }
-
-        // for (VariableDef variableDef : variableDefs) {
-        //     // System.out.println("@@FileDef.resolve " + variableDef.getClass().getName());
-        //     variableDef.resolve_01();
-        // }
-
-        // for (FunctionDef functionDef : functionDefs) {
-        //     // System.out.println("@@FileDef.resolve " + functionDef.getClass().getName());
-        //     functionDef.resolve_01();
-        // }
-        
-
-
-        
     }
 
     @Override

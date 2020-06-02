@@ -3,6 +3,7 @@
 // package ec.lang.model;
 import ec.lang.defs.*;
 import ec.lang.defs.expressions.*;
+import ec.lang.defs.TryCatchDef.CatchBlock;
 
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;

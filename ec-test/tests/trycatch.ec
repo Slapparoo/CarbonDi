@@ -20,7 +20,7 @@ External.stdin.printf(`in the gap\n`);
 
 try {
     int i = 2;
-    newThrowException(MyException("MyException message"));
+    throw(MyException("MyException message"));
 } catch (Exception) {
     External.stdin.printf(`catch %s\n`, $a.message.asStr);
 } catch (MyException) {
@@ -32,7 +32,7 @@ try {
 
 try {
     int i = 3;
-    newThrowException(Exception("Exception message"));
+    throw(Exception("Exception message"));
 } catch (Exception) {
     External.stdin.printf(`catch %s\n`, $a.message.asStr);
 } catch (MyException) {
@@ -41,10 +41,9 @@ try {
     External.stdin.printf(`3 %s \n`, `finally`);
 }
 
-
 try {
     int i = 4;
-    newThrowException(Exception("Exception message"));
+    throw(Exception("Exception message"));
 } catch (Exception, MyException) {
     External.stdin.printf(`catch %s\n`, $a.message.asStr);
 } finally {
@@ -53,10 +52,9 @@ try {
 
 try {
     int i = 5;
-    newThrowException(MyException("MyException message"));
+    throw(MyException("MyException message"));
 } catch (Exception, MyException) {
     External.stdin.printf(`catch %s\n`, $a.message.asStr);
 } finally {
     External.stdin.printf(`5 %s \n`, `finally`);
 }
-

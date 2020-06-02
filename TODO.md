@@ -26,7 +26,6 @@ inline class
 inline function
 DynamicArray
 threads
-loop returns
 imports
 constructor params polluting in global varibales
 constructor functions
@@ -47,7 +46,7 @@ memcopy - data pointer and size - expose array
 use Array for string etc
 multi parameter methods (Array?)  last param - Type name..., functionmame(String names...)
 auto boxing
-exceptions Stack per type or one stack of handlers and you rifle though until found
+
 init array values - with auto boxing
 std print
 generics
@@ -55,7 +54,7 @@ json
 threads
 optimise_04
 v2 class static constructors (String.new(Pointer)), 
-
+fix finally block is it gets called whem an exception is thrown that is not caught in its catch block
 
 initialise struct type defs - with defined values or default null value
 StructType blah = {1, 4, ""};
@@ -63,6 +62,7 @@ StructType blah = {1, 4, ""};
 on the fly binary data structure, suitable for copy to c-struct
 
 ** done **
+exceptions Stack per type or one stack of handlers and you rifle though until found
 inherit constructors
 constructor overrides
 hashcode, equals
