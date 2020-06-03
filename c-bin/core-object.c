@@ -1,8 +1,4 @@
-// Core.Object
-#include "types.h"
-#include "Core.String.h"
-#include "Core.Object.h"
-#include "core-support.h"
+#include "eccore.h"
 
 c_2106303_Object_cm _objectClassModel;
 boolean _objectClassModel_init = false;;

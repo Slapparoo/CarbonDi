@@ -1,5 +1,4 @@
-#include "Core.Core_main.h"
-#include <stdarg.h>
+#include "eccore.h"
 
 
 // @TODO these stacks need to have one per thread

@@ -1,5 +1,5 @@
 // Core.BaseBoxing
-#include "Core.Core_main.h"
+#include "eccore.h"
 
 int c_2106303_BaseBoxingdatatype(){
 

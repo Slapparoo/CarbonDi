@@ -1,24 +1,5 @@
 // Core.String
-#include "Core.String.h"
-#include "Core.Array.h"
-#include "Core.B8.h"
-#include "Core.BaseBoxing.h"
-#include "Core.Boxing.h"
-#include "Core.Core_main.h"
-#include "Core.Exception.h"
-#include "Core.F32.h"
-#include "Core.F64.h"
-#include "Core.I16.h"
-#include "Core.I32.h"
-#include "Core.I64.h"
-#include "Core.I8.h"
-#include "Core.Object.h"
-#include "Core.Pointer.h"
-#include "Core.RefArray.h"
-#include "Core.U16.h"
-#include "Core.U32.h"
-#include "Core.U64.h"
-#include "Core.U8.h"
+#include "eccore.h"
 
 pointer c_2106303_StringasStr(num this) {
 

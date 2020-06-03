@@ -1,24 +1,5 @@
 // Core.U64
-#include "Core.Core_main.h"
-#include "Core.U64.h"
-#include "Core.Object.h"
-#include "Core.String.h"
-#include "Core.Exception.h"
-#include "Core.Array.h"
-#include "Core.RefArray.h"
-#include "Core.Boxing.h"
-#include "Core.BaseBoxing.h"
-#include "Core.B8.h"
-#include "Core.U8.h"
-#include "Core.I8.h"
-#include "Core.I16.h"
-#include "Core.U16.h"
-#include "Core.I32.h"
-#include "Core.U32.h"
-#include "Core.F32.h"
-#include "Core.I64.h"
-#include "Core.F64.h"
-#include "Core.Pointer.h"
+#include "eccore.h"
 
 int c_2106303_U64datatype(){
 

@@ -33,6 +33,9 @@ obj : $(OBJ)
 
 lib : $(LIB)
 
+singleheader :
+	clang include/Core.Core_main.h -E -dD > include/eccore.h
+
 cleanobj:
 	rm -f obj/*.o 
 

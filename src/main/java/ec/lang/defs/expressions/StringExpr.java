@@ -67,7 +67,7 @@ public class StringExpr extends ExprDef {
             return expr.replace('`', '"').replaceAll("'", "");
         }
         
-        return "/*se*/ create_c_2106303_String$2(" +expr+ ", true)";
+        return "/*se*/ create_c_2106303_String_2(" +expr+ ", true)";
     }
 
     public StringExpr(String value) {

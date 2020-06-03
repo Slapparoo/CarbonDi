@@ -25,7 +25,8 @@
         "cstdlib": "c",
         "*.tcc": "c",
         "cinttypes": "c",
-        "typeinfo": "c"
+        "typeinfo": "c",
+        "eccore.h": "c"
     },
     "java.configuration.updateBuildConfiguration": "automatic"
 }

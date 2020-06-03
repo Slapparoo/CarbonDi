@@ -81,7 +81,7 @@ public class MultiTypeExprTest extends BaseTest {
 
         ax.resolve_01();
 
-        assertEquals("/*Ax2*//*te14b1*/((c_1085510111_MyFunctionAsProperty_cm*)useObject(/*te8*/myFunctionAsProperty)->classmodel)->setName(/*te8*/myFunctionAsProperty, /*se*/ create_c_2106303_String$2(\"the name\", true));", 
+        assertEquals("/*Ax2*//*te14b1*/((c_1085510111_MyFunctionAsProperty_cm*)useObject(/*te8*/myFunctionAsProperty)->classmodel)->setName(/*te8*/myFunctionAsProperty, /*se*/ create_c_2106303_String_2(\"the name\", true));", 
         ax.asCode(), "myFunctionAsProperty.setName = \"the name\";.asCode()");
     }
 
@@ -103,24 +103,8 @@ public class MultiTypeExprTest extends BaseTest {
         lex(new ecLexer(new ANTLRInputStream(ecCode)));
 
         FunctionDef functionDef = (FunctionDef) DefFactory.resolveFunction("arrayFunction");
-
         System.out.println(functionDef.asCode());
 
-        // // myFunctionAsProperty.setName = "the name";
-        // MultiTypeExpr multiTypeExpr = new MultiTypeExpr();
-        // multiTypeExpr.addExpr(new TypeExpr("myFunctionAsProperty"), "line:1");
-        // multiTypeExpr.addExpr(new TypeExpr("setName"), "line:1");
-
-        // DefFactory.addExpression(multiTypeExpr);
-        // DefFactory.addExpression(new StringExpr("\"the name\""));
-
-        // AssignExpr ax = DefFactory.newAssignExpr("=");
-        // ax.containedInBlock = DefFactory.getCurrentBlock();
-
-        // ax.resolve_01();
-
-        // assertEquals("/*Ax2*//*te14b1*/((c_1085510111_MyFunctionAsProperty_cm*)useObject(/*te8*/myFunctionAsProperty)->classmodel)->setName(/*te8*/myFunctionAsProperty, /*se*/ create_c_2106303_String$2(\"the name\", true));", 
-        // ax.asCode(), "myFunctionAsProperty.setName = \"the name\";.asCode()");        
         BlockDef blockDef = DefFactory.getCurrentBlock();
         blockDef.resolve_01();
         blockDef.validate_02();

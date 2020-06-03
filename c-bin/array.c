@@ -1,4 +1,4 @@
-#include "Core.Core_main.h"
+#include "eccore.h"
 
 typedef enum {
   _b8 = 1, 
