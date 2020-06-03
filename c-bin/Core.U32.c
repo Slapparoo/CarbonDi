@@ -22,20 +22,20 @@
 
 int c_2106303_U32datatype(){
 
-u64 entry$ = __onEnter();return __exitReturn_int_un(/*te14*/((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->get_u32_(), entry$);
+u64 entry_ = __onEnter();return __exitReturn_int_un(/*te14*/((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->get_u32_(), entry_);
 }
 
 
 pointer c_2106303_U32typename(){
 
-u64 entry$ = __onEnter();return __exitReturn_pointer_un("u32", entry$);
+u64 entry_ = __onEnter();return __exitReturn_pointer_un("u32", entry_);
 }
 
 
 pointer c_2106303_U32asStr(num this){
 
-u64 entry$ = __onEnter();/**(Statement)*/ /*fc2 null */sprintf(/*fc2 null */getTmpBuffer(), "%u", /*te14a*/((c_2106303_U32_cm*)useObject(/*te8*/this)->classmodel)->get_value(/*te8*/this));
-return __exitReturn_pointer_un(/*fc2 null */getTmpBuffer(), entry$);
+u64 entry_ = __onEnter();/**(Statement)*/ /*fc2 null */sprintf(/*fc2 null */getTmpBuffer(), "%u", /*te14a*/((c_2106303_U32_cm*)useObject(/*te8*/this)->classmodel)->get_value(/*te8*/this));
+return __exitReturn_pointer_un(/*fc2 null */getTmpBuffer(), entry_);
 }
 
 
@@ -105,7 +105,7 @@ pointer getc_2106303_U32_cm() {
 
 
 /* default constructor */
-num create_c_2106303_U32$1(/* param *//*va1*/u32 value) {
+num create_c_2106303_U32_1(/* param *//*va1*/u32 value) {
 num this =  create_c_2106303_U32();
 
 ((c_2106303_U32_cm*)useObject(this)->classmodel)->set_value(this, value);

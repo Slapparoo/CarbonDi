@@ -527,9 +527,9 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
 
             dataAccess = SnippetFactory.dataModelStatement(getCName(), "this", var.is_static);
             if (var.isPrimative()) {
-                body = "/*cda1*/"+ dataAccess +"->"+var.getName() + " = a__$a";
+                body = "/*cda1*/"+ dataAccess +"->"+var.getName() + " = a__a";
             } else {
-                body = "/*cda2*/ assignObject(&"+dataAccess+"/*cda3*/->"+var.getName()+", a__$a)";
+                body = "/*cda2*/ assignObject(&"+dataAccess+"/*cda3*/->"+var.getName()+", a__a)";
             }
         
             FunctionDef setter = SnippetFactory.addVoidFunction("set_" + var.getName(), body, false, var.is_static, true);

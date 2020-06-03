@@ -28,7 +28,7 @@ pointer getc_2106303_RefArray_cm();
 void populatec_2106303_RefArray_cm(pointer classModel);
 num create_c_2106303_RefArray();
 /* default constructor */
-num create_c_2106303_RefArray$1(/* param *//*va1*/u64 length);
+num create_c_2106303_RefArray_1(/* param *//*va1*/u64 length);
 
 
 #endif

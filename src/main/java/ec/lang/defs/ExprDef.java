@@ -25,12 +25,12 @@ public class ExprDef extends BaseDef {
                 if (thisType.getObjectType().equals("RefArray")) {
                     // TODO add RefArray
                     System.out.println("@@ExprDef (RefArray not implemented) " + this.getClass() + " " + expr);
-                    return hasNot + "*a__" + expr;
+                    return hasNot + "*a__" + expr.charAt(1);
                 }
                 
-                return hasNot + "*a__" + expr;
+                return hasNot + "*a__" + expr.charAt(1);
             } else {
-                return hasNot + "a__" + expr;
+                return hasNot + "a__" + expr.charAt(1);
             }
         }
 

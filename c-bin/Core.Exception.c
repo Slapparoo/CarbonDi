@@ -99,7 +99,7 @@ pointer getc_2106303_Exception_cm() {
 
 
 
-num create_c_2106303_Exception$1(/* param *//*va1*/num root, /*va1*/num message) {
+num create_c_2106303_Exception_1(/* param *//*va1*/num root, /*va1*/num message) {
 num this =  create_c_2106303_Exception();
 
 ((c_2106303_Exception_cm*)useObject(this)->classmodel)->set_root(this, root);
@@ -107,7 +107,7 @@ num this =  create_c_2106303_Exception();
 
 return this;
 }
-num create_c_2106303_Exception$2(/* param *//*va1*/num message) {
+num create_c_2106303_Exception_2(/* param *//*va1*/num message) {
 num this =  create_c_2106303_Exception();
 
 ((c_2106303_Exception_cm*)useObject(this)->classmodel)->set_message(this, message);

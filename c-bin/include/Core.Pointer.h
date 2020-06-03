@@ -30,7 +30,7 @@ pointer getc_2106303_Pointer_cm();
 void populatec_2106303_Pointer_cm(pointer classModel);
 num create_c_2106303_Pointer();
 /* default constructor */
-num create_c_2106303_Pointer$1(/* param *//*va1*/pointer value);
+num create_c_2106303_Pointer_1(/* param *//*va1*/pointer value);
 
 
 #endif

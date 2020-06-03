@@ -5,13 +5,15 @@
 #include <setjmp.h>
 
 #ifdef __SUPPORT_QUADMATH_
-#include "quadmath.h"
+#include <quadmath.h>
 #endif
-#include "stdio.h"
-#include "stdlib.h"
-#include "string.h"
 
-#include "time.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#ifdef __SUPPORT_TIME_
+#include <time.h>
+#endif
 
 // ansi console colours
 #define ANSI_RED "\033[0;31m"
@@ -64,6 +66,7 @@
         do { if (PRINT_DEBUG) fprintf(stdout, ANSI_BLUE "(DEBUG)[%s:%d]%s(): " fmt "\n" ANSI_DEFAULT, __FILE__, \
                                 __LINE__, __func__, __VA_ARGS__); } while (0)
 //#define PRINT_TIMES
+#ifdef __SUPPORT_TIME_
 #ifndef PRINT_TIME
 #define PRINT_TIME 0
 #endif
@@ -71,6 +74,7 @@
 #define time_println(fmt, ...) \
         do { if (PRINT_TIME) fprintf(stdout, ANSI_MAGENTA "(TIME)[%s:%d]%s(): " fmt "\n" ANSI_DEFAULT, __FILE__, \
                                 __LINE__, __func__, __VA_ARGS__); } while (0)
+#endif
 
 #ifndef PRINT_ERROR
 #define PRINT_ERROR 1

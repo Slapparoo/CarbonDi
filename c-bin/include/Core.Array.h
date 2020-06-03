@@ -45,8 +45,8 @@ pointer getc_2106303_Array_cm();
 void populatec_2106303_Array_cm(pointer classModel);
 num create_c_2106303_Array();
 
-num create_c_2106303_Array$1(/* param *//*va1*/u64 capacity, /*va1*/int dataType, /*va1*/u64 dataSize);
-num create_c_2106303_Array$2(/* param *//*va1*/u64 capacity, /*va1*/int dataType, /*va1*/u64 dataSize, /*va1*/pointer values);
+num create_c_2106303_Array_1(/* param *//*va1*/u64 capacity, /*va1*/int dataType, /*va1*/u64 dataSize);
+num create_c_2106303_Array_2(/* param *//*va1*/u64 capacity, /*va1*/int dataType, /*va1*/u64 dataSize, /*va1*/pointer values);
 
 
 #endif

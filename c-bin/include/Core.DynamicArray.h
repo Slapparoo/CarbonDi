@@ -59,8 +59,8 @@ pointer getc_2106303_DynamicArray_cm();
 void populatec_2106303_DynamicArray_cm(pointer classModel);
 num create_c_2106303_DynamicArray();
 /* default constructor */
-num create_c_2106303_DynamicArray$1(/* param *//*va1*/u64 capacity, /*va1*/int dataType, /*va1*/u64 dataSize);
-num create_c_2106303_DynamicArray$2(/* param *//*va1*/u64 capacity, /*va1*/int dataType, /*va1*/u64 dataSize, /*va1*/pointer values);
+num create_c_2106303_DynamicArray_1(/* param *//*va1*/u64 capacity, /*va1*/int dataType, /*va1*/u64 dataSize);
+num create_c_2106303_DynamicArray_2(/* param *//*va1*/u64 capacity, /*va1*/int dataType, /*va1*/u64 dataSize, /*va1*/pointer values);
 
 
 #endif

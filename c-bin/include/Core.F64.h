@@ -30,7 +30,7 @@ pointer getc_2106303_F64_cm();
 void populatec_2106303_F64_cm(pointer classModel);
 num create_c_2106303_F64();
 /* default constructor */
-num create_c_2106303_F64$1(/* param *//*va1*/f64 value);
+num create_c_2106303_F64_1(/* param *//*va1*/f64 value);
 
 
 #endif

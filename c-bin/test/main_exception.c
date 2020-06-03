@@ -2,9 +2,13 @@
 
 void someMethod() {
   printf("Message 1\n");
-  throwException("error here");
+  throwException("error here (this message is ment to be here if you see this thats is good)");
   printf("Message 2\n");
 }
+
+/**
+ * This has been superceded, but still partially relevant
+ */ 
 
 int main() {
   if (!setjmp(*catchException())) {

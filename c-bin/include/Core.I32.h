@@ -30,7 +30,7 @@ pointer getc_2106303_I32_cm();
 void populatec_2106303_I32_cm(pointer classModel);
 num create_c_2106303_I32();
 /* default constructor */
-num create_c_2106303_I32$1(/* param *//*va1*/i32 value);
+num create_c_2106303_I32_1(/* param *//*va1*/i32 value);
 
 
 #endif

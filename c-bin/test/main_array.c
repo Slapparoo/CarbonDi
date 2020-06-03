@@ -5,7 +5,7 @@ void ti8() {
   printf("ti8\n");
   __onEnter();
   // t1 i8
-  num bananas = create_c_2106303_Array$1(10, ((c_2106303_Boxing_cm*) getc_2106303_Boxing_cm())->i8_, sizeof(i8));
+  num bananas = create_c_2106303_Array_1(10, ((c_2106303_Boxing_cm*) getc_2106303_Boxing_cm())->i8_, sizeof(i8));
   c_2106303_Array_cm* acm = (c_2106303_Array_cm*)getc_2106303_Array_cm();
   printf("length=%ld\n", acm->get_length(bananas));
   printf("capacity=%ld\n", acm->get_capacity(bananas));
@@ -34,7 +34,7 @@ void tu16() {
   printf("tu16\n");
   __onEnter();
   // t1 i8
-  num bananas = create_c_2106303_Array$1(10, ((c_2106303_Boxing_cm*) getc_2106303_Boxing_cm())->u16_, sizeof(u16));
+  num bananas = create_c_2106303_Array_1(10, ((c_2106303_Boxing_cm*) getc_2106303_Boxing_cm())->u16_, sizeof(u16));
   c_2106303_Array_cm* acm = (c_2106303_Array_cm*)getc_2106303_Array_cm();
   printf("length=%ld\n", acm->get_length(bananas));
   printf("capacity=%ld\n", acm->get_capacity(bananas));
@@ -60,7 +60,7 @@ void ti32() {
   printf("ti32\n");
   __onEnter();
   // t1 i32
-  num bananas = create_c_2106303_Array$1(10, ((c_2106303_Boxing_cm*) getc_2106303_Boxing_cm())->i32_, sizeof(i32));
+  num bananas = create_c_2106303_Array_1(10, ((c_2106303_Boxing_cm*) getc_2106303_Boxing_cm())->i32_, sizeof(i32));
   c_2106303_Array_cm* acm = (c_2106303_Array_cm*)getc_2106303_Array_cm();
   printf("length=%ld\n", acm->get_length(bananas));
   printf("capacity=%ld\n", acm->get_capacity(bananas));
@@ -87,7 +87,7 @@ void tf64() {
   // t1 i32
   
 
-  num bananas = create_c_2106303_Array$1(100, ((c_2106303_Boxing_cm*) getc_2106303_Boxing_cm())->f64_, sizeof(f64));
+  num bananas = create_c_2106303_Array_1(100, ((c_2106303_Boxing_cm*) getc_2106303_Boxing_cm())->f64_, sizeof(f64));
 
   c_2106303_Array_cm* acm = (c_2106303_Array_cm*)getc_2106303_Array_cm();
   printf("length=%ld\n", acm->get_length(bananas));
@@ -116,7 +116,7 @@ void tString() {
   printf("tString\n");
   __onEnter();
   // t1 i32
-  num bananas = create_c_2106303_RefArray$1(10);
+  num bananas = create_c_2106303_RefArray_1(10);
   c_2106303_RefArray_cm* acm = (c_2106303_RefArray_cm*)getc_2106303_RefArray_cm();
   printf("length=%ld\n", acm->get_length(bananas));
   printf("capacity=%ld\n", acm->get_capacity(bananas));
@@ -126,9 +126,9 @@ void tString() {
 
   num *_bannans = ((c_2106303_RefArray *)useObject(bananas)->data)->values;
 
-  num val = create_c_2106303_String$2("hello", true);
-  num val2 = create_c_2106303_String$2("hello2", true);
-  num val3 = create_c_2106303_String$2("hello2", true);
+  num val = create_c_2106303_String_2("hello", true);
+  num val2 = create_c_2106303_String_2("hello2", true);
+  num val3 = create_c_2106303_String_2("hello2", true);
 
 
   print_log(4, val, val2, val3, 0);
@@ -142,7 +142,7 @@ void tString() {
   acm->setObject(bananas, 1, val3);
   printf("_bannans[1]=%ld\n", _bannans[1]);
 
-  num apples = create_c_2106303_RefArray$1(10);
+  num apples = create_c_2106303_RefArray_1(10);
   acm->setObject(apples, 1, val2);
   acm->setObject(bananas, 2, apples);
 
@@ -156,7 +156,7 @@ void tString() {
 void tunmanaged(pointer name) {
   __onEnter();
   // t1 i32
-  num a = create_c_2106303_Array$2(strlen(name)+1, ((c_2106303_Boxing_cm*) getc_2106303_Boxing_cm())->i8_, 1, name);
+  num a = create_c_2106303_Array_2(strlen(name)+1, ((c_2106303_Boxing_cm*) getc_2106303_Boxing_cm())->i8_, 1, name);
   printf("tunmanaged\n");
   c_2106303_Array_cm* acm = (c_2106303_Array_cm*)getc_2106303_Array_cm();
   printf("length=%ld\n", acm->get_length(a));

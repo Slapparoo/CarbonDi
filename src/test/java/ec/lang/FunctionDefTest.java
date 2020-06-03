@@ -92,7 +92,7 @@ public class FunctionDefTest {
         assertEquals("int (*name)(int)", functionDef.getExpandedSignature());
         assertEquals("int name(int)", functionDef.asEcSignature());
         assertEquals("\npublic int name(int val);", functionDef.asSignature());
-        assertEquals("/*fd1*/int name(int val){\n\nu64 entry$ = __onEnter();int x = val;\nreturn __exitReturn_int_un(x, entry$);\n}\n\n",
+        assertEquals("/*fd1*/int name(int val){\n\nu64 entry__ = __onEnter();int x = val;\nreturn __exitReturn_int_un(x, entry__);\n}\n\n",
             functionDef.asCode());
     }
 }

@@ -1,34 +1,62 @@
+# anything with a name main*.c will be compiled and run with valgrind
 
-CC       := clang
+# compile all build a dynamic shared lib and object files by default
+# so you can choose how to link the runtime
+
+CCGCC    := gcc
+CCCLANG  := clang 
+CCAVR    := avr-gcc
+CC		 := $(CCCLANG)
+# CC		 := $(CCGCC)
+# CC		 := $(CCAVR)
+
 VALGRIND := valgrind  --track-origins=yes --leak-check=full --error-exitcode=2
 SRCDIR 	 := .
-SRC      := $(shell find $(SRCDIR) -name "*.c" -not -name "main*.c"  -maxdepth 1  )
+SRC      := $(shell find $(SRCDIR) -maxdepth 1 -name "*.c" -not -name "main*.c" )
 SRCMAIN  := $(shell find $(SRCDIR) -name "main*.c")
 MAINS    := $(shell find $(OBJDIR) -name "main*.e")
 GENDIR	   := gen
 INCLUDEDIR := include
 OBJDIR     := obj
-PARAMS   := -std=gnu17 -g -O3 -I$(INCLUDEDIR) 
+LIBDIR     := lib
+PARAMS    := -Wall -Wno-format -Wno-unused-variable -std=gnu17 -g -O3 -I$(INCLUDEDIR)
+# PARAMS := -std=gnu11 -g -O3 -I$(INCLUDEDIR) -I/mnt/e/earthquaketrigger/Arduino/hardware/tools/avr/avr/include
 
 OBJ := $(SRC:%.c=$(OBJDIR)/%.o)
 MAIN := $(SRCMAIN:%.c=$(OBJDIR)/%.e)
 RUNMAINS := $(MAINS:%.e=$(OBJDIR)/%.e)
+LIB := $(SRC:%.c=$(LIBDIR)/libec.so)
 
-all : clean $(OBJ) $(MAIN) $(RUNMAINS)
+all : clean lib obj $(MAIN) $(RUNMAINS)
 
-clean: 
+obj : $(OBJ)
+
+lib : $(LIB)
+
+cleanobj:
 	rm -f obj/*.o 
+
+cleanlib:
+	rm -f lib/*.so 
+
+clean: cleanobj cleanlib
 	rm -f obj/test/*.e 
 
 $(OBJDIR)/%.o: %.c
-	@echo "COMPILING SOURCE $< INTO OBJECT $@"
+	@echo "COMPILING SOURCE $< INTO OBJECT $@ with $(CC) $(PARAMS)"
 	@mkdir -p '$(@D)'
 	@$(CC) -c $(PARAMS) $< -o $@
 
 $(OBJDIR)/%.e: %.c
 	@echo "COMPILING SOURCE $< INTO MAIN $@"
 	@mkdir -p '$(@D)'
-	@$(CC) $(PARAMS) $(OBJDIR)/*.o $< -o $@	
+	@$(CC) $(PARAMS) $(LIBDIR)/*.so $< -o $@	
+
+$(LIBDIR)/libec.so: 
+	@echo "COMPILING SOURCE $< INTO Dynamic Lib $@"
+	@mkdir -p '$(@D)'
+	@$(CC) -shared -fpic $(PARAMS) $(SRC) $< -o $@	
+
 
 $(OBJDIR)/%.e: %.e
 	@echo "valgrind $<"

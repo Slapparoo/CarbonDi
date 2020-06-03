@@ -27,9 +27,12 @@ pointer getc_2106303_String_cm();
 void populatec_2106303_String_cm(pointer classModel);
 num create_c_2106303_String();
 
-num create_c_2106303_String$1(/* param *//*va1*/pointer str);
-num create_c_2106303_String$2(/* param *//*va1*/pointer str, /*va1*/boolean staticAlloc);
-num create_c_2106303_String$3(/* param *//*va1*/pointer str, /*va1*/pointer str2);
+// num create_c_2106303_String$1(/* param *//*va1*/pointer str);
+// num create_c_2106303_String$2(/* param *//*va1*/pointer str, /*va1*/boolean staticAlloc);
+// num create_c_2106303_String$3(/* param *//*va1*/pointer str, /*va1*/pointer str2);
 
+num create_c_2106303_String_1(/* param *//*va1*/pointer str);
+num create_c_2106303_String_2(/* param *//*va1*/pointer str, /*va1*/boolean staticAlloc);
+num create_c_2106303_String_3(/* param *//*va1*/pointer str, /*va1*/pointer str2);
 
 #endif

@@ -225,7 +225,7 @@ public class VariableDef extends StatementDef {
 
     public String getNameAsCode() {
         if (name.matches("\\$[a-z]")) {
-            return "a__" + name;
+            return "a__" + name.charAt(1);
         }
         return name;
     }
@@ -266,20 +266,20 @@ public class VariableDef extends StatementDef {
 
                 if (arraySize.length() == 0)  {
                     type.setObjectType("DynamicArray");
-                    return "num " + getNameAsCode() + " = create_c_2106303_NewDynamicArray$1(" 
+                    return "num " + getNameAsCode() + " = create_c_2106303_NewDynamicArray_1(" 
                     + "((c_2106303_Boxing_cm*) getc_2106303_Boxing_cm())->"
                     + type.asCode() + "_, sizeof("+type.asCode() +"))";
                 }
 
                 String tp = type.getName();
 
-                return "num " + getNameAsCode() + " = create_c_2106303_Array$1(" 
+                return "num " + getNameAsCode() + " = create_c_2106303_Array_1(" 
                     + arraySize
                     + ", ((c_2106303_Boxing_cm*) getc_2106303_Boxing_cm())->"
                     + tp + "_, sizeof("+tp +"))";
 
             } else if (type.getObjectType().equals("RefArray")) {
-                return "num " + getNameAsCode() + " = create_c_2106303_RefArray$1(" + arraySize+ ")";
+                return "num " + getNameAsCode() + " = create_c_2106303_RefArray_1(" + arraySize+ ")";
             } 
 
             return "num " + getNameAsCode() + " = create_c_2106303_"+type.getObjectType()+"$1(" + arraySize+ ", _"+type.asCode() + ", sizeof("+type.asCode() +"))";

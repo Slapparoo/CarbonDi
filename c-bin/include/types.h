@@ -1,11 +1,11 @@
 #ifndef __TYPES_H__
 #define __TYPES_H__
 
-#include "inttypes.h"
+#include <inttypes.h>
 
 
 #ifdef __SUPPORT_QUADMATH_
-#include "quadmath.h"
+#include <quadmath.h>
 #endif
 
 typedef int64_t i64;

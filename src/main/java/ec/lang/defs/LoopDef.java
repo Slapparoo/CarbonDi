@@ -101,7 +101,7 @@ public class LoopDef extends StatementDef implements ContainerDef {
 
                 // u64 al = ((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get_length(numbers);
 
-                String laLen = "u64 al$ = ((c_2106303_Array_cm *)useObject("
+                String laLen = "u64 al__ = ((c_2106303_Array_cm *)useObject("
                 +p.enclosed.asCode()
                 +")->classmodel)->get_length("
                 +p.enclosed.asCode()
@@ -109,15 +109,15 @@ public class LoopDef extends StatementDef implements ContainerDef {
 
                 // *(i8 *)((c_2106303_Array_cm *)useObject(numbers)->classmodel)->get(numbers, 6)
                 String itemType = p.enclosed.thisType.getName();
-                String ayItem = itemType + "* a__$a = ("+itemType+"*)((c_2106303_Array_cm *)useObject("
+                String ayItem = itemType + "* a__a = ("+itemType+"*)((c_2106303_Array_cm *)useObject("
                 +p.enclosed.asCode()
                 +")->classmodel)->get("
                 +p.enclosed.asCode()
-                +", i$);";
+                +", i__);";
 
                 return "/*la1*/"
                 + laLen
-                + "\nfor (u64 i$ = 0; i$ < al$; i$++) {"
+                + "\nfor (u64 i__ = 0; i__ < al__; i__++) {"
                 + ayItem
                 + blockDef.asCode()
                 + "\n}";
@@ -139,7 +139,7 @@ public class LoopDef extends StatementDef implements ContainerDef {
                 // + blockDef.asCode()
                 // + "\n}";
 
-                "\nfor (num a__$a = 0; a__$a < "+ex+"; a__$a++)"
+                "\nfor (num a__a = 0; a__a < "+ex+"; a__a++)"
                + blockDef.asCode();
 
             } else if (p.enclosed instanceof OperationExpr) {
@@ -163,7 +163,7 @@ public class LoopDef extends StatementDef implements ContainerDef {
                     // + blockDef.asCode()
                     // + "\n}";
     
-                    "\nfor (num a__$a = 0; a__$a < "+ex+"; a__$a++)"
+                    "\nfor (num a__a = 0; a__a < "+ex+"; a__a++)"
                    + blockDef.asCode();
     
                 }
@@ -178,10 +178,10 @@ public class LoopDef extends StatementDef implements ContainerDef {
             // System.out.println("@@loop.asCode RangeExpr " + blockDef.asCode());
             RangeExpr rangeExpr = (RangeExpr) loopOver;
             return "if ("+rangeExpr.start+" < "+rangeExpr.end+") {"
-            + "\nfor (num a__$a = "+rangeExpr.start+"; a__$a <= "+rangeExpr.end+"; a__$a++)"
+            + "\nfor (num a__a = "+rangeExpr.start+"; a__a <= "+rangeExpr.end+"; a__a++)"
             + blockDef.asCode()
             + "\n } else if ("+rangeExpr.start+" > "+rangeExpr.end+") {"
-            + "\nfor (num a__$a = "+rangeExpr.start+"; a__$a >= "+rangeExpr.end+"; a__$a--)"
+            + "\nfor (num a__a = "+rangeExpr.start+"; a__a >= "+rangeExpr.end+"; a__a--)"
             + blockDef.asCode()
             + "\n}";
         }

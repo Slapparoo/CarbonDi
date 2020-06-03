@@ -30,7 +30,7 @@ pointer getc_2106303_B8_cm();
 void populatec_2106303_B8_cm(pointer classModel);
 num create_c_2106303_B8();
 
-num create_c_2106303_B8$1(/* param *//*va1*/b8 value);
+num create_c_2106303_B8_1(/* param *//*va1*/b8 value);
 
 
 #endif

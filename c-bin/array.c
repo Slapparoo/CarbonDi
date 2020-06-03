@@ -132,7 +132,7 @@ pointer Array_get(num ref, u64 index) {
 
   u8 size = ay->dataSize;
   u64 offset = size * index;
-  pointer res = &ay->values[offset];
+  pointer res = ay->values + offset;
 
   // printf("Array index %lu, %p, offset %lu\n", index, res, offset);
 
@@ -204,7 +204,7 @@ u64 RefArray_getDatasize(num id) {
  * String?
  */ 
 // num Array_create_unmanaged(pointer array, u64 length, primative_types type, u64 dataSize) {
-num create_c_2106303_Array$2(u64 capacity, int dataType, u64 dataSize, pointer values) {
+num create_c_2106303_Array_2(u64 capacity, int dataType, u64 dataSize, pointer values) {
   c_2106303_Array *_Array = ec_malloc(sizeof(c_2106303_Array));
   _Array->length = capacity;
   _Array->capacity = capacity;
@@ -216,7 +216,7 @@ num create_c_2106303_Array$2(u64 capacity, int dataType, u64 dataSize, pointer v
   return createObject(_Array, getc_2106303_Array_cm(), false);
 }
 
-num create_c_2106303_Array$1(u64 capacity, int dataType, u64 dataSize) {
+num create_c_2106303_Array_1(u64 capacity, int dataType, u64 dataSize) {
 
   // error on an unexpected size != 1,2,4,8,10,16
   // setjmp - jmplong
@@ -308,7 +308,7 @@ pointer getc_2106303_RefArray_cm() {
   return &_refArrayClassModel;
 }
 
-num create_c_2106303_RefArray$1(u64 capacity) {
+num create_c_2106303_RefArray_1(u64 capacity) {
 
   c_2106303_RefArray *_Array = ec_malloc(sizeof(c_2106303_RefArray));
   _Array->length = capacity;

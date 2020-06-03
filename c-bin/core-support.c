@@ -6,8 +6,10 @@
 Object_ref *poorMansMap[PM_LIST_LENGTH];
 num refStack[PM_LIST_LENGTH];
 u64 refStackIndex = 0;
+#ifdef __SUPPORT_TIME_
 struct timespec __times_[PM_LIST_LENGTH];
 u64 timesIndex = 0;
+#endif
 
 i64 _class_models_index = 0;
 pointer _class_models[PM_LIST_LENGTH];
@@ -188,6 +190,7 @@ u64 __onEnter() {
   refStack[refStackIndex++] = 0;
 
   // debug_println("timesIndex=%lu", timesIndex);
+#ifdef __SUPPORT_TIME_  
   if (timesIndex+1 >= PM_LIST_LENGTH) {
     throwException("Out of memory Exception [Timings stack space].");
   }
@@ -195,6 +198,7 @@ u64 __onEnter() {
   clock_gettime(CLOCK_THREAD_CPUTIME_ID, &__times_[timesIndex++]);
   clock_gettime(CLOCK_MONOTONIC_RAW, &__times_[timesIndex++]);
 #endif  
+#endif
   return res;
 };
 

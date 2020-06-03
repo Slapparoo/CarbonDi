@@ -3,7 +3,7 @@
 void tboolean() {
   __onEnter();
   b8 val = true;
-  num boxed = create_c_2106303_B8$1(val);
+  num boxed = create_c_2106303_B8_1(val);
 
   Object_ref* objRef = (Object_ref *)useObject(boxed);
   c_2106303_B8_cm *cm =  objRef->classmodel;
@@ -30,7 +30,7 @@ void tboolean() {
 void tu8() {
   __onEnter();
   u8 val = 255;
-  num boxed = create_c_2106303_U8$1(val);
+  num boxed = create_c_2106303_U8_1(val);
 
   Object_ref* objRef = (Object_ref *)useObject(boxed);
   c_2106303_U8_cm *cm =  objRef->classmodel;
@@ -60,7 +60,7 @@ void tu8() {
 void tpointer() {
   __onEnter();
   pointer val = "Pointer to a string";
-  num boxed = create_c_2106303_Pointer$1(val);
+  num boxed = create_c_2106303_Pointer_1(val);
 
   Object_ref* objRef = (Object_ref *)useObject(boxed);
   c_2106303_Pointer_cm *cm =  objRef->classmodel;

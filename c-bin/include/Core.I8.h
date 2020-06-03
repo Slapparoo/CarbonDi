@@ -30,7 +30,7 @@ pointer getc_2106303_I8_cm();
 void populatec_2106303_I8_cm(pointer classModel);
 num create_c_2106303_I8();
 /* default constructor */
-num create_c_2106303_I8$1(/* param *//*va1*/i8 value);
+num create_c_2106303_I8_1(/* param *//*va1*/i8 value);
 
 
 #endif

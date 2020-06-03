@@ -3,13 +3,13 @@
 
 int c_2106303_BaseBoxingdatatype(){
 
-u64 entry$ = __onEnter();return __exitReturn_int_un(0, entry$);
+u64 entry_ = __onEnter();return __exitReturn_int_un(0, entry_);
 }
 
 
 pointer c_2106303_BaseBoxingtypename(){
 
-u64 entry$ = __onEnter();return __exitReturn_pointer_un("undefined", entry$);
+u64 entry_ = __onEnter();return __exitReturn_pointer_un("undefined", entry_);
 }
 
 

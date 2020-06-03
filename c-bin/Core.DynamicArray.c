@@ -244,7 +244,7 @@ void c_2106303_DynamicArrayreduceCapacityTail(num this) {
 
 void c_2106303_DynamicArrayrealignLeft(num this) {
 
-  memmove(&__USE_THIS_D->values[0], &__USE_THIS_D->values[__USE_THIS_D->startIndex * __USE_THIS_D->dataSize],
+  memmove(__USE_THIS_D->values, __USE_THIS_D->values + (__USE_THIS_D->startIndex * __USE_THIS_D->dataSize),
           __USE_THIS_CM->get_length(this) * __USE_THIS_CM->get_dataSize(this));
   __USE_THIS_CM->set_startIndex(this, 0);
   __USE_THIS_CM->set_endIndex(this, __USE_THIS_CM->get_length(this));
@@ -334,12 +334,12 @@ pointer getc_2106303_DynamicArray_cm() {
   return &_c_2106303_DynamicArray_cm;
 }
 
-num create_c_2106303_DynamicArray$1(u64 capacity, int dataType, u64 dataSize) {
+num create_c_2106303_DynamicArray_1(u64 capacity, int dataType, u64 dataSize) {
   num this = create_c_2106303_DynamicArray();
 
   return this;
 }
-num create_c_2106303_DynamicArray$2(u64 capacity, int dataType, u64 dataSize, pointer values) {
+num create_c_2106303_DynamicArray_2(u64 capacity, int dataType, u64 dataSize, pointer values) {
   num this = create_c_2106303_DynamicArray();
 
   return this;

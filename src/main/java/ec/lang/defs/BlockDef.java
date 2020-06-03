@@ -72,7 +72,7 @@ public class BlockDef extends StatementDef implements ContainerDef {
         
         if (includeEntryExit) {
             if (functionBlock) { 
-                res += "\nu64 entry$ = __onEnter();";
+                res += "\nu64 entry__ = __onEnter();";
             } else {
                 res += "\n__onEnter();";
             }
@@ -147,8 +147,8 @@ public class BlockDef extends StatementDef implements ContainerDef {
 
         for (VariableDef variableDef : variableDefs) {
 
-            if (name.equals("$a")) {
-                if (variableDef.getName().equals("a__" +name )) {
+            if (name.matches("\\$[a-z]")) {
+                if (variableDef.getName().equals("a__" +name.charAt(1) )) {
                     return variableDef;
                 }
             }

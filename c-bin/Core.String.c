@@ -22,20 +22,20 @@
 
 pointer c_2106303_StringasStr(num this) {
 
-  u64 entry$ = __onEnter();
-  return __exitReturn_pointer_un(((c_2106303_String_cm *)useObject(this)->classmodel)->get_value(this), entry$);
+  u64 entry_ = __onEnter();
+  return __exitReturn_pointer_un(((c_2106303_String_cm *)useObject(this)->classmodel)->get_value(this), entry_);
 }
 
 num c_2106303_StringasString(num this) {
 
-  u64 entry$ = __onEnter();
-  return __exitReturn_ref_un(this, entry$);
+  u64 entry_ = __onEnter();
+  return __exitReturn_ref_un(this, entry_);
 }
 
 u64 c_2106303_Stringlength(num this) {
 
-  u64 entry$ = __onEnter();
-  return __exitReturn_u64_un(strlen(((c_2106303_String_cm *)useObject(this)->classmodel)->get_value(this)), entry$);
+  u64 entry_ = __onEnter();
+  return __exitReturn_u64_un(strlen(((c_2106303_String_cm *)useObject(this)->classmodel)->get_value(this)), entry_);
 }
 
 pointer c_2106303_StringgetClassName() { return "Core.String"; }
@@ -70,7 +70,7 @@ pointer getc_2106303_String_cm() {
   return &_c_2106303_String_cm;
 }
 
-num create_c_2106303_String$1(pointer str) {
+num create_c_2106303_String_1(pointer str) {
   num this = create_c_2106303_String();
 
   {
@@ -87,7 +87,7 @@ num create_c_2106303_String$1(pointer str) {
   return this;
 }
 
-num create_c_2106303_String$2(pointer str, boolean staticAlloc) {
+num create_c_2106303_String_2(pointer str, boolean staticAlloc) {
     num this = create_c_2106303_String();
     if (staticAlloc) {
       ((c_2106303_String_cm *)useObject(this)->classmodel)->set_value(this, str);
@@ -100,7 +100,7 @@ num create_c_2106303_String$2(pointer str, boolean staticAlloc) {
 
   return this;
 }
-num create_c_2106303_String$3(pointer str, pointer str2) {
+num create_c_2106303_String_3(pointer str, pointer str2) {
   num this = create_c_2106303_String();
 
   {

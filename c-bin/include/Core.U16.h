@@ -30,7 +30,7 @@ pointer getc_2106303_U16_cm();
 void populatec_2106303_U16_cm(pointer classModel);
 num create_c_2106303_U16();
 /* default constructor */
-num create_c_2106303_U16$1(/* param *//*va1*/u16 value);
+num create_c_2106303_U16_1(/* param *//*va1*/u16 value);
 
 
 #endif

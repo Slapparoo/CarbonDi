@@ -29,8 +29,8 @@ pointer getc_2106303_Exception_cm();
 void populatec_2106303_Exception_cm(pointer classModel);
 num create_c_2106303_Exception();
 
-num create_c_2106303_Exception$1(/* param *//*va1*/num root, /*va1*/num message);
-num create_c_2106303_Exception$2(/* param *//*va1*/num message);
+num create_c_2106303_Exception_1(/* param *//*va1*/num root, /*va1*/num message);
+num create_c_2106303_Exception_2(/* param *//*va1*/num message);
 
 
 #endif

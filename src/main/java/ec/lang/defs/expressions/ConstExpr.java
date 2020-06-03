@@ -46,7 +46,7 @@ public class ConstExpr extends ExprDef {
         if (expr.startsWith("$")) {
             // annonymous var
             // todo why here and not anonymousExpr
-            expr = "a__" + expr;
+            expr = "a__" + expr.charAt(1);
         }
 
         super.resolve_01();

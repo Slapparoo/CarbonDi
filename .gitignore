@@ -8,6 +8,7 @@ c-lang/**
 c-bin/**
 ec-test/obj/**
 ec-test/*.txt
+ec-test/*
 /.antlr
 /.settings
 c-bin/obj/test/*.e

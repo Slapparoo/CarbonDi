@@ -32,19 +32,19 @@ public abstract class FunctionDefBase extends StatementDef implements ContainerD
     public String getExpandedName() {
         if (this instanceof ConstructorDef) {
             if (indexNumber > 0) {
-                return classDef.getCName() + "$" + indexNumber;
+                return classDef.getCName() + "_" + indexNumber;
             }
             return classDef.getCName();                
         }
 
         if (classDef == null) {
             if (indexNumber > 0) {
-                return name + "$" + indexNumber;
+                return name + "_" + indexNumber;
             }
             return name;
         } else {
             if (indexNumber > 0) {
-                return name + "$" + indexNumber;
+                return name + "_" + indexNumber;
             }
             return name;
         }

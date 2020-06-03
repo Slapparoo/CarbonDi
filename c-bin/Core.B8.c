@@ -22,26 +22,26 @@
 
 int c_2106303_B8datatype(){
 
-u64 entry$ = __onEnter();return __exitReturn_int_un(/*te14*/((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->get_b8_(), entry$);
+u64 entry__ = __onEnter();return __exitReturn_int_un(/*te14*/((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->get_b8_(), entry__);
 }
 
 
 pointer c_2106303_B8typename(){
 
-u64 entry$ = __onEnter();return __exitReturn_pointer_un("b8", entry$);
+u64 entry__ = __onEnter();return __exitReturn_pointer_un("b8", entry__);
 }
 
 
 pointer c_2106303_B8asStr(num this){
 
-u64 entry$ = __onEnter();if (/*te14a*/((c_2106303_B8_cm*)useObject(/*te8*/this)->classmodel)->get_value(/*te8*/this)) {
+u64 entry__ = __onEnter();if (/*te14a*/((c_2106303_B8_cm*)useObject(/*te8*/this)->classmodel)->get_value(/*te8*/this)) {
 
-__onEnter();return __exitReturn_pointer_un("true", entry$);
+__onEnter();return __exitReturn_pointer_un("true", entry__);
 }
 
 /* else? */ else {
 
-__onEnter();return __exitReturn_pointer_un("false", entry$);
+__onEnter();return __exitReturn_pointer_un("false", entry__);
 }
 
 
@@ -114,7 +114,7 @@ pointer getc_2106303_B8_cm() {
 
 
 
-num create_c_2106303_B8$1(/* param *//*va1*/b8 value) {
+num create_c_2106303_B8_1(/* param *//*va1*/b8 value) {
 num this =  create_c_2106303_B8();
 
 ((c_2106303_B8_cm*)useObject(this)->classmodel)->set_value(this, value);

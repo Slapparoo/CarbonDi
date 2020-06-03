@@ -1,6 +1,9 @@
 loop returns
 loop types
 cast
+have a core-support which doesn't include stdio
+
+version stuff
 
 function definitiations
 int External.stdio.printf(pointer, ...);
@@ -19,6 +22,7 @@ sort(array, () {return $a-$b;});
 
 
 C style params array
+Exception stack trace
 Core.External = static methods, with direct calls
 ternary asdas? asd : asd;
 onchange, onvalidate, onget to array (wsomehow write code not generate code)
@@ -43,7 +47,7 @@ line numbers - $statement.start
 casting
 
 memcopy - data pointer and size - expose array
-use Array for string etc
+use Array for string etc - expose array
 multi parameter methods (Array?)  last param - Type name..., functionmame(String names...)
 auto boxing
 
@@ -51,10 +55,9 @@ init array values - with auto boxing
 std print
 generics
 json
-threads
 optimise_04
-v2 class static constructors (String.new(Pointer)), 
-fix finally block is it gets called whem an exception is thrown that is not caught in its catch block
+v2 class static constructors (String.new(Pointer)), - which accept their struct data -mem read, file read etc
+fix finally block is it gets called when an exception is thrown that is not caught in its catch block
 
 initialise struct type defs - with defined values or default null value
 StructType blah = {1, 4, ""};
