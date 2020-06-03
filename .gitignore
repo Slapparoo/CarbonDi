@@ -7,9 +7,6 @@
 **/gen/*
 target/**
 c-lang/**
-ec-test/obj/**
-ec-test/*.txt
 ec-test/*
 /.antlr
 /.settings
-c-bin/obj/test/*.e
