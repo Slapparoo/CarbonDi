@@ -32,4 +32,30 @@ public class ReturnDefTest {
         System.out.println(DefFactory.getCurrentBlock().asCode());
     }
     
+    @Test
+    public void testReturnArrayDef() {
+    
+    // i8[] getNumbers() {
+    //     ?result i8[4];        
+    //     return result;
+    // }
+
+    String ecCode = "i8[] getNumbers(u64 howMany) {?result i8[howMany]; return result;} ?myNumbers=getNumbers(3); myNumbers.length";
+
+    BaseTest.lex(new ecLexer(new ANTLRInputStream(ecCode)));
+
+    FunctionDef fd = (FunctionDef)DefFactory.resolveFunction("getNumbers");
+    assertNotNull(fd);
+    fd.containedInBlock = DefFactory.getCurrentBlock();
+    fd.resolve_01();
+    fd.validate_02();
+    fd.prepare_03();
+    // fd.containedInBlock = DefFactory.getCurrentBlock();
+    System.out.println(fd.asCode());
+
+    System.out.println(DefFactory.getCurrentBlock().asCode());
+
+    }
+    
+    
 }

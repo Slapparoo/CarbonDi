@@ -169,6 +169,14 @@ public class VariableDef extends StatementDef {
                 type.setIs_boxed(assignValue.thisType.isIs_boxed());
                 type.setObjectType(assignValue.thisType.getObjectType());
 
+                if (type.getName().contains("[]") && !type.isIs_array()) {
+                    // change to an array type
+                    type = new TypeIdDef(assignValue.thisType.getName().replace("[]", ""));
+                    type.setIs_array(true);
+                    type.setIs_boxed(assignValue.thisType.isIs_boxed());
+                    type.setObjectType("Array");
+                }
+
                 if (assignValue instanceof MultiTypeExpr && type.isIs_array()) {
                     MultiTypeExpr av = (MultiTypeExpr) assignValue;
                     // this is ambiguous - nad doesn't always work
@@ -210,15 +218,6 @@ public class VariableDef extends StatementDef {
     }
 
     public String getName() {
-        // if (name == null) {
-        //     is_annoymous = true;
-        //     name = "a__$a";
-        //     return name;
-        // }
-
-        // if (name.matches("\\$[a-z]")) {
-        //     return "a__" + name;
-        // }
         return name;
     }
 

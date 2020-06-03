@@ -5,7 +5,7 @@
 i8 content2[10];
 ?content3 = i8[10];
 
-i8[] getNumbers(num howMany) {
+i8[] getNumbers(u64 howMany) {
     ?result i8[howMany];        
     return result;
 }
@@ -54,6 +54,7 @@ testStrEqual(`names[1]`, `Another name`, names[1].asStr());
 testStrEqual(`numbers`, `String\n`, numbers.values);
 testStrEqual(`numbers`, `String\n`, values);
 
+printf(`done.\n`);
 
 
 
