@@ -1,7 +1,8 @@
 loop returns
 loop types
 cast
-have a core-support which doesn't include stdio
+
+use the single big header for build
 
 version stuff
 

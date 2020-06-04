@@ -10,16 +10,16 @@ CC		 := $(CCCLANG)
 # CC		 := $(CCGCC)
 # CC		 := $(CCAVR)
 
-VALGRIND := valgrind  --track-origins=yes --leak-check=full --error-exitcode=2
-SRCDIR 	 := .
-SRC      := $(shell find $(SRCDIR) -maxdepth 1 -name "*.c" -not -name "main*.c" )
-SRCMAIN  := $(shell find $(SRCDIR) -name "main*.c")
-MAINS    := $(shell find $(OBJDIR) -name "main*.e")
+VALGRIND   := valgrind  --track-origins=yes --leak-check=full --error-exitcode=2
+SRCDIR 	   := .
+SRC        := $(shell find $(SRCDIR) -maxdepth 1 -name "*.c" -not -name "main*.c" )
+SRCMAIN    := $(shell find $(SRCDIR) -name "main*.c")
+MAINS      := $(shell find $(OBJDIR) -name "main*.e")
 GENDIR	   := gen
 INCLUDEDIR := include
 OBJDIR     := obj
 LIBDIR     := lib
-PARAMS    := -Wall -Wno-format -Wno-unused-variable -std=gnu17 -g -O3 -I$(INCLUDEDIR)
+PARAMS     := -Wall -Wno-format -Wno-unused-variable -std=gnu17 -g -O3 -I$(INCLUDEDIR)
 # PARAMS := -std=gnu11 -g -O3 -I$(INCLUDEDIR) -I/mnt/e/earthquaketrigger/Arduino/hardware/tools/avr/avr/include
 
 OBJ := $(SRC:%.c=$(OBJDIR)/%.o)
@@ -27,14 +27,17 @@ MAIN := $(SRCMAIN:%.c=$(OBJDIR)/%.e)
 RUNMAINS := $(MAINS:%.e=$(OBJDIR)/%.e)
 LIB := $(SRC:%.c=$(LIBDIR)/libec.so)
 
-all : clean lib obj $(MAIN) $(RUNMAINS)
+all : clean singleheader lib obj $(MAIN) $(RUNMAINS)
 
 obj : $(OBJ)
 
 lib : $(LIB)
 
 singleheader :
+	@echo "create a single header include/eccore.h"
+	rm -f include/eccore.h.gch 
 	clang include/Core.Core_main.h -E -dD > include/eccore.h
+	$(CC) $(PARAMS) include/eccore.h
 
 cleanobj:
 	rm -f obj/*.o 

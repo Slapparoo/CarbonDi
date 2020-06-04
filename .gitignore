@@ -4,9 +4,11 @@
 **/*.o
 **/*.so
 **/*.e
+**/*.gch
 **/gen/*
 target/**
 c-lang/**
 ec-test/*
 /.antlr
 /.settings
+c-bin/include/eccore.h
