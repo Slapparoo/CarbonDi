@@ -1,305 +1,495 @@
 // Core.DynamicArray
-#include "eccore.h"
+#include "Core.Core_main.h"
+#include "Core.DynamicArray.h"
+#include "Core.Object.h"
+#include "Core.String.h"
+#include "Core.Exception.h"
+#include "Core.Array.h"
+#include "Core.RefArray.h"
+#include "Core.Boxing.h"
+#include "Core.BaseBoxing.h"
+#include "Core.B8.h"
+#include "Core.U8.h"
+#include "Core.I8.h"
+#include "Core.I16.h"
+#include "Core.U16.h"
+#include "Core.I32.h"
+#include "Core.U32.h"
+#include "Core.F32.h"
+#include "Core.I64.h"
+#include "Core.U64.h"
+#include "Core.F64.h"
+#include "Core.Pointer.h"
 
-#define __USE_THIS_CM ((c_2106303_DynamicArray_cm *)useObject(this)->classmodel)
-#define __USE_THIS_D ((c_2106303_DynamicArray *)useObject(this)->data)
-#define __USE_THIS_S ((c_2106303_DynamicArray_cm *)getc_2106303_DynamicArray_cm())
+/*fd1*/pointer c_2106303_DynamicArraygetValue(num this, u64 index){
 
-// u8 size = ay->dataSize;
-// u64 offset = size * index;
-// pointer res = &ay->values[offset];
+u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("add %s", "here");
+if (/*oxa*//*te8*/index >= /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this)) {
 
-pointer c_2106303_DynamicArraygetValue(num this, u64 index) {
-  if (index >= __USE_THIS_CM->get_length(this)) {
-    throwException("[error] index array out of bounds");
-  }
+__onEnter();/*st*/ /*fc2 null */throwException("[error] index array out of bounds");
 
-  return __USE_THIS_CM->get(this, __USE_THIS_CM->get_startIndex(this) + index);
+__onExit();}
+
+return __exitReturn_pointer_un(/* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get(this, /*te8*/index), entry__);
 }
 
-void c_2106303_DynamicArraysetValue(num this, u64 index, pointer value) {
-  if (index >= __USE_THIS_CM->get_length(this)) {
-    throwException("[error] index array out of bounds");
-  }
 
-  __USE_THIS_CM->set(this, __USE_THIS_CM->get_startIndex(this) + index, value);
+/*fd1*/void c_2106303_DynamicArraysetValue(num this, u64 index, pointer value){
+
+u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("add %lu, %lu", /*te8*/index, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this));
+if (/*oxa*//*te8*/index >= /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this)) {
+
+__onEnter();/*st*/ /*fc2 null */throwException("[error] index array out of bounds");
+
+__onExit();}
+
+/*st*/ /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set(this, /*te8*/index, /*te8*/value);
+
+__onExit();}
+
+
+/*fd1*/void c_2106303_DynamicArrayaddTail(num this, pointer value){
+
+u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("add %s", "here");
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this) == /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this)) {
+
+__onEnter();if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) > /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_slideAmount()) {
+
+__onEnter();/*st*/ /*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->slideLeft(this);
+
+__onExit();}
+
+/* else? */ else {
+
+__onEnter();/*st*/ /*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->addCapacityTail(this);
+
+__onExit();}
+
+
+__onExit();}
+
+/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->length++;
+/*st*/ /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->setValue(this, /*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->endIndex++, /*te8*/value);
+
+__onExit();}
+
+
+/*fd1*/void c_2106303_DynamicArrayaddHead(num this, pointer value){
+
+u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("add %s", "here");
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) == /*oxb*/0) {
+
+__onEnter();if (/*oxa*//*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this) < /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this) - /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_slideAmount()) {
+
+__onEnter();/*st*/ /*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->slideRight(this);
+
+__onExit();}
+
+/* else? */ else {
+
+__onEnter();/*st*/ /*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->addCapacityHead(this);
+
+__onExit();}
+
+
+__onExit();}
+
+/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->length++;
+/*st*/ /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->setValue(this, --/*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->startIndex, /*te8*/value);
+
+__onExit();}
+
+
+/*fd1*/void c_2106303_DynamicArrayinsert(num this, u64 index, pointer value){
+
+u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("insert %lu", /*te8*/index);
+if (/*oxa*//*te8*/index > /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this)) {
+
+__onEnter();/*st*/ /*fc2 null */throwException("[error] index array out of bounds");
+
+__onExit();}
+
+if (/*oxa*//*te8*/index == /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this)) {
+
+__onEnter();/*st*/ /*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->addHead(this, /*te8*/value);
+return __exitReturn_void_un(entry__);
 }
 
-void c_2106303_DynamicArrayaddTail(num this, pointer value) {
-  if (__USE_THIS_CM->get_endIndex(this) == __USE_THIS_CM->get_capacity(this)) {
-    if (__USE_THIS_CM->get_startIndex(this) > __USE_THIS_S->get_slideAmount()) {
-      __USE_THIS_CM->slideLeft(this);
-    } else {
-      __USE_THIS_CM->addCapacityTail(this);
-    }
-  }
+if (/*oxa*//*te8*/index == /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this)) {
 
-  __USE_THIS_D->length++;
-  __USE_THIS_CM->set(this, __USE_THIS_D->endIndex++, value);
+__onEnter();/*st*/ /*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->addTail(this, /*te8*/value);
+return __exitReturn_void_un(entry__);
 }
 
-void c_2106303_DynamicArrayaddHead(num this, pointer value) {
-  if (__USE_THIS_CM->get_startIndex(this) == 0) {
-    if (__USE_THIS_CM->get_endIndex(this) < __USE_THIS_CM->get_capacity(this) - __USE_THIS_S->get_slideAmount()) {
-      __USE_THIS_CM->slideRight(this);
-    } else {
-      __USE_THIS_CM->addCapacityHead(this);
-    }
-  }
+if (/*oxa*//*oxa*//*te8*/index - /*oxb*//*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) > /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this) - /*oxb*//*te8*/index) {
 
-  __USE_THIS_D->length++;
-  __USE_THIS_CM->set(this, --__USE_THIS_D->startIndex, value);
+__onEnter();if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this) + /*oxb*//*oxa*/1 == /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this)) {
+
+__onEnter();/*st*/ /*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->addCapacityTail(this);
+
+__onExit();}
+
+/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->endIndex++;
+/*va1*/u64 ix = /*oxa*//*te8*/index + /*oxb*/1;
+/*st*/ /*fc2 null */memmove(/*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te8*/ix, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this))), /*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te8*/index, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this))), /*oxa*/(/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this) - /*oxb*//*te8*/index) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_dataSize(/*te8*/this));
+
+__onExit();}
+
+/* else? */ else {
+
+__onEnter();if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) == /*oxb*/0) {
+
+__onEnter();/*st*/ /*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->addCapacityHead(this);
+
+__onExit();}
+
+/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->startIndex--;
+/*va1*/u64 ix = /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) + /*oxb*/1;
+/*st*/ /*fc2 null */memmove(/*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this))), /*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te8*/ix, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this))), /*oxa*/(/*oxa*//*te8*/index - /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this)) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_dataSize(/*te8*/this));
+
+__onExit();}
+
+/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->length++;
+/*st*/ /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set(this, /*te8*/index, /*te8*/value);
+
+__onExit();}
+
+
+/*fd1*/pointer c_2106303_DynamicArrayremoveHead(num this){
+
+u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("remove %lu", /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this));
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this) == /*oxb*/0) {
+
+__onEnter();/*st*/ /*fc2 null */throwException("[error] index array out of bounds");
+
+__onExit();}
+
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) >= /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this)) {
+
+__onEnter();/*st*/ /*fc2 null */throwException("[error] index array out of bounds index overlap.");
+
+__onExit();}
+
+if (/*oxa*//*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this) - /*oxb*//*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this) > /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy() + /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_slideAmount()) {
+
+__onEnter();/*st*/ /*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->reduceCapacityHead(this);
+
+__onExit();}
+
+/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->length--;
+return __exitReturn_pointer_un(/* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get(this, /*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->startIndex++), entry__);
 }
 
-void c_2106303_DynamicArrayinsert(num this, u64 index, pointer value) {
-  if (index > __USE_THIS_CM->get_length(this)) {
-    throwException("[error] index array out of bounds");
-  }
 
-  if (index == __USE_THIS_CM->get_startIndex(this)) {
-    return __USE_THIS_CM->addHead(this, value);
-  }
+/*fd1*/pointer c_2106303_DynamicArrayremoveTail(num this){
 
-  if (index == __USE_THIS_CM->get_endIndex(this)) {
-    return __USE_THIS_CM->addTail(this, value);
-  }
+u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("remove endIndex=%lu, length=%lu, capacity=%lu", /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this));
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this) == /*oxb*/0) {
 
-  if (index - __USE_THIS_CM->get_startIndex(this) > __USE_THIS_CM->get_endIndex(this) - index) {
-    if (__USE_THIS_CM->get_endIndex(this) + 1 == __USE_THIS_CM->get_capacity(this)) {
-      __USE_THIS_CM->addCapacityTail(this);
-    }
+__onEnter();/*st*/ /*fc2 null */throwException("[error] index array out of bounds");
 
-    __USE_THIS_D->endIndex++;
-    u64 ix = index + 1;
+__onExit();}
 
-    // u8 size = ay->dataSize;
-    // u64 offset = size * index;
-    // pointer res = &ay->values[offset];
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) >= /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this)) {
 
-    //    __USE_THIS_D->values
-    //    __USE_THIS_D->dataSize
+__onEnter();/*st*/ /*fc2 null */throwException("[error] index array out of bounds index overlap.");
 
-    memmove(&__USE_THIS_D->values[ix * __USE_THIS_D->dataSize], &__USE_THIS_D->values[index * __USE_THIS_D->dataSize],
-            (__USE_THIS_CM->get_endIndex(this) - index) * __USE_THIS_CM->get_dataSize(this));
-  } else {
-    if (__USE_THIS_CM->get_startIndex(this) == 0) {
-      __USE_THIS_CM->addCapacityHead(this);
-    }
+__onExit();}
 
-    __USE_THIS_D->startIndex--;
-    u64 ix = __USE_THIS_CM->get_startIndex(this) + 1;
-    memmove(&__USE_THIS_D->values[__USE_THIS_D->startIndex * __USE_THIS_D->dataSize],
-            &__USE_THIS_D->values[ix * __USE_THIS_D->dataSize],
-            (index - __USE_THIS_CM->get_startIndex(this)) * __USE_THIS_CM->get_dataSize(this));
-  }
+/*va1*/pointer res1 = /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get(this, --/*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->endIndex);
+/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->length--;
+if (/*oxa*//*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this) - /*oxb*//*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this) > /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy() + /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_slideAmount()) {
 
-  __USE_THIS_D->length++;
-  __USE_THIS_CM->set(this, index, value);
+__onEnter();/*st*/ /*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->reduceCapacityTail(this);
+
+__onExit();}
+
+return __exitReturn_pointer_un(/*te8*/res1, entry__);
 }
 
-pointer c_2106303_DynamicArrayremoveHead(num this) {
-  if (__USE_THIS_CM->get_length(this) == 0) {
-    throwException("[error] index array out of bounds");
-  }
 
-  pointer res = __USE_THIS_CM->get(this, __USE_THIS_D->startIndex++);
-  __USE_THIS_D->length--;
-  if (__USE_THIS_CM->get_startIndex(this) > __USE_THIS_S->get_growBy()) {
-    __USE_THIS_CM->reduceCapacityHead(this);
-  }
+/*fd1*/pointer c_2106303_DynamicArrayremove(num this, u64 index, pointer value){
 
-  return res;
+u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("remove %s", "here");
+if (/*oxa*//*oxa*//*oxa*//*oxa*//*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this) == /*oxb*/0 || /*oxb*//*te8*/index < /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) || /*oxb*//*te8*/index > /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this)) {
+
+__onEnter();/*st*/ /*fc2 null */throwException("[error] index array out of bounds");
+
+__onExit();}
+
+if (/*oxa*//*te8*/index == /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this)) {
+
+__onEnter();return __exitReturn_pointer_un(/*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->removeHead(this), entry__);
 }
 
-pointer c_2106303_DynamicArrayremoveTail(num this) {
-  if (__USE_THIS_CM->get_length(this) == 0) {
-    throwException("[error] index array out of bounds");
-  }
+if (/*oxa*//*te8*/index == /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this)) {
 
-  pointer res = __USE_THIS_CM->get(this, __USE_THIS_D->endIndex--);
-  __USE_THIS_D->length--;
-  if (__USE_THIS_CM->get_endIndex(this) + __USE_THIS_S->get_growBy() < __USE_THIS_CM->get_capacity(this)) {
-    __USE_THIS_CM->reduceCapacityTail(this);
-  }
-
-  return res;
+__onEnter();return __exitReturn_pointer_un(/*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->removeTail(this), entry__);
 }
 
-pointer c_2106303_DynamicArrayremove(num this, u64 index, pointer value) {
-  if (__USE_THIS_CM->get_length(this) == 0 || index < __USE_THIS_CM->get_startIndex(this) ||
-      index > __USE_THIS_CM->get_endIndex(this)) {
-    throwException("[error] index array out of bounds");
-  }
+/*va1*/pointer result = /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get(this, /*te8*/index);
+if (/*oxa*//*oxa*//*te8*/index - /*oxb*//*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) > /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this) - /*oxb*//*te8*/index) {
 
-  if (index == __USE_THIS_CM->get_startIndex(this)) {
-    return __USE_THIS_CM->removeHead(this);
-  }
+__onEnter();/*va1*/u64 ix = /*oxa*//*te8*/index + /*oxb*/1;
+/*st*/ /*fc2 null */memmove(/*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te8*/index, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this))), /*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te8*/ix, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this))), /*oxa*/(/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this) - /*oxb*//*te8*/index) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_dataSize(/*te8*/this));
+/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->endIndex--;
 
-  if (index == __USE_THIS_CM->get_endIndex(this)) {
-    return __USE_THIS_CM->removeTail(this);
-  }
+__onExit();}
 
-  pointer result = __USE_THIS_CM->get(this, index);
-  if (index - __USE_THIS_CM->get_startIndex(this) > __USE_THIS_CM->get_endIndex(this) - index) {
-    u64 ix = index + 1;
-    memmove(&__USE_THIS_D->values[index * __USE_THIS_D->dataSize], &__USE_THIS_D->values[ix * __USE_THIS_D->dataSize],
-            (__USE_THIS_CM->get_endIndex(this) - index) * __USE_THIS_CM->get_dataSize(this));
-    __USE_THIS_D->endIndex--;
-  } else {
-    u64 ix = __USE_THIS_CM->get_startIndex(this) + 1;
-    memmove(&__USE_THIS_D->values[ix * __USE_THIS_D->dataSize],
-            &__USE_THIS_D->values[__USE_THIS_D->startIndex * __USE_THIS_D->dataSize],
-            (index - __USE_THIS_CM->get_startIndex(this)) * __USE_THIS_CM->get_dataSize(this));
-    __USE_THIS_D->startIndex++;
-  }
+/* else? */ else {
 
-  __USE_THIS_D->length--;
-  return result;
+__onEnter();/*va1*/u64 ix = /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) + /*oxb*/1;
+/*st*/ /*fc2 null */memmove(/*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te8*/ix, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this))), /*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this))), /*oxa*/(/*oxa*//*te8*/index - /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this)) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_dataSize(/*te8*/this));
+/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->startIndex++;
+
+__onExit();}
+
+/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->length--;
+return __exitReturn_pointer_un(/*te8*/result, entry__);
 }
 
-pointer c_2106303_DynamicArraypeekTail(num this) {
-  if (__USE_THIS_CM->get_length(this) == 0) {
-    throwException("[error] index array out of bounds");
-  }
 
-  return __USE_THIS_CM->get(this, __USE_THIS_CM->get_endIndex(this));
+/*fd1*/pointer c_2106303_DynamicArraypeekTail(num this){
+
+u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("peek %s", "here");
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this) == /*oxb*/0) {
+
+__onEnter();/*st*/ /*fc2 null */throwException("[error] index array out of bounds");
+
+__onExit();}
+
+return __exitReturn_pointer_un(/* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get(this, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this)), entry__);
 }
 
-pointer c_2106303_DynamicArraypeekHead(num this) {
-  if (__USE_THIS_CM->get_length(this) == 0) {
-    throwException("[error] index array out of bounds");
-  }
 
-  return __USE_THIS_CM->get(this, __USE_THIS_CM->get_startIndex(this));
+/*fd1*/pointer c_2106303_DynamicArraypeekHead(num this){
+
+u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("peek %s", "here");
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this) == /*oxb*/0) {
+
+__onEnter();/*st*/ /*fc2 null */throwException("[error] index array out of bounds");
+
+__onExit();}
+
+return __exitReturn_pointer_un(/* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get(this, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this)), entry__);
 }
 
-void c_2106303_DynamicArrayaddCapacityHead(num this) {
-  __USE_THIS_CM->set_values(
-      this, realloc(__USE_THIS_D->values, (__USE_THIS_CM->get_capacity(this) + __USE_THIS_S->get_growBy()) *
-                                              __USE_THIS_CM->get_dataSize(this)));
-  if (__USE_THIS_CM->get_values(this) == null) {
-    throwException("[error] out of memory exception.");
-  }
 
-  __USE_THIS_CM->set_capacity(this, __USE_THIS_S->get_growBy());
-  memmove(&__USE_THIS_D->values[__USE_THIS_S->growBy * __USE_THIS_D->dataSize], &__USE_THIS_D->values[0],
-          __USE_THIS_CM->get_length(this) * __USE_THIS_CM->get_dataSize(this));
-  __USE_THIS_CM->set_startIndex(this, __USE_THIS_S->get_growBy());
-  __USE_THIS_CM->set_endIndex(this, __USE_THIS_S->get_growBy());
+/*fd1*/void c_2106303_DynamicArrayaddCapacityHead(num this){
+
+u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("grow %s", "here");
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_values(/*te8*/this, /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->realloc(this, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this), /*oxa*/(/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this) + /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy()) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_dataSize(/*te8*/this)));
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this) == /*oxb*/null) {
+
+__onEnter();/*st*/ /*fc2 null */throwException("[error] out of memory exception.");
+
+__onExit();}
+
+/*Ax7*//*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->capacity/*te8*/+=/*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy();
+/*st*/ /*fc2 null */memmove(/*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy(), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this))), /*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(0, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this))), /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_dataSize(/*te8*/this));
+/*Ax7*//*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->startIndex/*te8*/+=/*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy();
+/*Ax7*//*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->endIndex/*te8*/+=/*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy();
+
+__onExit();}
+
+
+/*fd1*/void c_2106303_DynamicArrayaddCapacityTail(num this){
+
+u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("grow %s", "here");
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_values(/*te8*/this, /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->realloc(this, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this), /*oxa*/(/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this) + /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy()) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_dataSize(/*te8*/this)));
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this) == /*oxb*/null) {
+
+__onEnter();/*st*/ /*fc2 null */throwException("[error] out of memory exception.");
+
+__onExit();}
+
+/*Ax7*//*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->capacity/*te8*/+=/*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy();
+
+__onExit();}
+
+
+/*fd1*/void c_2106303_DynamicArrayreduceCapacityHead(num this){
+
+u64 entry__ = __onEnter();if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this) <= /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_initialSize()) {
+
+__onEnter();return __exitReturn_void_un(entry__);
 }
 
-void c_2106303_DynamicArrayaddCapacityTail(num this) {
-  __USE_THIS_CM->set_values(
-      this, realloc(__USE_THIS_D->values, (__USE_THIS_CM->get_capacity(this) + __USE_THIS_S->get_growBy()) *
-                                              __USE_THIS_CM->get_dataSize(this)));
-  if (__USE_THIS_CM->get_values(this) == null) {
-    throwException("[error] out of memory exception.");
-  }
+/*st*/ /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->realignLeft(this);
+/*va1*/u64 oldCapacity = /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this);
+/*va1*/u64 requestAmount = /*oxa*/(/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this) - /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy()) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_dataSize(/*te8*/this);
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_values(/*te8*/this, /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->realloc(this, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this), /*te8*/requestAmount));
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this) == /*oxb*/null) {
 
-  __USE_THIS_CM->set_capacity(this, __USE_THIS_S->get_growBy());
+__onEnter();/*st*/ /*fc2 null */throwException("[error] out of memory exception.");
+
+__onExit();}
+
+/*Ax7*//*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->capacity/*te8*/-=/*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy();
+/*st*/ /*fc2 null */debug_println("shrink length=%lu, requestedAmount=%lu, oldCapacity=%lu, capacity=%lu", /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this), /*te8*/requestAmount, /*te8*/oldCapacity, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this));
+
+__onExit();}
+
+
+/*fd1*/void c_2106303_DynamicArrayreduceCapacityTail(num this){
+
+u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("shrink %s", "here");
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_values(/*te8*/this, /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->realloc(this, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this), /*oxa*/(/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this) - /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy()) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_dataSize(/*te8*/this)));
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this) == /*oxb*/null) {
+
+__onEnter();/*st*/ /*fc2 null */throwException("[error] out of memory exception.");
+
+__onExit();}
+
+/*Ax7*//*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->capacity/*te8*/-=/*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy();
+
+__onExit();}
+
+
+/*fd1*/void c_2106303_DynamicArrayrealignLeft(num this){
+
+u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("align %s", "here");
+/*va1*/pointer dest = /*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(0, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this)));
+/*va1*/pointer source = /*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this)));
+/*va1*/u64 amount = /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_dataSize(/*te8*/this);
+/*st*/ /*fc2 null */debug_println("align %p == %p, %p, amount=%lu, length=%lu, dataSize=%lu, capacity=%lu", /*te8*/dest, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this), /*te8*/source, /*te8*/amount, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_dataSize(/*te8*/this), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this));
+/*st*/ /*fc2 null */memmove(/*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this), /*te8*/source, /*te8*/amount);
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_startIndex(/*te8*/this, 0);
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_endIndex(/*te8*/this, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this));
+
+__onExit();}
+
+
+/*fd1*/void c_2106303_DynamicArrayslideLeft(num this){
+
+u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("slide %s", "here");
+/*va1*/u64 newStart = 0;
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) + /*oxb*//*oxa*/1 >= /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_slideAmount()) {
+
+__onEnter();/*Ax6*//*te8*/newStart/*te8*/=/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) - /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_slideAmount();
+
+__onExit();}
+
+/*st*/ /*fc2 null */memmove(/*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te8*/newStart, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this))), /*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this))), /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_dataSize(/*te8*/this));
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_startIndex(/*te8*/this, /*te8*/newStart);
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_endIndex(/*te8*/this, /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) + /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this));
+
+__onExit();}
+
+
+/*fd1*/void c_2106303_DynamicArrayslideRight(num this){
+
+u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("slide %s", "here");
+/*va1*/u64 newStart = /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) - /*oxb*/(/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this) - /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this));
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this) + /*oxb*//*oxa*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_slideAmount() <= /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this)) {
+
+__onEnter();/*Ax6*//*te8*/newStart/*te8*/=/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) + /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_slideAmount();
+
+__onExit();}
+
+/*st*/ /*fc2 null */memmove(/*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te8*/newStart, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this))), /*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this))), /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_dataSize(/*te8*/this));
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_startIndex(/*te8*/this, /*te8*/newStart);
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_endIndex(/*te8*/this, /*oxa*//*te8*/newStart + /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this));
+
+__onExit();}
+
+
+/*fd1*/pointer c_2106303_DynamicArraygetClassName(){
+  return  "Core.DynamicArray";
 }
 
-void c_2106303_DynamicArrayreduceCapacityHead(num this) {
-  __USE_THIS_CM->realignLeft(this);
-  __USE_THIS_CM->set_values(
-      this, realloc(__USE_THIS_D->values, (__USE_THIS_CM->get_capacity(this) - __USE_THIS_S->get_growBy()) *
-                                              __USE_THIS_CM->get_dataSize(this)));
-  if (__USE_THIS_CM->get_values(this) == null) {
-    throwException("[error] out of memory exception.");
-  }
 
-  __USE_THIS_CM->set_capacity(this, __USE_THIS_S->get_growBy());
+/*fd1*/pointer c_2106303_DynamicArraygetClassShortName(){
+  return  "DynamicArray";
 }
 
-void c_2106303_DynamicArrayreduceCapacityTail(num this) {
-  __USE_THIS_CM->set_values(
-      this, realloc(__USE_THIS_D->values, (__USE_THIS_CM->get_capacity(this) - __USE_THIS_S->get_growBy()) *
-                                              __USE_THIS_CM->get_dataSize(this)));
-  if (__USE_THIS_CM->get_values(this) == null) {
-    throwException("[error] out of memory exception.");
-  }
 
-  __USE_THIS_CM->set_capacity(this, __USE_THIS_S->get_growBy());
+/*fd1*/pointer c_2106303_DynamicArraygetClassCName(){
+  return  "c_2106303_DynamicArray";
 }
 
-void c_2106303_DynamicArrayrealignLeft(num this) {
 
-  memmove(__USE_THIS_D->values, __USE_THIS_D->values + (__USE_THIS_D->startIndex * __USE_THIS_D->dataSize),
-          __USE_THIS_CM->get_length(this) * __USE_THIS_CM->get_dataSize(this));
-  __USE_THIS_CM->set_startIndex(this, 0);
-  __USE_THIS_CM->set_endIndex(this, __USE_THIS_CM->get_length(this));
+/*fd1*/pointer c_2106303_DynamicArraygetClassPackage(){
+  return  "Core";
 }
 
-void c_2106303_DynamicArrayslideLeft(num this) {
 
-  u64 newStart = 0;
-  if (__USE_THIS_CM->get_startIndex(this) >= __USE_THIS_S->get_slideAmount()) {
-
-    newStart =
-
-        __USE_THIS_CM->get_startIndex(this) -
-        ((c_2106303_DynamicArray_cm *)getc_2106303_DynamicArray_cm())->get_slideAmount();
-  }
-
-  memmove(&__USE_THIS_D->values[newStart * __USE_THIS_D->dataSize],
-          &__USE_THIS_D->values[__USE_THIS_D->startIndex * __USE_THIS_D->dataSize],
-          __USE_THIS_CM->get_length(this) * __USE_THIS_CM->get_dataSize(this));
-  __USE_THIS_CM->set_startIndex(this, newStart);
-  __USE_THIS_CM->set_endIndex(this, __USE_THIS_CM->get_length(this));
+/*fd1*/u64 c_2106303_DynamicArraygetObjectDatasize(){
+  return  sizeof(c_2106303_DynamicArray);
 }
 
-void c_2106303_DynamicArrayslideRight(num this) {
-  u64 newStart =
-      __USE_THIS_CM->get_startIndex(this) - (__USE_THIS_CM->get_capacity(this) - __USE_THIS_CM->get_length(this));
-  if (__USE_THIS_CM->get_endIndex(this) + __USE_THIS_S->get_slideAmount() <= __USE_THIS_CM->get_capacity(this)) {
 
-    newStart =
 
-        __USE_THIS_CM->get_startIndex(this) +
-        ((c_2106303_DynamicArray_cm *)getc_2106303_DynamicArray_cm())->get_slideAmount();
-  }
 
-  memmove(&__USE_THIS_D->values[newStart * __USE_THIS_D->dataSize],
-          &__USE_THIS_D->values[__USE_THIS_D->startIndex * __USE_THIS_D->dataSize],
-          __USE_THIS_CM->get_length(this) * __USE_THIS_CM->get_dataSize(this));
-  __USE_THIS_CM->set_startIndex(this, newStart);
-  __USE_THIS_CM->set_endIndex(this, newStart + __USE_THIS_CM->get_length(this));
+
+
+
+
+
+
+
+
+
+
+
+
+/*fd1*/u64 c_2106303_DynamicArrayget_startIndex(num this){
+  return  ((c_2106303_DynamicArray*)useObject(this)->data)->startIndex;
 }
 
-pointer c_2106303_DynamicArraygetClassName() { return "Core.DynamicArray"; }
 
-pointer c_2106303_DynamicArraygetClassShortName() { return "DynamicArray"; }
+/*fd1*/void c_2106303_DynamicArrayset_startIndex(num this, u64 a__a){
+/*cda1*/((c_2106303_DynamicArray*)useObject(this)->data)->startIndex = a__a;
+}
 
-pointer c_2106303_DynamicArraygetClassCName() { return "c_2106303_DynamicArray"; }
 
-pointer c_2106303_DynamicArraygetClassPackage() { return "Core"; }
+/*fd1*/u64 c_2106303_DynamicArrayget_endIndex(num this){
+  return  ((c_2106303_DynamicArray*)useObject(this)->data)->endIndex;
+}
 
-u64 c_2106303_DynamicArraygetObjectDatasize() { return sizeof(c_2106303_DynamicArray); }
 
-u64 c_2106303_DynamicArrayget_startIndex(num this) { return __USE_THIS_D->startIndex; }
+/*fd1*/void c_2106303_DynamicArrayset_endIndex(num this, u64 a__a){
+/*cda1*/((c_2106303_DynamicArray*)useObject(this)->data)->endIndex = a__a;
+}
 
-void c_2106303_DynamicArrayset_startIndex(num this, u64 startIndex) { __USE_THIS_D->startIndex = startIndex; }
 
-u64 c_2106303_DynamicArrayget_endIndex(num this) { return __USE_THIS_D->endIndex; }
+/*fd1*/u64 c_2106303_DynamicArrayget_initialSize(){
+  return  ((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->initialSize;
+}
 
-void c_2106303_DynamicArrayset_endIndex(num this, u64 endIndex) { __USE_THIS_D->endIndex = endIndex; }
 
-u64 c_2106303_DynamicArrayget_initialSize() { return __USE_THIS_S->initialSize; }
+/*fd1*/void c_2106303_DynamicArrayset_initialSize(u64 a__a){
+/*cda1*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->initialSize = a__a;
+}
 
-void c_2106303_DynamicArrayset_initialSize(u64 initialSize) { __USE_THIS_S->initialSize = initialSize; }
 
-u64 c_2106303_DynamicArrayget_growBy() { return __USE_THIS_S->growBy; }
+/*fd1*/u64 c_2106303_DynamicArrayget_growBy(){
+  return  ((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->growBy;
+}
 
-void c_2106303_DynamicArrayset_growBy(u64 growBy) { __USE_THIS_S->growBy = growBy; }
 
-u64 c_2106303_DynamicArrayget_slideAmount() { return __USE_THIS_S->slideAmount; }
+/*fd1*/void c_2106303_DynamicArrayset_growBy(u64 a__a){
+/*cda1*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->growBy = a__a;
+}
 
-void c_2106303_DynamicArrayset_slideAmount(u64 slideAmount) { __USE_THIS_S->slideAmount = slideAmount; }
 
-void c_2106303_DynamicArray_free(num this) { Object_ref *object_ref = useObject(this); }
+/*fd1*/u64 c_2106303_DynamicArrayget_slideAmount(){
+  return  ((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->slideAmount;
+}
+
+
+/*fd1*/void c_2106303_DynamicArrayset_slideAmount(u64 a__a){
+/*cda1*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->slideAmount = a__a;
+}
+
+
+void c_2106303_DynamicArray_free(num this) { Object_ref *object_ref = useObject(this);
+}
+
+
 
 num create_c_2106303_DynamicArray() {
-  c_2106303_DynamicArray *_c_2106303_DynamicArray = ec_calloc(sizeof(c_2106303_DynamicArray), sizeof(char));
+  c_2106303_DynamicArray * _c_2106303_DynamicArray = ec_calloc(sizeof(c_2106303_DynamicArray), sizeof(char));
   return createObject(_c_2106303_DynamicArray, getc_2106303_DynamicArray_cm(), false);
 }
 
@@ -314,19 +504,40 @@ pointer getc_2106303_DynamicArray_cm() {
   return &_c_2106303_DynamicArray_cm;
 }
 
-num create_c_2106303_DynamicArray_1(u64 capacity, int dataType, u64 dataSize) {
-  num this = create_c_2106303_DynamicArray();
 
-  return this;
+/* default constructor */
+num create_c_2106303_DynamicArray_1(/* param *//*va1*/int dataType, /*va1*/u64 dataSize) {
+num this =  create_c_2106303_DynamicArray();
+
+((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set_dataType(this, dataType);
+((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set_dataSize(this, dataSize);
+{
+
+__onEnter();/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_capacity(/*te8*/this, /*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_initialSize());
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_values(/*te8*/this, /*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->alloc(this, /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this) * /*oxb*//*te8*/dataSize));
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_startIndex(/*te8*/this, /*oxa*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_initialSize() / /*oxb*/2);
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_endIndex(/*te8*/this, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this));
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_length(/*te8*/this, 0);
+
+__onExit();}
+
+return this;
 }
-num create_c_2106303_DynamicArray_2(u64 capacity, int dataType, u64 dataSize, pointer values) {
-  num this = create_c_2106303_DynamicArray();
+num create_c_2106303_DynamicArray_2(/* param *//*va1*/u64 capacity, /*va1*/int dataType, /*va1*/u64 dataSize) {
+num this =  create_c_2106303_DynamicArray();
 
-  return this;
+
+return this;
+}
+num create_c_2106303_DynamicArray_3(/* param *//*va1*/u64 capacity, /*va1*/int dataType, /*va1*/u64 dataSize, /*va1*/pointer values) {
+num this =  create_c_2106303_DynamicArray();
+
+
+return this;
 }
 void populatec_2106303_DynamicArray_cm(pointer classModel) {
-  populatec_2106303_Array_cm(classModel);
-  c_2106303_DynamicArray_cm *thisClassModel = (c_2106303_DynamicArray_cm *)classModel;
+ populatec_2106303_Array_cm(classModel);
+  c_2106303_DynamicArray_cm* thisClassModel = (c_2106303_DynamicArray_cm*)classModel;
   thisClassModel->parent = getc_2106303_Array_cm();
   thisClassModel->getValue = c_2106303_DynamicArraygetValue;
   thisClassModel->setValue = c_2106303_DynamicArraysetValue;
@@ -360,8 +571,9 @@ void populatec_2106303_DynamicArray_cm(pointer classModel) {
   thisClassModel->set_growBy = c_2106303_DynamicArrayset_growBy;
   thisClassModel->get_slideAmount = c_2106303_DynamicArrayget_slideAmount;
   thisClassModel->set_slideAmount = c_2106303_DynamicArrayset_slideAmount;
-  thisClassModel->initialSize = 64;
-  thisClassModel->growBy = 64;
-  thisClassModel->slideAmount = 8;
+/*cds1*/thisClassModel->initialSize = 8;
+/*cds1*/thisClassModel->growBy = 8;
+/*cds1*/thisClassModel->slideAmount = 4;
   thisClassModel->free = c_2106303_DynamicArray_free;
 }
+

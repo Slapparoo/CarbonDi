@@ -10,7 +10,7 @@
  i16 value;
 #define __C_2106303_I16_CLASS_  \
   i16 (*get_value)(num);  \
-  void (*set_value)(num, i16);
+  void (*set_value)(num,i16);
 typedef struct c_2106303_I16_cm {
 
 __C_2106303_OBJECT_CLASS_

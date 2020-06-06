@@ -1,11 +1,13 @@
 package ec.lang.defs;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import ec.lang.defs.Enums.Accessor;
+import ec.lang.defs.expressions.ConstExpr;
 
-public abstract class FunctionDefBase extends StatementDef implements ContainerDef {
+public abstract class FunctionDefBase extends StatementDef implements ContainerDef, Cloneable {
     public ClassDef classDef; // null or value
     public FileDef fileDef; // probably never null?
     public String name;
@@ -119,6 +121,7 @@ public abstract class FunctionDefBase extends StatementDef implements ContainerD
         VariableDef param = new VariableDef();
         param.setName("this");
         param.type = new TypeIdDef(classDef.getFqn());
+        param.classDef = classDef;
         parameters.add(0, param);
    }
 
@@ -142,16 +145,72 @@ public abstract class FunctionDefBase extends StatementDef implements ContainerD
             return false;
         }
 
-        // if (returnType.) {
-
-        // }
 
         for (int i = 0; i < params.size(); i++) {
             if (!parameters.get(i).compatableWith(params.get(i))) {
+                // this would be object / 32 / 64 / ...
+                if (params.get(i) instanceof ConstExpr) {
+                    // it may be ok
+                    // @TODO - better checks
+                    continue;
+                }
+
                 return false;
             }
         }
 
         return true;
+    }
+
+    public boolean isClassCallable(TypeIdDef returnType,  List<ExprDef> params) {
+        if (params.size() + 1 != parameters.size()) {
+            return false;
+        }
+
+
+        for (int i = 0; i < params.size(); i++) {
+            if (!parameters.get(i + 1).compatableWith(params.get(i))) {
+                // this would be object / 32 / 64 / ...
+                if (params.get(i) instanceof ConstExpr) {
+                    // it may be ok
+                    // @TODO - better checks
+                    continue;
+                }
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    public boolean isCallableVar(TypeIdDef returnType,  List<VariableDef> params) {
+        if (params.size() != parameters.size()) {
+            return false;
+        }
+
+
+        for (int i = 0; i < params.size(); i++) {
+            if (!parameters.get(i).compatableWith(params.get(i))) {
+                // this would be object / 32 / 64 / ...
+                // if (params.get(i) instanceof ConstExpr) {
+                //     // it may be ok
+                //     // @TODO - better checks
+                //     continue;
+                // }
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        FunctionDefBase fd = (FunctionDefBase) super.clone();
+        fd.parameters = new ArrayList<>(parameters);
+        return fd;
     }
 }

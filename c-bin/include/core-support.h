@@ -38,8 +38,25 @@
 // 
 // #define EC_ARRAY(index, array, type) *(type*)array[index]
 #define EC_ARRAY(index, array) array[index]
-#define EC_SETVALUE_i8(index, array, value) *(i8*)&array[index] = value
 
+#define EC_ARRAY_ADDRESS(index, array) &array[index]
+
+#define EC_SETVALUE(index, array, value, datatype) *(datatype*)&array[index] = value
+#define EC_SETVALUE_b8(index, array, value) EC_SETVALUE(index, array, value, b8)
+#define EC_SETVALUE_i8(index, array, value) EC_SETVALUE(index, array, value, i8)
+#define EC_SETVALUE_u8(index, array, value) EC_SETVALUE(index, array, value, u8)
+#define EC_SETVALUE_i16(index, array, value) EC_SETVALUE(index, array, value, i16)
+#define EC_SETVALUE_u16(index, array, value) EC_SETVALUE(index, array, value, u16)
+#define EC_SETVALUE_i32(index, array, value) EC_SETVALUE(index, array, value, i32)
+#define EC_SETVALUE_u32(index, array, value) EC_SETVALUE(index, array, value, u32)
+#define EC_SETVALUE_f32(index, array, value) EC_SETVALUE(index, array, value, f32)
+#define EC_SETVALUE_i64(index, array, value) EC_SETVALUE(index, array, value, i64)
+#define EC_SETVALUE_u64(index, array, value) EC_SETVALUE(index, array, value, u64)
+#define EC_SETVALUE_f64(index, array, value) EC_SETVALUE(index, array, value, f64)
+#define EC_SETVALUE_int(index, array, value) EC_SETVALUE(index, array, value, int)
+#define EC_SETVALUE_num(index, array, value) EC_SETVALUE(index, array, value, num)
+
+#define EC_VALUE(ptrvalue, datatype) *(datatype*)ptrvalue
 #define EC_VALUE_i64(ptrvalue) *(i64*)ptrvalue
 #define EC_VALUE_u64(ptrvalue) *(u64*)ptrvalue
 #define EC_VALUE_f64(ptrvalue) *(f64*)ptrvalue
@@ -115,7 +132,7 @@ num __currentStackIndex();
 
 void registerClassModel(pointer);
 void registerMemoryAllocation(num ref, pointer mem);
-void updateMemoryAllocation(pointer oldp, pointer newp);
+void updateMemoryAllocation(num ref, pointer oldp, pointer newp);
 
 void assignObject(num *var, num ref_id);
 Object_ref *borrowObject(num ref);
@@ -124,26 +141,6 @@ Object_ref *useObject(num ref);
 void returnObject(num ref);
 num createObject(pointer object_data, pointer class_model, boolean is_stack);
 
-// to be removed ==>
-// i64 __exitReturn_i64(i64);
-// u64 __exitReturn_u64(u64);
-// u32 __exitReturn_u32(u32);
-// i32 __exitReturn_i32(i32);
-// u16 __exitReturn_u16(u16);
-// i16 __exitReturn_i16(i16);
-// i8 __exitReturn_i8(i8);
-// u8 __exitReturn_u8(u8);
-// f32 __exitReturn_f32(f32);
-// f64 __exitReturn_f64(f64);
-// #ifdef __SUPPORT_QUADMATH_
-// f128 __exitReturn_f128(f128);
-// f80 __exitReturn_f80(f80);
-// #endif
-// boolean __exitReturn_boolean(boolean);
-// num __exitReturn_num(num);
-// num __exitReturn_ref(num);
-// int __exitReturn_int(int);
-// pointer __exitReturn_pointer(pointer);
 
 //*** <==
 i64 __exitReturn_i64_un(i64 a, u64 checkPoint);

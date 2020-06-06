@@ -11,9 +11,9 @@
  num root;
 #define __C_2106303_EXCEPTION_CLASS_  \
   num (*get_message)(num);  \
-  void (*set_message)(num, num);  \
+  void (*set_message)(num,num);  \
   num (*get_root)(num);  \
-  void (*set_root)(num, num);
+  void (*set_root)(num,num);
 typedef struct c_2106303_Exception_cm {
 
 __C_2106303_OBJECT_CLASS_

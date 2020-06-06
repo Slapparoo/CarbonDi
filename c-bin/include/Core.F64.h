@@ -10,7 +10,7 @@
  f64 value;
 #define __C_2106303_F64_CLASS_  \
   f64 (*get_value)(num);  \
-  void (*set_value)(num, f64);
+  void (*set_value)(num,f64);
 typedef struct c_2106303_F64_cm {
 
 __C_2106303_OBJECT_CLASS_

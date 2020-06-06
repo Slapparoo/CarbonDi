@@ -6,9 +6,12 @@
 **/*.e
 **/*.gch
 **/gen/*
+c-gen
+c-bin.old
 target/**
 c-lang/**
 ec-test/*
 /.antlr
 /.settings
 c-bin/include/eccore.h
+c-bin.old/include/Core.F32.h

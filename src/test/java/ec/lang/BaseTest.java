@@ -34,6 +34,14 @@ public class BaseTest {
     }
 
 
+    /**
+     * Utility method to strip whitespace and comments
+     */
+    public static String stripWhiteSpace(String string) {
+        return string.replaceAll("[\t,\n,\r, ]", "").replaceAll("/\\*.*?\\*/", "");
+    }
+
+
     protected static void lex(ecLexer lexer) {
         try {
             ecParser parser = new ecParser(new CommonTokenStream(lexer));

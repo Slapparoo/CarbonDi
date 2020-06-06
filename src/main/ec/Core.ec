@@ -30,6 +30,7 @@ public class signature Core.Object {
 
     hidden final void free() {};
     hidden void release() {}; 
+
     public final pointer alloc(u64 size) {
       return Object_alloc(this, size);
     }
@@ -37,18 +38,18 @@ public class signature Core.Object {
     public final pointer realloc(pointer ptr, u64 size) {
       return Object_realloc(this, ptr, size);
     }
-
 }
 
 public class Core.String (Core.Object) {
-    (public, private)properties {
-        (public, private) pointer value;
+    properties {
+         (public, private) pointer value;
     }
+
 
     /**
     * DefaULT
     */
-    String(pointer str) {
+    public String(pointer str) {
         i64 len = External.stdio.strlen(str) + 1;
         value = this.alloc(len);
         External.stdio.strcpy(value, str);
@@ -58,12 +59,12 @@ public class Core.String (Core.Object) {
     * for strings which are defined in code c will statically allocate
     * the memory for them
     */
-    String(pointer str, boolean staticAlloc) {
+    public String(pointer str, boolean staticAlloc) {
         if (staticAlloc) {
             value = str;
         } else {
             i64 len = External.stdio.strlen(str) + 1;
-            this.value = this.alloc(len);
+            value = this.alloc(len);
             External.stdio.strcpy(value, str);
         }
     }
@@ -71,18 +72,14 @@ public class Core.String (Core.Object) {
     /**
     * String Concatenation
     */
-    String(pointer str, pointer str2) {
+    public String(pointer str, pointer str2) {
         i64 len = External.stdio.strlen(str) + External.stdio.strlen(str2) + 1;
-        this.value = this.alloc(len);
+        value = this.alloc(len);
         External.stdio.strcpy(value, str);
         External.stdio.strcat(value, str2);
     }
 
     private String();
-
-    // public pointer asStr() {
-    //     return value;
-    // }
 
     public String asString() {
         return this;
@@ -92,15 +89,115 @@ public class Core.String (Core.Object) {
       return External.stdio.strlen(value);
     }
 
-    public void appendStr(pointer str) {
-        i64 len = External.stdio.strlen(value) + External.stdio.strlen(str) + 1;
-        this.value = realloc(value, len);
-        External.stdio.strcat(value, str);
+    public void println() {
+        External.stdio.printf(`%s\n`, this.asStr());
     }
 
-    public void appendString(String str) {
-      appendStr(str.asStr());
+    public String appendStr(pointer str) {
+        // i64 len = 0;
+        i64 len = External.stdio.strlen(value) + External.stdio.strlen(str) + 1;
+        value = this.realloc(value, len);
+        External.stdio.strcat(value, str);
+
+        return this;
     }
+
+    public String append(String string) {
+        appendStr(string.asStr());
+        return this;
+    }
+
+    public String prependStr(pointer str4) {
+        i64 len = External.stdio.strlen(value) + External.stdio.strlen(str4) + 1;
+        value = realloc(value, len);
+        External.stdio.memmove(EC_ADDRESS(EC_ARRAY(value, External.stdio.strlen(str4))), value, External.stdio.strlen(value) +1);
+        External.stdio.memcpy(value, str4, External.stdio.strlen(str4));
+
+        return this;
+    }
+
+    public String prepend(String string1) {
+        prependStr(string1.asStr());
+
+        return this;
+    }
+
+    public i64 compareStr(pointer str5) {
+        i64 res = External.stdio.strcmp(value, str5);
+        return res;
+    }
+
+    public i64 compare(String string5) {
+        i64 res = External.stdio.strcmp(value, string5.asStr());
+        return res;
+    }
+
+    public i64 findStr(i64 from, pointer str6) {
+        pointer p = External.stdio.strstr(EC_ADDRESS(EC_ARRAY(value, from)), str6);
+
+        if (p == null) {
+            return -1;
+        }
+        i64 res = p - value;
+
+        return res;
+    }
+
+    public i64 find(i64 from, String string6) {
+        return findStr(from, string6.asStr());
+    }
+
+    /**
+    Array with the offsets of all instances of the sub strings
+    */
+    // public i64[] findAll(pointer str7) {
+    //     int datatype = 10;
+    //     DynamicArray offsets = DynamicArray(64, datatype, 8);
+
+    //     ?offset = findStr(0, str7);
+
+    //     printf(`loop %li\n`, offset);
+
+    //     loop (offset > 0) {
+    //         printf(`loop %li`, offset);
+    //         offsets.addHead(EC_ADDRESS(offset));
+    //         offset = findStr(offset + 1, str7);
+    //     }
+    //     // offsets.addHead(str7);
+    //     printf(`%s %li\n`, offsets.asStr, offsets.length);
+
+
+    //     return offsets;
+    // }
+
+    public void trunc(i64 start, i64 end) {
+        i64 len = External.stdio.strlen(value);
+        if (start < 0) {
+            throwException(`[string trunc] start is less than zero.`);
+        }
+
+        if (end < start) {
+            throwException(`[string trunc] end is less than start.`);
+        }
+
+        if (start > len) {
+            throwException(`[string trunc] start is after length of string.`);
+        }
+
+        if (end > len) {
+            throwException(`[string trunc] end after length of string.`);
+        }
+
+        i64 newLen = end - start;
+        External.stdio.memmove(value, External.stdio.EC_ADDRESS(External.stdio.EC_ARRAY(value, start)), newLen);
+        value = realloc(value, newLen+1);
+        External.stdio.EC_SETVALUE_i8(newLen, value, 0);
+    }
+
+    public pointer asStr() {
+        return value;
+    }
+
 }
 
 public class Core.Exception (Core.Object) {
@@ -499,7 +596,7 @@ All singing all dancing Dynamic array can be used as
 
 */
 
-public class Core.NewDynamicArray (Core.Array){
+public class Core.DynamicArray (Core.Array){
     (public,public) properties {
         u64 startIndex;
         u64 endIndex;
@@ -510,7 +607,7 @@ public class Core.NewDynamicArray (Core.Array){
         
     }
 
-    public NewDynamicArray(=dataType, =dataSize) {
+    public DynamicArray(=dataType, =dataSize) {
         capacity = initialSize;
         values = alloc(capacity * dataSize);
         startIndex = initialSize /2;
@@ -629,14 +726,14 @@ public class Core.NewDynamicArray (Core.Array){
         }
 
 
-        pointer res = get(--endIndex);
+        pointer res1 = get(--endIndex);
         length--;
 
         if (capacity - length > growBy + slideAmount) {
             reduceCapacityTail();
         }
 
-        return res;
+        return res1;
     }
 
     public pointer remove(u64 index, pointer value) {

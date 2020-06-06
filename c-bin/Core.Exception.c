@@ -1,26 +1,47 @@
-#include "eccore.h"
+// Core.Exception
+#include "Core.Core_main.h"
+#include "Core.Exception.h"
+#include "Core.Object.h"
+#include "Core.String.h"
+#include "Core.Array.h"
+#include "Core.RefArray.h"
+#include "Core.Boxing.h"
+#include "Core.BaseBoxing.h"
+#include "Core.B8.h"
+#include "Core.U8.h"
+#include "Core.I8.h"
+#include "Core.I16.h"
+#include "Core.U16.h"
+#include "Core.I32.h"
+#include "Core.U32.h"
+#include "Core.F32.h"
+#include "Core.I64.h"
+#include "Core.U64.h"
+#include "Core.F64.h"
+#include "Core.Pointer.h"
+#include "Core.DynamicArray.h"
 
-pointer c_2106303_ExceptiongetClassName(){
+/*fd1*/pointer c_2106303_ExceptiongetClassName(){
   return  "Core.Exception";
 }
 
 
-pointer c_2106303_ExceptiongetClassShortName(){
+/*fd1*/pointer c_2106303_ExceptiongetClassShortName(){
   return  "Exception";
 }
 
 
-pointer c_2106303_ExceptiongetClassCName(){
+/*fd1*/pointer c_2106303_ExceptiongetClassCName(){
   return  "c_2106303_Exception";
 }
 
 
-pointer c_2106303_ExceptiongetClassPackage(){
+/*fd1*/pointer c_2106303_ExceptiongetClassPackage(){
   return  "Core";
 }
 
 
-u64 c_2106303_ExceptiongetObjectDatasize(){
+/*fd1*/u64 c_2106303_ExceptiongetObjectDatasize(){
   return  sizeof(c_2106303_Exception);
 }
 
@@ -34,23 +55,24 @@ u64 c_2106303_ExceptiongetObjectDatasize(){
 
 
 
-num c_2106303_Exceptionget_message(num this){
+
+/*fd1*/num c_2106303_Exceptionget_message(num this){
   return  ((c_2106303_Exception*)useObject(this)->data)->message;
 }
 
 
-void c_2106303_Exceptionset_message(num this, num message){
-assignObject(&((c_2106303_Exception*)useObject(this)->data)->message, message);
+/*fd1*/void c_2106303_Exceptionset_message(num this, num a__a){
+/*cda2*/ assignObject(&((c_2106303_Exception*)useObject(this)->data)/*cda3*/->message, a__a);
 }
 
 
-num c_2106303_Exceptionget_root(num this){
+/*fd1*/num c_2106303_Exceptionget_root(num this){
   return  ((c_2106303_Exception*)useObject(this)->data)->root;
 }
 
 
-void c_2106303_Exceptionset_root(num this, num root){
-assignObject(&((c_2106303_Exception*)useObject(this)->data)->root, root);
+/*fd1*/void c_2106303_Exceptionset_root(num this, num a__a){
+/*cda2*/ assignObject(&((c_2106303_Exception*)useObject(this)->data)/*cda3*/->root, a__a);
 }
 
 

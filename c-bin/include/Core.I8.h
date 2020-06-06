@@ -10,7 +10,7 @@
  i8 value;
 #define __C_2106303_I8_CLASS_  \
   i8 (*get_value)(num);  \
-  void (*set_value)(num, i8);
+  void (*set_value)(num,i8);
 typedef struct c_2106303_I8_cm {
 
 __C_2106303_OBJECT_CLASS_

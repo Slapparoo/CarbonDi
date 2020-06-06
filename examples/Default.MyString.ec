@@ -1,161 +1,161 @@
-public class Default.MyString (Core.Object) {
-    (public, private)properties {
-        (public, private) pointer value;
-    }
-    /**
-    * DefaULT
-    */
-    public MyString(pointer str) {
-        i64 len = strlen(str) + 1;
-        value = alloc(len);
-        strcpy(value, str);
-    }
+// public class Default.MyString (Core.Object) {
+//     (public, private)properties {
+//         (public, private) pointer value;
+//     }
+//     /**
+//     * DefaULT
+//     */
+//     public MyString(pointer str) {
+//         i64 len = strlen(str) + 1;
+//         value = alloc(len);
+//         strcpy(value, str);
+//     }
 
-    /**
-    * for strings which are defined in code c will statically allocate
-    * the memory for them
-    */
-    public MyString(pointer str, boolean staticAlloc) {
-        if (staticAlloc) {
-            value = str;
-        } else {
-            i64 len = strlen(str) + 1;
-            this.value = alloc(len);
-            strcpy(value, str);
-        }
-    }
+//     /**
+//     * for strings which are defined in code c will statically allocate
+//     * the memory for them
+//     */
+//     public MyString(pointer str, boolean staticAlloc) {
+//         if (staticAlloc) {
+//             value = str;
+//         } else {
+//             i64 len = strlen(str) + 1;
+//             this.value = alloc(len);
+//             strcpy(value, str);
+//         }
+//     }
 
-    /**
-    * String Concatenation
-    */
-    public MyString(pointer str, pointer str2) {
-        i64 len = strlen(str) + strlen(str2) + 1;
-        value = alloc(len);
-        strcpy(value, str);
-        strcat(value, str2);
-    }
+//     /**
+//     * String Concatenation
+//     */
+//     public MyString(pointer str, pointer str2) {
+//         i64 len = strlen(str) + strlen(str2) + 1;
+//         value = alloc(len);
+//         strcpy(value, str);
+//         strcat(value, str2);
+//     }
 
-    private MyString();
+//     private MyString();
 
-    public pointer asStr() {
-        return value;
-    }
+//     public pointer asStr() {
+//         return value;
+//     }
 
-    public MyString asString() {
-        return this;
-    }
+//     public MyString asString() {
+//         return this;
+//     }
 
-    public u64 length() {
-      return strlen(value);
-    }
+//     public u64 length() {
+//       return strlen(value);
+//     }
 
-    public void println() {
-        printf(`%s\n`, asStr());
-    }
+//     public void println() {
+//         printf(`%s\n`, asStr());
+//     }
 
-    public MyString appendStr(pointer str) {
-        // i64 len = 0;
-        i64 len = strlen(value) + strlen(str) + 1;
-        value = realloc(value, len);
-        strcat(value, str);
+//     public MyString appendStr(pointer str) {
+//         // i64 len = 0;
+//         i64 len = strlen(value) + strlen(str) + 1;
+//         value = realloc(value, len);
+//         strcat(value, str);
 
-        return this;
-    }
+//         return this;
+//     }
 
-    public MyString append(String string) {
-        appendStr(string.asStr());
-        return this;
-    }
+//     public MyString append(String string) {
+//         appendStr(string.asStr());
+//         return this;
+//     }
 
-    public MyString prependStr(pointer str4) {
-        i64 len = strlen(value) + strlen(str4) + 1;
-        value = realloc(value, len);
-        memmove(EC_ADDRESS(EC_ARRAY(value, strlen(str4))), value, strlen(value) +1);
-        memcpy(value, str4, strlen(str4));
+//     public MyString prependStr(pointer str4) {
+//         i64 len = strlen(value) + strlen(str4) + 1;
+//         value = realloc(value, len);
+//         memmove(EC_ADDRESS(EC_ARRAY(value, strlen(str4))), value, strlen(value) +1);
+//         memcpy(value, str4, strlen(str4));
 
-        return this;
-    }
+//         return this;
+//     }
 
-    public MyString prepend(String string1) {
-        prependStr(string1.asStr());
+//     public MyString prepend(String string1) {
+//         prependStr(string1.asStr());
 
-        return this;
-    }
+//         return this;
+//     }
 
-    public i64 compareStr(pointer str5) {
-        i64 res = strcmp(value, str5);
-        return res;
-    }
+//     public i64 compareStr(pointer str5) {
+//         i64 res = strcmp(value, str5);
+//         return res;
+//     }
 
-    public i64 compare(String string5) {
-        i64 res = strcmp(value, string5.asStr());
-        return res;
-    }
+//     public i64 compare(String string5) {
+//         i64 res = strcmp(value, string5.asStr());
+//         return res;
+//     }
 
-    public i64 findStr(i64 from, pointer str6) {
-        pointer p = strstr(EC_ADDRESS(EC_ARRAY(value, from)), str6);
+//     public i64 findStr(i64 from, pointer str6) {
+//         pointer p = strstr(EC_ADDRESS(EC_ARRAY(value, from)), str6);
 
-        if (p == null) {
-            return -1;
-        }
-        i64 res = p - value;
+//         if (p == null) {
+//             return -1;
+//         }
+//         i64 res = p - value;
 
-        return res;
-    }
+//         return res;
+//     }
 
-    public i64 find(i64 from, String string6) {
-        return findStr(from, string6.asStr());
-    }
+//     public i64 find(i64 from, String string6) {
+//         return findStr(from, string6.asStr());
+//     }
 
-    /**
-    Array with the offsets of all instances of the sub strings
-    */
-    // public i64[] findAll(pointer str7) {
-    //     int datatype = 10;
-    //     DynamicArray offsets = DynamicArray(64, datatype, 8);
+//     /**
+//     Array with the offsets of all instances of the sub strings
+//     */
+//     // public i64[] findAll(pointer str7) {
+//     //     int datatype = 10;
+//     //     DynamicArray offsets = DynamicArray(64, datatype, 8);
 
-    //     ?offset = findStr(0, str7);
+//     //     ?offset = findStr(0, str7);
 
-    //     printf(`loop %li\n`, offset);
+//     //     printf(`loop %li\n`, offset);
 
-    //     loop (offset > 0) {
-    //         printf(`loop %li`, offset);
-    //         offsets.addHead(EC_ADDRESS(offset));
-    //         offset = findStr(offset + 1, str7);
-    //     }
-    //     // offsets.addHead(str7);
-    //     printf(`%s %li\n`, offsets.asStr, offsets.length);
+//     //     loop (offset > 0) {
+//     //         printf(`loop %li`, offset);
+//     //         offsets.addHead(EC_ADDRESS(offset));
+//     //         offset = findStr(offset + 1, str7);
+//     //     }
+//     //     // offsets.addHead(str7);
+//     //     printf(`%s %li\n`, offsets.asStr, offsets.length);
 
 
-    //     return offsets;
-    // }
+//     //     return offsets;
+//     // }
 
-    public void trunc(i64 start, i64 end) {
-        i64 len = strlen(value);
-        if (start < 0) {
-            throwException(`[string trunc] start is less than zero.`);
-        }
+//     public void trunc(i64 start, i64 end) {
+//         i64 len = strlen(value);
+//         if (start < 0) {
+//             throwException(`[string trunc] start is less than zero.`);
+//         }
 
-        if (end < start) {
-            throwException(`[string trunc] end is less than start.`);
-        }
+//         if (end < start) {
+//             throwException(`[string trunc] end is less than start.`);
+//         }
 
-        if (start > len) {
-            throwException(`[string trunc] start is after length of string.`);
-        }
+//         if (start > len) {
+//             throwException(`[string trunc] start is after length of string.`);
+//         }
 
-        if (end > len) {
-            throwException(`[string trunc] end after length of string.`);
-        }
+//         if (end > len) {
+//             throwException(`[string trunc] end after length of string.`);
+//         }
 
-        i64 newLen = end - start;
-        memmove(value, EC_ADDRESS(EC_ARRAY(value, start)), newLen);
-        value = realloc(value, newLen+1);
-        EC_SETVALUE_i8(newLen, value, 0);
-    }
-}
+//         i64 newLen = end - start;
+//         memmove(value, EC_ADDRESS(EC_ARRAY(value, start)), newLen);
+//         value = realloc(value, newLen+1);
+//         EC_SETVALUE_i8(newLen, value, 0);
+//     }
+// }
 
-?myString = MyString(`My String 1`, false);
+?myString = "My String 1";
 myString.println();
 myString.appendStr(`My String 2`);
 myString.println();

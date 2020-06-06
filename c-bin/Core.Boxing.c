@@ -1,27 +1,47 @@
 // Core.Boxing
-#include "eccore.h"
+#include "Core.Core_main.h"
+#include "Core.Boxing.h"
+#include "Core.Object.h"
+#include "Core.String.h"
+#include "Core.Exception.h"
+#include "Core.Array.h"
+#include "Core.RefArray.h"
+#include "Core.BaseBoxing.h"
+#include "Core.B8.h"
+#include "Core.U8.h"
+#include "Core.I8.h"
+#include "Core.I16.h"
+#include "Core.U16.h"
+#include "Core.I32.h"
+#include "Core.U32.h"
+#include "Core.F32.h"
+#include "Core.I64.h"
+#include "Core.U64.h"
+#include "Core.F64.h"
+#include "Core.Pointer.h"
+#include "Core.DynamicArray.h"
 
-pointer c_2106303_BoxinggetClassName(){
+/*fd1*/pointer c_2106303_BoxinggetClassName(){
   return  "Core.Boxing";
 }
 
 
-pointer c_2106303_BoxinggetClassShortName(){
+/*fd1*/pointer c_2106303_BoxinggetClassShortName(){
   return  "Boxing";
 }
 
 
-pointer c_2106303_BoxinggetClassCName(){
+/*fd1*/pointer c_2106303_BoxinggetClassCName(){
   return  "c_2106303_Boxing";
 }
 
 
-pointer c_2106303_BoxinggetClassPackage(){
+/*fd1*/pointer c_2106303_BoxinggetClassPackage(){
   return  "Core";
 }
 
 
-u64 c_2106303_BoxinggetObjectDatasize(){
+/*fd1*/u64 c_2106303_BoxinggetObjectDatasize(){
   return  sizeof(c_2106303_Boxing);
 }
 
@@ -35,123 +55,124 @@ u64 c_2106303_BoxinggetObjectDatasize(){
 
 
 
-int c_2106303_Boxingget_b8_(){
+
+/*fd1*/int c_2106303_Boxingget_b8_(){
   return  ((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->b8_;
 }
 
 
-void c_2106303_Boxingset_b8_(int b8_){
-((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->b8_ = b8_;
+/*fd1*/void c_2106303_Boxingset_b8_(int a__a){
+/*cda1*/((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->b8_ = a__a;
 }
 
 
-int c_2106303_Boxingget_i8_(){
+/*fd1*/int c_2106303_Boxingget_i8_(){
   return  ((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->i8_;
 }
 
 
-void c_2106303_Boxingset_i8_(int i8_){
-((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->i8_ = i8_;
+/*fd1*/void c_2106303_Boxingset_i8_(int a__a){
+/*cda1*/((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->i8_ = a__a;
 }
 
 
-int c_2106303_Boxingget_u8_(){
+/*fd1*/int c_2106303_Boxingget_u8_(){
   return  ((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->u8_;
 }
 
 
-void c_2106303_Boxingset_u8_(int u8_){
-((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->u8_ = u8_;
+/*fd1*/void c_2106303_Boxingset_u8_(int a__a){
+/*cda1*/((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->u8_ = a__a;
 }
 
 
-int c_2106303_Boxingget_i16_(){
+/*fd1*/int c_2106303_Boxingget_i16_(){
   return  ((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->i16_;
 }
 
 
-void c_2106303_Boxingset_i16_(int i16_){
-((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->i16_ = i16_;
+/*fd1*/void c_2106303_Boxingset_i16_(int a__a){
+/*cda1*/((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->i16_ = a__a;
 }
 
 
-int c_2106303_Boxingget_u16_(){
+/*fd1*/int c_2106303_Boxingget_u16_(){
   return  ((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->u16_;
 }
 
 
-void c_2106303_Boxingset_u16_(int u16_){
-((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->u16_ = u16_;
+/*fd1*/void c_2106303_Boxingset_u16_(int a__a){
+/*cda1*/((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->u16_ = a__a;
 }
 
 
-int c_2106303_Boxingget_i32_(){
+/*fd1*/int c_2106303_Boxingget_i32_(){
   return  ((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->i32_;
 }
 
 
-void c_2106303_Boxingset_i32_(int i32_){
-((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->i32_ = i32_;
+/*fd1*/void c_2106303_Boxingset_i32_(int a__a){
+/*cda1*/((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->i32_ = a__a;
 }
 
 
-int c_2106303_Boxingget_u32_(){
+/*fd1*/int c_2106303_Boxingget_u32_(){
   return  ((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->u32_;
 }
 
 
-void c_2106303_Boxingset_u32_(int u32_){
-((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->u32_ = u32_;
+/*fd1*/void c_2106303_Boxingset_u32_(int a__a){
+/*cda1*/((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->u32_ = a__a;
 }
 
 
-int c_2106303_Boxingget_f32_(){
+/*fd1*/int c_2106303_Boxingget_f32_(){
   return  ((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->f32_;
 }
 
 
-void c_2106303_Boxingset_f32_(int f32_){
-((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->f32_ = f32_;
+/*fd1*/void c_2106303_Boxingset_f32_(int a__a){
+/*cda1*/((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->f32_ = a__a;
 }
 
 
-int c_2106303_Boxingget_i64_(){
+/*fd1*/int c_2106303_Boxingget_i64_(){
   return  ((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->i64_;
 }
 
 
-void c_2106303_Boxingset_i64_(int i64_){
-((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->i64_ = i64_;
+/*fd1*/void c_2106303_Boxingset_i64_(int a__a){
+/*cda1*/((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->i64_ = a__a;
 }
 
 
-int c_2106303_Boxingget_u64_(){
+/*fd1*/int c_2106303_Boxingget_u64_(){
   return  ((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->u64_;
 }
 
 
-void c_2106303_Boxingset_u64_(int u64_){
-((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->u64_ = u64_;
+/*fd1*/void c_2106303_Boxingset_u64_(int a__a){
+/*cda1*/((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->u64_ = a__a;
 }
 
 
-int c_2106303_Boxingget_f64_(){
+/*fd1*/int c_2106303_Boxingget_f64_(){
   return  ((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->f64_;
 }
 
 
-void c_2106303_Boxingset_f64_(int f64_){
-((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->f64_ = f64_;
+/*fd1*/void c_2106303_Boxingset_f64_(int a__a){
+/*cda1*/((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->f64_ = a__a;
 }
 
 
-int c_2106303_Boxingget_pointer_(){
+/*fd1*/int c_2106303_Boxingget_pointer_(){
   return  ((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->pointer_;
 }
 
 
-void c_2106303_Boxingset_pointer_(int pointer_){
-((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->pointer_ = pointer_;
+/*fd1*/void c_2106303_Boxingset_pointer_(int a__a){
+/*cda1*/((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->pointer_ = a__a;
 }
 
 

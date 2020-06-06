@@ -1,15 +1,15 @@
-// generated EC compiled source Core.DynamicArray
-#ifndef __C_2106303_DYNAMICARRAY_H__
-#define __C_2106303_DYNAMICARRAY_H__
+// generated EC compiled source Core.NewDynamicArray
+#ifndef __C_2106303_NEWDYNAMICARRAY_H__
+#define __C_2106303_NEWDYNAMICARRAY_H__
 #include "Core.Core_main.h"
 #include "Core.Array.h"
 /* includes */
 
 // @TODO include class dependancies
-#define __C_2106303_DYNAMICARRAY_DATA_  \
+#define __C_2106303_NEWDYNAMICARRAY_DATA_  \
  u64 startIndex; \
  u64 endIndex;
-#define __C_2106303_DYNAMICARRAY_CLASS_  \
+#define __C_2106303_NEWDYNAMICARRAY_CLASS_  \
   pointer (*getValue)(num,u64);  \
   void (*setValue)(num,u64,pointer);  \
   void (*addTail)(num,pointer);  \
@@ -40,28 +40,28 @@
   u64 initialSize;  \
   u64 growBy;  \
   u64 slideAmount;
-typedef struct c_2106303_DynamicArray_cm {
+typedef struct c_2106303_NewDynamicArray_cm {
 
 __C_2106303_OBJECT_CLASS_
 
 __C_2106303_ARRAY_CLASS_
-__C_2106303_DYNAMICARRAY_CLASS_
-} c_2106303_DynamicArray_cm;
+__C_2106303_NEWDYNAMICARRAY_CLASS_
+} c_2106303_NewDynamicArray_cm;
 
-typedef struct c_2106303_DynamicArray {
+typedef struct c_2106303_NewDynamicArray {
 
 __C_2106303_OBJECT_DATA_
 
 __C_2106303_ARRAY_DATA_
-__C_2106303_DYNAMICARRAY_DATA_
-} c_2106303_DynamicArray;
-pointer getc_2106303_DynamicArray_cm();
-void populatec_2106303_DynamicArray_cm(pointer classModel);
-num create_c_2106303_DynamicArray();
+__C_2106303_NEWDYNAMICARRAY_DATA_
+} c_2106303_NewDynamicArray;
+pointer getc_2106303_NewDynamicArray_cm();
+void populatec_2106303_NewDynamicArray_cm(pointer classModel);
+num create_c_2106303_NewDynamicArray();
 /* default constructor */
-num create_c_2106303_DynamicArray_1(/* param *//*va1*/int dataType, /*va1*/u64 dataSize);
-num create_c_2106303_DynamicArray_2(/* param *//*va1*/u64 capacity, /*va1*/int dataType, /*va1*/u64 dataSize);
-num create_c_2106303_DynamicArray_3(/* param *//*va1*/u64 capacity, /*va1*/int dataType, /*va1*/u64 dataSize, /*va1*/pointer values);
+num create_c_2106303_NewDynamicArray_1(/* param *//*va1*/int dataType, /*va1*/u64 dataSize);
+num create_c_2106303_NewDynamicArray_2(/* param *//*va1*/u64 capacity, /*va1*/int dataType, /*va1*/u64 dataSize);
+num create_c_2106303_NewDynamicArray_3(/* param *//*va1*/u64 capacity, /*va1*/int dataType, /*va1*/u64 dataSize, /*va1*/pointer values);
 
 
 #endif

@@ -64,7 +64,7 @@ pointer Object_realloc(num ref, pointer ptr, u64 amount) {
   pointer res = ec_realloc(ptr, amount);
 
   if (res != ptr) {
-    updateMemoryAllocation(ptr, res);
+    updateMemoryAllocation(ref, ptr, res);
   }
 
   return res;

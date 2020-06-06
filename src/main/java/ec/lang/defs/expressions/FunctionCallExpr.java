@@ -89,6 +89,10 @@ public class FunctionCallExpr extends ExprDef implements MultiTypeId {
 
                     // @todo, create a local var for resolve02
 
+                    if (resolve02.length() == 0)  {
+                        resolve02 = "this";
+                    }
+
                     return hasNot + "/* switch from fc5 to te4*/"
                     // if its an array use 
                             + SnippetFactory.classModelStatement(resolvedTo.classDef.getCName(), resolve02, false)
@@ -114,7 +118,9 @@ public class FunctionCallExpr extends ExprDef implements MultiTypeId {
                 ((TypeExpr) exprDef).setIsGet(true);
             }
             exprDef.containedInBlock = containedInBlock;
-            exprDef.resolve_01();
+            if (!exprDef.isResolved()) {
+                exprDef.resolve_01();
+            }
         }
     }
 
@@ -129,7 +135,9 @@ public class FunctionCallExpr extends ExprDef implements MultiTypeId {
                 ((TypeExpr) exprDef).setIsGet(true);
             }
             exprDef.containedInBlock = containedInBlock;
-            exprDef.resolve_01();
+            if (!exprDef.isResolved()) {
+                exprDef.resolve_01();
+            }
         }
         
         super.resolve_01();
@@ -138,7 +146,6 @@ public class FunctionCallExpr extends ExprDef implements MultiTypeId {
     @Override
     public void resolve_02(String red_id) {
         resolve02 = red_id;
-
         resolve_01();
     }
 

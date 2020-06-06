@@ -1,19 +1,39 @@
 // Core.B8
-#include "eccore.h"
+#include "Core.Core_main.h"
+#include "Core.B8.h"
+#include "Core.Object.h"
+#include "Core.String.h"
+#include "Core.Exception.h"
+#include "Core.Array.h"
+#include "Core.RefArray.h"
+#include "Core.Boxing.h"
+#include "Core.BaseBoxing.h"
+#include "Core.U8.h"
+#include "Core.I8.h"
+#include "Core.I16.h"
+#include "Core.U16.h"
+#include "Core.I32.h"
+#include "Core.U32.h"
+#include "Core.F32.h"
+#include "Core.I64.h"
+#include "Core.U64.h"
+#include "Core.F64.h"
+#include "Core.Pointer.h"
+#include "Core.DynamicArray.h"
 
-int c_2106303_B8datatype(){
+/*fd1*/int c_2106303_B8datatype(){
 
 u64 entry__ = __onEnter();return __exitReturn_int_un(/*te14*/((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->get_b8_(), entry__);
 }
 
 
-pointer c_2106303_B8typename(){
+/*fd1*/pointer c_2106303_B8typename(){
 
 u64 entry__ = __onEnter();return __exitReturn_pointer_un("b8", entry__);
 }
 
 
-pointer c_2106303_B8asStr(num this){
+/*fd1*/pointer c_2106303_B8asStr(num this){
 
 u64 entry__ = __onEnter();if (/*te14a*/((c_2106303_B8_cm*)useObject(/*te8*/this)->classmodel)->get_value(/*te8*/this)) {
 
@@ -29,27 +49,27 @@ __onEnter();return __exitReturn_pointer_un("false", entry__);
 __onExit();}
 
 
-pointer c_2106303_B8getClassName(){
+/*fd1*/pointer c_2106303_B8getClassName(){
   return  "Core.B8";
 }
 
 
-pointer c_2106303_B8getClassShortName(){
+/*fd1*/pointer c_2106303_B8getClassShortName(){
   return  "B8";
 }
 
 
-pointer c_2106303_B8getClassCName(){
+/*fd1*/pointer c_2106303_B8getClassCName(){
   return  "c_2106303_B8";
 }
 
 
-pointer c_2106303_B8getClassPackage(){
+/*fd1*/pointer c_2106303_B8getClassPackage(){
   return  "Core";
 }
 
 
-u64 c_2106303_B8getObjectDatasize(){
+/*fd1*/u64 c_2106303_B8getObjectDatasize(){
   return  sizeof(c_2106303_B8);
 }
 
@@ -62,13 +82,14 @@ u64 c_2106303_B8getObjectDatasize(){
 
 
 
-b8 c_2106303_B8get_value(num this){
+
+/*fd1*/b8 c_2106303_B8get_value(num this){
   return  ((c_2106303_B8*)useObject(this)->data)->value;
 }
 
 
-void c_2106303_B8set_value(num this, b8 value){
-((c_2106303_B8*)useObject(this)->data)->value = value;
+/*fd1*/void c_2106303_B8set_value(num this, b8 a__a){
+/*cda1*/((c_2106303_B8*)useObject(this)->data)->value = a__a;
 }
 
 

@@ -1,46 +1,66 @@
 // Core.U8
-#include "eccore.h"
+#include "Core.Core_main.h"
+#include "Core.U8.h"
+#include "Core.Object.h"
+#include "Core.String.h"
+#include "Core.Exception.h"
+#include "Core.Array.h"
+#include "Core.RefArray.h"
+#include "Core.Boxing.h"
+#include "Core.BaseBoxing.h"
+#include "Core.B8.h"
+#include "Core.I8.h"
+#include "Core.I16.h"
+#include "Core.U16.h"
+#include "Core.I32.h"
+#include "Core.U32.h"
+#include "Core.F32.h"
+#include "Core.I64.h"
+#include "Core.U64.h"
+#include "Core.F64.h"
+#include "Core.Pointer.h"
+#include "Core.DynamicArray.h"
 
-int c_2106303_U8datatype(){
+/*fd1*/int c_2106303_U8datatype(){
 
-u64 entry_ = __onEnter();return __exitReturn_int_un(/*te14*/((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->get_u8_(), entry_);
+u64 entry__ = __onEnter();return __exitReturn_int_un(/*te14*/((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->get_u8_(), entry__);
 }
 
 
-pointer c_2106303_U8typename(){
+/*fd1*/pointer c_2106303_U8typename(){
 
-u64 entry_ = __onEnter();return __exitReturn_pointer_un("u8", entry_);
+u64 entry__ = __onEnter();return __exitReturn_pointer_un("u8", entry__);
 }
 
 
-pointer c_2106303_U8asStr(num this){
+/*fd1*/pointer c_2106303_U8asStr(num this){
 
-u64 entry_ = __onEnter();/**(Statement)*/ /*fc2 null */sprintf(/*fc2 null */getTmpBuffer(), "%u", /*te14a*/((c_2106303_U8_cm*)useObject(/*te8*/this)->classmodel)->get_value(/*te8*/this));
-return __exitReturn_pointer_un(/*fc2 null */getTmpBuffer(), entry_);
+u64 entry__ = __onEnter();/*st*/ /*fc2 null */sprintf(/*fc2 null */getTmpBuffer(), "%u", /*te14a*/((c_2106303_U8_cm*)useObject(/*te8*/this)->classmodel)->get_value(/*te8*/this));
+return __exitReturn_pointer_un(/*fc2 null */getTmpBuffer(), entry__);
 }
 
 
-pointer c_2106303_U8getClassName(){
+/*fd1*/pointer c_2106303_U8getClassName(){
   return  "Core.U8";
 }
 
 
-pointer c_2106303_U8getClassShortName(){
+/*fd1*/pointer c_2106303_U8getClassShortName(){
   return  "U8";
 }
 
 
-pointer c_2106303_U8getClassCName(){
+/*fd1*/pointer c_2106303_U8getClassCName(){
   return  "c_2106303_U8";
 }
 
 
-pointer c_2106303_U8getClassPackage(){
+/*fd1*/pointer c_2106303_U8getClassPackage(){
   return  "Core";
 }
 
 
-u64 c_2106303_U8getObjectDatasize(){
+/*fd1*/u64 c_2106303_U8getObjectDatasize(){
   return  sizeof(c_2106303_U8);
 }
 
@@ -53,13 +73,14 @@ u64 c_2106303_U8getObjectDatasize(){
 
 
 
-u8 c_2106303_U8get_value(num this){
+
+/*fd1*/u8 c_2106303_U8get_value(num this){
   return  ((c_2106303_U8*)useObject(this)->data)->value;
 }
 
 
-void c_2106303_U8set_value(num this, u8 value){
-((c_2106303_U8*)useObject(this)->data)->value = value;
+/*fd1*/void c_2106303_U8set_value(num this, u8 a__a){
+/*cda1*/((c_2106303_U8*)useObject(this)->data)->value = a__a;
 }
 
 

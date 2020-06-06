@@ -1,6 +1,6 @@
 protected class Default.Encapsulation (Core.Object) {
     properties {
-        i64 count1;
+        i16 count1;
         i64 count2;
         static i64 count3 = 5;
     }
@@ -30,10 +30,10 @@ protected class Default.Encapsulation (Core.Object) {
     }
 
     count1.onChange {
-        printf(`count1 onChange new=%li, existing=%li\n`, $a, count1);
+        printf(`count1 onChange new=%i, existing=%i\n`, $a, count1);
     }
 
-    // not implemnted
+    // not implemented
     count3.onGet {
         printf(`count3 onGet =%li\n`, count3);
     }
@@ -43,7 +43,7 @@ protected class Default.Encapsulation (Core.Object) {
     }
 
     void printMe() {
-        printf(`count1=%li, count2=%li, count3=%li\n`, count1, count2, count3);
+        printf(`count1=%i, count2=%li, count3=%li\n`, count1, count2, count3);
     }
 }
 

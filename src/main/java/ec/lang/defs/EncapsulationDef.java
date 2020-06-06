@@ -196,32 +196,15 @@ public class EncapsulationDef extends FunctionDefBase implements Cloneable {
             returnType = new TypeIdDef("void");
         }
 
-
         getBlockDef().directAccess.add(propertyName);
         getBlockDef().resolve_01();
 
         name = getorset + "_" + propertyName;
     }
 
-
     @Override
     public void prepare_03() {
     }
-
-    // private String paramsAsCode() {
-    //     String res = "/* param */";
-    //     boolean first = true;
-
-    //     // the first param is the class object
-    //     for(VariableDef param : getParameters()) {
-    //         if (!first) {
-    //             res += ", ";
-    //         }
-    //         res += param.asCode();
-    //         first = false;
-    //     }
-    //     return res;
-    // }
 
     private String contentAsCode() {
         if (classDef.classType == Enums.ClassType.PLAN) {

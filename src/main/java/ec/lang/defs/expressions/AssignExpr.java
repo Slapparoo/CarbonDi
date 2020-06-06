@@ -78,11 +78,21 @@ public class AssignExpr extends StatementDef {
             return "/*Ax7*/" + assignLeft.asCode() + assignOperator.asCode() + assignRight.asCode() + ";";
         }
 
-
         if (assignLeft instanceof MultiTypeExpr) {
             MultiTypeExpr al = (MultiTypeExpr)assignLeft;
             if (al.isProperty) {
-                return "/*Ax2*/" + al.asCode() + assignRight.asCode() + ");";
+
+                // System.out.println("@@blockdef " + al.containedInBlock.hashCode());
+                // System.out.println("@@ax " + al.getVariableDef().getName() + " " + al.containedInBlock.directAccess);
+                if (al.containedInBlock.directAccess.contains(al.getVariableDef().getName())) {
+                    al.directAccess = true;
+                }
+
+                if (al.directAccess) {
+                    return "/*Ax2a*/" + al.asCode() + assignOperator.asCode() + assignRight.asCode() + ";";
+                } else {
+                    return "/*Ax2*/" + al.asCode() + assignRight.asCode() + ");";
+                }
             }
 
             if (!assignLeft.thisType.isPrimative()) {

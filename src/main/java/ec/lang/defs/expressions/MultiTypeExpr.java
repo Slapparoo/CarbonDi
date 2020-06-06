@@ -25,6 +25,10 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
     public boolean isExternal = false;
     public boolean isFunction = false; // used to help determine if it is an array index for an array
 
+    public VariableDef getVariableDef() {
+        return variableDef;
+    }
+
     public void addExpr(ExprDef exprDef, String line) {
         if (getLine().length() == 0) {
             setLine(line);
@@ -51,14 +55,14 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
     @Override
     public void prepare_03() {
         // for (ExprDef exprDef : type_id_list) {
-        //     System.out.println("@@Prepare " + this + ", " + exprDef);
-        //     if (exprDef instanceof FunctionCallExpr) {
-        //         exprDef.prepare_03();
-        //     } else if (exprDef instanceof TypeExpr) {
-        //         ((TypeExpr)exprDef).prepare_03("");
-        //     } else if (exprDef instanceof ArrayIndexExpr) {
-        //         exprDef.prepare_03();
-        //     }
+        // System.out.println("@@Prepare " + this + ", " + exprDef);
+        // if (exprDef instanceof FunctionCallExpr) {
+        // exprDef.prepare_03();
+        // } else if (exprDef instanceof TypeExpr) {
+        // ((TypeExpr)exprDef).prepare_03("");
+        // } else if (exprDef instanceof ArrayIndexExpr) {
+        // exprDef.prepare_03();
+        // }
         // }
 
         // super.prepare_03();
@@ -69,21 +73,21 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
         if (isExternal) {
             String headerName = "";
             boolean first = true;
-    
+
             for (ExprDef exprDef : type_id_list) {
                 if (exprDef instanceof FunctionCallExpr) {
                     break;
                 }
-    
+
                 if (first) {
                     first = false;
                     continue;
-                } 
-    
+                }
+
                 if (headerName.length() != 0) {
                     headerName += "/";
                 }
-    
+
                 headerName += exprDef.expr;
             }
 
@@ -101,40 +105,43 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
             String res = "";
             // @todo fix this the external should be able to allow depth ? ->
 
-            ExprDef exprDef = type_id_list.get(type_id_list.size() -1);
+            ExprDef exprDef = type_id_list.get(type_id_list.size() - 1);
 
             if (exprDef instanceof FunctionCallExpr) {
-                ((FunctionCallExpr)exprDef).isExternal = true;
+                ((FunctionCallExpr) exprDef).isExternal = true;
                 exprDef.prepare_03();
             } else {
-                ((TypeExpr)exprDef).memberOf = null;
+                ((TypeExpr) exprDef).memberOf = null;
             }
-            
 
             res = exprDef.asCode();
-            return hasNot +  res;
-
+            return hasNot + res;
         }
 
         for (ExprDef exprDef : type_id_list) {
             if (last.length() == 0) {
                 exprDef.prepare_03();
                 last = exprDef.asCode();
-                
+
             } else {
                 ((MultiTypeId) exprDef).resolve_02(last);
 
                 if (exprDef instanceof FunctionCallExpr) {
-                    ((FunctionCallExpr)exprDef).prepare_03();
+                    ((FunctionCallExpr) exprDef).prepare_03();
                 } else if (exprDef instanceof TypeExpr) {
-                    TypeExpr tx = (TypeExpr)exprDef;
+                    TypeExpr tx = (TypeExpr) exprDef;
                     tx.directAccess = directAccess;
                     // if (tx.isGet && tx.thisType.isPrimative()) {
-                    //     tx.directAccess = true;
+                    // tx.directAccess = true;
                     // }
                     tx.prepare_03(last);
                     if (tx.directAccess) {
-                        // System.out.println("@@directaccess " + tx.expr + " " + this + " " + tx.directAccess);
+                        // System.out.println("@@directaccess " + tx.expr + " " + this + " " +
+                        // tx.directAccess);
+                        directAccess = true;
+                    }
+
+                    if (containedInBlock.directAccess.contains(variableDef.getName())) {
                         directAccess = true;
                     }
                 } else if (exprDef instanceof ArrayIndexExpr) {
@@ -144,36 +151,47 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
             }
         }
 
-        return hasNot +  last;
+        return hasNot + last;
     }
 
     void resolveExpr(FunctionCallExpr fcd, VariableDef lastVar) {
+        if (containedInBlock == null) {
+            new NullPointerException("FunctionCallExpr containedInBlock == null" + fcd.getName());
+        }
 
         if (lastVar != null) {
             // tx is a property of thistype
-            ClassDef classDef = DefFactory.resolveClass(lastVar.type);
+            // ClassDef classDef = DefFactory.resolveClass(lastVar.type);
 
             String sig = fcd.getSignature();
+            ClassDef classDef = lastVar.classDef;
 
-            if (classDef == null ) {
-                throw new RuntimeException("class cannot be resolved \'" + lastVar.type.getName() + ", " + this + ", " + fcd.getName());
+            if (classDef == null) {
+                throw new RuntimeException(
+                        "class cannot be resolved \'" + lastVar.type.getName() + ", " + this + ", " + fcd.getName() + " " + fcd.getLine());
             }
             FunctionDef resolvedTo = classDef.resolveFunction(fcd.getName());
 
-
             if (resolvedTo == null) {
                 if (isExternal) {
-                    System.out.println("[warn] external function signature not defined \'" +this + " "  + sig + "\'");
+                    System.out.println("[warn] external function signature not defined \'" + this + " " + sig + "\'");
                     fcd.resolve_01();
                     return;
                 }
 
-                throw new RuntimeException("function not found in class \'" + sig + "\', " + fcd + ", " + classDef + " " + this);
+                throw new RuntimeException(
+                        "function not found in class \'" + sig + "\', " + fcd + ", " + classDef + " " + this);
             }
 
             // check signature
             if (!resolvedTo.getSignature().equals(sig)) {
-                System.out.println("[warn] function signatures do not match \'" + sig + "\', \'" + resolvedTo.getSignature() + "\'");
+                if (!resolvedTo.isCallable(null, fcd.params)) {
+
+                    if (!resolvedTo.isClassCallable(null, fcd.params)) {
+                    System.out.println("[warn] function signatures do not match \'" + sig + "\', \'"
+                        + resolvedTo.getSignature() + "\' " + resolvedTo.getParameters().size() + ", " + fcd.params.size());
+                    }
+                }
             }
 
             fcd.setFunctionDef(resolvedTo);
@@ -184,10 +202,6 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
             lastVar.type = thisType;
             return;
 
-        } 
-
-        if (containedInBlock == null) {
-            new NullPointerException("FunctionCallExpr containedInBlock == null" + fcd.getName());
         }
 
         for (ExprDef exprDef : fcd.params) {
@@ -209,7 +223,8 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
                     System.out.println("" + cd.asSignature() + ", " + cd.getExpandedSignature());
                 }
 
-                throw new RuntimeException("No matching function found " + fcd.getSignature() + " " + classDef.getFqn());
+                throw new RuntimeException(
+                        "No matching function found " + fcd.getSignature() + " " + classDef.getFqn());
             }
 
             // fcd.returnPrimative = false;
@@ -226,10 +241,31 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
         if (containedInBlock == null) {
             throw new RuntimeException("containedInBlock == null");
         }
-        FunctionDef resolvedTo = (FunctionDef)DefFactory.resolveFunction(fcd.getName());
+
+        if (fcd.containedInBlock.classDef != null) {
+            FunctionDef resolvedTo = (FunctionDef) fcd.containedInBlock.classDef.resolveFunction(fcd.getName());
+            if (resolvedTo != null) {
+                if (!resolvedTo.isResolved()) {
+                    System.out.println("@@resolveFunction not resolved " + fcd.getName());
+                    resolvedTo.resolve_01();
+                }
+
+                // TODO signature check
+                thisType = resolvedTo.returnType;
+
+                fcd.setFunctionDef(resolvedTo);
+                fcd.resolve_01();
+                fcd.thisType = thisType;
+                lastVar = new VariableDef();
+                lastVar.type = thisType;
+                return;
+            }
+        }
+
+        FunctionDef resolvedTo = (FunctionDef) DefFactory.resolveFunction(fcd.getName());
         if (resolvedTo != null) {
             if (!resolvedTo.isResolved()) {
-                System.out.println("@@resolveFunction not resolved");
+                System.out.println("@@resolveFunction not resolved " + fcd.getName());
                 resolvedTo.resolve_01();
             }
 
@@ -242,14 +278,12 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
             lastVar = new VariableDef();
             lastVar.type = thisType;
             return;
-        } 
-
+        }
 
         VariableDef cd = containedInBlock.resolveVariable("this");
         resolvedTo = DefFactory.resolveFunction(cd, fcd.getName());
         if (resolvedTo != null) {
             thisType = resolvedTo.returnType;
-
 
             fcd.setFunctionDef(resolvedTo);
             fcd.resolve_01();
@@ -261,195 +295,156 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
         }
 
         if (isExternal) {
-            System.out.println("[warn] External function not resolved - check it is prototyped " + fcd.getName() + " " + fcd.getSignature());
-            // System.out.println("function External.<header_name>." + fcd.getName() + " := " + fcd.getSignature());
+            System.out.println("[warn] External function not resolved - check it is prototyped " + fcd.getName() + " "
+                    + fcd.getSignature());
+            // System.out.println("function External.<header_name>." + fcd.getName() + " :=
+            // " + fcd.getSignature());
             fcd.resolve_01();
         } else {
+            // FunctionDef fd =
+            // fcd.containedInBlock.classDef.resolveFunction(fcd.getName());
+            // System.out.println("@@unres " + fd);
+
             System.out.println("[warn] function not resolved " + fcd.getName() + " " + fcd.getSignature());
         }
 
     }
 
-    void resolveExpr(TypeExpr tx, VariableDef lastVar) {
-        // if thistype != null it can't be this.tx
-        arrayIndex = tx.arrayIndex;
-        if (lastVar != null) {
-            // tx is a property of thistype
+    VariableDef resolveExpr(String tx) {
+        VariableDef var = containedInBlock.resolveVariable(tx);
 
-            ClassDef classDef;
-            if (lastVar.type.isIs_array()) {
-                classDef = DefFactory.resolveClass(lastVar.type.getObjectType());
-                // System.out.println("@@resolve class 1 " + lastVar.type.getObjectType() + " " + classDef);
-                if (classDef == null) {
-                    classDef = DefFactory.resolveClass("Core." + lastVar.type.getObjectType());
-                    // System.out.println("@@resolve class 2 " + "Core." + lastVar.type.getObjectType() + " " + classDef);
-                }
-            } else {
-                classDef = DefFactory.resolveClass(lastVar.type);
-                // System.out.println("@@resolve class 3 " + lastVar.type + " " + classDef);
-                if (classDef == null) {
-                    classDef = DefFactory.resolveClass(lastVar.type.getObjectType());
-                    // System.out.println("@@resolve class 4 " + lastVar.type.getObjectType() + " " + classDef);
-                    if (classDef == null) {
-                        classDef = DefFactory.resolveClass("Core." + lastVar.type.getObjectType());
-                        // System.out.println("@@resolve class 4 " + "Core." + lastVar.type.getObjectType() + " " + classDef);
-                    }
-                }
-            }
-
-            if (classDef == null) {
-                if (isExternal) {
-                    classDef = new ClassDef();
-                    classDef.setName("Core.External");
-
-                    DefFactory.CLASS_DEFS.add(classDef);
-                } else {
-                    throw new RuntimeException("Class not resolved \'" + tx.expr + "\' " + this + " " + lastVar.type + " " + isExternal);
-                }
-            }
-            tx.variableDef = classDef.resolveProperty(tx.expr);
-            if (tx.variableDef == null) {
-                FunctionDef fd = classDef.resolveFunctionAsProperty(tx.expr);
-                if (fd != null) {
-                    tx.variableDef = new VariableDef(fd);
-
-                    tx.memberOf = classDef;
-                    tx.thisType = tx.variableDef.type;
-                    lastVar = tx.variableDef;
-
-                    return;
-                }
-            }
-
-            if (tx.variableDef == null) {
-
-                if (isExternal) {
-                    tx.variableDef = new VariableDef(tx.expr, "External");
-                    tx.variableDef.is_static = true;
-
-                    classDef.properties.add(tx.variableDef);
-
-                    tx.memberOf = classDef;
-                    tx.thisType = tx.variableDef.type;
-                    lastVar = tx.variableDef;
-                    return;
-                }
-
-                throw new RuntimeException(
-                    "Property not found " + this + " " + tx.expr + " " + classDef.getShortname() + " " + tx.getLine());
-            }
-            tx.memberOf = classDef;
-            tx.thisType = tx.variableDef.type;
-            lastVar = tx.variableDef;
-            // arrayIndex = tx.arrayIndex;
-            return;
+        if (var != null) {
+            return var;
         }
+
+        // if (containedInBlock.classDef != null) {
+        // var = containedInBlock.classDef.resolveProperty(tx);
+        // if (var != null) {
+        // return var;
+        // }
+        // }
+
+        ClassDef classDef = DefFactory.resolveClass(tx);
+        if (classDef != null) {
+            TypeIdDef thisId = new TypeIdDef(tx);
+            var = new VariableDef();
+
+            var.is_static = true;
+            var.type = thisId;
+            var.classDef = classDef;
+
+            return var;
+        }
+
+        if (!isExternal) {
+            return null;
+        } else {
+            // do something here to prototype the external function
+            var = new VariableDef();
+            var.type = new TypeIdDef("i64");
+            return var;
+        }
+    }
+
+    void resolveExpr(TypeExpr tx, VariableDef lastVar) {
 
         if (containedInBlock == null) {
             throw new RuntimeException("containedInBlock == null " + this + " " + tx.expr);
         }
 
-        // if (tx.expr.equals("External")) {
-        //     isExternal = true;
-        //     return;
-        // }
-
-        tx.variableDef = containedInBlock.resolveVariable(tx.expr);
-
-        // System.out.println(" 6 " + this + " " + tx.expr + " " + tx.variableDef);
-        if (tx.variableDef != null) {
-            tx.memberOf = tx.variableDef.classDef;
-            lastVar = tx.variableDef;
-            tx.thisType = lastVar.type;
-            return;
+        if (lastVar == null) {
+            throw new RuntimeException("lastvar == null " + this + " " + tx.expr);
         }
 
-        // check if it is and internal class property
-        // System.out.println("@@resolve class 7 ");
-        if (!isExternal) {
-            VariableDef var = containedInBlock.resolveVariable("this");
-            if (var != null) {
-                // add this in
-                // tx.
-                // System.out.println("@@resolve class 7.1 ");
-                TypeExpr thisExpr = new TypeExpr("this");
-                thisExpr.variableDef = var;
-                type_id_list.add(0, thisExpr);
+        // if thistype != null it can't be this.tx
+        arrayIndex = tx.arrayIndex;
+        // tx is a property of thistype
 
-                resolveExpr(tx, var);
-                return;
+        ClassDef classDef = lastVar.classDef;
+        if (classDef == null) {
+            if (lastVar.type.isIs_array()) {
+                classDef = DefFactory.resolveClass(lastVar.type.getObjectType());
+                if (classDef == null) {
+                    classDef = DefFactory.resolveClass("Core." + lastVar.type.getObjectType());
+                }
+            } else {
+                classDef = DefFactory.resolveClass(lastVar.type);
+                if (classDef == null) {
+                    classDef = DefFactory.resolveClass(lastVar.type.getObjectType());
+                    if (classDef == null) {
+                        classDef = DefFactory.resolveClass("Core." + lastVar.type.getObjectType());
+                    }
+                }
             }
         }
 
-        // if (tx.expr.equals("External")) {
-        //     isExternal = true;
-        // }
+        if (classDef == null) {
+            if (isExternal) {
+                classDef = new ClassDef();
+                classDef.setName("Core.External");
 
-        // static class?
+                // DefFactory.CLASS_DEFS.add(classDef);
+            } else {
+                throw new RuntimeException(
+                        "Class not resolved \'" + tx.expr + "\' " + this + " " + lastVar.type + " " + isExternal);
+            }
+        }
+        tx.variableDef = classDef.resolveProperty(tx.expr);
+        if (tx.variableDef == null) {
+            FunctionDef fd = classDef.resolveFunctionAsProperty(tx.expr);
+            if (fd != null) {
+                tx.variableDef = new VariableDef(fd);
 
-        if (containedInBlock.classDef != null) {
-            tx.variableDef = containedInBlock.classDef.resolveProperty(tx.expr);
-            if (tx.variableDef != null) {
-                // tx.memberOf = tx.variableDef.classDef;
-                tx.memberOf = containedInBlock.classDef;
-                tx.is_static = tx.variableDef.is_static;
+                tx.memberOf = classDef;
+                tx.thisType = tx.variableDef.type;
                 lastVar = tx.variableDef;
-                tx.thisType = lastVar.type;
+
                 return;
             }
         }
 
-        // System.out.println(" 8 " + containedInBlock.variableDefs());
-        ClassDef classDef = DefFactory.resolveClass(tx.expr);
-        if (classDef != null) {
-            tx.is_static = true;
-            tx.memberOf = classDef;
-            TypeIdDef thisId = new TypeIdDef(tx.expr);
-            
-            lastVar = new VariableDef();
+        if (tx.variableDef == null) {
 
-            lastVar.is_static = true;
-            lastVar.type = thisId;
-            tx.thisType = thisType;
-            tx.variableDef = lastVar;
+            if (isExternal) {
+                variableDef = lastVar;
+                setType(tx);
+                return;
+            }
 
-            return;
+            throw new RuntimeException(
+                    "Property not found " + this + " " + tx.expr + " " + classDef.getShortname() + " " + tx.getLine());
         }
+        tx.memberOf = classDef;
+        tx.thisType = tx.variableDef.type;
+        lastVar = tx.variableDef;
+        // arrayIndex = tx.arrayIndex;
+        return;
+    }
 
-        if (!isExternal) { 
-            throw new RuntimeException("cannot resolve type " + this + ", " + tx.expr + " " + tx.getLine());
-        } else {
-            // do something here to prototype the external function
-            lastVar = new VariableDef();
-            lastVar.type = new TypeIdDef("int");
-            tx.thisType= lastVar.type;
-            tx.variableDef = lastVar;
-        }
+    private void setType(TypeExpr typeExpr) {
+        typeExpr.variableDef = variableDef;
+        typeExpr.memberOf = variableDef.classDef;
+        typeExpr.thisType = variableDef.type;
+        typeExpr.is_static = variableDef.is_static;
+
+        thisType = typeExpr.thisType;
     }
 
     @Override
     public void resolve_01() {
         if (resolved) {
             System.out.println("already resolved why are you resolving again? " + type_id_list + ", " + asSignature());
-            return;
         }
 
-        // containedInBlock.isClass
         MultiTypeId last = null;
 
         // type_id_list can get modified to include this.
         for (ExprDef exprDef : new ArrayList<>(type_id_list)) {
             exprDef.containedInBlock = containedInBlock;
 
-            // System.out.println("@@resolving " + exprDef + ", " + this + ", " + variableDef);
-
             if (last != null) {
                 last.setIsGet(true);
                 isProperty = true;
-            // } else {
-            //     if (exprDef.expr != null && exprDef.expr.equals("External")) {
-            //         System.out.println("@@found External " + this);
-            //     }
             }
 
             ((MultiTypeId) exprDef).setIsGet(isGet);
@@ -461,12 +456,50 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
 
                 if (exprDef.expr.equals("External")) {
                     isExternal = true;
+                
+                    variableDef = new VariableDef(typeExpr.expr, "External");
+                    variableDef.is_static = true;
+                    variableDef.classDef = new ClassDef();
+                    variableDef.classDef.setName("Core.External");
+                    variableDef.classDef.properties.add(variableDef);
+                    setType(typeExpr);
+                } else if (last == null) {
+                    variableDef = resolveExpr(typeExpr.expr);
+
+                    if (variableDef != null) {
+                        setType(typeExpr);
+                    } else {
+                        variableDef = resolveExpr("this");
+
+                        if (variableDef == null) {
+                            if (containedInBlock.classDef != null) {
+                                variableDef = containedInBlock.classDef.resolveProperty(typeExpr.expr);
+                                variableDef.classDef = containedInBlock.classDef;
+                                setType(typeExpr);
+                            }
+                        } else {
+                            ExprDef t = new TypeExpr("this");
+                            t.containedInBlock = this.containedInBlock;
+                            t.thisType = variableDef.type;
+                            type_id_list.add(0, t);
+
+                            resolveExpr(typeExpr, variableDef);
+                        }
+
+                        if (variableDef == null) {
+                            throw new RuntimeException("cannot resolve" + this + " " + this.getLine());
+                        }
+
+                        thisType = typeExpr.thisType;
+                        variableDef = typeExpr.variableDef;
+                        isFunction = false;
+                    }
+                } else {
+                    resolveExpr(typeExpr, variableDef);
+                    thisType = typeExpr.thisType;
+                    variableDef = typeExpr.variableDef;
+                    isFunction = false;
                 }
-                resolveExpr(typeExpr, variableDef);
-                thisType = typeExpr.thisType;
-                variableDef = typeExpr.variableDef;
-                isFunction = false;
-                // System.out.println("@@multi " + this + " " + typeExpr.expr + " " + variableDef.getName() + " " + variableDef.type.getName() + " " + variableDef.getLine());
             } else if (exprDef instanceof ArrayIndexExpr) {
                 TypeExpr typeExpr = (TypeExpr) exprDef;
 
@@ -505,13 +538,13 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
             }
 
             if (exprDef instanceof FunctionCallExpr) {
-                res += ((FunctionCallExpr)exprDef).getName()+ "()" ;
+                res += ((FunctionCallExpr) exprDef).getName() + "()";
             } else if (exprDef instanceof TypeExpr) {
                 res += exprDef.expr;
             } else if (exprDef instanceof ArrayIndexExpr) {
                 res += exprDef.expr;
-            }            
-            
+            }
+
             // res += exprDef.asDebug();
         }
         return "Multi (" + res + ") ";// + getLine();

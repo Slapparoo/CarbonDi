@@ -17,3 +17,10 @@ ectest :
 gencore :
 	sh ./generate_core.sh
 
+deploycore : gencore
+	mv c-bin c-bin.old
+	mv c-gen c-bin
+
+restorecore : gencore
+	mv c-bin c-gen.old
+	mv c-bin.old c-bin

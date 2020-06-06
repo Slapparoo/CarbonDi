@@ -168,6 +168,7 @@ public class VariableDef extends StatementDef {
                 type.setIs_array(assignValue.thisType.isIs_array());
                 type.setIs_boxed(assignValue.thisType.isIs_boxed());
                 type.setObjectType(assignValue.thisType.getObjectType());
+                
 
                 if (type.getName().contains("[]") && !type.isIs_array()) {
                     // change to an array type
@@ -316,6 +317,11 @@ public class VariableDef extends StatementDef {
     }
 
 	public boolean compatableWith(ExprDef exprDef) {
+        if (exprDef.thisType == null) {
+            System.out.println("[warn] expr has no type " + exprDef);
+            return false;
+        }
+
         if (exprDef.thisType.getName().equals(type.getName())) {
             return true;
         }
@@ -326,5 +332,19 @@ public class VariableDef extends StatementDef {
         }
 
 		return false;
-	}
+    }
+    
+	public boolean compatableWith(VariableDef variableDef) {
+        if (variableDef.getName().equals(type.getName())) {
+            return true;
+        }
+
+        if (isPrimative()) {
+            // System.out.println(exprDef.thisType.getName() + " = " + type.getName()  + " " + PrimativeTypes.areCompatable32(exprDef.thisType.getName(), type.getName())); 
+            return PrimativeTypes.areCompatable32(variableDef.getName(), type.getName());
+        }
+
+		return false;
+    }
+
 }

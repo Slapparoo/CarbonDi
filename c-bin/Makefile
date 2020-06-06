@@ -29,6 +29,8 @@ LIB := $(SRC:%.c=$(LIBDIR)/libec.so)
 
 all : clean singleheader lib obj $(MAIN) $(RUNMAINS)
 
+test : $(RUNMAINS)
+
 obj : $(OBJ)
 
 lib : $(LIB)
@@ -38,6 +40,14 @@ singleheader :
 	rm -f include/eccore.h.gch 
 	clang include/Core.Core_main.h -E -dD > include/eccore.h
 	$(CC) $(PARAMS) include/eccore.h
+
+# make the generated version live
+# deploycore : 
+# 	rm -f include/*
+# 	rm -f *.c *.ec
+# 	cp gen/*.c gen/*.ec .
+# 	cp gen/include/* include
+# 	rm *.run.c
 
 cleanobj:
 	rm -f obj/*.o 

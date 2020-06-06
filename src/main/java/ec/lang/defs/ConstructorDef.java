@@ -125,6 +125,7 @@ public class ConstructorDef extends FunctionDefBase implements Cloneable {
             VariableDef def_this = new VariableDef();
             def_this.setName("this");
             def_this.type = new TypeIdDef(name);
+            def_this.classDef = classDef;
 
             getBlockDef().addVariable(def_this);
         }

@@ -1,31 +1,20 @@
 package ec.lang;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import ec.lang.defs.BlockDef;
-import ec.lang.defs.ClassDef;
 import ec.lang.defs.DefFactory;
 import ec.lang.defs.FunctionDef;
 import ec.lang.defs.expressions.AssignExpr;
 import ec.lang.defs.expressions.MultiTypeExpr;
 import ec.lang.defs.expressions.StringExpr;
 import ec.lang.defs.expressions.TypeExpr;
-import ec.lang.model.ecBaseListener;
 import ec.lang.model.ecLexer;
-import ec.lang.model.ecParser;
-import ec.lang.model.ecParser.Class_definitionContext;
-import ec.lang.model.ecParser.ProgramContext;
 
 @SuppressWarnings( "deprecation" )
 public class MultiTypeExprTest extends BaseTest {
@@ -45,6 +34,24 @@ public class MultiTypeExprTest extends BaseTest {
         assertEquals("/*te141*/((c_2106303_Object_cm*)getc_2106303_Object_cm())->getClassShortName()", 
         multiTypeExpr.asCode(), "Object.getClassShortName asCode");
     }
+
+    @Test
+    public void testResolveProperty() throws IOException {
+        String ecCode = "?numbers = \"s1\";?numbers1 = numbers;printf(numbers1.asStr);";
+
+        BaseTest.preLoad();
+        BaseTest.lex(new ecLexer(new ANTLRInputStream(ecCode)));
+
+        String code = DefFactory.getCurrentBlock().asCode();
+
+        String res = "{__onEnter();numnumbers=create_c_2106303_String_2(\"s1\"true);numnumbers1=numbers;printf(((c_2106303_String_cm*)useObject(numbers1)->classmodel)->asStr(numbers1));__onExit();}";
+        assertEquals(BaseTest.stripWhiteSpace(code), res);
+
+    }
+
+    // count2.set {
+    //     count2 = $a + count1;
+    // }
 
     /**
      * Test accessing a setter function a variable
@@ -103,14 +110,20 @@ public class MultiTypeExprTest extends BaseTest {
         lex(new ecLexer(new ANTLRInputStream(ecCode)));
 
         FunctionDef functionDef = (FunctionDef) DefFactory.resolveFunction("arrayFunction");
-        System.out.println(functionDef.asCode());
+
+        String actual = BaseTest.stripWhiteSpace(functionDef.asCode());
+        String expected = "numarrayFunction(){u64entry__=__onEnter();numarrayResult=create_c_2106303_Array_1(10((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->i8_sizeof(i8));return__exitReturn_ref_un(arrayResultentry__);}";
+        assertEquals(expected, actual);
+
 
         BlockDef blockDef = DefFactory.getCurrentBlock();
         blockDef.resolve_01();
         blockDef.validate_02();
         blockDef.prepare_03();
 
-        System.out.println(blockDef.asCode());
+        actual = BaseTest.stripWhiteSpace(blockDef.asCode());
+        expected = "{__onEnter();nummyArray=arrayFunction();((c_2106303_Array_cm*)useObject(myArray)->classmodel)->get_length(myArray);__onExit();}";
+        assertEquals(expected, actual);
     }
 
 }

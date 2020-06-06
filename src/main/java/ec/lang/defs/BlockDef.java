@@ -98,14 +98,15 @@ public class BlockDef extends StatementDef implements ContainerDef {
             // replace this -- error on other redines don't add ==
             if (existingVar.getName().equals("this")) {
                 // redefine
-                System.out.println("Redefine this " + variableDef.type + " " + existingVar.type);
+                System.out.println("no Redefine this " + variableDef.type + " " + existingVar.type);
+                return;
             } else {
 
                 if (existingVar.type.getName().equals(variableDef.type.getName()) ) {
 
                 } else {
                     if (existingVar.type.getName().equals("?")) {
-                        System.out.println("Redefine this " + variableDef.type + " " + existingVar.type);                        
+                        System.out.println("Replace this " + variableDef.type + " " + existingVar.type);                        
                         existingVar.type = variableDef.type;
                         return;
                     }

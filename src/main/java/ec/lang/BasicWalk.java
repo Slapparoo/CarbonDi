@@ -23,6 +23,7 @@ import ec.lang.model.ecParser.ProgramContext;
 public class BasicWalk {
 
   private static void preLoad() throws IOException {
+    System.out.println("preload.");
     lex(new ecLexer(new ANTLRInputStream(new FileInputStream("c-bin/Core.signature.ec"))));
   }
 

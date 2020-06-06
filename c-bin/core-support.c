@@ -20,6 +20,8 @@ pointer _inflight_mem[INFLIGHT_MEMSIZE];
 // memory allocations very basic map
 num memoryAllocsId[PM_LIST_LENGTH];
 pointer memoryAllocsPointer[PM_LIST_LENGTH];
+pointer alloc_min = 0;
+pointer alloc_max = 0;
 
 i64 enterExitRatio = 0;
 
@@ -33,12 +35,17 @@ void printClassModels() {
   }
 }
 
-void updateMemoryAllocation(pointer oldp, pointer newp) {
+void updateMemoryAllocation(num ref, pointer oldp, pointer newp) {
+  boolean found = false;
   for (u64 i = 0; i < PM_LIST_LENGTH; i++) {
     if (memoryAllocsPointer[i] == oldp) {
       memoryAllocsPointer[i] = newp;
+      found = true;
       break;
     }
+  }
+  if (!found) {
+    registerMemoryAllocation(ref, newp);
   }
 }
 
@@ -736,6 +743,21 @@ pointer ec_malloc(size_t size) {
     throwException("Out of memory Exception [heap malloc].");
   } 
 
+  // Maintain the alloc min max
+  if (alloc_min == 0) {
+    alloc_min = res;
+  }
+
+  if (res > alloc_max) {
+    alloc_max = res;
+  } 
+  
+  if (res < alloc_min) {
+    alloc_min = res;
+  }
+
+  debug_println(" %p, min=%p, max=%p ", res, alloc_min, alloc_max);
+
   inflightMemIndex++;
   if (inflightMemIndex >= INFLIGHT_MEMSIZE) {
     throwException("Out of memory Exception [inflight buffer].");
@@ -750,6 +772,22 @@ pointer ec_calloc(size_t length, size_t size) {
     // if this gets throw the system is unstable and the application should be stopped
     throwException("Out of memory Exception [heap calloc].");
   } 
+
+  // Maintain the alloc min max
+  if (alloc_min == 0) {
+    alloc_min = res;
+  }
+
+  if (res > alloc_max) {
+    alloc_max = res;
+  } 
+  
+  if (res < alloc_min) {
+    alloc_min = res;
+  }
+
+  debug_println(" %p, min=%p, max=%p ", res, alloc_min, alloc_max);
+
   inflightMemIndex++;
   if (inflightMemIndex >= INFLIGHT_MEMSIZE) {
     throwException("Out of memory Exception [inflight buffer].");
@@ -760,11 +798,31 @@ pointer ec_calloc(size_t length, size_t size) {
 
 
 pointer ec_realloc(pointer ptr, size_t size) {
+
+  if (ptr < alloc_min || ptr > alloc_max) {
+    // probably a static allocation
+    return ec_malloc(size);
+  }
+
   pointer res = realloc(ptr, size);
   if (res == NULL) {
     // if this gets throw the system is unstable and the application should be stopped
     throwException("Out of memory Exception [heap realloc].");
   } 
+
+  // Maintain the alloc min max
+  if (alloc_min == 0) {
+    alloc_min = res;
+  }
+
+  if (res > alloc_max) {
+    alloc_max = res;
+  } 
+  
+  if (res < alloc_min) {
+    alloc_min = res;
+  }
+
   return res;
 }
 
@@ -772,6 +830,13 @@ pointer ec_realloc(pointer ptr, size_t size) {
 void ec_free(pointer p) {
 
   debug_println("%p", p);
+
+  if (p < alloc_min || p > alloc_max) {
+    // probably a static allocation
+
+    debug_println("not freed %p, min=%p, max=%p ", p, alloc_min, alloc_max);
+    return;
+  }
 
   if (p == NULL) {
     return;

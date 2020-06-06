@@ -9,6 +9,10 @@ public class BaseDef {
     
     private int resolveCount = 0;
 
+    public void resetResolved() {
+        resolveCount = 0;
+    }
+
     public boolean isResolved() {
         return resolveCount > 0;
     }

@@ -40,6 +40,12 @@ public class TypeExpr extends ExprDef implements MultiTypeId {
         if (variableDef != null && variableDef.is_static) {
             prepare_03("");
         }
+
+        if (memberOf != null && containedInBlock.directAccess.contains(expr)) {
+            // System.out.println("@@direct access " + expr);
+            directAccess = true;
+        }
+
         super.prepare_03();
     }
 

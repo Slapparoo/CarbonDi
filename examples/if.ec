@@ -13,55 +13,55 @@ boolean isFalse() {
 }
 
 if (always) {
-    External.stdio.printf(`always (good)\n`);
+    printf(`always (good)\n`);
 } else {
-    External.stdio.printf(`always (bad)\n`);
+    printf(`always (bad)\n`);
 }
 
 if (sometimes || always) {
-    External.stdio.printf(`sometimes (good) \n`);
+    printf(`sometimes (good) \n`);
 } else {
-    External.stdio.printf(`sometimes (bad)\n`);
+    printf(`sometimes (bad)\n`);
 }
 
 if (never) {
-    External.stdio.printf(`never (bad)\n`);
+    printf(`never (bad)\n`);
 } else {
-    External.stdio.printf(`never (good)\n`);
+    printf(`never (good)\n`);
 }
 
 if (isTrue()) {
-    External.stdio.printf(`tis true (good)\n`);
+    printf(`tis true (good)\n`);
 } else {
-    External.stdio.printf(`tis true (bad)\n`);
+    printf(`tis true (bad)\n`);
 }
 
 if (isFalse()) {
-    External.stdio.printf(`tis false (bad)\n`);
+    printf(`tis false (bad)\n`);
 } else {
-    External.stdio.printf(`tis false (good)\n`);
+    printf(`tis false (good)\n`);
 }
 
 if (isTrue() && true) {
-    External.stdio.printf(`tis true to (good)\n`);
+    printf(`tis true to (good)\n`);
 } else {
-    External.stdio.printf(`tis true to (bad)\n`);
+    printf(`tis true to (bad)\n`);
 }
 
 if (isTrue() && false) {
-    External.stdio.printf(`tis false to (bad)\n`);
+    printf(`tis false to (bad)\n`);
 } else {
-    External.stdio.printf(`tis false to (good)\n`);
+    printf(`tis false to (good)\n`);
 }
 
 
 if (!isTrue()) {
-    External.stdio.printf(`if else !true (bad)\n`);
+    printf(`if else !true (bad)\n`);
 } else if (isFalse()) {
-    External.stdio.printf(`if else false (bad)\n`);
+    printf(`if else false (bad)\n`);
 } else {
-    External.stdio.printf(`if else (good)\n`);
+    printf(`if else (good)\n`);
 }
 
 
-External.stdio.printf(`end\n`);
+printf(`end\n`);

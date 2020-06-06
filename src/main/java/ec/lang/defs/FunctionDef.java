@@ -84,25 +84,22 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
         super.resolve_01();
 
         if (classDef != null) {
-            String initSignature = getSignature();
-
             if (!is_static) {
                 insertThis();
             }
 
             ClassDef cp = classDef.parent;
 
-            String thisSignature = getSignature();
-
             while (cp != null) {
                 FunctionDef functionDef = cp.resolveFunction(name);
 
                 if (functionDef != null && !is_parent) {
-                    if (thisSignature.equals(functionDef.getSignature()) || initSignature.equals(functionDef.getSignature())) {
+                    if (functionDef.isCallableVar(returnType, getParameters())) {
                         is_override = true;
-                    } else {
+                    // } else {
+                    } else if (!is_override) {
                         System.out.println(getLine());   
-                        System.out.println("method signature overloads are not currently supported, a method with the name " + name + " already exists " + functionDef.getParamsSignature());   
+                        System.out.println("method signature overloads are not currently supported, a method with the name " + name + " already exists " + functionDef.getParamsSignature() + " " + classDef.getShortname() );   
                         // throw new RuntimeException("method signature overloads are not currently supported, a method with the name " + name + " already exists " + functionDef.getParamsSignature());
                     }
                 }
@@ -117,10 +114,15 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
         for (VariableDef  param : getParameters()) {
             if (getBlockDef() != null) {
                 getBlockDef().addVariable(param);
+                param.containedInBlock = containedInBlock;
+                param.resolve_01();
             }
         }
 
         if (getBlockDef() != null) {
+
+            // System.out.println("@@block " + name +" " + getBlockDef().classDef);
+
             getBlockDef().resolve_01();
 
             for (StatementDef def : getBlockDef().statementDefs) {
@@ -190,9 +192,6 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
         boolean first = true;
         // boolean thisParam = classDef != null && !is_static && is_override;
 
-        
-        
-
         for(VariableDef param : getParameters()) {
             if (param.getName().equals("this")) {
                 continue;
@@ -248,6 +247,11 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
+        FunctionDef fd = (FunctionDef) super.clone();
+
+        fd.resetResolved();
+        fd.is_parent = true;
+
+        return fd;
     }
 }

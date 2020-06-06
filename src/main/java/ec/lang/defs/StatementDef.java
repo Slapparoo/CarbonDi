@@ -15,7 +15,9 @@ public class StatementDef extends BaseDef {
         // System.out.println("@@StatementDef.resolve, " + this.getClass().getName() + ", " + containedInBlock);
         if (statement != null) {
             statement.containedInBlock = containedInBlock;
-            statement.resolve_01();
+            if (!statement.isResolved()) {
+                statement.resolve_01();
+            }
         }
         super.resolve_01();
     }

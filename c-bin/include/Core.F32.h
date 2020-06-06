@@ -10,7 +10,7 @@
  f32 value;
 #define __C_2106303_F32_CLASS_  \
   f32 (*get_value)(num);  \
-  void (*set_value)(num, f32);
+  void (*set_value)(num,f32);
 typedef struct c_2106303_F32_cm {
 
 __C_2106303_OBJECT_CLASS_

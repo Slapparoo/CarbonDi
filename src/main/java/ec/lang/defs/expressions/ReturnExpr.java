@@ -21,7 +21,7 @@ public class ReturnExpr extends StatementDef {
         }
 
         containedInBlock.hasReturn = true;
-        super.resolve_01();
+        // super.resolve_01();
     }
 
     // @Override

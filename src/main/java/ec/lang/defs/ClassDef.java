@@ -174,6 +174,8 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
 
     @Override
     public void resolve_01() {
+
+        // System.out.println("@@resolveclass " + this);
         if (extendsclass == null && !getFqn().equals("Core.Object") ) {
             setCastType("Core.Object");
         } 
@@ -187,10 +189,24 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
         DefFactory.FUNCT_DEFS.add(new FunctionDef(classname.getShortName(), "create_" + getCName()));
 
         for (StatementDef statementDef : blockDef.statementDefs) {
-            if (statementDef.getClass().equals(FunctionDef.class)) {
-                // System.out.println("*function " + statementDef);
-                functionDefs.add((FunctionDef) statementDef);
-                ((FunctionDef) statementDef).classDef = this;
+
+            // System.out.println(this + " " +  statementDef.getClass());
+
+            if (statementDef instanceof FunctionDef) {
+                FunctionDef fd = (FunctionDef) statementDef;
+                if (parent != null && parent.resolveFunction(fd.name) != null) {
+                    fd.is_override = true;
+                }
+                functionDefs.add(fd);
+                fd.classDef = this;
+
+                // if (((FunctionDefBase)statementDef).getBlockDef() != null) {
+                //     ((FunctionDefBase)statementDef).getBlockDef().isClass = true;
+                //     ((FunctionDefBase)statementDef).getBlockDef().classDef = this;
+                //     statementDef.containedInBlock = blockDef;
+                //     System.out.println("@@class " + fd.name + " " + fd.getBlockDef().classDef);
+                // }
+
             }
 
             if (statementDef instanceof EncapsulationDef) {
@@ -198,7 +214,7 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
                 ((EncapsulationDef) statementDef).classDef = this;
             }
 
-            if (statementDef.getClass().equals(ConstructorDef.class)) {
+            if (statementDef instanceof ConstructorDef) {
                 ConstructorDef cd = (ConstructorDef) statementDef;
                 if (!cd.name.equals(classname.getShortName())) {
                     throw new RuntimeException("Invalid constructor name in class " + classname + ", " + cd.name +", " + cd.asDebug());
@@ -254,20 +270,21 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
             // constructorDefs.addAll(parent.constructorDefs);
 
             for (ConstructorDef c : parent.constructorDefs) {
-                ConstructorDef nc;
                 try {
-                    nc = (ConstructorDef) c.clone();
-                    nc.name = classname.getShortName();
-                    nc.classDef = this;
                     boolean exists = false;
-                    nc.resolve_01();
+
                     for (ConstructorDef tc : constructorDefs) {
-                        if (tc.getSignature().equals(nc.getSignature())) {
+                        if (tc.isCallableVar(null, c.getParameters())) {
                             exists = true;
                             break;
                         }
                     }
                     if (!exists) {
+                        ConstructorDef nc = (ConstructorDef) c.clone();
+                        nc.name = classname.getShortName();
+                        nc.classDef = this;
+                        nc.resolve_01();
+    
                         constructorDefs.add(nc);
                     }
                 } catch (CloneNotSupportedException e) {
@@ -276,27 +293,15 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
             }
 
             for (FunctionDef c : parent.functionDefs) {
-                FunctionDef nc;
-
                 if (c.is_property) {
                     continue;
                 }
                 try {
-                    nc = (FunctionDef) c.clone();
-                    nc.classDef = this;
                     boolean exists = false;
-                    nc.is_parent = true;
-                    if (nc.getParameters().size() > 0) {
-                        // why is this being removed? - because its the parent, and the object type is 
-                        // for the parent, we want this object type
-                        if (nc.getParameters().get(0).getName().equals("this") || nc.getParameters().get(0).getName().equals("_refId")) {
-                            nc.getParameters().remove(0);
-                        }
-                    }
                     
                     for (FunctionDef tc : functionDefs) {
                         // if (tc.name.equals(nc.name)) {
-                        if (tc.name.equals(nc.name)) {
+                        if (tc.name.equals(c.name)) {
                             exists = true;
 
                             if (c.name.equals("release")) {
@@ -307,8 +312,18 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
                         }
                     }
                     if (!exists) {
+                        FunctionDef nc = (FunctionDef) c.clone();
+                        nc.classDef = this;
+                        nc.containedInBlock = blockDef;
+                        if (nc.getParameters().size() > 0) {
+                            // why is this being removed? - because its the parent, and the object type is 
+                            // for the parent, we want this object type
+                            if (nc.getParameters().get(0).getName().equals("this") || nc.getParameters().get(0).getName().equals("_refId")) {
+                                nc.getParameters().remove(0);
+                            }
+                        }
                         functionDefs.add(nc);
-                        nc.resolve_01();
+                        // nc.resolve_01();
                     }
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
@@ -338,6 +353,12 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
             }
 
             statementDef.resolve_01();
+        }
+
+        for (FunctionDef fd : functionDefs) {
+            if (!fd.isResolved()) {
+                fd.resolve_01();
+            }
         }
 
         Collections.sort(constructorDefs, SortbySignature); 

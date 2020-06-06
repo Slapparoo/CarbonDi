@@ -1,41 +1,62 @@
 // Core.BaseBoxing
-#include "eccore.h"
+#include "Core.Core_main.h"
+#include "Core.BaseBoxing.h"
+#include "Core.Object.h"
+#include "Core.String.h"
+#include "Core.Exception.h"
+#include "Core.Array.h"
+#include "Core.RefArray.h"
+#include "Core.Boxing.h"
+#include "Core.B8.h"
+#include "Core.U8.h"
+#include "Core.I8.h"
+#include "Core.I16.h"
+#include "Core.U16.h"
+#include "Core.I32.h"
+#include "Core.U32.h"
+#include "Core.F32.h"
+#include "Core.I64.h"
+#include "Core.U64.h"
+#include "Core.F64.h"
+#include "Core.Pointer.h"
+#include "Core.DynamicArray.h"
 
-int c_2106303_BaseBoxingdatatype(){
+/*fd1*/int c_2106303_BaseBoxingdatatype(){
 
-u64 entry_ = __onEnter();return __exitReturn_int_un(0, entry_);
+u64 entry__ = __onEnter();return __exitReturn_i64_un(0, entry__);
 }
 
 
-pointer c_2106303_BaseBoxingtypename(){
+/*fd1*/pointer c_2106303_BaseBoxingtypename(){
 
-u64 entry_ = __onEnter();return __exitReturn_pointer_un("undefined", entry_);
+u64 entry__ = __onEnter();return __exitReturn_pointer_un("undefined", entry__);
 }
 
 
-pointer c_2106303_BaseBoxinggetClassName(){
+/*fd1*/pointer c_2106303_BaseBoxinggetClassName(){
   return  "Core.BaseBoxing";
 }
 
 
-pointer c_2106303_BaseBoxinggetClassShortName(){
+/*fd1*/pointer c_2106303_BaseBoxinggetClassShortName(){
   return  "BaseBoxing";
 }
 
 
-pointer c_2106303_BaseBoxinggetClassCName(){
+/*fd1*/pointer c_2106303_BaseBoxinggetClassCName(){
   return  "c_2106303_BaseBoxing";
 }
 
 
-pointer c_2106303_BaseBoxinggetClassPackage(){
+/*fd1*/pointer c_2106303_BaseBoxinggetClassPackage(){
   return  "Core";
 }
 
 
-u64 c_2106303_BaseBoxinggetObjectDatasize(){
+/*fd1*/u64 c_2106303_BaseBoxinggetObjectDatasize(){
   return  sizeof(c_2106303_BaseBoxing);
 }
+
 
 
 

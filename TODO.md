@@ -1,26 +1,30 @@
 loop returns
 loop types
 cast
+`<property>.raw` for internal use of properties
 
 use the single big header for build
-
 version stuff
 
-function definitiations
-int External.stdio.printf(pointer, ...);
+
+function definitions
+`int External.stdio.printf(pointer, ...);`
 
 function implmentations
-    String.myThing = () {}
+`    String.myThing = () {}`
     
 *definition*
+```
 int sort(int[] list, int compare(int, int)) {
     ...
     compare(list[a], list[b]);
 }
+```
 *implmentation*
+```
 sort(array, (a, b) {return a-b;});
 sort(array, () {return $a-$b;});
-
+```
 
 C style params array
 Exception stack trace
