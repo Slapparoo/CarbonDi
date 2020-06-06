@@ -87,6 +87,10 @@ void Array_set_dataSize(num ref, u64 dataSize) {
   ((c_2106303_Array *)useObject(ref)->data)->dataSize = dataSize;
 }
 
+u64 Array_get_dataSize(num ref) {
+  return ((c_2106303_Array *)useObject(ref)->data)->dataSize;
+}
+
 void Array_set_capacity(num ref, u64 capacity) {
   ((c_2106303_Array *)useObject(ref)->data)->capacity = capacity;
 }
@@ -182,7 +186,7 @@ pointer getc_2106303_Array_cm() {
   return &_arrayClassModel;
 }
 
-u64 Array_getDatasize(num id) {
+u64 Array_getObjectDatasize(num id) {
   c_2106303_Array* ay = (c_2106303_Array *)useObject(id)->data;
   if (!ay->managed) {
     return sizeof(c_2106303_Array);
@@ -190,7 +194,7 @@ u64 Array_getDatasize(num id) {
   return sizeof(c_2106303_Array) + (ay->capacity * ay->dataSize);
 }
 
-u64 RefArray_getDatasize(num id) {
+u64 RefArray_getObjectDatasize(num id) {
   c_2106303_RefArray* ay = (c_2106303_RefArray *)useObject(id)->data;
   if (!ay->managed) {
     return sizeof(c_2106303_RefArray);
@@ -255,6 +259,7 @@ void populatec_2106303_Array_cm(pointer _classModel) {
   classModel->get_dataType = Array_type;
   classModel->set_dataType = Array_set_datatype;
   classModel->set_dataSize = Array_set_dataSize;
+  classModel->get_dataSize = Array_get_dataSize;
   classModel->memsize = Array_memsize;
   classModel->set_capacity = Array_set_capacity;
   classModel->set_values = Array_set_values;
@@ -264,7 +269,7 @@ void populatec_2106303_Array_cm(pointer _classModel) {
 
   classModel->get = Array_get;
   classModel->set = Array_set;
-  classModel->getObjectDatasize=Array_getDatasize;
+  classModel->getObjectDatasize=Array_getObjectDatasize;
 }
 
 /**
@@ -332,7 +337,7 @@ void populatec_2106303_RefArray_cm(pointer _classModel) {
 
   // classModel->name = "RefArray";
   // classModel->package = "Core";
-  classModel->getObjectDatasize= RefArray_getDatasize;
+  classModel->getObjectDatasize= RefArray_getObjectDatasize;
   classModel->setObject = RefArray_set;
   classModel->free = RefArray_free;
 }
