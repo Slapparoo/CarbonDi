@@ -5,7 +5,7 @@ class Core.Object
 Constructors
 ---
 
-`public Object()`
+__`public Object()`__
 <div style="margin:1em">
 
 </div>
@@ -15,55 +15,55 @@ Constructors
 Functions
 ---
 
-`public pointer asStr()`
+__`public pointer asStr()`__
 <div style="margin:1em">
 
 </div>
 
 
-`public void printTo(pointer stream)`
+__`public void printTo(pointer stream)`__
 <div style="margin:1em">
 
 </div>
 
 
-`public pointer objectData()`
+__`public pointer objectData()`__
 <div style="margin:1em">
 
 Exposes the underlying pointer to the data can be used for both read and writes, so some caution is advised.</div>
 
 
-`public i64 hashCode()`
+__`public i64 hashCode()`__
 <div style="margin:1em">
 
 </div>
 
 
-`public boolean equals(Object other)`
+__`public boolean equals(Object other)`__
 <div style="margin:1em">
 
 </div>
 
 
-`hidden final void free()`
+__`hidden final void free()`__
 <div style="margin:1em">
 
 </div>
 
 
-`hidden void release()`
+__`hidden void release()`__
 <div style="margin:1em">
 
 </div>
 
 
-`public final pointer alloc(u64 size)`
+__`public final pointer alloc(u64 size)`__
 <div style="margin:1em">
 
 </div>
 
 
-`public final pointer realloc(pointer ptr,u64 size)`
+__`public final pointer realloc(pointer ptr,u64 size)`__
 <div style="margin:1em">
 
 </div>

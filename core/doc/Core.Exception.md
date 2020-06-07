@@ -13,19 +13,19 @@ Properties
 Constructors
 ---
 
-`private Exception()`
+__`private Exception()`__
 <div style="margin:1em">
 
 </div>
 
 
-`public Exception(Exception root,String message)`
+__`public Exception(Exception root,String message)`__
 <div style="margin:1em">
 
 </div>
 
 
-`public Exception(String message)`
+__`public Exception(String message)`__
 <div style="margin:1em">
 
 </div>

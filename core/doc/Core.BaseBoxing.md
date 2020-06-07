@@ -5,7 +5,7 @@ class Core.BaseBoxing extends [Core.Object](Core.Object.md)
 Constructors
 ---
 
-`public BaseBoxing()`
+__`public BaseBoxing()`__
 <div style="margin:1em">
 
 </div>
@@ -15,13 +15,13 @@ Constructors
 Functions
 ---
 
-`public static int datatype()`
+__`public static int datatype()`__
 <div style="margin:1em">
 
 </div>
 
 
-`public static pointer typename()`
+__`public static pointer typename()`__
 <div style="margin:1em">
 
 </div>

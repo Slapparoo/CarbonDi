@@ -12,13 +12,13 @@ Properties
 Constructors
 ---
 
-`public I32()`
+__`public I32()`__
 <div style="margin:1em">
 
 </div>
 
 
-`public I32(i32 value)`
+__`public I32(i32 value)`__
 <div style="margin:1em">
 
 </div>
@@ -28,19 +28,19 @@ Constructors
 Functions
 ---
 
-`(override) public static int datatype()`
+__`(override) public static int datatype()`__
 <div style="margin:1em">
 
 </div>
 
 
-`(override) public static pointer typename()`
+__`(override) public static pointer typename()`__
 <div style="margin:1em">
 
 </div>
 
 
-`(override) public pointer asStr()`
+__`(override) public pointer asStr()`__
 <div style="margin:1em">
 
 </div>

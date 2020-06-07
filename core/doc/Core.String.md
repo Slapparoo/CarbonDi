@@ -12,25 +12,25 @@ Properties
 Constructors
 ---
 
-`private String()`
+__`private String()`__
 <div style="margin:1em">
 
 </div>
 
 
-`public String(pointer str)`
+__`public String(pointer str)`__
 <div style="margin:1em">
 
 </div>
 
 
-`public String(pointer str,boolean staticAlloc)`
+__`public String(pointer str,boolean staticAlloc)`__
 <div style="margin:1em">
 
 </div>
 
 
-`public String(pointer str,pointer str2)`
+__`public String(pointer str,pointer str2)`__
 <div style="margin:1em">
 
 </div>
@@ -40,79 +40,79 @@ Constructors
 Functions
 ---
 
-`public String asString()`
+__`public String asString()`__
 <div style="margin:1em">
 
 </div>
 
 
-`public u64 length()`
+__`public u64 length()`__
 <div style="margin:1em">
 
 </div>
 
 
-`public void println()`
+__`public void println()`__
 <div style="margin:1em">
 
 </div>
 
 
-`public String appendStr(pointer str)`
+__`public String appendStr(pointer str)`__
 <div style="margin:1em">
 
 </div>
 
 
-`public String append(String string)`
+__`public String append(String string)`__
 <div style="margin:1em">
 
 </div>
 
 
-`public String prependStr(pointer str4)`
+__`public String prependStr(pointer str4)`__
 <div style="margin:1em">
 
 </div>
 
 
-`public String prepend(String string1)`
+__`public String prepend(String string1)`__
 <div style="margin:1em">
 
 </div>
 
 
-`public i64 compareStr(pointer str5)`
+__`public i64 compareStr(pointer str5)`__
 <div style="margin:1em">
 
 </div>
 
 
-`public i64 compare(String string5)`
+__`public i64 compare(String string5)`__
 <div style="margin:1em">
 
 </div>
 
 
-`public i64 findStr(i64 from,pointer str6)`
+__`public i64 findStr(i64 from,pointer str6)`__
 <div style="margin:1em">
 
 </div>
 
 
-`public i64 find(i64 from,String string6)`
+__`public i64 find(i64 from,String string6)`__
 <div style="margin:1em">
 
 </div>
 
 
-`public void trunc(i64 start,i64 end)`
+__`public void trunc(i64 start,i64 end)`__
 <div style="margin:1em">
 
 Array with the offsets of all instances of the sub strings</div>
 
 
-`(override) public pointer asStr()`
+__`(override) public pointer asStr()`__
 <div style="margin:1em">
 
 </div>

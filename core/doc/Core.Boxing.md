@@ -23,7 +23,7 @@ Static Properties
 Constructors
 ---
 
-`public Boxing()`
+__`public Boxing()`__
 <div style="margin:1em">
 
 </div>

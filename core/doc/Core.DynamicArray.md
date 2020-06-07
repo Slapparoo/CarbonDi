@@ -34,25 +34,25 @@ Static Properties
 Constructors
 ---
 
-`public DynamicArray()`
+__`public DynamicArray()`__
 <div style="margin:1em">
 
 </div>
 
 
-`public DynamicArray(int dataType,u64 dataSize)`
+__`public DynamicArray(int dataType,u64 dataSize)`__
 <div style="margin:1em">
 
 </div>
 
 
-`public DynamicArray(u64 capacity,int dataType,u64 dataSize)`
+__`public DynamicArray(u64 capacity,int dataType,u64 dataSize)`__
 <div style="margin:1em">
 
 </div>
 
 
-`public DynamicArray(u64 capacity,int dataType,u64 dataSize,pointer values)`
+__`public DynamicArray(u64 capacity,int dataType,u64 dataSize,pointer values)`__
 <div style="margin:1em">
 
 </div>
@@ -62,104 +62,104 @@ Constructors
 Functions
 ---
 
-`public pointer getValue(u64 index)`
+__`public pointer getValue(u64 index)`__
 <div style="margin:1em">
 
 return a pointer to the array content</div>
 
 
-`public void setValue(u64 index,pointer value)`
+__`public void setValue(u64 index,pointer value)`__
 <div style="margin:1em">
 
 Used internaly to set a value for arrays use:
     ```myarray[0] = value;```</div>
 
 
-`public void addTail(pointer value)`
+__`public void addTail(pointer value)`__
 <div style="margin:1em">
 
 </div>
 
 
-`public void addHead(pointer value)`
+__`public void addHead(pointer value)`__
 <div style="margin:1em">
 
 </div>
 
 
-`public void insert(u64 index,pointer value)`
+__`public void insert(u64 index,pointer value)`__
 <div style="margin:1em">
 
 </div>
 
 
-`public pointer removeHead()`
+__`public pointer removeHead()`__
 <div style="margin:1em">
 
 </div>
 
 
-`public pointer removeTail()`
+__`public pointer removeTail()`__
 <div style="margin:1em">
 
 </div>
 
 
-`public pointer remove(u64 index,pointer value)`
+__`public pointer remove(u64 index,pointer value)`__
 <div style="margin:1em">
 
 </div>
 
 
-`public pointer peekTail()`
+__`public pointer peekTail()`__
 <div style="margin:1em">
 
 </div>
 
 
-`public pointer peekHead()`
+__`public pointer peekHead()`__
 <div style="margin:1em">
 
 </div>
 
 
-`private void addCapacityHead()`
+__`private void addCapacityHead()`__
 <div style="margin:1em">
 
 </div>
 
 
-`private void addCapacityTail()`
+__`private void addCapacityTail()`__
 <div style="margin:1em">
 
 </div>
 
 
-`private void reduceCapacityHead()`
+__`private void reduceCapacityHead()`__
 <div style="margin:1em">
 
 </div>
 
 
-`private void reduceCapacityTail()`
+__`private void reduceCapacityTail()`__
 <div style="margin:1em">
 
 </div>
 
 
-`private void realignLeft()`
+__`private void realignLeft()`__
 <div style="margin:1em">
 
 </div>
 
 
-`private void slideLeft()`
+__`private void slideLeft()`__
 <div style="margin:1em">
 
 </div>
 
 
-`private void slideRight()`
+__`private void slideRight()`__
 <div style="margin:1em">
 
 </div>
