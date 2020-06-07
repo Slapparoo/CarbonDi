@@ -24,7 +24,7 @@ public class BasicWalk {
 
   private static void preLoad() throws IOException {
     System.out.println("preload.");
-    lex(new ecLexer(new ANTLRInputStream(new FileInputStream("c-bin/Core.signature.ec"))));
+    lex(new ecLexer(new ANTLRInputStream(new FileInputStream("core/Core.signature.ec"))));
   }
 
   private static void lex(ecLexer lexer) {

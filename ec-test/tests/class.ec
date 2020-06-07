@@ -24,7 +24,7 @@ protected final class test.Class2 (test.Class1) {
 
     void myPrint() {
         printf(`(%s::%s) package=%s, count1=%ld, length=%ld, datasize=%ld\n`, 
-            getClassPackage(), getClassName(), package.asStr(), count1, length(), getObjectDatasize());
+            classPackage, className, package.asStr(), count1, length(), objectDatasize);
     }
 
     i64 addto(i64 amount) {

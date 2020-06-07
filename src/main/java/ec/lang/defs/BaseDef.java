@@ -1,7 +1,12 @@
 package ec.lang.defs;
 
+import java.util.List;
+
+import org.antlr.v4.runtime.Token;
+
 public class BaseDef {
     public BlockDef containedInBlock;
+    public List<Token> comments;
 
     public String hasNot = "";
 
@@ -30,9 +35,17 @@ public class BaseDef {
         return "";
     }
 
-    // public String asLlvm() {
-    //     return "";
-    // }
+    public String asDoc() {
+        if (comments != null) {
+            for (Token token : comments) {
+                if (token.getText().startsWith("/**")) {
+                    return token.getText().substring(3, token.getText().length() -3).trim();
+                }
+            }
+        }
+
+        return "";
+    }
 
     public String asSignature() {
         return "";

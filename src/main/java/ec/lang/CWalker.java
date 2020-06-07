@@ -212,7 +212,7 @@ public class CWalker extends ecBaseListener {
 
             for (ClassDef classDef : ctx.ff.getClasses()) {
                 if (!classDef.is_signature) {
-                    code += "\n"+compiler+" " + params + " -c -I../c-bin/include -o obj/" + classDef.getFqn() + ".o "
+                    code += "\n"+compiler+" " + params + " -c -I../core/include -o obj/" + classDef.getFqn() + ".o "
                             + classDef.getFqn() + ".c";
 
                     if (params.contains("-CF")) {
@@ -220,12 +220,12 @@ public class CWalker extends ecBaseListener {
                     }
                 }
             }
-            code += "\n"+compiler+" " + params + " -c -I../c-bin/include -o obj/" + ffilename + ".o " + ffilename + ".c";
+            code += "\n"+compiler+" " + params + " -c -I../core/include -o obj/" + ffilename + ".o " + ffilename + ".c";
             if (params.contains("-CF")) {
                 code += "\nclang-format -style=file -i " + ffilename + ".c";
             }
 
-            code += "\n"+compiler+" " + params + " -I../c-bin/include ../c-bin/obj/*.o obj/*.o  -o " + ffilename + " "
+            code += "\n"+compiler+" " + params + " -I../core/include ../core/obj/*.o obj/*.o  -o " + ffilename + " "
                     + ffilename + ".run.c";
 
             if (params.contains("-CF")) {
@@ -333,6 +333,16 @@ public class CWalker extends ecBaseListener {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
+
+            try (FileOutputStream out = new FileOutputStream(dirname + "/" + ctx.cd.getFqn() + ".md")) {
+                String doc = ctx.cd.asDoc();
+
+                out.write(doc.getBytes());
+                out.flush();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
         } else if (params.contains("-incsig")) {
             String header = ctx.cd.asSignature();
 

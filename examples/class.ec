@@ -1,3 +1,4 @@
+/* Block Comment */
 protected class Default.SimpleObject1 (Core.Object) {
     properties {
         i64 count1;
@@ -6,21 +7,26 @@ protected class Default.SimpleObject1 (Core.Object) {
 
     SimpleObject1(=count1) {}
 
+    /**
+    @return a const number
+    */
     static i64 constNumber() {
         return 10;
     }
 }
 
-protected final class Default.SimpleObject (Default.SimpleObject1) {
+// line comment
+/** Doc comment */
+protected final class Default.SimpleObject2 (Default.SimpleObject1) {
     properties {
         String package;
     }
 
-    SimpleObject(=count1, =package) {}
+    SimpleObject2(=count1, =package) {}
 
     void myPrint() {
         printf(`(%s::%s) package=%s, count1=%ld, length=%ld, datasize=%ld\n`, 
-            getClassPackage(), getClassName(), package.asStr(), count1, length(), getObjectDatasize());
+            classPackage, className, package.asStr(), count1, length(), objectDatasize);
     }
 
     i64 length() {
@@ -33,7 +39,7 @@ protected final class Default.SimpleObject (Default.SimpleObject1) {
     }
 }
 
-?mySimpleObject = SimpleObject(55);
+?mySimpleObject = SimpleObject2(55);
 mySimpleObject.package = "mySimpleObject";
 mySimpleObject.myPrint();
 

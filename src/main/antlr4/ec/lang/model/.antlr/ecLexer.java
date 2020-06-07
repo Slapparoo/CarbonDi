@@ -1,4 +1,4 @@
-// Generated from /mnt/c/source/c-workspace/jlow3/ec.java/src/main/antlr4/ec/lang/model/ec.g4 by ANTLR 4.7.1
+// Generated from /home/brook/Source/ec-lang/src/main/antlr4/ec/lang/model/ec.g4 by ANTLR 4.7.1
 
 // package ec.lang.model;
 import ec.lang.defs.*;

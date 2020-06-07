@@ -6,7 +6,7 @@ maven :
 	mvn clean compile
 
 core :
-	cd c-bin;make;cd ..
+	cd core;make;cd ..
 
 test :
 	mvn test
@@ -17,10 +17,10 @@ ectest :
 gencore :
 	sh ./generate_core.sh
 
-deploycore : gencore
-	mv c-bin c-bin.old
-	mv c-gen c-bin
+deploycore : 
+	@if [ -d core ]; then mv core core.old; fi
+	@if [ -d coregen ]; then mv coregen core; fi
 
 restorecore : gencore
-	mv c-bin c-gen.old
-	mv c-bin.old c-bin
+	mv core coregen.old
+	mv core.old core

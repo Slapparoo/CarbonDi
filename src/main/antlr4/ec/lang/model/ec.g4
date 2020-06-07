@@ -15,7 +15,7 @@ import ec.lang.defs.TryCatchDef.CatchBlock;
 }
 
 program locals [FileDef ff = DefFactory.newFileDef()]
-   : namespace_definition? imports_definition? statement +
+   :  namespace_definition? imports_definition? statement +
    ;
 
 statement locals[StatementDef st]
@@ -225,6 +225,7 @@ constructor_definition locals[ConstructorDef cd = DefFactory.newConstructorDef()
 
 function_description locals[FunctionDef fd = DefFactory.newFunctDef()]
    : 
+      {$fd.comments = ((BufferedTokenStream)_input).getHiddenTokensToLeft(_input.index()); }
       accessor_type? 
          {$fd.accessor = Enums.AccessorTypes.get($accessor_type.text);} 
       keyword_static? 
@@ -233,7 +234,7 @@ function_description locals[FunctionDef fd = DefFactory.newFunctDef()]
          {$fd.is_final = $keyword_final.text != null;} 
       function_return_type 
          {$fd.returnType = new TypeIdDef($function_return_type.text);} 
-      pure_type  
+      name=pure_type  
          {$fd.name = $pure_type.text;} 
       keyword_lparen ( 
       parameter_definition ( 
@@ -250,24 +251,50 @@ function_description locals[FunctionDef fd = DefFactory.newFunctDef()]
    ;
 variable_definition locals[VariableDef vd = DefFactory.newVarDef()]
 
-   : ti1=builtin_or_type_or_var nm=base_ident keyword_lbracket tn2=num_or_type? keyword_rbracket  
+   : 
+      {$vd.comments = ((BufferedTokenStream)_input).getHiddenTokensToLeft(_input.index()); }
+   ti1=builtin_or_type_or_var nm=base_ident keyword_lbracket tn2=num_or_type? keyword_rbracket  
       {$vd.setValues("rule1", $nm.text, $ti1.text, true, null, $tn2.text, null, null);}
+
    // array looking at specif memory address
-   | ti=builtin_primatives nm=base_ident keyword_lbracket tn=num_or_type? keyword_rbracket ':' ra=num_or_type 
+   | {$vd.comments = ((BufferedTokenStream)_input).getHiddenTokensToLeft(_input.index()); }
+   ti=builtin_primatives nm=base_ident keyword_lbracket tn=num_or_type? keyword_rbracket ':' ra=num_or_type 
       {$vd.setValues("rule4", $nm.text, $ti.text, true, null, $tn.text, $ra.text, null);}
-   | ti2=builtin_or_type keyword_lbracket tn2=num_or_type? keyword_rbracket nm=base_ident                   
+
+   | {$vd.comments = ((BufferedTokenStream)_input).getHiddenTokensToLeft(_input.index()); }
+   ti2=builtin_or_type keyword_lbracket tn2=num_or_type? keyword_rbracket nm=base_ident                   
       {$vd.setValues("rule5", $nm.text, $ti2.text, true, null, $tn2.text, null, null);}
-   | ti1=builtin_or_type_or_var nm=base_ident keyword_lbracket keyword_rbracket (keyword_equals ct=cast_type? ( as=assignable_from | array_values ))?
+
+
+   | {$vd.comments = ((BufferedTokenStream)_input).getHiddenTokensToLeft(_input.index()); }
+   ti1=builtin_or_type_or_var nm=base_ident keyword_lbracket keyword_rbracket (keyword_equals ct=cast_type? ( as=assignable_from | array_values ))?
       {$vd.setValues("rule6", $nm.text, $ti1.text, true, $ct.text, null, null, null, $as.text, null);}
-   | ti2=builtin_or_type keyword_lbracket keyword_rbracket nm=base_ident (keyword_equals ct=cast_type? ( as=assignable_from | array_values ))?
+
+
+   | {$vd.comments = ((BufferedTokenStream)_input).getHiddenTokensToLeft(_input.index()); }
+   ti2=builtin_or_type keyword_lbracket keyword_rbracket nm=base_ident (keyword_equals ct=cast_type? ( as=assignable_from | array_values ))?
       {$vd.setValues("rule7", $nm.text, $ti2.text, true, $ct.text, null, null, null, $as.text, null);}
-   | ti1=builtin_or_type_or_var nm=base_ident
+
+
+   | {$vd.comments = ((BufferedTokenStream)_input).getHiddenTokensToLeft(_input.index()); }
+   ti1=builtin_or_type_or_var nm=base_ident
       {$vd.setValues("rule8", $nm.text, $ti1.text, false, null, null, null, null, null, null);}
-   | ti1=builtin_or_type_or_var nm=base_ident ( keyword_equals ct=cast_type? ( as1=assignable_value | ex=expr ))?
+
+
+   | {$vd.comments = ((BufferedTokenStream)_input).getHiddenTokensToLeft(_input.index()); }
+   ti1=builtin_or_type_or_var nm=base_ident ( keyword_equals ct=cast_type? ( as1=assignable_value | ex=expr ))?
       {$vd.setValues("rule8", $nm.text, $ti1.text, false, $ct.text, null, null, null, $as1.text, DefFactory.dropExpression());}
-   | var_type nm=base_ident  keyword_equals? ti2=builtin_or_type keyword_lbracket tn2=num_or_type keyword_rbracket  
+
+
+
+   | {$vd.comments = ((BufferedTokenStream)_input).getHiddenTokensToLeft(_input.index()); }
+   var_type nm=base_ident  keyword_equals? ti2=builtin_or_type keyword_lbracket tn2=num_or_type keyword_rbracket  
       {$vd.setValues("rule2", $nm.text, $ti2.text, true, null, $tn2.text, null, null);}
-   | function_variable
+
+
+   | {$vd.comments = ((BufferedTokenStream)_input).getHiddenTokensToLeft(_input.index()); }
+   function_variable
+   
    ;
 
 /** convenience stuff */
@@ -306,7 +333,9 @@ array_values
 class_definition locals[ClassDef cd = DefFactory.newClassDef()]
 
 // public final static class NewObject<T> (Object) is Comparable, Polymorphable, Readable
-   : accessor=accessor_type? isFinal=keyword_final?  ( isClass=keyword_class | isStub=keyword_stub ) isSig=keyword_signature? 
+   :   
+{$cd.comments = ((BufferedTokenStream)_input).getHiddenTokensToLeft(_input.index()); }
+   accessor=accessor_type? isFinal=keyword_final?  ( isClass=keyword_class | isStub=keyword_stub ) isSig=keyword_signature? 
    name=pure_type {$cd.setName($name.text);}
    ( '<' pure_type {$cd.addGenerics($pure_type.text);} (keyword_comma pure_type {$cd.addGenerics($pure_type.text);} )*  '>')? 
    ( '(' xx=pure_type { $cd.setCastType($xx.text); } ')' )?   ( keyword_is pure_type {$cd.addImplementation($pure_type.text); } 
@@ -339,15 +368,25 @@ property_definition locals[VariableDef vd = new VariableDef()]
    // (,) String name
    // (,) String name = 'name'
 
-   : { $class_definition::cd.addProperty($vd); } 
+   : 
+   {$vd.comments = ((BufferedTokenStream)_input).getHiddenTokensToLeft(_input.index()); }
+   { $class_definition::cd.addProperty($vd); } 
       property_accessor? st=keyword_static? ti2=builtin_or_type nm=base_ident (keyword_equals ct=cast_type? as1=assignable_value )? keyword_semi 
       {$vd.setValues2("prop1", $nm.text, $ti2.text, false, $ct.text, null, null, $nm.start.toString(), $as1.text, DefFactory.dropExpression(), $st.text);}   
    // (,) String [4] names
-   | { $class_definition::cd.addProperty($vd); } property_definition_type keyword_lbracket type_num? keyword_rbracket base_ident {$vd.setName($base_ident.text);} keyword_semi
+   | 
+   {$vd.comments = ((BufferedTokenStream)_input).getHiddenTokensToLeft(_input.index()); }
+   { $class_definition::cd.addProperty($vd); } 
+   property_definition_type keyword_lbracket type_num? keyword_rbracket base_ident {$vd.setName($base_ident.text);} keyword_semi
    // (,) String names[] = ( the.names | ['name1', 'name2'] )
-   | { $class_definition::cd.addProperty($vd); } property_definition_type base_ident {$vd.setName($base_ident.text);} keyword_lbracket keyword_rbracket (keyword_equals (cast_type { $vd.setCastTo(DefFactory.castType); } )? (assignable_from | array_values ))? keyword_semi
+   | 
+   {$vd.comments = ((BufferedTokenStream)_input).getHiddenTokensToLeft(_input.index()); }
+   { $class_definition::cd.addProperty($vd); } 
+   property_definition_type base_ident {$vd.setName($base_ident.text);} keyword_lbracket keyword_rbracket (keyword_equals (cast_type { $vd.setCastTo(DefFactory.castType); } )? (assignable_from | array_values ))? keyword_semi
    // (,) String[] names = ( the.names | ['name1', 'name2'] )
-   | { $class_definition::cd.addProperty($vd); } property_definition_type keyword_lbracket keyword_rbracket base_ident {$vd.setName($base_ident.text);} (keyword_equals (cast_type { $vd.setCastTo(DefFactory.castType); } )? (assignable_from | array_values ))? keyword_semi
+   | 
+   {$vd.comments = ((BufferedTokenStream)_input).getHiddenTokensToLeft(_input.index()); }
+   { $class_definition::cd.addProperty($vd); } property_definition_type keyword_lbracket keyword_rbracket base_ident {$vd.setName($base_ident.text);} (keyword_equals (cast_type { $vd.setCastTo(DefFactory.castType); } )? (assignable_from | array_values ))? keyword_semi
    ;   
 
 property_definition_type

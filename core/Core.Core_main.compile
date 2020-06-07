@@ -1,0 +1,21 @@
+
+clang -std=gnu17 -O3 -g -c -I../core/include -o obj/Core.Object.o Core.Object.c
+clang -std=gnu17 -O3 -g -c -I../core/include -o obj/Core.String.o Core.String.c
+clang -std=gnu17 -O3 -g -c -I../core/include -o obj/Core.Exception.o Core.Exception.c
+clang -std=gnu17 -O3 -g -c -I../core/include -o obj/Core.Boxing.o Core.Boxing.c
+clang -std=gnu17 -O3 -g -c -I../core/include -o obj/Core.BaseBoxing.o Core.BaseBoxing.c
+clang -std=gnu17 -O3 -g -c -I../core/include -o obj/Core.B8.o Core.B8.c
+clang -std=gnu17 -O3 -g -c -I../core/include -o obj/Core.U8.o Core.U8.c
+clang -std=gnu17 -O3 -g -c -I../core/include -o obj/Core.I8.o Core.I8.c
+clang -std=gnu17 -O3 -g -c -I../core/include -o obj/Core.I16.o Core.I16.c
+clang -std=gnu17 -O3 -g -c -I../core/include -o obj/Core.U16.o Core.U16.c
+clang -std=gnu17 -O3 -g -c -I../core/include -o obj/Core.I32.o Core.I32.c
+clang -std=gnu17 -O3 -g -c -I../core/include -o obj/Core.U32.o Core.U32.c
+clang -std=gnu17 -O3 -g -c -I../core/include -o obj/Core.F32.o Core.F32.c
+clang -std=gnu17 -O3 -g -c -I../core/include -o obj/Core.I64.o Core.I64.c
+clang -std=gnu17 -O3 -g -c -I../core/include -o obj/Core.U64.o Core.U64.c
+clang -std=gnu17 -O3 -g -c -I../core/include -o obj/Core.F64.o Core.F64.c
+clang -std=gnu17 -O3 -g -c -I../core/include -o obj/Core.Pointer.o Core.Pointer.c
+clang -std=gnu17 -O3 -g -c -I../core/include -o obj/Core.DynamicArray.o Core.DynamicArray.c
+clang -std=gnu17 -O3 -g -c -I../core/include -o obj/Core.Core_main.o Core.Core_main.c
+clang -std=gnu17 -O3 -g -I../core/include ../core/obj/*.o obj/*.o  -o Core.Core_main Core.Core_main.run.c

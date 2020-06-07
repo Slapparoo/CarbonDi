@@ -1,14 +1,10 @@
 namespace Core;
 
-public class signature Core.Object {
+public class Core.Object {
     public Object();
 
-    public final pointer getObjectData() {
-      return null;
-    }
-
     public pointer asStr() {
-       sprintf(getTmpBuffer(), `(%s::%s) id=%lu`, getClassPackage(), getClassName(), this);
+       sprintf(getTmpBuffer(), `(%s::%s) id=%lu`, classPackage, className, this);
        return getTmpBuffer();
     }
 
@@ -16,9 +12,14 @@ public class signature Core.Object {
       fprintf(stream, `%s`, asStr());
     }
 
-    public String asString() {
-      return Object_asString(this);
+
+    /**
+    Exposes the underlying pointer to the data can be used for both read and writes, so some caution is advised.
+    */
+    public pointer objectData() {
+      return Object_data(this);
     }
+
 
     public i64 hashCode() {
        return (this * 0xff3ff3ff3ff3ff13) >> 3;
@@ -228,18 +229,18 @@ public class signature Core.Array(Core.Object){
   public void set(u64 b, pointer c);
   public u64 memsize();
   public pointer typename();
-  public static final pointer getClassName();
-  public static final pointer getClassPackage();
-  public static final u64 getObjectDatasize();
-  public final pointer getObjectData();
-  public pointer asStr();
-  public void printTo(pointer stream);
-  public String asString();
-  public i64 hashCode();
-  public boolean equals(Object other);
-  hidden final void free();
-  hidden void release();
-  public final pointer alloc(u64 size);
+  // public static final pointer getClassName();
+  // public static final pointer getClassPackage();
+  // public static final u64 getObjectDatasize();
+  // public final pointer getObjectData();
+  // public pointer asStr();
+  // public void printTo(pointer stream);
+  // public String asString();
+  // public i64 hashCode();
+  // public boolean equals(Object other);
+  // hidden final void free();
+  // hidden void release();
+  // public final pointer alloc(u64 size);
 }// Core::RefArray Signature compiled
 /* imports {} */
 
@@ -259,14 +260,14 @@ public class signature Core.RefArray(Core.Array){
   hidden RefArray(u64 capacity, int dataType, u64 dataSize, pointer values);
 
   public void setObject(u64 index, num object);
-  public static final pointer getClassName();
-  public static final pointer getClassPackage();
-  public static final u64 getObjectDatasize();
+  // public static final pointer getClassName();
+  // public static final pointer getClassPackage();
+  // public static final u64 getObjectDatasize();
   public pointer get(u64 b);
   public void set(u64 b, pointer c);
   public u64 memsize();
   public pointer typename();
-  public final pointer getObjectData();
+  // public final pointer getObjectData();
   public pointer asStr();
   public void printTo(pointer stream);
   public String asString();
@@ -598,6 +599,8 @@ All singing all dancing Dynamic array can be used as
 
 public class Core.DynamicArray (Core.Array){
     (public,public) properties {
+        /** Used internally to maintain the 
+        current position */
         u64 startIndex;
         u64 endIndex;
 
@@ -615,6 +618,7 @@ public class Core.DynamicArray (Core.Array){
         length = 0;
     }
 
+    /** return a pointer to the array content */
     public pointer getValue(u64 index) {
         debug_println(`add %s`, `here`);
         if (index >= capacity) {
@@ -623,6 +627,9 @@ public class Core.DynamicArray (Core.Array){
         return get(index);
     }
 
+    /** Used internaly to set a value for arrays use:
+    ```myarray[0] = value;```
+    */
     public void setValue(u64 index, pointer value) {
         debug_println(`add %lu, %lu`, index, capacity);
         if (index >= capacity) {

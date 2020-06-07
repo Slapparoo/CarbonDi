@@ -153,6 +153,7 @@ keyword_false       : 'false' ;
 // keyword_extern_c    : 'extern_c' ;
 keyword_namespace   : 'namespace' ;
 keyword_global   : 'global' ;
+keyword_inline   : 'inline' ;
 
 
 
@@ -242,6 +243,11 @@ fragment ALPHA : [a-zA-Z0-9_]
 fragment DIGIT  
    : [0-9_] 
    ;
+
+DOC_COMMENT
+	: '/**' .*? '*/' -> channel(HIDDEN)
+	;
+
 
 BLOCK_COMMENT
 	: '/*' .*? '*/' -> channel(HIDDEN)

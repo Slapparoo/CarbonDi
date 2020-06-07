@@ -229,4 +229,18 @@ public class ConstructorDef extends FunctionDefBase implements Cloneable {
     public String asEcSignature() {
         return null;
     }
+
+    @Override
+    public String asDoc() {
+        String res = "\n`" 
+        + (is_override ? "(override) " : "")
+        + accessor + " "
+        + (is_static ? "static " : "" )
+        + (is_final ? "final " : "" )
+        + classDef.getShortname()+ "("
+        + getParamsDoc() + ")"
+        + "`\n";
+        return res + super.asDoc() ;
+    }
+
 }

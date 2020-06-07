@@ -24,7 +24,7 @@ class Default.MyFunctionAsProperty (Core.Object) {
 myFunctionAsProperty.setName = "the name";
 
 External.stdio.printf(`MyFunctionAsProperty %s\n`, myFunctionAsProperty.getName.asStr);
-External.stdio.printf(`MyFunctionAsProperty classname %s\n`, myFunctionAsProperty.getClassName);
+External.stdio.printf(`MyFunctionAsProperty classname %s\n`, myFunctionAsProperty.className);
 
 External.core.print_log(3, myFunctionAsProperty, myFunctionAsProperty.name, myFunctionAsProperty.getName);
 

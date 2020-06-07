@@ -10,6 +10,7 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
     public TypeIdDef returnType;
     public boolean is_property = false;
     public boolean is_parent = false;
+    public boolean is_builtin = false;
 
     public FunctionDef() {
         accessor = Accessor.PUBLIC;
@@ -254,4 +255,19 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
 
         return fd;
     }
+
+    @Override
+    public String asDoc() {
+        String res = "\n`" 
+        + (is_override ? "(override) " : "")
+        + accessor + " "
+        + (is_static ? "static " : "" )
+        + (is_final ? "final " : "" )
+        + returnType.getName() + " "
+        + getExpandedName()+ "("
+        + getParamsDoc() + ")"
+        + "`\n";
+        return res + super.asDoc();
+    }
+
 }

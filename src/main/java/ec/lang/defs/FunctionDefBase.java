@@ -73,6 +73,28 @@ public abstract class FunctionDefBase extends StatementDef implements ContainerD
         return res;
     }
 
+    public String getParamsDoc() {
+        String res = "";
+        boolean first = true;
+
+        for(VariableDef param : parameters) {
+            if (param.getName().equals("this")) {
+                continue;
+            }
+
+            if (!first) {
+                res += ",";
+            }
+            res += param.type.getName() + " ";
+            res += param.getName();
+
+
+            first = false;
+        }
+        return res;
+    }
+
+
     public String getParamsSignatureAsCode() {
         String res = "";
         boolean first = true;
@@ -213,4 +235,12 @@ public abstract class FunctionDefBase extends StatementDef implements ContainerD
         fd.parameters = new ArrayList<>(parameters);
         return fd;
     }
+
+    @Override
+    public String asDoc() {
+        // TODO Auto-generated method stub
+        return "<div style=\"margin:1em\">\n\n" + super.asDoc() + "</div>\n\n";
+    }
+
+
 }

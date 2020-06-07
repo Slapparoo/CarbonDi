@@ -78,7 +78,7 @@ public class BaseExamples {
 
     @BeforeAll
     private static void preLoad() throws IOException {
-        lex(new ANTLRInputStream(new FileInputStream("c-bin/Core.signature.ec")));
+        lex(new ANTLRInputStream(new FileInputStream("core/Core.signature.ec")));
 
         ClassDef classDef = DefFactory.resolveClass("Object");
         assertNotNull(classDef, "Core.Object not found?");

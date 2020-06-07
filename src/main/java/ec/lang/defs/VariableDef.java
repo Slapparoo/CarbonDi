@@ -347,4 +347,11 @@ public class VariableDef extends StatementDef {
 		return false;
     }
 
+    @Override
+    public String asDoc() {
+        // String res = "`" + (is_static ? "static " : "" ) + type.getName() + " " + name + "` read(" + readAccessor + ") write(" + writeAccessor + ")\n";
+        String res = "|" + type.getName() + "|__" + name + "__|" + readAccessor + "|" + writeAccessor + "|" + (assignValue == null ? "" : assignValue.expr) + "|";
+        return res + super.asDoc().replaceAll("\\n", " ") + "|\n";
+    }
+
 }

@@ -20,7 +20,7 @@ protected final class SimpleObject (SimpleObject1) {
 
     void myPrint() {
         printf(`(%s::%s) package=%s, count1=%ld, length=%ld, datasize=%ld\n`, 
-            getClassPackage(), getClassName(), package.asStr(), count1, length(), getObjectDatasize());
+            classPackage, className, package.asStr(), count1, length(), objectDatasize);
     }
 
     i64 length() {

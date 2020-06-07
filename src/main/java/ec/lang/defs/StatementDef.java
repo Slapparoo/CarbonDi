@@ -1,5 +1,9 @@
 package ec.lang.defs;
 
+import java.util.List;
+
+import org.antlr.v4.runtime.Token;
+
 public class StatementDef extends BaseDef {
     public ExprDef statement;
     

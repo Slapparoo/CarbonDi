@@ -6,12 +6,12 @@
 **/*.e
 **/*.gch
 **/gen/*
-c-gen
-c-bin.old
+coregen
+core.old
 target/**
 c-lang/**
 ec-test/*
 /.antlr
 /.settings
-c-bin/include/eccore.h
+core/include/eccore.h
 

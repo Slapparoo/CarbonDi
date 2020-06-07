@@ -12,24 +12,24 @@ class Default.MyClass (Core.Object) {
         
     }
     MyClass(=value) {
-        printf(`create %s %ld\n`, getClassName(), value);
+        printf(`create %s %ld\n`, className, value);
     }
     void myPrint() {
         // printf(`value=, name=%s\n`, name.asStr());
         printf(`value=%ld, name=%s\n`, value, name.asStr());
     }
     void release() {
-        printf(`release %s %ld\n`, getClassName(), value);
+        printf(`release %s %ld\n`, className, value);
     }
 }
 
 class Default.MySecondClass(Default.MyClass) {
     MySecondClass(=value, =name) {
-        printf(`create %s\n`, getClassName());
+        printf(`create %s\n`, className);
     }
 
     void release() {
-        printf(`release (override) %s %ld\n`, getClassName(), value);
+        printf(`release (override) %s %ld\n`, className, value);
     }
 }
 

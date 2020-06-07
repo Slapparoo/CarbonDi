@@ -251,15 +251,20 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
             variableDef.classDef = this;
         }
 
-        FunctionDef funct = SnippetFactory.addReturnFunction("getClassName", "\""+getFqn()+"\"", new TypeIdDef("pointer"), true, true, true);
+        FunctionDef funct = SnippetFactory.addReturnFunction("className", "\""+getFqn()+"\"", new TypeIdDef("pointer"), true, true, true);
+        funct.is_builtin = true;
         funct.classDef = this; functionDefs.add(funct);
-        funct = SnippetFactory.addReturnFunction("getClassShortName", "\""+getShortname()+"\"", new TypeIdDef("pointer"), true, true, true);
+        funct = SnippetFactory.addReturnFunction("classShortName", "\""+getShortname()+"\"", new TypeIdDef("pointer"), true, true, true);
+        funct.is_builtin = true;
         funct.classDef = this; functionDefs.add(funct);
-        funct = SnippetFactory.addReturnFunction("getClassCName", "\""+getCName()+"\"", new TypeIdDef("pointer"), true, true, true);
+        funct = SnippetFactory.addReturnFunction("classCName", "\""+getCName()+"\"", new TypeIdDef("pointer"), true, true, true);
+        funct.is_builtin = true;
         funct.classDef = this; functionDefs.add(funct);
-        funct = SnippetFactory.addReturnFunction("getClassPackage", "\""+classname.getPackageName()+"\"", new TypeIdDef("pointer"), true, true, true);
+        funct = SnippetFactory.addReturnFunction("classPackage", "\""+classname.getPackageName()+"\"", new TypeIdDef("pointer"), true, true, true);
+        funct.is_builtin = true;
         funct.classDef = this; functionDefs.add(funct);
-        funct = SnippetFactory.addReturnFunction("getObjectDatasize", "sizeof("+getCName()+")", new TypeIdDef("u64"), true, true, true);
+        funct = SnippetFactory.addReturnFunction("objectDatasize", "sizeof("+getCName()+")", new TypeIdDef("u64"), true, true, true);
+        funct.is_builtin = true;
         funct.classDef = this; functionDefs.add(funct);
 
         // add all parent constructors
@@ -849,7 +854,7 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
         // + "\n  populateObjectClassModel(classModel);"
         + "\n "+ getPopulateParent()
         + "\n  "+getCName()+"_cm* thisClassModel = ("+getCName()+"_cm*)classModel;"
-        + "\n  thisClassModel->parent = "+getObjectClassModel()+";"
+        + (getFqn().equals("Core.Object") ?  "\n  thisClassModel->parent = null;" :  "\n  thisClassModel->parent = "+getObjectClassModel()+";")
         + populateClassMethods() 
         + "\n}\n\n";
     }
@@ -1024,5 +1029,71 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
     @Override
     public String toString() {
         return getFqn();
+    }
+
+    @Override
+    public String asDoc() {
+        String res = "class " + getFqn() 
+        + (parent == null ? "" : " extends [" +  parent.getFqn()+ "]("+  parent.getFqn()+ ".md)" ) 
+        + "\n===\n"
+        + super.asDoc(); 
+
+        int vars = 0;
+        for (VariableDef var : properties ) {
+            if (!var.is_static) {
+                vars++;
+            }
+        }
+
+        if (vars > 0) {
+            res += "\n---\nProperties\n---\n"
+            + "|type|name|read|write|value|comments|\n|--- |--- |--- |--- |--- |--- |\n";
+
+            for (VariableDef var : properties ) {
+                if (!var.is_static) {
+                    res += var.asDoc();
+                }
+            }
+        }
+
+        vars = 0;
+        for (VariableDef var : properties ) {
+            if (var.is_static) {
+                vars++;
+            }
+        }
+
+        if (vars > 0) {
+            res += "\n---\nStatic Properties\n---\n"
+            + "|type|name|read|write|value|comments|\n|--- |--- |--- |--- |--- |--- |\n";
+
+            for (VariableDef var : properties ) {
+                if (var.is_static) {
+                    res += var.asDoc();
+                }
+            }
+        }
+
+
+        res += "\n---\nConstructors\n---\n";
+
+        for (ConstructorDef con : constructorDefs) {
+            res += con.asDoc();
+        }
+        
+        res += "\n---\nFunctions\n---\n";
+
+        for (FunctionDefBase func : functionDefs) {
+            if (func instanceof FunctionDef) {
+                FunctionDef fn = (FunctionDef) func;
+                if (!(fn.is_property || fn.is_parent || fn.is_builtin)) {
+                    res += func.asDoc();
+                }
+            } else {
+                res += func.asDoc();
+            }
+        }
+
+        return res;
     }
 }
