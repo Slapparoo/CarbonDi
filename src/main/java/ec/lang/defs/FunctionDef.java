@@ -258,7 +258,7 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
 
     @Override
     public String asDoc() {
-        String res = "\n`" 
+        String res = "\n__`" 
         + (is_override ? "(override) " : "")
         + accessor + " "
         + (is_static ? "static " : "" )
@@ -266,7 +266,7 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
         + returnType.getName() + " "
         + getExpandedName()+ "("
         + getParamsDoc() + ")"
-        + "`\n";
+        + "`__\n";
         return res + super.asDoc();
     }
 
