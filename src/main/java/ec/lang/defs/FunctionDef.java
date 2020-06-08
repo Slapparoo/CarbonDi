@@ -114,6 +114,7 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
         
         for (VariableDef  param : getParameters()) {
             if (getBlockDef() != null) {
+                param.isParam = true;
                 getBlockDef().addVariable(param);
                 param.containedInBlock = containedInBlock;
                 param.resolve_01();
@@ -128,6 +129,10 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
 
             for (StatementDef def : getBlockDef().statementDefs) {
                 if (def instanceof ReturnExpr) {
+
+                    ReturnExpr rx = (ReturnExpr) def;
+
+                    rx.functionReturn = returnType;
                     if (def.statement.thisType == null) {
                         def.statement.thisType = returnType;
                     }

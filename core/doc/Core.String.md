@@ -109,7 +109,7 @@ __`public i64 find(i64 from,String string6)`__
 __`public void trunc(i64 start,i64 end)`__
 <div style="margin:1em">
 
-Array with the offsets of all instances of the sub strings</div>
+</div>
 
 
 __`(override) public pointer asStr()`__

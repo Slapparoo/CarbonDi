@@ -64,4 +64,4 @@ if (!isTrue()) {
 }
 
 
-printf(`end\n`);
+printf(`%s\n`,`end`);

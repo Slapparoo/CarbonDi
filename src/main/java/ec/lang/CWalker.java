@@ -14,6 +14,7 @@ import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 
+import ec.lang.compiler.Messages;
 import ec.lang.defs.ClassDef;
 import ec.lang.model.ecBaseListener;
 import ec.lang.model.ecParser;
@@ -23,15 +24,17 @@ public class CWalker extends ecBaseListener {
 
     String dirname;
     String filename;
+    String ecCoreDir;
     FileOutputStream ecOutputStream;
     
     public List<String> tempFiles = new ArrayList<>();
     final Set<String> params;
     final List<String> args;
 
-    public CWalker(List<String> args, final String dirname) throws Exception {
+    public CWalker(List<String> args, final String dirname, String ecCoreDir) throws Exception {
         this.dirname = dirname;
         this.filename = args.get(0);
+        this.ecCoreDir = ecCoreDir;
         this.args = args;
 
         params = new HashSet<>(args);
@@ -39,11 +42,9 @@ public class CWalker extends ecBaseListener {
         File f = new File(filename);
         int i = f.getName().lastIndexOf('.');
         String fName = f.getName().substring(0, i);
-        // String nsname = "";
 
         i = fName.lastIndexOf('.');
         if (i > 0) {
-            // nsname = fName.substring(0, i);
             fName = fName.substring(i + 1);
         }
 
@@ -61,11 +62,10 @@ public class CWalker extends ecBaseListener {
             e.printStackTrace();
         }
 
-
         String ffilename = fName + ".signature";
 
         if (!ffilename.equals("signature.signature")) {
-            System.out.println("signature Filename: " + dirname + "/" + ffilename + ", " + filename);
+            // System.out.println("signature Filename: " + dirname + "/" + ffilename + ", " + filename);
             ecOutputStream = new FileOutputStream(dirname + "/" + ffilename + ".ec");
         }
     }
@@ -161,7 +161,7 @@ public class CWalker extends ecBaseListener {
         // ctx.ff.filename = fName+ "_main";
 
         String ffilename = ctx.ff.filename;
-        System.out.println("Filename: " + dirname + "/" + ffilename);
+        // System.out.println("Filename: " + dirname + "/" + ffilename);
 
         ctx.ff.resolve_01();
         ctx.ff.validate_02();
@@ -212,7 +212,7 @@ public class CWalker extends ecBaseListener {
 
             for (ClassDef classDef : ctx.ff.getClasses()) {
                 if (!classDef.is_signature) {
-                    code += "\n"+compiler+" " + params + " -c -I../core/include -o obj/" + classDef.getFqn() + ".o "
+                    code += "\n"+compiler+" " + params + " -c -I"+ecCoreDir+"core/include -o obj/" + classDef.getFqn() + ".o "
                             + classDef.getFqn() + ".c";
 
                     if (params.contains("-CF")) {
@@ -220,12 +220,12 @@ public class CWalker extends ecBaseListener {
                     }
                 }
             }
-            code += "\n"+compiler+" " + params + " -c -I../core/include -o obj/" + ffilename + ".o " + ffilename + ".c";
+            code += "\n"+compiler+" " + params + " -c -I"+ecCoreDir+"core/include -o obj/" + ffilename + ".o " + ffilename + ".c";
             if (params.contains("-CF")) {
                 code += "\nclang-format -style=file -i " + ffilename + ".c";
             }
 
-            code += "\n"+compiler+" " + params + " -I../core/include ../core/obj/*.o obj/*.o  -o " + ffilename + " "
+            code += "\n"+compiler+" " + params + " -I"+ecCoreDir+"core/include "+ecCoreDir+"core/obj/*.o obj/*.o  -o " + ffilename + " "
                     + ffilename + ".run.c";
 
             if (params.contains("-CF")) {
@@ -263,11 +263,16 @@ public class CWalker extends ecBaseListener {
             e.printStackTrace(System.err);
         }
 
+        Messages.MESSAGES.printMessages();
+
         try {
             if (!params.contains("-nogen")) {
                 runCode(dirname, Arrays.asList("sh", "./"+ffilename + ".compile"));
-                runCode(dirname, Arrays.asList("./"+ ffilename));
+                if (!params.contains("-norun")) {
+                    runCode(dirname, Arrays.asList("./"+ ffilename));
+                }
             }
+
         } catch (IOException e) {
             System.err.println("Error running. " + dirname + "/" + ffilename);
             System.err.println(e.getMessage());
@@ -276,7 +281,7 @@ public class CWalker extends ecBaseListener {
 
         if (params.contains("-clean")) {
             for (String string : tempFiles) {
-                System.out.println("delete " + string);
+                // System.out.println("delete " + string);
                 FileUtils.deleteQuietly(new File(string));
             }
         }
@@ -287,7 +292,7 @@ public class CWalker extends ecBaseListener {
         ctx.cd.resolve_01();
         ctx.cd.validate_02();
         ctx.cd.prepare_03();
-        System.out.println("#class Filename: " + ctx.cd.getFqn());
+        // System.out.println("#class Filename: " + ctx.cd.getFqn());
 
 
         if (!ctx.cd.is_signature) {

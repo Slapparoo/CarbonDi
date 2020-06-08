@@ -21,7 +21,7 @@ public class ClassDefTest {
         + "class Default.MyClass1 {\n int number() {\nreturn 1;\n}\n void number2(int aa) "
         + "{\n number();\n}\n }"
         + "class MyClass2 (Default.MyClass1) {\n properties {\n int n1; \n}\n int number() {\nreturn number2(n1);\n}"
-        + "public final pointer myrealloc(pointer ptr, u64 size) {return Object_realloc(this, ptr, size); }\n} ";
+        + "public final pointer myrealloc(pointer ptr, u64 size) {return External.core.Object_realloc(this, ptr, size); }\n} ";
 
         BaseTest.preLoad();
         BaseTest.lex(new ecLexer(new ANTLRInputStream(ecCode)));
@@ -43,7 +43,7 @@ public class ClassDefTest {
         // System.out.println(fd.asCode());
 
         FunctionDef fd2 = myClass2.resolveFunction("number");
-        System.out.println(fd2.asCode());
+        // System.out.println(fd2.asCode());
 
         // FunctionDef fd3 = myClass2.resolveFunction("myrealloc");
         // System.out.println(fd3.asCode());
@@ -58,19 +58,16 @@ public class ClassDefTest {
     @Test
     public void testPropertyAccess() throws IOException {
         String ecCode = ""
-        + "class Default.MyClass1p{\n  properties {\nint nl = 10;\n}\nint number() {\nreturn nl;\n}}";
+        + "class Default.MyClass2p{\n  properties {\nint nl = 10;\n}\nint number() {\nreturn nl;\n}}";
 
         BaseTest.preLoad();
         BaseTest.lex(new ecLexer(new ANTLRInputStream(ecCode)));
 
-        ClassDef myClass1 = DefFactory.resolveClass("MyClass1p");
-
-        myClass1.asCode();
+        ClassDef myClass1 = DefFactory.resolveClass("MyClass2p");
 
         FunctionDef fd2 = myClass1.resolveFunction("number");
-        System.out.println(fd2.asCode());
 
-        String res = "intnumber(numthis){u64entry__=__onEnter();return__exitReturn_int_un(((c_1085510111_MyClass1p_cm*)useObject(this)->classmodel)->get_nl(this)entry__);}";
+        String res = "intnumber(numthis){u64entry__=__onEnter();return__exitReturn_int_un(((c_1085510111_MyClass2p_cm*)useObject(this)->classmodel)->get_nl(this)entry__);}";
         assertEquals(BaseTest.stripWhiteSpace(fd2.asCode()), res, "function generated");
     }
 
@@ -87,9 +84,8 @@ public class ClassDefTest {
         myClass1.asCode();
 
         FunctionDef fd2 = myClass1.resolveFunction("number");
-        System.out.println(fd2.asCode());
 
-        String res = "intnumber(numthis){u64entry__=__onEnter();return__exitReturn_int_un(((c_1085510111_MyClass1p_cm*)useObject(this)->classmodel)->get_nl(this)entry__);}";
+        String res = "pointernumber(numthis){u64entry__=__onEnter();return__exitReturn_pointer_un(((c_1085510111_MyClass1p_cm*)useObject(this)->classmodel)->asStr(this)entry__);}";
         assertEquals(BaseTest.stripWhiteSpace(fd2.asCode()), res, "function generated");
     }
     

@@ -1,9 +1,0 @@
-#!/bin/sh 
-
-rm -rf c-lang
-mkdir -p c-lang/obj
-
-JAVA=/usr/lib/jvm/java-11-openjdk-amd64/bin/java
-
-$JAVA @java.argfile ec.lang.BasicWalk examples/$1.ec c-lang -CCclang -CO'-std=gnu11 -O3 -g' -CF
-# $JAVA @java.argfile ec.lang.BasicWalk examples/$1.ec c-lang -CCclang -CO'-std=gnu17 -O3 -g' -CF -clean

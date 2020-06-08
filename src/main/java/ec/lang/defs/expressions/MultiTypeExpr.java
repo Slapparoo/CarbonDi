@@ -3,6 +3,7 @@ package ec.lang.defs.expressions;
 import java.util.ArrayList;
 import java.util.List;
 
+import ec.lang.compiler.Messages;
 import ec.lang.defs.ClassDef;
 import ec.lang.defs.ConstructorDef;
 import ec.lang.defs.DefFactory;
@@ -174,7 +175,7 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
 
             if (resolvedTo == null) {
                 if (isExternal) {
-                    System.out.println("[warn] external function signature not defined \'" + this + " " + sig + "\'");
+                    Messages.MESSAGES.addWarning("external function signature not defined \'" + this + " " + sig + "\'");
                     fcd.resolve_01();
                     return;
                 }
@@ -246,7 +247,7 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
             FunctionDef resolvedTo = (FunctionDef) fcd.containedInBlock.classDef.resolveFunction(fcd.getName());
             if (resolvedTo != null) {
                 if (!resolvedTo.isResolved()) {
-                    System.out.println("@@resolveFunction not resolved " + fcd.getName());
+                    System.out.println("@@resolveFunction 2 not resolved " + fcd.getName());
                     resolvedTo.resolve_01();
                 }
 
@@ -265,7 +266,7 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
         FunctionDef resolvedTo = (FunctionDef) DefFactory.resolveFunction(fcd.getName());
         if (resolvedTo != null) {
             if (!resolvedTo.isResolved()) {
-                System.out.println("@@resolveFunction not resolved " + fcd.getName());
+                Messages.MESSAGES.addInfo("found unresolved function. " + fcd.getName() + " class=" + resolvedTo.classDef);
                 resolvedTo.resolve_01();
             }
 
@@ -305,7 +306,8 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
             // fcd.containedInBlock.classDef.resolveFunction(fcd.getName());
             // System.out.println("@@unres " + fd);
 
-            System.out.println("[warn] function not resolved " + fcd.getName() + " " + fcd.getSignature());
+            // System.out.println("[warn] function not resolved " + fcd.getName() + " " + fcd.getSignature() + " " + fcd.getLine());
+            throw new RuntimeException("[warn] function not resolved " + fcd.getName() + " " + fcd.getSignature() + " " + fcd.getLine());
         }
 
     }
@@ -433,7 +435,8 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
     @Override
     public void resolve_01() {
         if (resolved) {
-            System.out.println("already resolved why are you resolving again? " + type_id_list + ", " + asSignature());
+            // System.out.println("already resolved why are you resolving again? " + type_id_list + ", " + asSignature());
+            return;
         }
 
         MultiTypeId last = null;

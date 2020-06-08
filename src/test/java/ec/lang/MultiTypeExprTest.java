@@ -25,19 +25,19 @@ public class MultiTypeExprTest extends BaseTest {
         multiTypeExpr.containedInBlock = new BlockDef();
 
         multiTypeExpr.addExpr(new TypeExpr("Object"), "");
-        multiTypeExpr.addExpr(new TypeExpr("getClassShortName"), "");
+        multiTypeExpr.addExpr(new TypeExpr("classShortName"), "");
 
         multiTypeExpr.resolve_01();
-        // System.out.println(multiTypeExpr);
-        // System.out.println(multiTypeExpr.asCode());
 
-        assertEquals("/*te141*/((c_2106303_Object_cm*)getc_2106303_Object_cm())->getClassShortName()", 
-        multiTypeExpr.asCode(), "Object.getClassShortName asCode");
+        String actual = BaseTest.stripWhiteSpace(multiTypeExpr.asCode());
+        String expected = "((c_2106303_Object_cm*)getc_2106303_Object_cm())->classShortName()";
+
+        assertEquals(expected, actual, "Object.classShortName asCode");
     }
 
     @Test
     public void testResolveProperty() throws IOException {
-        String ecCode = "?numbers = \"s1\";?numbers1 = numbers;printf(numbers1.asStr);";
+        String ecCode = "?numbers = \"s1\";?numbers1 = numbers;External.stdio.printf(numbers1.asStr);";
 
         BaseTest.preLoad();
         BaseTest.lex(new ecLexer(new ANTLRInputStream(ecCode)));

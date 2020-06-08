@@ -36,12 +36,12 @@ public class FunctionDefTest {
 
         functionDef.resolve_01();
 
-        assertEquals("name", functionDef.getExpandedName());
-        assertEquals("void (*name)(num)", functionDef.getSignature());
-        assertEquals("void (*name)(num)", functionDef.getSignatureAsCode());
-        assertEquals("void (*name)(num)", functionDef.getExpandedSignature());
-        assertEquals("void name(num)", functionDef.asEcSignature());
-        assertEquals("\npublic void name(num this);", functionDef.asSignature());
+        assertEquals("name", functionDef.getExpandedName(), "getExpandedName");
+        assertEquals("void (*name)(num)", functionDef.getSignature(), "getSignature" );
+        assertEquals("void (*name)(num)", functionDef.getSignatureAsCode(), "getSignatureAsCode");
+        assertEquals("void (*name)(num)", functionDef.getExpandedSignature(), "getExpandedSignature" );
+        assertEquals("void name(num)", functionDef.asEcSignature(), "asEcSignature");
+        assertEquals("\npublic void name();", functionDef.asSignature(), "asSignature");
     }
 
     @Test
@@ -66,7 +66,7 @@ public class FunctionDefTest {
         assertEquals("void (*name)(num,pointer)", functionDef.getExpandedSignature());
         // assertEquals("function name:=void(num,pointer)", functionDef.asEcSignature());
         assertEquals("void name(num,pointer)", functionDef.asEcSignature());
-        assertEquals("\npublic void name(num this, pointer str);", functionDef.asSignature());
+        assertEquals("\npublic void name(pointer str);", functionDef.asSignature());
     }
 
     @Test

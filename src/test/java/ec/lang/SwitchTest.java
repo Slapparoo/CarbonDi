@@ -28,8 +28,8 @@ public class SwitchTest extends BaseTest {
 
         SwitchDef switchDef = new SwitchDef(expr);
 
-        System.out.println(switchDef.getBlockDef());
-        System.out.println(blockDef);
+        // System.out.println(switchDef.getBlockDef());
+        // System.out.println(blockDef);
 
         blockDef.statementDefs.add(switchDef);
         CaseStatement caseStatement = new CaseStatement();
@@ -57,12 +57,12 @@ public class SwitchTest extends BaseTest {
         blockDef.resolve_01();
         blockDef.validate_02();
         blockDef.prepare_03();
-        System.out.println(blockDef.asCode());
+        // System.out.println(blockDef.asCode());
 
 
-        System.out.println("caseStatement.getBlockDef() " + caseStatement.getBlockDef() + " " + caseStatement.containedInBlock);
-        System.out.println("switchDef.getBlockDef() " + switchDef.getBlockDef() + " " + switchDef.containedInBlock);
-        System.out.println("blockDef " + blockDef);
+        // System.out.println("caseStatement.getBlockDef() " + caseStatement.getBlockDef() + " " + caseStatement.containedInBlock);
+        // System.out.println("switchDef.getBlockDef() " + switchDef.getBlockDef() + " " + switchDef.containedInBlock);
+        // System.out.println("blockDef " + blockDef);
 
     }
 

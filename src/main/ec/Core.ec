@@ -4,8 +4,8 @@ public class Core.Object {
     public Object();
 
     public pointer asStr() {
-       sprintf(getTmpBuffer(), `(%s::%s) id=%lu`, classPackage, className, this);
-       return getTmpBuffer();
+       sprintf(tmpBuffer, `(%s::%s) id=%lu`, classPackage, className, this);
+       return tmpBuffer;
     }
 
     public void printTo(pointer stream) {
@@ -17,7 +17,7 @@ public class Core.Object {
     Exposes the underlying pointer to the data can be used for both read and writes, so some caution is advised.
     */
     public pointer objectData() {
-      return Object_data(this);
+      return External.core.Object_data(this);
     }
 
 
@@ -33,11 +33,11 @@ public class Core.Object {
     hidden void release() {}; 
 
     public final pointer alloc(u64 size) {
-      return Object_alloc(this, size);
+      return External.core.Object_alloc(this, size);
     }
 
     public final pointer realloc(pointer ptr, u64 size) {
-      return Object_realloc(this, ptr, size);
+      return External.core.Object_realloc(this, ptr, size);
     }
 }
 
@@ -111,7 +111,9 @@ public class Core.String (Core.Object) {
     public String prependStr(pointer str4) {
         i64 len = External.stdio.strlen(value) + External.stdio.strlen(str4) + 1;
         value = realloc(value, len);
-        External.stdio.memmove(EC_ADDRESS(EC_ARRAY(value, External.stdio.strlen(str4))), value, External.stdio.strlen(value) +1);
+        External.stdio.memmove(
+          EC_ADDRESS(
+            EC_ARRAY(value, External.stdio.strlen(str4))), value, External.stdio.strlen(value) +1);
         External.stdio.memcpy(value, str4, External.stdio.strlen(str4));
 
         return this;
@@ -190,9 +192,9 @@ public class Core.String (Core.Object) {
         }
 
         i64 newLen = end - start;
-        External.stdio.memmove(value, External.stdio.EC_ADDRESS(External.stdio.EC_ARRAY(value, start)), newLen);
+        External.stdio.memmove(value, EC_ADDRESS(EC_ARRAY(value, start)), newLen);
         value = realloc(value, newLen+1);
-        External.stdio.EC_SETVALUE_i8(newLen, value, 0);
+        EC_SETVALUE_i8(newLen, value, 0);
     }
 
     public pointer asStr() {
@@ -356,8 +358,8 @@ public final class Core.U8 (Core.BaseBoxing) {
   public U8(=value);
 
   public pointer asStr() {
-    sprintf(getTmpBuffer(), `%u`, value);
-    return getTmpBuffer();      
+    sprintf(tmpBuffer, `%u`, value);
+    return tmpBuffer;      
   }
 }
 
@@ -377,8 +379,8 @@ public final class Core.I8 (Core.BaseBoxing) {
   }
 
   public pointer asStr() {
-    sprintf(getTmpBuffer(), `%i`, value);
-    return getTmpBuffer();      
+    sprintf(tmpBuffer, `%i`, value);
+    return tmpBuffer;      
   }
 }
 
@@ -398,8 +400,8 @@ public final class Core.I16 (Core.BaseBoxing) {
   }
 
   public pointer asStr() {
-    sprintf(getTmpBuffer(), `%i`, value);
-    return getTmpBuffer();      
+    sprintf(tmpBuffer, `%i`, value);
+    return tmpBuffer;      
   }
 }
 
@@ -419,8 +421,8 @@ public final class Core.U16 (Core.BaseBoxing) {
   }
 
   public pointer asStr() {
-    sprintf(getTmpBuffer(), `%u`, value);
-    return getTmpBuffer();      
+    sprintf(tmpBuffer, `%u`, value);
+    return tmpBuffer;      
   }
 }
 
@@ -440,8 +442,8 @@ public final class Core.I32 (Core.BaseBoxing) {
   }
 
   public pointer asStr() {
-    sprintf(getTmpBuffer(), `%i`, value);
-    return getTmpBuffer();      
+    sprintf(tmpBuffer, `%i`, value);
+    return tmpBuffer;      
   }
 }
 
@@ -461,8 +463,8 @@ public final class Core.U32 (Core.BaseBoxing) {
   }
 
   public pointer asStr() {
-    sprintf(getTmpBuffer(), `%u`, value);
-    return getTmpBuffer();      
+    sprintf(tmpBuffer, `%u`, value);
+    return tmpBuffer;      
   }
 }
 
@@ -482,8 +484,8 @@ public final class Core.F32 (Core.BaseBoxing) {
   }
 
   public pointer asStr() {
-    sprintf(getTmpBuffer(), `%f`, value);
-    return getTmpBuffer();      
+    sprintf(tmpBuffer, `%f`, value);
+    return tmpBuffer;      
   }
 }
 
@@ -503,8 +505,8 @@ public final class Core.I64 (Core.BaseBoxing) {
   }
 
   public pointer asStr() {
-    sprintf(getTmpBuffer(), `%li`, value);
-    return getTmpBuffer();      
+    sprintf(tmpBuffer, `%li`, value);
+    return tmpBuffer;      
   }
 }
 
@@ -524,8 +526,8 @@ public final class Core.U64 (Core.BaseBoxing) {
   }
 
   public pointer asStr() {
-    sprintf(getTmpBuffer(), `%lu`, value);
-    return getTmpBuffer();      
+    sprintf(tmpBuffer, `%lu`, value);
+    return tmpBuffer;      
   }
 }
 
@@ -545,8 +547,8 @@ public final class Core.F64 (Core.BaseBoxing) {
   }
 
   public pointer asStr() {
-    sprintf(getTmpBuffer(), `%lf`, value);
-    return getTmpBuffer();      
+    sprintf(tmpBuffer, `%lf`, value);
+    return tmpBuffer;      
   }
 }
 
@@ -566,8 +568,8 @@ public final class Core.Pointer (Core.BaseBoxing) {
   }
 
   public pointer asStr() {
-    sprintf(getTmpBuffer(), `%p`, value);
-    return getTmpBuffer();      
+    sprintf(tmpBuffer, `%p`, value);
+    return tmpBuffer;      
   }
 }
 
@@ -692,7 +694,9 @@ public class Core.DynamicArray (Core.Array){
             // dest, source, size
             endIndex++;
             u64 ix = index + 1;
-            memmove(EC_ADDRESS(EC_ARRAY(ix, values)), EC_ADDRESS(EC_ARRAY(index, values)), (endIndex - index) * dataSize); 
+            External.stdio.memmove(EC_ADDRESS(
+              EC_ARRAY(ix, values)), EC_ADDRESS(
+                EC_ARRAY(index, values)), (endIndex - index) * dataSize); 
         } else {
             // move head
             if (startIndex == 0) {
@@ -700,7 +704,9 @@ public class Core.DynamicArray (Core.Array){
             }
             startIndex--;
             u64 ix = startIndex + 1;
-            memmove(EC_ADDRESS(EC_ARRAY(startIndex, values)), EC_ADDRESS(EC_ARRAY(ix, values)), (index - startIndex) * dataSize); 
+            External.stdio.memmove(EC_ADDRESS(
+              EC_ARRAY(startIndex, values)), 
+              EC_ADDRESS(EC_ARRAY(ix, values)), (index - startIndex) * dataSize); 
         }
         length++;
         set(index, value);
@@ -763,12 +769,18 @@ public class Core.DynamicArray (Core.Array){
         if (index - startIndex > endIndex - index) {
             // move tail
             u64 ix = index +1;
-            memmove(EC_ADDRESS(EC_ARRAY(index, values)), EC_ADDRESS(EC_ARRAY(ix, values)), (endIndex - index) * dataSize); 
+            External.stdio.memmove(EC_ADDRESS(
+              EC_ARRAY(index, values)), 
+              EC_ADDRESS(EC_ARRAY(ix, values)), (endIndex - index) * dataSize); 
             endIndex--;
         } else {
             // move head
             u64 ix = startIndex +1;
-            memmove(EC_ADDRESS(EC_ARRAY(ix, values)), EC_ADDRESS(EC_ARRAY(startIndex, values)), (index - startIndex) * dataSize); 
+            External.stdio.memmove(
+              EC_ADDRESS(
+                EC_ARRAY(ix, values)), 
+                EC_ADDRESS(
+                  EC_ARRAY(startIndex, values)), (index - startIndex) * dataSize); 
             startIndex++;
         }
         //@todo capicity check
@@ -805,7 +817,11 @@ public class Core.DynamicArray (Core.Array){
         capacity += growBy;
         // realign
         // dest, source, size
-        memmove(EC_ADDRESS(EC_ARRAY(growBy, values)), EC_ADDRESS(EC_ARRAY(0, values)), length * dataSize); 
+        External.stdio.memmove(
+          EC_ADDRESS(
+            EC_ARRAY(growBy, values)), 
+            EC_ADDRESS(
+              EC_ARRAY(0, values)), length * dataSize); 
         startIndex += growBy;
         endIndex += growBy;
     }
@@ -863,7 +879,7 @@ public class Core.DynamicArray (Core.Array){
             dest, values, source, amount, length, dataSize, capacity);
 
         // realign left
-        memmove(values, source, amount); 
+        External.stdio.memmove(values, source, amount); 
         startIndex = 0;
         endIndex = length;
     }
@@ -880,7 +896,11 @@ public class Core.DynamicArray (Core.Array){
         if (startIndex+1 >= slideAmount) {
             newStart = startIndex - slideAmount;
         }
-        memmove(EC_ADDRESS(EC_ARRAY(newStart, values)), EC_ADDRESS(EC_ARRAY(startIndex, values)), length * dataSize); 
+        External.stdio.memmove(
+          EC_ADDRESS(
+            EC_ARRAY(newStart, values)), 
+            EC_ADDRESS(
+              EC_ARRAY(startIndex, values)), length * dataSize); 
         startIndex = newStart;
         endIndex = startIndex + length;
     }
@@ -894,7 +914,11 @@ public class Core.DynamicArray (Core.Array){
             newStart = startIndex + slideAmount;
         }
 
-        memmove(EC_ADDRESS(EC_ARRAY(newStart, values)), EC_ADDRESS(EC_ARRAY(startIndex, values)), length * dataSize); 
+        External.stdio.memmove(
+          EC_ADDRESS(
+            EC_ARRAY(newStart, values)), 
+            EC_ADDRESS(
+              EC_ARRAY(startIndex, values)), length * dataSize); 
         startIndex = newStart;
         endIndex = newStart + length;
     }

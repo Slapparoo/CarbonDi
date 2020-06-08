@@ -7,6 +7,8 @@ public class ReturnExpr extends StatementDef {
     // public BlockDef containedInblock;
     boolean resolved = false;
 
+    public TypeIdDef functionReturn = null;
+
     @Override
     public void resolve_01() {
         resolved = true;
@@ -63,6 +65,10 @@ public class ReturnExpr extends StatementDef {
         if (statement.thisType.isPrimative()) {
             return "return __exitReturn_" + mapReturnName(statement.thisType.getName()) + "_un(" + statement.asCode() + ", entry__);";
         } else {
+            // Make the assumption that C generally returns int
+            if (statement.thisType.getName().equals("External")) {
+                return "/*rx2*/ return __exitReturn_" + mapReturnName(functionReturn.getName()) + "_un(" + statement.asCode() + ", entry__);";
+            }
             return "/*rx2*/ return __exitReturn_ref_un(" + statement.asCode() + ", entry__);";
         }
     }

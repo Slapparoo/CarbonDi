@@ -30,7 +30,7 @@ __`public void printTo(pointer stream)`__
 __`public pointer objectData()`__
 <div style="margin:1em">
 
-Exposes the underlying pointer to the data can be used for both read and writes, so some caution is advised.</div>
+</div>
 
 
 __`public i64 hashCode()`__

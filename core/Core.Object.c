@@ -24,7 +24,7 @@
 /*fd1*/pointer c_2106303_ObjectasStr(num this){
 
 u64 entry__ = __onEnter();/*st*/ /*fc2 null */sprintf(/*fc2 null */getTmpBuffer(), "(%s::%s) id=%lu", /*te141*/((c_2106303_Object_cm*)getc_2106303_Object_cm())->classPackage(), /*te141*/((c_2106303_Object_cm*)getc_2106303_Object_cm())->className(), /*te8*/this);
-return __exitReturn_pointer_un(/*fc2 null */getTmpBuffer(), entry__);
+/*rx2*/ return __exitReturn_pointer_un(/*fc2 null */getTmpBuffer(), entry__);
 }
 
 
@@ -37,7 +37,7 @@ __onExit();}
 
 /*fd1*/pointer c_2106303_ObjectobjectData(num this){
 
-u64 entry__ = __onEnter();return __exitReturn_pointer_un(/*fc2 null */Object_data(/*te8*/this), entry__);
+u64 entry__ = __onEnter();/*rx2*/ return __exitReturn_pointer_un(/*fc2 null */Object_data(/*te8*/this), entry__);
 }
 
 
@@ -67,13 +67,13 @@ __onExit();}
 
 /*fd1*/pointer c_2106303_Objectalloc(num this, u64 size){
 
-u64 entry__ = __onEnter();return __exitReturn_pointer_un(/*fc2 null */Object_alloc(/*te8*/this, /*te8*/size), entry__);
+u64 entry__ = __onEnter();/*rx2*/ return __exitReturn_pointer_un(/*fc2 null */Object_alloc(/*te8*/this, /*te8*/size), entry__);
 }
 
 
 /*fd1*/pointer c_2106303_Objectrealloc(num this, pointer ptr, u64 size){
 
-u64 entry__ = __onEnter();return __exitReturn_pointer_un(/*fc2 null */Object_realloc(/*te8*/this, /*te8*/ptr, /*te8*/size), entry__);
+u64 entry__ = __onEnter();/*rx2*/ return __exitReturn_pointer_un(/*fc2 null */Object_realloc(/*te8*/this, /*te8*/ptr, /*te8*/size), entry__);
 }
 
 

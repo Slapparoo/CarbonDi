@@ -34,7 +34,7 @@ i8 b = 0;
 loop (-100) {
     pointer b = myArray.removeHead();
     a++;
-    debug_println(`remove loop %lu %i`, $a, EC_VALUE_i8(b));
+    debug_println(`remove loop %lu %i`, $a, External.core.EC_VALUE_i8(b));
 }
 
 printf(`after removehdead capacity=%lu\n`, myArray.capacity);
@@ -50,7 +50,7 @@ printf(`after addtail capacity=%lu\n`, myArray.capacity);
 loop (-100) {
     pointer b = myArray.removeTail();
     a++;
-    debug_println(`remove loop %lu %i`, $a, EC_VALUE_i8(b));
+    debug_println(`remove loop %lu %i`, $a, External.core.EC_VALUE_i8(b));
 }
 
 printf(`after remove tail capacity=%lu\n`, myArray.capacity);
@@ -66,7 +66,7 @@ printf(`after addHead capacity=%lu\n`, myArray.capacity);
 loop (-100) {
     pointer b = myArray.removeTail();
     a++;
-    debug_println(`remove loop %lu %i`, $a, EC_VALUE_i8(b));
+    debug_println(`remove loop %lu %i`, $a, External.core.EC_VALUE_i8(b));
 }
 
 printf(`after remove tail capacity=%lu\n`, myArray.capacity);
@@ -83,7 +83,7 @@ printf(`after addHead capacity=%lu\n`, myArray.capacity);
 loop (-100) {
     pointer b = myArray.removeTail();
     a++;
-    debug_println(`remove loop %lu %i`, $a, EC_VALUE_i8(b));
+    debug_println(`remove loop %lu %i`, $a, External.core.EC_VALUE_i8(b));
 }
 
 printf(`after remove tail capacity=%lu\n`, myArray.capacity);
@@ -100,7 +100,7 @@ printf(`after addTail capacity=%lu\n`, myArray.capacity);
 loop (-100) {
     pointer b = myArray.removeHead();
     a++;
-    debug_println(`remove loop %lu %i`, $a, EC_VALUE_i8(b));
+    debug_println(`remove loop %lu %i`, $a, External.core.EC_VALUE_i8(b));
 }
 
 printf(`after remove head capacity=%lu\n`, myArray.capacity);

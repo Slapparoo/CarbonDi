@@ -36,7 +36,7 @@ u64 entry__ = __onEnter();return __exitReturn_pointer_un("i32", entry__);
 /*fd1*/pointer c_2106303_I32asStr(num this){
 
 u64 entry__ = __onEnter();/*st*/ /*fc2 null */sprintf(/*fc2 null */getTmpBuffer(), "%i", /*te14a*/((c_2106303_I32_cm*)useObject(/*te8*/this)->classmodel)->get_value(/*te8*/this));
-return __exitReturn_pointer_un(/*fc2 null */getTmpBuffer(), entry__);
+/*rx2*/ return __exitReturn_pointer_un(/*fc2 null */getTmpBuffer(), entry__);
 }
 
 

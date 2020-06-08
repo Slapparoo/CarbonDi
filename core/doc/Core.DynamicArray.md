@@ -1,18 +1,12 @@
 class Core.DynamicArray extends [Core.Array](Core.Array.md)
 ===
-All singing all dancing Dynamic array can be used as 
-* stack
-* queue
-* list
-* buffer
-* lifo
-* fifo
+
 ---
 Properties
 ---
 |type|name|read|write|value|comments|
 |--- |--- |--- |--- |--- |--- |
-|u64|__startIndex__|public|public||Used internally to maintain the          current position|
+|u64|__startIndex__|public|public|||
 |u64|__endIndex__|public|public|||
 |pointer|__values__|public|public|||
 |u64|__length__|public|public|||
@@ -65,14 +59,13 @@ Functions
 __`public pointer getValue(u64 index)`__
 <div style="margin:1em">
 
-return a pointer to the array content</div>
+</div>
 
 
 __`public void setValue(u64 index,pointer value)`__
 <div style="margin:1em">
 
-Used internaly to set a value for arrays use:
-    ```myarray[0] = value;```</div>
+</div>
 
 
 __`public void addTail(pointer value)`__

@@ -1,6 +1,6 @@
 class Core.B8 extends [Core.BaseBoxing](Core.BaseBoxing.md)
 ===
-* b8 otherwise known as boolean
+
 ---
 Properties
 ---

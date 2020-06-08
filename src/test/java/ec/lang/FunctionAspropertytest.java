@@ -1,5 +1,7 @@
 package ec.lang;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.junit.jupiter.api.Test;
 
@@ -13,17 +15,15 @@ public class FunctionAspropertytest extends BaseTest {
     @Test
     public void testBasicFunctionAsproperty() {
         String ecCode = "?testBasicFunctionAspropertyString = \"String\";"
-        +"?testBasicFunctionAspropertyStringV1 = testBasicFunctionAspropertyString.getClassPackage;"
+        +"?testBasicFunctionAspropertyStringV1 = testBasicFunctionAspropertyString.classPackage;"
         ;
 
         lex(new ecLexer(new ANTLRInputStream(ecCode)));
 
-        // FunctionDef functionDef = (FunctionDef) DefFactory.resolveFunction("arrayFunction");
+        String actual = BaseTest.stripWhiteSpace(DefFactory.getCurrentBlock().asCode());
+        String expected = "{__onEnter();numtestBasicFunctionAspropertyString=create_c_2106303_String_2(\"String\"true);pointertestBasicFunctionAspropertyStringV1=((c_2106303_String_cm*)getc_2106303_String_cm())->classPackage();__onExit();}";
 
-        // DefFactory.getCurrentBlock().resolve_01();
-        
-
-        System.out.println(DefFactory.getCurrentBlock().asCode());
+        assertEquals(expected, actual, "testBasicFunctionAspropertyString");
     }
 
 }

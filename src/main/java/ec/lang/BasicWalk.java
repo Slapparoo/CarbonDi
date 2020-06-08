@@ -23,8 +23,7 @@ import ec.lang.model.ecParser.ProgramContext;
 public class BasicWalk {
 
   private static void preLoad() throws IOException {
-    System.out.println("preload.");
-    lex(new ecLexer(new ANTLRInputStream(new FileInputStream("core/Core.signature.ec"))));
+    lex(new ecLexer(new ANTLRInputStream(new FileInputStream((ecCoreDir.length() == 0 ? "" : ecCoreDir) + "core/Core.signature.ec"))));
   }
 
   private static void lex(ecLexer lexer) {
@@ -58,7 +57,28 @@ public class BasicWalk {
 
   }
 
+  static String ecCoreDir = "";
+  static String outputDir = "/tmp/ec";
+  
+
+
+  static void parseParams(String[] args) {
+    for (String string : args) {
+      if (string.startsWith("-CD")) {
+        ecCoreDir = string.substring(3);
+
+        ecCoreDir += (ecCoreDir.endsWith("/") ? "" : "/");
+      }
+
+      if (string.startsWith("-OD")) {
+        outputDir = string.substring(3);
+      }
+      
+    }
+  }
+
   public static void main(String[] args) throws Exception {
+    parseParams(args);
     Set<String> params = new HashSet<>(Arrays.asList(args));
 
     if (!params.contains("-nolib")) {
@@ -71,12 +91,8 @@ public class BasicWalk {
     ParseTree tree = parser.program();
     ParseTreeWalker walker = new ParseTreeWalker();
 
-    String dirname = "/tmp/c-lang";
-    if (args.length >= 2) {
-      dirname = args[1];
-    }
 
-    CWalker cWalker = new CWalker(Arrays.asList(args), dirname);
+    CWalker cWalker = new CWalker(Arrays.asList(args), outputDir, ecCoreDir);
     walker.walk(cWalker, tree);
   }
 }

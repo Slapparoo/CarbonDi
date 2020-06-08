@@ -9,7 +9,7 @@ numbers[5] = `g`;
 numbers[6] = `\n`;
 
 printf(`numbers %s`, numbers.values);
-u64 len = strlen(numbers.values);
+u64 len = External.stdio.strlen(numbers.values);
 testi64Equal(`numbers length 1`, 7, len);
 
 
@@ -22,5 +22,5 @@ loop (numbers) {
 
 printf(`numbers %s\n`, numbers.values);
 
-u64 len2 = strlen(numbers.values);
+u64 len2 = External.stdio.strlen(numbers.values);
 testi64Equal(`numbers length 2`, 0, len2);

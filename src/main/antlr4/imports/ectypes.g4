@@ -244,10 +244,15 @@ fragment DIGIT
    : [0-9_] 
    ;
 
+PRECOMPILER
+	: {getCharPositionInLine() == 0}?
+   '#' ~[\r\n]* -> channel(HIDDEN)
+	;
+
+
 DOC_COMMENT
 	: '/**' .*? '*/' -> channel(HIDDEN)
 	;
-
 
 BLOCK_COMMENT
 	: '/*' .*? '*/' -> channel(HIDDEN)

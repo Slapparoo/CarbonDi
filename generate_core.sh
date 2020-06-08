@@ -1,4 +1,6 @@
 LIBNAME=Core
+CC=clang
+SRCDIR=src/main/ec
 
 rm -fr coregen
 mkdir coregen
@@ -8,12 +10,17 @@ cp core/*.c coregen
 mkdir coregen/test
 cp core/test/*.c coregen/test
 
-for f in  `ls -v src/main/ec/*.ec`
+for ff in  `ls -v $SRCDIR/*.ec`
 do
-/usr/lib/jvm/java-11-openjdk-amd64/bin/java -Dfile.encoding=UTF-8 @java.argfile ec.lang.BasicWalk $f coregen -nolib -nogen -incsig
+    filename=$(basename -- ${ff%.*})
+
+    $CC -Wno-invalid-pp-token -xc --include=$SRCDIR/Core.macro.h -E $SRCDIR/${filename}.ec > /tmp/${filename}.ec
+    java -jar target/ec-1.0-SNAPSHOT-jar-with-dependencies.jar /tmp/${filename}.ec -ODcoregen -CD${PWD} -nolib -nogen -incsig
+    rm /tmp/${filename}.ec
 done
 
 
+cp $SRCDIR/Core.macro.h coregen
 mkdir coregen/include
 cp core/include/* coregen/include
 mv coregen/*.h coregen/include

@@ -1,9 +1,12 @@
 package ec.lang.defs;
 
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import ec.lang.compiler.Messages;
 
 public class BlockDef extends StatementDef implements ContainerDef {
     public List<StatementDef> statementDefs = new ArrayList<>();
@@ -98,7 +101,7 @@ public class BlockDef extends StatementDef implements ContainerDef {
             // replace this -- error on other redines don't add ==
             if (existingVar.getName().equals("this")) {
                 // redefine
-                System.out.println("no Redefine this " + variableDef.type + " " + existingVar.type);
+                Messages.MESSAGES.addInfo("no Redefine this " + variableDef.type + " " + existingVar.type);
                 return;
             } else {
 
@@ -111,10 +114,20 @@ public class BlockDef extends StatementDef implements ContainerDef {
                         return;
                     }
 
-                    throw new RuntimeException("Redefinition of existing variable " + variableDef.getName() + " " + existingVar.type + " " + variableDef.type);
+                    // just check this block don't mine
+                    boolean found = false;
+                    for (VariableDef localvars : variableDefs) {
+                        if (localvars.getName().equals(variableDef.getName())) {
+                            found = true;
+                        }
+                    }
+
+                    if (found) {
+                        throw new RuntimeException("Redefinition of existing variable " + variableDef.getName() + " " + existingVar.type + " " + variableDef.type);
+                    }
                 }
 
-                System.out.println("Variable with the same name already exists in block " + variableDef.getName() + " " + variableDef.type + " " + existingVar.type);
+                Messages.MESSAGES.addInfo("Variable with the same name already exists in block " + variableDef.getName() + " " + variableDef.type + " " + existingVar.type);
             }
         }
 

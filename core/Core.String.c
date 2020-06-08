@@ -29,7 +29,7 @@ u64 entry__ = __onEnter();/*rx2*/ return __exitReturn_ref_un(/*te8*/this, entry_
 
 /*fd1*/u64 c_2106303_Stringlength(num this){
 
-u64 entry__ = __onEnter();/*rx2*/ return __exitReturn_ref_un(/*fc2 null */strlen(/*te14a*/((c_2106303_String_cm*)useObject(/*te8*/this)->classmodel)->get_value(/*te8*/this)), entry__);
+u64 entry__ = __onEnter();/*rx2*/ return __exitReturn_u64_un(/*fc2 null */strlen(/*te14a*/((c_2106303_String_cm*)useObject(/*te8*/this)->classmodel)->get_value(/*te8*/this)), entry__);
 }
 
 

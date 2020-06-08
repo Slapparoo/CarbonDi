@@ -27,9 +27,9 @@ public class ReturnDefTest {
         fd.validate_02();
         fd.prepare_03();
         // fd.containedInBlock = DefFactory.getCurrentBlock();
-        System.out.println(fd.asCode());
+        // System.out.println(fd.asCode());
 
-        System.out.println(DefFactory.getCurrentBlock().asCode());
+        // System.out.println(DefFactory.getCurrentBlock().asCode());
     }
     
     @Test
@@ -51,9 +51,9 @@ public class ReturnDefTest {
     fd.validate_02();
     fd.prepare_03();
     // fd.containedInBlock = DefFactory.getCurrentBlock();
-    System.out.println(fd.asCode());
+    // System.out.println(fd.asCode());
 
-    System.out.println(DefFactory.getCurrentBlock().asCode());
+    // System.out.println(DefFactory.getCurrentBlock().asCode());
 
     }
     

@@ -30,7 +30,8 @@ public class ectypesParser extends Parser {
 		T__80=81, T__81=82, T__82=83, T__83=84, T__84=85, T__85=86, T__86=87, 
 		T__87=88, T__88=89, T__89=90, T__90=91, T__91=92, T__92=93, T__93=94, 
 		RANGE=95, ID=96, ANONYMOUS=97, NUM=98, FLOAT=99, STRING=100, CSTRING=101, 
-		DOC_COMMENT=102, BLOCK_COMMENT=103, LINE_COMMENT=104, WS=105, EOL=106;
+		PRECOMPILER=102, DOC_COMMENT=103, BLOCK_COMMENT=104, LINE_COMMENT=105, 
+		WS=106, EOL=107;
 	public static final int
 		RULE_var_type = 0, RULE_builtin_primatives = 1, RULE_builtin_values = 2, 
 		RULE_comparator = 3, RULE_assign = 4, RULE_predicate = 5, RULE_operator_mul = 6, 
@@ -98,8 +99,8 @@ public class ectypesParser extends Parser {
 		null, null, null, null, null, null, null, null, null, null, null, null, 
 		null, null, null, null, null, null, null, null, null, null, null, null, 
 		null, null, null, null, null, null, null, null, null, null, null, "RANGE", 
-		"ID", "ANONYMOUS", "NUM", "FLOAT", "STRING", "CSTRING", "DOC_COMMENT", 
-		"BLOCK_COMMENT", "LINE_COMMENT", "WS", "EOL"
+		"ID", "ANONYMOUS", "NUM", "FLOAT", "STRING", "CSTRING", "PRECOMPILER", 
+		"DOC_COMMENT", "BLOCK_COMMENT", "LINE_COMMENT", "WS", "EOL"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -2431,7 +2432,7 @@ public class ectypesParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3l\u013a\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3m\u013a\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
@@ -2520,7 +2521,7 @@ public class ectypesParser extends Parser {
 		"\2\2\u012b\u012c\7a\2\2\u012c\177\3\2\2\2\u012d\u012e\t\6\2\2\u012e\u0081"+
 		"\3\2\2\2\u012f\u0130\7c\2\2\u0130\u0083\3\2\2\2\u0131\u0132\7d\2\2\u0132"+
 		"\u0085\3\2\2\2\u0133\u0134\7e\2\2\u0134\u0087\3\2\2\2\u0135\u0136\t\7"+
-		"\2\2\u0136\u0089\3\2\2\2\u0137\u0138\7l\2\2\u0138\u008b\3\2\2\2\b\u00a0"+
+		"\2\2\u0136\u0089\3\2\2\2\u0137\u0138\7m\2\2\u0138\u008b\3\2\2\2\b\u00a0"+
 		"\u00a5\u00af\u00b7\u00c1\u00c9";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
