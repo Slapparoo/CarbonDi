@@ -2,7 +2,7 @@
 
 all : maven core
 
-.PHONEY: core
+.PHONY: core
 
 # preprecess
 # gcc  -xc -E if.ec -o if.preproc
