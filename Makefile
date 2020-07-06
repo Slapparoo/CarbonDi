@@ -2,6 +2,8 @@
 
 all : maven core
 
+.PHONEY: core
+
 # preprecess
 # gcc  -xc -E if.ec -o if.preproc
 
