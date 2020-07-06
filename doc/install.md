@@ -1,6 +1,20 @@
 Installation
 ===========
 
+__Simple__
+`sudo apt-get -y install make maven clang gcc valgrind`
+
+Visual Studio Code
+```
+wget https://go.microsoft.com/fwlink/?LinkID=760868 -O vsc.deb
+sudo dpkg -i vsc.deb
+```
+
+`make all`
+
+Otherwise >
+
+
 Alpha release 0.1, things will change (for the better we hope).
 
 Only tested on linux and WSL Amd x86_64 elf. (there is no assembler so it should be platform independent)
