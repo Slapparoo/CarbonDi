@@ -19,3 +19,6 @@ RUN apt-get update \
     && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends default-jdk git maven make clang clang-format valgrind
 
+COPY vsc-grammar/ec-lang-support /root/.vscode-server/extensions/ec-lang-support
+
+
