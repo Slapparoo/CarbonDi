@@ -3,79 +3,86 @@
 # compile all build a dynamic shared lib and object files by default
 # so you can choose how to link the runtime
 
-CCGCC    := gcc
-CCCLANG  := clang 
-CCAVR    := avr-gcc
-CC		 := $(CCCLANG)
-# CC		 := $(CCGCC)
-# CC		 := $(CCAVR)
+# there are some fancy bits in here the common uses will be:
+# make
+# make compile // differencial build
+# make clean // clean
+# make clean all // clean build
 
-VALGRIND   := valgrind  --track-origins=yes --leak-check=full --error-exitcode=2
-SRCDIR 	   := .
-SRC        := $(shell find $(SRCDIR) -maxdepth 1 -name "*.c" -not -name "main*.c" )
-SRCMAIN    := $(shell find $(SRCDIR) -name "main*.c")
-MAINS      := $(shell find $(OBJDIR) -name "main*.e")
-GENDIR	   := gen
-INCLUDEDIR := include
-OBJDIR     := obj
-LIBDIR     := lib
-PARAMS     := -Wall -Wno-format -Wno-unused-variable -std=gnu17 -g -O3 -I$(INCLUDEDIR)
-# PARAMS := -std=gnu11 -g -O3 -I$(INCLUDEDIR) -I/mnt/e/earthquaketrigger/Arduino/hardware/tools/avr/avr/include
 
-OBJ := $(SRC:%.c=$(OBJDIR)/%.o)
-MAIN := $(SRCMAIN:%.c=$(OBJDIR)/%.e)
-RUNMAINS := $(MAINS:%.e=$(OBJDIR)/%.e)
-LIB := $(SRC:%.c=$(LIBDIR)/libec.so)
+CC		 	 := cc
+VALGRIND     := valgrind  --track-origins=yes --leak-check=full --error-exitcode=2
+SRCDIR 	     := .
+SRC          := $(shell find $(SRCDIR) -maxdepth 1 -name "*.c" -not -name "main*.c" )
+SRCMAIN      := $(shell find $(SRCDIR) -name "main*.c")
+MAINS        = $(shell find $(OBJDIR) -name "main*.e")
+GENDIR	     := gen
+INCLUDEDIR   := include
+OBJDIR       := obj
+LIBDIR       := lib
+OPTIMISATION := -O3
+PARAMS       := -Wall -Wno-format -Wno-unused-variable -std=gnu17 -I$(INCLUDEDIR)
 
-all : clean singleheader lib obj $(MAIN) $(RUNMAINS)
+OBJ 		:= $(SRC:%.c=$(OBJDIR)/%.o)
+MAIN 		= $(SRCMAIN:%.c=$(OBJDIR)/%.e)
+RUNMAINS 	= $(MAINS:%.e=$(OBJDIR)/%.e)
+LIB 		:= $(SRC:%.c=$(LIBDIR)/libec.so)
+
+all 	: compile test
+compile : include/eccore.h.gch lib obj $(MAIN)
+
+printdebug 	: CC += -g -DPRINT_DEBUG=1
+printdebug 	: OPTIMISATION = -O0
+printdebug 	: clean all
+
+debug 	: CC += -g
+debug 	: clean all
+
+quadmath : CC += -D__SUPPORT_QUADMATH_
+quadmath : clean all
+
+quadmathd : debug quadmath
 
 test : $(RUNMAINS)
 
-obj : $(OBJ)
+createdirs :
+	@mkdir -p obj
+	@mkdir -p obj/test
+	@mkdir -p lib
 
-lib : $(LIB)
+obj : createdirs $(OBJ)
 
-singleheader :
+lib : createdirs $(LIB)
+
+include/eccore.h.gch :
 	@echo "create a single header include/eccore.h"
-	rm -f include/eccore.h.gch 
-	clang include/Core.Core_main.h -E -dD > include/eccore.h
-	$(CC) $(PARAMS) include/eccore.h
-
-# make the generated version live
-# deploycore : 
-# 	rm -f include/*
-# 	rm -f *.c *.ec
-# 	cp gen/*.c gen/*.ec .
-# 	cp gen/include/* include
-# 	rm *.run.c
+	$(CC) include/Core.Core_main.h -E -dD > include/eccore.h
+	$(CC)  $(OPTIMISATION) $(PARAMS) include/eccore.h
 
 cleanobj:
-	rm -f obj/*.o 
+	rm -fr obj 
 
 cleanlib:
-	rm -f lib/*.so 
+	rm -fr lib
 
-clean: cleanobj cleanlib
-	rm -f obj/test/*.e 
+clean : cleanobj cleanlib
+	rm -f include/eccore.h
+	rm -f include/eccore.h.gch 
 
-$(OBJDIR)/%.o: %.c
+$(OBJDIR)/%.o : %.c 
 	@echo "COMPILING SOURCE $< INTO OBJECT $@ with $(CC) $(PARAMS)"
-	@mkdir -p '$(@D)'
-	@$(CC) -c $(PARAMS) $< -o $@
+	@$(CC)  $(OPTIMISATION) -c $(PARAMS) $< -o $@
 
-$(OBJDIR)/%.e: %.c
+$(OBJDIR)/%.e : %.c 
 	@echo "COMPILING SOURCE $< INTO MAIN $@"
-	@mkdir -p '$(@D)'
-	@$(CC) $(PARAMS) $(LIBDIR)/*.so $< -o $@	
+	@$(CC)  $(OPTIMISATION) $(PARAMS) $(LIBDIR)/*.so $< -o $@	
+	# resample the newly compiled mains
+	$(call MAIN)
 
 $(LIBDIR)/libec.so: 
 	@echo "COMPILING SOURCE $< INTO Dynamic Lib $@"
-	@mkdir -p '$(@D)'
-	@$(CC) -shared -fpic $(PARAMS) $(SRC) $< -o $@	
+	@$(CC)  $(OPTIMISATION) -shared -fpic $(PARAMS) $(SRC) $< -o $@	
 
-
-$(OBJDIR)/%.e: %.e
+$(OBJDIR)/%.e : %.e
 	@echo "valgrind $<"
 	$(VALGRIND) $<
-
-

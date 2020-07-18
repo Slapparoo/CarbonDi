@@ -26,7 +26,8 @@ i8[] fileread(String filename) {
     return buffer;
 }
 
-?content = fileread("Default.file_main.c");
+// ?content = fileread("Default.file_main.c");
+?content = fileread("file.ec");
 
 External.stdio.printf(`file read content\n %s\n`, content.values);
 
