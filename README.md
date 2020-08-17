@@ -16,7 +16,7 @@ Type Naming
 As it is binary compilable primative type names include the number of bits the represent and the type the represent i for intiger, u for unsigned, f for float:
 ```
 b8 - boolean
-i8 - 8 bit integer
+i8 - 8 bit integer (also char as defined by C)
 u8 - 8 bit unsigned
 i16, u16 - 16 bit
 i32, u32, f32 - 32 bit
