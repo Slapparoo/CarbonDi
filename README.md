@@ -1,17 +1,34 @@
 EC lang
 ==
 
-EC is a binary compilable general purpose computer language, it is based on the 'C family of langauges' syntax so anyone who is familier with C, C++, Java, C#, Pascal, JavaScript etc should be able to pick the langaue quite quickly. One of the design principals is that the language is low level enough that you can write an OS with it, but also general enough that is is highly productive and can be used for any general purpose task.
+EC is a binary compilable general purpose computer language, it is based on the 'C family of langauges' syntax so anyone who is familier with C, C++, Java, C#, Pascal, JavaScript etc should be able to pick the langauge quite quickly. One of the design principals is that the language is low level enough that you can write an OS with it, but also general enough that is is highly productive and can be used for any general purpose task.
 
 The langauge it self allows for a combination of procedual programming or OO programming.
 
 Being binary compilable means that the performance should be comparable to other binary compilable langauges.
 
-Being binary compilable means that it can use existing C libraries.
+The compiler generates which means that it can use existing C libraries.
+
+The language uses a mix of primative types and Objects.
+
+Type Naming
+--
+As it is binary compilable primative type names include the number of bits the represent and the type the represent i for intiger, u for unsigned, f for float:
+```
+b8 - boolean
+i8 - 8 bit integer
+u8 - 8 bit unsigned
+i16, u16 - 16 bit
+i32, u32, f32 - 32 bit
+i64, u64, f64 - 64 bit
+f80 - 80 bit float (where available)
+f128 - 128 bit float (where available)
+```
+
 
 Some pointers
 --
-Primatives are passed by by register or on the stack (as a copy) and Objects are passed by reference.
+Primatives are passed by register or on the stack (as a copy) and Objects are passed by reference.
 
 The reference is not a pointer it is a reference for the memory manager.
 
@@ -36,9 +53,7 @@ boolean checkLength(u8[]) {
 }
 ```
 
-There is a default memory manager, but it can be replaced/integrated with a custom managment stratagy.
-
-To update the value of a parameter inside a function a refernce is passed using the &
+There is a default memory manager, but it can be replaced/integrated with a custom management stratagy.
 
 i.e
 __remove this__ use boxing and pass the corrosponding Object wrapper
