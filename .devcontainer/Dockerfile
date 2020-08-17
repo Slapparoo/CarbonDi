@@ -13,11 +13,13 @@ FROM mcr.microsoft.com/vscode/devcontainers/base:0-ubuntu${VARIANT}
 #
 
 
-RUN curl -m 1 http://host.docker.internal:3142/ && echo 'Acquire::http { Proxy "http://host.docker.internal:3142"; };' >> /etc/apt/apt.conf.d/01proxy
+# RUN curl -m 1 http://host.docker.internal:3142/ && echo 'Acquire::http { Proxy "http://host.docker.internal:3142"; };' >> /etc/apt/apt.conf.d/01proxy
 
 RUN apt-get update \
     && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends default-jdk git maven make clang clang-format valgrind
+
+RUN echo "PATH=$PATH:/workspaces/ec-lang" >> /root/.bashrc
 
 COPY vsc-grammar/ec-lang-support /root/.vscode-server/extensions/ec-lang-support
 
