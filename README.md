@@ -1,13 +1,13 @@
-EC lang
+CarbonDi lang
 ==
 
-EC is a binary compilable general purpose computer language, it is based on the 'C family of langauges' syntax so anyone who is familier with C, C++, Java, C#, Pascal, JavaScript etc should be able to pick the langauge quite quickly. One of the design principals is that the language is low level enough that you can write an OS with it, but also general enough that is is highly productive and can be used for any general purpose task.
+CarbonDi is a binary compilable general purpose computer language, it is based on the 'C family of langauges' syntax so anyone who is familier with C, C++, Java, C#, Pascal, JavaScript etc should be able to pick the langauge quite quickly. One of the design principals is that the language is low level enough that you can write an OS with it, but also general enough that is is highly productive and can be used for any general purpose task.
 
 The langauge it self allows for a combination of procedual programming or OO programming.
 
 Being binary compilable means that the performance should be comparable to other binary compilable langauges.
 
-The compiler generates which means that it can use existing C libraries.
+The compiler generates 'C' source code which means that it can use existing C libraries and then get compiled by an existing C compiler.
 
 The language uses a mix of primative types and Objects.
 
@@ -28,7 +28,7 @@ f128 - 128 bit float (where available)
 
 Some pointers
 --
-Primatives are passed by register or on the stack (as a copy) and Objects are passed by reference.
+One of the fundimental idea behind CarbonDi is that you do not have to deal will pointers, so it manages memory allocation and deallocation, and objects are based by reference
 
 The reference is not a pointer it is a reference for the memory manager.
 
