@@ -55,6 +55,13 @@ public class BlockDef extends StatementDef implements ContainerDef {
         String res = "";
 
         for (StatementDef exprDef : statementDefs) {
+  //          exprDef.containedInBlock = this;
+            if (exprDef.containedInBlock == null) {
+                exprDef.containedInBlock = this;
+                exprDef.resolve_01();
+            }
+
+
             if (exprDef instanceof ContainerDef) {
                 ((ContainerDef)exprDef).getBlockDef().includeEntryExit = includeEntryExit;
                 ((ContainerDef)exprDef).getBlockDef().directAccess.addAll(directAccess);
@@ -173,9 +180,11 @@ public class BlockDef extends StatementDef implements ContainerDef {
         }
 
         if (containedInBlock != null) {
-            VariableDef res = containedInBlock.resolveVariable(name);
-            if (res != null) {
-                return res;
+            if (containedInBlock != this) {
+                VariableDef res = containedInBlock.resolveVariable(name);
+                if (res != null) {
+                    return res;
+                }
             }
         }
 

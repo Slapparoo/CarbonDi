@@ -19,7 +19,35 @@
 #include "Core.U64.h"
 #include "Core.F64.h"
 #include "Core.Pointer.h"
+#include "Core.FileUtils.h"
+#include "Core.Charactor.h"
 #include "Core.DynamicArray.h"
+
+/*fd1*/i32 c_2106303_BoxinggetSizeBytes(i32 type){
+
+u64 entry__ = __onEnter();if (/*oxa*//*oxa*//*oxa*//*oxa*//*oxa*//*te8*/type == /*oxb*/1 || /*oxb*//*te8*/type == /*oxb*/2 || /*oxb*//*te8*/type == /*oxb*/3) {
+
+__onEnter();return __exitReturn_i64_un(1, entry__);
+}
+
+ else if (/*oxa*//*oxa*//*oxa*//*te8*/type == /*oxb*/4 || /*oxb*//*te8*/type == /*oxb*/5) {
+
+__onEnter();return __exitReturn_i64_un(2, entry__);
+}
+
+ else if (/*oxa*//*oxa*//*oxa*//*oxa*//*oxa*//*te8*/type == /*oxb*/6 || /*oxb*//*te8*/type == /*oxb*/7 || /*oxb*//*te8*/type == /*oxb*/8) {
+
+__onEnter();return __exitReturn_i64_un(4, entry__);
+}
+
+ else if (/*oxa*//*oxa*//*oxa*//*oxa*//*oxa*//*te8*/type == /*oxb*/9 || /*oxb*//*te8*/type == /*oxb*/10 || /*oxb*//*te8*/type == /*oxb*/11) {
+
+__onEnter();return __exitReturn_i64_un(8, entry__);
+}
+
+return __exitReturn_i64_un(0, entry__);
+}
+
 
 /*fd1*/pointer c_2106303_BoxingclassName(){
   return  "Core.Boxing";
@@ -202,6 +230,7 @@ void populatec_2106303_Boxing_cm(pointer classModel) {
  populatec_2106303_Object_cm(classModel);
   c_2106303_Boxing_cm* thisClassModel = (c_2106303_Boxing_cm*)classModel;
   thisClassModel->parent = getc_2106303_Object_cm();
+  thisClassModel->getSizeBytes = c_2106303_BoxinggetSizeBytes;
   thisClassModel->className = c_2106303_BoxingclassName;
   thisClassModel->classShortName = c_2106303_BoxingclassShortName;
   thisClassModel->classCName = c_2106303_BoxingclassCName;

@@ -14,10 +14,24 @@ public class RangeExpr extends ExprDef {
     }
 
     public long startRange() {
+        if (start.startsWith("\"") || start.startsWith("'")) {
+            if (start.length() > 3) {
+                throw new RuntimeException("Invalid start range expecting one char " + start);
+            }
+            return start.charAt(1);   
+        }
+
         return Long.parseLong(start);
     }
 
     public long endRange() {
+        if (end.startsWith("\"") || end.startsWith("'")) {
+            if (end.length() > 3) {
+                throw new RuntimeException("Invalid end range expecting one char " + end);
+            }
+            return end.charAt(1);   
+        }
+
         return Long.parseLong(end);
     }
 

@@ -102,6 +102,11 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
         prepare_03();
         String last = "";
 
+        if (containedInBlock == null) {
+            throw new NullPointerException("MultiTypeExpr containedInBlock == null" + this);
+        }
+
+
         if (isExternal || type_id_list.get(0).toString().equals("External")) {
             String res = "";
             // @todo fix this the external should be able to allow depth ? ->
@@ -125,6 +130,12 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
                 last = exprDef.asCode();
 
             } else {
+                exprDef.containedInBlock = containedInBlock;
+
+                if (containedInBlock == null) {
+                    throw new NullPointerException("MultiTypeExpr containedInBlock == null" + this);
+                }
+        
                 ((MultiTypeId) exprDef).resolve_02(last);
 
                 if (exprDef instanceof FunctionCallExpr) {
@@ -135,6 +146,7 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
                     // if (tx.isGet && tx.thisType.isPrimative()) {
                     // tx.directAccess = true;
                     // }
+                    tx.containedInBlock = containedInBlock;
                     tx.prepare_03(last);
                     if (tx.directAccess) {
                         // System.out.println("@@directaccess " + tx.expr + " " + this + " " +
@@ -439,11 +451,22 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
             return;
         }
 
+        if (containedInBlock == null) {
+            throw new NullPointerException("containedInBlock == null " + this);
+        }
+
         MultiTypeId last = null;
 
         // type_id_list can get modified to include this.
         for (ExprDef exprDef : new ArrayList<>(type_id_list)) {
             exprDef.containedInBlock = containedInBlock;
+
+            if (exprDef.containedInBlock == null) {
+                
+                System.out.println("exprDef.containedInBlock == null " + exprDef);
+                throw new RuntimeException("exprDef.containedInBlock == null " + exprDef);
+            }
+
 
             if (last != null) {
                 last.setIsGet(true);

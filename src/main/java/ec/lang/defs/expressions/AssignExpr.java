@@ -95,12 +95,15 @@ public class AssignExpr extends StatementDef {
                 }
             }
 
-            if (!assignLeft.thisType.isPrimative()) {
+            if (assignLeft.thisType != null && !assignLeft.thisType.isPrimative()) {
                 return "/*Ax3*/" + al.asCode() + assignRight.asCode() + ");";
             }
 
             // local var
             if (al.type_id_list.size() == 1) {
+                assignLeft.containedInBlock = containedInBlock;
+                assignOperator.containedInBlock = containedInBlock;
+                assignRight.containedInBlock = containedInBlock;
                 return "/*Ax6*/" + assignLeft.asCode() + assignOperator.asCode() + assignRight.asCode() + ";";
             }
 

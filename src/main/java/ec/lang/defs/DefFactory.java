@@ -8,6 +8,7 @@ import ec.lang.defs.TryCatchDef.CatchBlock;
 import ec.lang.defs.TryCatchDef.FinallyBlock;
 import ec.lang.defs.TryCatchDef.TryBlock;
 import ec.lang.defs.expressions.AnonymousExpr;
+import ec.lang.defs.expressions.ArrayIndexExpr;
 import ec.lang.defs.expressions.AssignExpr;
 import ec.lang.defs.expressions.ConstExpr;
 import ec.lang.defs.expressions.EndExpr;
@@ -40,11 +41,11 @@ public class DefFactory {
     public static IfDef elseDef = null;
 
     public static List<ExprDef> currentExprBlock = new ArrayList<>();
-    private static List<StatementDef> currentStatementBlock = null;
-    private static Stack<ContainerDef> currentBlock = new Stack<>();
+    public static List<StatementDef> currentStatementBlock = null;
+    public static Stack<ContainerDef> currentBlock = new Stack<>();
     private static Stack<TryCatchDef> currentTryCatch = new Stack<>();
 
-    public static BlockDef mainBlock;
+    // public static BlockDef mainBlock;
 
     public static String castType;
 
@@ -384,6 +385,23 @@ public class DefFactory {
     }
 
     public static void addExpr(TypeExpr exprDef, String linenumber) {
+
+        //booean remove = false
+        if (exprDef instanceof ArrayIndexExpr) {
+            // for (ExprDef expr : type_id_list) {
+            //     if (expr == ((ArrayIndexExpr)exprDef).arrayIndex ) {
+
+            //     }
+            // }
+            ExprDef ix = ((ArrayIndexExpr)exprDef).arrayIndex ;
+            if (ix instanceof MultiTypeExpr) {
+                endMultiTypeExpr();
+                newMultiTypeExpr("ArrayIndex");
+            }
+
+            // type_id_list.remove(ix);
+        }
+
         multiTypeExpr.addExpr(exprDef, linenumber);
     }
 

@@ -31,6 +31,7 @@ public class EncapsulationTest {
         FunctionDef functionDef = encaps1.resolveFunction("set_count2");
 
         String code = functionDef.asCode();
+        // System.out.println(code);
         String actual = BaseTest.stripWhiteSpace(code);
 
         String expected = "voidset_count2(numthisinta__a){u64entry__=__onEnter();((c_1085510111_Encaps1*)useObject(this)->data)->count2=a__a+10;__onExit();}";

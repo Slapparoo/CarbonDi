@@ -58,6 +58,11 @@ public class StringExpr extends ExprDef {
             resolve_01();
         }
 
+        if (expr.length() == 3) {
+            return expr.replace('`', '\'');
+        }
+
+
         if (cstring) {
             if (expr.length() == 3) {
                 return expr.replace('`', '\'');

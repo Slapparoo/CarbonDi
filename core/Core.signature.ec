@@ -179,6 +179,7 @@ public class signature Core.Boxing(Core.Object){
 
   /* default constructor */
 
+public static i32 getSizeBytes(i32 type);
 public static final pointer className();
 public static final pointer classShortName();
 public static final pointer classCName();
@@ -540,6 +541,60 @@ hidden final void free();
 hidden void release();
 public final pointer alloc(u64 size);
 public final pointer realloc(pointer ptr, u64 size);
+}// Core.FileUtils Signature compiled
+/* imports {} */
+
+public final class signature Core.FileUtils(Core.Object){
+
+  /* default constructor */
+
+public static u64 filesize(pointer fp);
+public static i8[] fileread(String filename);
+public static final pointer className();
+public static final pointer classShortName();
+public static final pointer classCName();
+public static final pointer classPackage();
+public static final u64 objectDatasize();
+public pointer asStr();
+public void printTo(pointer stream);
+public pointer objectData();
+public i64 hashCode();
+public boolean equals(Object other);
+hidden final void free();
+hidden void release();
+public final pointer alloc(u64 size);
+public final pointer realloc(pointer ptr, u64 size);
+}// Core.Charactor Signature compiled
+/* imports {} */
+
+public final class signature Core.Charactor(Core.Object){
+
+  /* default constructor */
+
+public static boolean isLetter(i8 chr);
+public static boolean isAlpha(i8 chr);
+public static boolean isUpper(i8 chr);
+public static boolean isLower(i8 chr);
+public static boolean isAlphaNumeric(i8 chr);
+public static boolean isLetterorNumber(i8 chr);
+public static boolean isNumber(i8 chr);
+public static boolean isFloat(i8 chr);
+public static boolean isHex(i8 chr);
+public static boolean isBinary(i8 chr);
+public static final pointer className();
+public static final pointer classShortName();
+public static final pointer classCName();
+public static final pointer classPackage();
+public static final u64 objectDatasize();
+public pointer asStr();
+public void printTo(pointer stream);
+public pointer objectData();
+public i64 hashCode();
+public boolean equals(Object other);
+hidden final void free();
+hidden void release();
+public final pointer alloc(u64 size);
+public final pointer realloc(pointer ptr, u64 size);
 }// Core.DynamicArray Signature compiled
 /* imports {} */
 
@@ -559,6 +614,7 @@ public class signature Core.DynamicArray(Core.Array){
   }
 
   /* default constructor */
+  public DynamicArray(int dataType);
   public DynamicArray(int dataType, u64 dataSize);
   public DynamicArray(u64 capacity, int dataType, u64 dataSize);
   public DynamicArray(u64 capacity, int dataType, u64 dataSize, pointer values);

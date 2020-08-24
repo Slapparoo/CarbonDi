@@ -8,11 +8,14 @@ public class IfDef extends StatementDef implements ContainerDef {
     public BlockDef blockDef;
     // public IfDef elseIfDef;
     public IfDef elseDef;
+    private boolean isElse = false;
     private List<IfDef> elseIfs = new ArrayList<>();
 
     private boolean resolved = false;
 
     public void addElseIf(IfDef elseDef) {
+        elseDef.isElse = true;
+        // System.out.println("addElseIf");
         elseIfs.add(elseDef);
     }
 
@@ -54,7 +57,7 @@ public class IfDef extends StatementDef implements ContainerDef {
             return "/* else? */ else "  + blockDef.asCode();
         }
 
-        return "if "+condition.asCode()+" " + blockDef.asCode();
+        return (isElse ? " else " : "") + "if "+condition.asCode()+" " + blockDef.asCode();
     }
 
 	public BlockDef getBlockDef() {

@@ -117,7 +117,9 @@ my_assignable_to
    ( idn=base_ident 
       {DefFactory.addExpr(new TypeExpr($idn.text), $idn.start.toString());} 
    | idn=base_ident keyword_lbracket asv=array_index keyword_rbracket 
-      {DefFactory.addExpr(new ArrayIndexExpr($idn.text, DefFactory.dropExpression(), $asv.text), $idn.start.toString()); } 
+      {
+         DefFactory.addExpr(new ArrayIndexExpr($idn.text, DefFactory.dropExpression(), $asv.text), $idn.start.toString()); 
+      } 
    )
    ;
 pure_type 
@@ -146,7 +148,10 @@ my_assignable_from
          {DefFactory.addExpr(new TypeExpr($idn.text), $idn.start.toString());} 
    | my_function_call   
    | idn=base_ident keyword_lbracket asv=array_index keyword_rbracket
-         {DefFactory.addExpr(new ArrayIndexExpr($idn.text, DefFactory.dropExpression(), $asv.text), $idn.start.toString()); } 
+         {
+            ExprDef ex = DefFactory.dropExpression();
+            DefFactory.addExpr(new ArrayIndexExpr($idn.text, ex, $asv.text), $idn.start.toString()); 
+         } 
    ) ('.' my_assignable_from )*  
    ;
 
@@ -168,7 +173,8 @@ function_implementation
 
 switch_statement locals[SwitchDef sw]
    : keyword_switch '(' assignable_from ')' {$sw = DefFactory.newSwitchStatement();}  
-   '{' ( ( ( keyword_case ( type_num { DefFactory.newConstExpr($type_num.text); }  
+   '{' ( ( ( keyword_case ( type_num { DefFactory.newConstExpr($type_num.text); }
+      | type_string {DefFactory.addExpression(new StringExpr($type_string.text));}
       | type_range {DefFactory.addExpression(new RangeExpr($type_range.text));} ) )  
       {DefFactory.addCaseStatement();}   
    |  ( keyword_default { DefFactory.newExprDef("default"); DefFactory.addCaseStatement();} )) ':' statement* {DefFactory.endCaseStatement();}  )*  '}'

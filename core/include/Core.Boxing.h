@@ -8,6 +8,7 @@
 // @TODO include class dependancies
 #define __C_2106303_BOXING_DATA_ 
 #define __C_2106303_BOXING_CLASS_  \
+  i32 (*getSizeBytes)(i32);  \
   int (*get_b8_)();  \
   void (*set_b8_)(int);  \
   int (*get_i8_)();  \

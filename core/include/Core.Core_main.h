@@ -23,5 +23,7 @@
 #include "Core.U64.h"
 #include "Core.F64.h"
 #include "Core.Pointer.h"
+#include "Core.Charactor.h"
+#include "Core.FileUtils.h"
 void Core_370391182_main();
 #endif

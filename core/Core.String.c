@@ -19,6 +19,8 @@
 #include "Core.U64.h"
 #include "Core.F64.h"
 #include "Core.Pointer.h"
+#include "Core.FileUtils.h"
+#include "Core.Charactor.h"
 #include "Core.DynamicArray.h"
 
 /*fd1*/num c_2106303_StringasString(num this){

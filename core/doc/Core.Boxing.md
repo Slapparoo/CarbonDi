@@ -32,3 +32,9 @@ __`public Boxing()`__
 ---
 Functions
 ---
+
+__`public static i32 getSizeBytes(i32 type)`__
+<div style="margin:1em">
+
+</div>
+

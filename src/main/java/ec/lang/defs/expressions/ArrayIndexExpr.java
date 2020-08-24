@@ -22,23 +22,19 @@ public class ArrayIndexExpr extends TypeExpr {
     }
 
     public void resolve_01() {
+        arrayIndex.containedInBlock = containedInBlock;
         super.resolve_01();
     }
 
     @Override
     public String asCode() {
+        arrayIndex.containedInBlock = containedInBlock;
         arrayIndex.resolve_01();
         if (thisType == null) {
             return "/* thisType == null  " + arrayIndex.asCode() + " */" + super.asCode();
         }
 
         boolean isStatic = (variableDef != null ? variableDef.is_static : false);
-
-        
-        // System.out.println("@@arayIndexExpr " + variableDef);
-        // System.out.println("@@arayIndexExpr " + resolvedExpr);
-        // System.out.println("@@arayIndexExpr " + thisType);
-
 
         if (thisType.isPrimative()) {
             isGet = true;

@@ -127,7 +127,7 @@ public class FunctionCallExpr extends ExprDef implements MultiTypeId {
     @Override
     public void resolve_01() {
         if (containedInBlock == null) {
-            new NullPointerException("FunctionCallExpr containedInBlock == null" + name);
+            throw new NullPointerException("FunctionCallExpr containedInBlock == null" + name);
         }
 
         for (ExprDef exprDef : params) {
@@ -136,6 +136,10 @@ public class FunctionCallExpr extends ExprDef implements MultiTypeId {
             }
             exprDef.containedInBlock = containedInBlock;
             if (!exprDef.isResolved()) {
+
+                if (exprDef.containedInBlock == null) {
+                    throw new NullPointerException("FunctionCallExpr exprDef.containedInBlock == null" + name + " " + exprDef);
+                }
                 exprDef.resolve_01();
             }
         }

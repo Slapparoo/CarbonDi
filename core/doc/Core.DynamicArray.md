@@ -34,6 +34,12 @@ __`public DynamicArray()`__
 </div>
 
 
+__`public DynamicArray(int dataType)`__
+<div style="margin:1em">
+
+</div>
+
+
 __`public DynamicArray(int dataType,u64 dataSize)`__
 <div style="margin:1em">
 

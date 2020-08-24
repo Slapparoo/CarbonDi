@@ -140,6 +140,14 @@ public abstract class FunctionDefBase extends StatementDef implements ContainerD
     }
 
     public void insertThis() {
+        for (VariableDef p : parameters) {
+            if (p.getName().equals("this")) {
+                return;
+            }
+        }
+        
+
+
         VariableDef param = new VariableDef();
         param.setName("this");
         param.type = new TypeIdDef(classDef.getFqn());

@@ -1,9 +1,5 @@
 package ec.lang.defs;
 
-import java.util.List;
-
-import org.antlr.v4.runtime.Token;
-
 public class StatementDef extends BaseDef {
     public ExprDef statement;
     
@@ -28,6 +24,7 @@ public class StatementDef extends BaseDef {
 
     public String asCode() {
         if (statement != null) {
+            statement.containedInBlock = containedInBlock;
             return "/*st*/ " + statement.asCode() + ";";
         }
         return "(Undefined Statement) ";

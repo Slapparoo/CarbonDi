@@ -79,7 +79,7 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
     public void resolve_01() {
         if (isResolved()) {
             // throw new RuntimeException("Already resolved..");
-            System.out.println("Already resolved.. " + name);
+            // System.out.println("Already resolved.. " + name);
             return;
         }
         super.resolve_01();
@@ -116,7 +116,8 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
             if (getBlockDef() != null) {
                 param.isParam = true;
                 getBlockDef().addVariable(param);
-                param.containedInBlock = containedInBlock;
+                param.containedInBlock = getBlockDef();
+                // param.containedInBlock = containedInBlock;
                 param.resolve_01();
             }
         }
@@ -176,6 +177,10 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
     public String asCode() {
         if (name == null) {
             return "";
+        }
+
+        if (!isResolved()) {
+            resolve_01();
         }
 
         // the function is implemented in the parent class

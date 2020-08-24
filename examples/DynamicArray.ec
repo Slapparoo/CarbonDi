@@ -13,7 +13,7 @@ All singing all dancing Dynamic array can be used as
 debug_println(`start %s`, `here`);
 // i8[10] numbers;
 u64 n = 1;
-i8 a = 50;
+i8 a = 57;
 ?myArray = DynamicArray(Boxing.i8_, n);
 pointer myValue = EC_ADDRESS(a);
 

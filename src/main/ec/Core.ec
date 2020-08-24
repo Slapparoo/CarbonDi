@@ -302,6 +302,20 @@ public class Core.Boxing (Core.Object) {
     static int f64_ = 11; 
     static int pointer_ = 12; 
   }
+
+  public static i32 getSizeBytes(i32 type) {
+    if (type == 1 || type == 2 || type == 3) {
+      return 1;
+    } else if (type == 4 || type == 5) {
+      return 2;
+    } else if (type == 6 || type == 7 || type == 8) {
+      return 4;
+    } else if (type == 9 || type == 10 || type == 11) {
+      return 8;
+    }
+
+    return 0;
+  }
 }
 
 
@@ -573,6 +587,157 @@ public final class Core.Pointer (Core.BaseBoxing) {
   }
 }
 
+public final class Core.FileUtils (Core.Object) {
+
+  public static u64 filesize(pointer fp){
+      int prev = External.stdio.ftell(fp);
+      External.stdio.fseek(fp, 0, External.stdio.SEEK_END);
+      int sz = External.stdio.ftell(fp);
+      External.stdio.fseek(fp, prev, External.stdio.SEEK_SET); //go back to where we were
+      return sz;
+  }
+
+  public static i8[] fileread(String filename) { 
+      pointer fp = External.stdio.fopen(filename.asStr(), `'r'`);
+      if (fp == null) {
+          External.core.throwException(`[openfile] error opening file.`);
+      }
+      ?size = filesize(fp);
+      ?szp1 = size+1;
+      ?buffer = i8[szp1]; // +1 so we can have a null terminated str
+      ?result = External.stdio.fread(buffer.values, 1, size, fp);
+
+      External.stdio.fclose(fp);
+
+      if (result != size) {
+          External.core.throwException(`[readfile] error reading file.`);
+      }
+
+      return buffer;
+  }
+
+}
+
+
+public final class Core.Charactor (Core.Object) {
+
+    public static boolean isLetter(i8 chr) {
+        ?res = false;
+        switch (chr) {
+            case 'A'..'Z' :
+            case 'a'..'z' :
+                res = true;
+        }
+
+        return res;
+    }
+
+    public static boolean isAlpha(i8 chr) {
+        ?res = false;
+        switch (chr) {
+            case ' ':
+            case 'A'..'Z' :
+            case 'a'..'z' :
+                res = true;
+        }
+
+        return res;
+    }
+
+    public static boolean isUpper(i8 chr) {
+        ?res = false;
+        switch (chr) {
+            case 'A'..'Z' :
+                res = true;
+        }
+
+        return res;
+    }
+
+    public static boolean isLower(i8 chr) {
+        ?res = false;
+        switch (chr) {
+            case 'a'..'z' :
+                res = true;
+        }
+
+        return res;
+    }
+
+    public static boolean isAlphaNumeric(i8 chr) {
+        ?res = false;
+        switch (chr) {
+            case ' ':
+            case '0'..'9' :
+            case 'A'..'Z' :
+            case 'a'..'z' :
+                res = true;
+        }
+
+        return res;
+    }
+
+    public static boolean isLetterorNumber(i8 chr) {
+        ?res = false;
+        switch (chr) {
+            case '0'..'9' :
+            case 'A'..'Z' :
+            case 'a'..'z' :
+                res = true;
+        }
+
+        return res;
+    }
+
+    public static boolean isNumber(i8 chr) {
+        ?res = false;
+        switch (chr) {
+            case '0'..'9' :
+            case '_' :
+                res = true;
+        }
+
+        return res;
+    }
+
+    public static boolean isFloat(i8 chr) {
+        ?res = false;
+        switch (chr) {
+            case '0'..'9' :
+            case '_' :
+            case '.' :
+                res = true;
+        }
+
+        return res;
+    }
+
+    public static boolean isHex(i8 chr) {
+        ?res = false;
+        switch (chr) {
+            case '0'..'9' :
+            case 'a'..'f' :
+            case 'A'..'F' :
+            case '_' :
+                res = true;
+        }
+
+        return res;
+    }
+
+    public static boolean isBinary(i8 chr) {
+        ?res = false;
+        switch (chr) {
+            case '0'..'1' :
+            case '_' :
+                res = true;
+        }
+
+        return res;
+    }
+
+}
+
 
 
 /**
@@ -610,6 +775,15 @@ public class Core.DynamicArray (Core.Array){
         static u64 growBy = 8;
         static u64 slideAmount = 4;
         
+    }
+
+    public DynamicArray(=dataType) {
+        capacity = initialSize;
+        dataSize = Boxing.getSizeBytes(dataType);
+        values = alloc(capacity * dataSize);
+        startIndex = initialSize /2;
+        endIndex = startIndex;
+        length = 0;
     }
 
     public DynamicArray(=dataType, =dataSize) {

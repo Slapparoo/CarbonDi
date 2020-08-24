@@ -20,6 +20,8 @@
 #include "Core.U64.h"
 #include "Core.F64.h"
 #include "Core.Pointer.h"
+#include "Core.FileUtils.h"
+#include "Core.Charactor.h"
 
 /*fd1*/pointer c_2106303_DynamicArraygetValue(num this, u64 index){
 
@@ -245,7 +247,7 @@ __onEnter();/*va1*/u64 ix = /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObje
 __onExit();}
 
 /*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->length--;
-return __exitReturn_pointer_un(/*te8*/result, entry__);
+/*rx2*/ return __exitReturn_pointer_un(/*te8*/result, entry__);
 }
 
 
@@ -505,7 +507,24 @@ pointer getc_2106303_DynamicArray_cm() {
 
 
 /* default constructor */
-num create_c_2106303_DynamicArray_1(/* param *//*va1*/int dataType, /*va1*/u64 dataSize) {
+num create_c_2106303_DynamicArray_1(/* param *//*va1*/int dataType) {
+num this =  create_c_2106303_DynamicArray();
+
+((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set_dataType(this, dataType);
+{
+
+__onEnter();/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_capacity(/*te8*/this, /*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_initialSize());
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_dataSize(/*te8*/this, /*fc4*/ ((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->getSizeBytes(/*te8*/dataType));
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_values(/*te8*/this, /*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->alloc(this, /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_dataSize(/*te8*/this)));
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_startIndex(/*te8*/this, /*oxa*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_initialSize() / /*oxb*/2);
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_endIndex(/*te8*/this, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this));
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_length(/*te8*/this, 0);
+
+__onExit();}
+
+return this;
+}
+num create_c_2106303_DynamicArray_2(/* param *//*va1*/int dataType, /*va1*/u64 dataSize) {
 num this =  create_c_2106303_DynamicArray();
 
 ((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set_dataType(this, dataType);
@@ -522,13 +541,13 @@ __onExit();}
 
 return this;
 }
-num create_c_2106303_DynamicArray_2(/* param *//*va1*/u64 capacity, /*va1*/int dataType, /*va1*/u64 dataSize) {
+num create_c_2106303_DynamicArray_3(/* param *//*va1*/u64 capacity, /*va1*/int dataType, /*va1*/u64 dataSize) {
 num this =  create_c_2106303_DynamicArray();
 
 
 return this;
 }
-num create_c_2106303_DynamicArray_3(/* param *//*va1*/u64 capacity, /*va1*/int dataType, /*va1*/u64 dataSize, /*va1*/pointer values) {
+num create_c_2106303_DynamicArray_4(/* param *//*va1*/u64 capacity, /*va1*/int dataType, /*va1*/u64 dataSize, /*va1*/pointer values) {
 num this =  create_c_2106303_DynamicArray();
 
 

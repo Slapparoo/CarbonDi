@@ -1,4 +1,4 @@
-// Generated from /home/brook/Source/ec-lang/src/main/antlr4/imports/ectypes.g4 by ANTLR 4.7.1
+// Generated from /workspaces/ec-lang/src/main/antlr4/imports/ectypes.g4 by ANTLR 4.8
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class ectypesParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.7.1", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.8", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -56,52 +56,61 @@ public class ectypesParser extends Parser {
 		RULE_keyword_inline = 61, RULE_type_range = 62, RULE_base_ident = 63, 
 		RULE_type_anonymous = 64, RULE_type_num = 65, RULE_type_float = 66, RULE_type_string = 67, 
 		RULE_eol = 68;
-	public static final String[] ruleNames = {
-		"var_type", "builtin_primatives", "builtin_values", "comparator", "assign", 
-		"predicate", "operator_mul", "operator_add", "operator_plus", "operator_minus", 
-		"keyword_ampersand", "operator_bin", "operator_shift", "accessor_type", 
-		"keyword_lbrace", "keyword_rbrace", "keyword_lparen", "keyword_rparen", 
-		"keyword_lbracket", "keyword_rbracket", "keyword_semi", "keyword_equals", 
-		"keyword_comma", "keyword_if", "keyword_not", "keyword_else", "keyword_loop", 
-		"keyword_public", "keyword_private", "keyword_protected", "keyword_hidden", 
-		"keyword_imports", "keyword_is", "keyword_with", "keyword_in", "keyword_try", 
-		"keyword_catch", "keyword_finally", "keyword_throws", "keyword_break", 
-		"keyword_continue", "keyword_switch", "keyword_case", "keyword_default", 
-		"keyword_return", "keyword_return_add", "keyword_static", "keyword_final", 
-		"keyword_void", "keyword_signature", "keyword_enum", "keyword_plan", "keyword_class", 
-		"keyword_properties", "keyword_stub", "keyword_function", "keyword_lambda", 
-		"keyword_true", "keyword_false", "keyword_namespace", "keyword_global", 
-		"keyword_inline", "type_range", "base_ident", "type_anonymous", "type_num", 
-		"type_float", "type_string", "eol"
-	};
+	private static String[] makeRuleNames() {
+		return new String[] {
+			"var_type", "builtin_primatives", "builtin_values", "comparator", "assign", 
+			"predicate", "operator_mul", "operator_add", "operator_plus", "operator_minus", 
+			"keyword_ampersand", "operator_bin", "operator_shift", "accessor_type", 
+			"keyword_lbrace", "keyword_rbrace", "keyword_lparen", "keyword_rparen", 
+			"keyword_lbracket", "keyword_rbracket", "keyword_semi", "keyword_equals", 
+			"keyword_comma", "keyword_if", "keyword_not", "keyword_else", "keyword_loop", 
+			"keyword_public", "keyword_private", "keyword_protected", "keyword_hidden", 
+			"keyword_imports", "keyword_is", "keyword_with", "keyword_in", "keyword_try", 
+			"keyword_catch", "keyword_finally", "keyword_throws", "keyword_break", 
+			"keyword_continue", "keyword_switch", "keyword_case", "keyword_default", 
+			"keyword_return", "keyword_return_add", "keyword_static", "keyword_final", 
+			"keyword_void", "keyword_signature", "keyword_enum", "keyword_plan", 
+			"keyword_class", "keyword_properties", "keyword_stub", "keyword_function", 
+			"keyword_lambda", "keyword_true", "keyword_false", "keyword_namespace", 
+			"keyword_global", "keyword_inline", "type_range", "base_ident", "type_anonymous", 
+			"type_num", "type_float", "type_string", "eol"
+		};
+	}
+	public static final String[] ruleNames = makeRuleNames();
 
-	private static final String[] _LITERAL_NAMES = {
-		null, "'?'", "'u8'", "'i8'", "'u16'", "'i16'", "'u32'", "'i32'", "'f32'", 
-		"'u64'", "'i64'", "'f64'", "'f128'", "'f80'", "'boolean'", "'b8'", "'num'", 
-		"'pointer'", "'int'", "'null'", "'<'", "'>'", "'=='", "'>='", "'<='", 
-		"'!='", "'==='", "'&='", "'~='", "'||'", "'&&'", "'+='", "'*='", "'/='", 
-		"'-='", "'%='", "'++'", "'--'", "'*'", "'/'", "'%'", "'+'", "'-'", "'&'", 
-		"'|'", "'>>'", "'<<'", "'{'", "'}'", "'('", "')'", "'['", "']'", "';'", 
-		"'='", "','", "'if'", "'!'", "'else'", "'loop'", "'public'", "'private'", 
-		"'protected'", "'hidden'", "'imports'", "'is'", "'with'", "'in'", "'try'", 
-		"'catch'", "'finally'", "'throws'", "'break'", "'continue'", "'switch'", 
-		"'case'", "'default'", "'return'", "'return.add'", "'static'", "'final'", 
-		"'void'", "'signature'", "'enum'", "'plan'", "'class'", "'properties'", 
-		"'stub'", "'function'", "'=>'", "'true'", "'false'", "'namespace'", "'global'", 
-		"'inline'"
-	};
-	private static final String[] _SYMBOLIC_NAMES = {
-		null, null, null, null, null, null, null, null, null, null, null, null, 
-		null, null, null, null, null, null, null, null, null, null, null, null, 
-		null, null, null, null, null, null, null, null, null, null, null, null, 
-		null, null, null, null, null, null, null, null, null, null, null, null, 
-		null, null, null, null, null, null, null, null, null, null, null, null, 
-		null, null, null, null, null, null, null, null, null, null, null, null, 
-		null, null, null, null, null, null, null, null, null, null, null, null, 
-		null, null, null, null, null, null, null, null, null, null, null, "RANGE", 
-		"ID", "ANONYMOUS", "NUM", "FLOAT", "STRING", "CSTRING", "PRECOMPILER", 
-		"DOC_COMMENT", "BLOCK_COMMENT", "LINE_COMMENT", "WS", "EOL"
-	};
+	private static String[] makeLiteralNames() {
+		return new String[] {
+			null, "'?'", "'u8'", "'i8'", "'u16'", "'i16'", "'u32'", "'i32'", "'f32'", 
+			"'u64'", "'i64'", "'f64'", "'f128'", "'f80'", "'boolean'", "'b8'", "'num'", 
+			"'pointer'", "'int'", "'null'", "'<'", "'>'", "'=='", "'>='", "'<='", 
+			"'!='", "'==='", "'&='", "'~='", "'||'", "'&&'", "'+='", "'*='", "'/='", 
+			"'-='", "'%='", "'++'", "'--'", "'*'", "'/'", "'%'", "'+'", "'-'", "'&'", 
+			"'|'", "'>>'", "'<<'", "'{'", "'}'", "'('", "')'", "'['", "']'", "';'", 
+			"'='", "','", "'if'", "'!'", "'else'", "'loop'", "'public'", "'private'", 
+			"'protected'", "'hidden'", "'imports'", "'is'", "'with'", "'in'", "'try'", 
+			"'catch'", "'finally'", "'throws'", "'break'", "'continue'", "'switch'", 
+			"'case'", "'default'", "'return'", "'return.add'", "'static'", "'final'", 
+			"'void'", "'signature'", "'enum'", "'plan'", "'class'", "'properties'", 
+			"'stub'", "'function'", "'=>'", "'true'", "'false'", "'namespace'", "'global'", 
+			"'inline'"
+		};
+	}
+	private static final String[] _LITERAL_NAMES = makeLiteralNames();
+	private static String[] makeSymbolicNames() {
+		return new String[] {
+			null, null, null, null, null, null, null, null, null, null, null, null, 
+			null, null, null, null, null, null, null, null, null, null, null, null, 
+			null, null, null, null, null, null, null, null, null, null, null, null, 
+			null, null, null, null, null, null, null, null, null, null, null, null, 
+			null, null, null, null, null, null, null, null, null, null, null, null, 
+			null, null, null, null, null, null, null, null, null, null, null, null, 
+			null, null, null, null, null, null, null, null, null, null, null, null, 
+			null, null, null, null, null, null, null, null, null, null, null, "RANGE", 
+			"ID", "ANONYMOUS", "NUM", "FLOAT", "STRING", "CSTRING", "PRECOMPILER", 
+			"DOC_COMMENT", "BLOCK_COMMENT", "LINE_COMMENT", "WS", "EOL"
+		};
+	}
+	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
 	/**
@@ -151,6 +160,7 @@ public class ectypesParser extends Parser {
 		super(input);
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
+
 	public static class Var_typeContext extends ParserRuleContext {
 		public Var_typeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);

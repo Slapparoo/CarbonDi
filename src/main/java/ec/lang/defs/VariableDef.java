@@ -248,6 +248,19 @@ public class VariableDef extends StatementDef {
             return "(incomplete) " + getNameAsCode();
         }
 
+        if (containedInBlock == null) {
+            throw new NullPointerException("VariableDef containedInBlock == null" + this);
+        }
+
+        if (assignValue != null) {
+            assignValue.containedInBlock = containedInBlock;
+
+            // if (assignValue instanceof TypeExpr) {
+            //     ((TypeExpr)assignValue).variableDef = this;
+            // }
+        }
+
+
         String aa = (assignValue == null ? ";" : assignValue.asCode());
         String av = (aa.trim().equals(";") ? "" : " = " + aa);
 

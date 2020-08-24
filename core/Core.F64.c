@@ -19,6 +19,8 @@
 #include "Core.I64.h"
 #include "Core.U64.h"
 #include "Core.Pointer.h"
+#include "Core.FileUtils.h"
+#include "Core.Charactor.h"
 #include "Core.DynamicArray.h"
 
 /*fd1*/int c_2106303_F64datatype(){
