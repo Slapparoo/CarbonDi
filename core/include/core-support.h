@@ -57,6 +57,11 @@
 #define EC_SETVALUE_int(index, array, value) EC_SETVALUE(index, array, value, int)
 #define EC_SETVALUE_num(index, array, value) EC_SETVALUE(index, array, value, num)
 
+#define EC_GETVALUE_i8(ptrvalue, index) *(i8*)&ptrvalue[index]
+#define EC_GETVALUE_i16(ptrvalue, index) *(i16*)&ptrvalue[index]
+#define EC_GETVALUE_i32(ptrvalue, index) *(i32*)&ptrvalue[index]
+#define EC_GETVALUE_i64(ptrvalue, index) *(i64*)&ptrvalue[index]
+
 #define EC_VALUE(ptrvalue, datatype) *(datatype*)ptrvalue
 #define EC_VALUE_i64(ptrvalue) *(i64*)ptrvalue
 #define EC_VALUE_u64(ptrvalue) *(u64*)ptrvalue

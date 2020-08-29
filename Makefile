@@ -24,6 +24,7 @@ ectest :
 
 gencore :
 	sh ./generate_core.sh
+	@echo "if you have added a new class you also need to manually add it to Core.Core_main.h"
 
 deploycore : 
 	@if [ -d core.old ]; then echo "core.old exists manually remove"; exit 1; fi 

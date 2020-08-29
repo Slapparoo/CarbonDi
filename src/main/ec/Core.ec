@@ -1,6 +1,11 @@
 namespace Core;
 
 public class Core.Object {
+
+    (public, private) properties {
+      pointer instanceName;
+    }
+
     public Object();
 
     public pointer asStr() {
@@ -12,7 +17,6 @@ public class Core.Object {
       fprintf(stream, `%s`, asStr());
     }
 
-
     /**
     Exposes the underlying pointer to the data can be used for both read and writes, so some caution is advised.
     */
@@ -20,9 +24,8 @@ public class Core.Object {
       return External.core.Object_data(this);
     }
 
-
-    public i64 hashCode() {
-       return (this * 0xff3ff3ff3ff3ff13) >> 3;
+    public i32 hashCode() {
+       return this;
     }
 
     public boolean equals(Object other) {
@@ -41,176 +44,25 @@ public class Core.Object {
     }
 }
 
-public class Core.String (Core.Object) {
-    properties {
-         (public, private) pointer value;
-    }
+public class Core.HashCode (Core.Object) {
+    public static i32 calcFastHash(pointer p, u64 length) {
+        i32 res = 0;
 
-
-    /**
-    * DefaULT
-    */
-    public String(pointer str) {
-        i64 len = External.stdio.strlen(str) + 1;
-        value = this.alloc(len);
-        External.stdio.strcpy(value, str);
-    }
-
-    /**
-    * for strings which are defined in code c will statically allocate
-    * the memory for them
-    */
-    public String(pointer str, boolean staticAlloc) {
-        if (staticAlloc) {
-            value = str;
-        } else {
-            i64 len = External.stdio.strlen(str) + 1;
-            value = this.alloc(len);
-            External.stdio.strcpy(value, str);
+        loop (length) {
+            if (length - $a > 4) {
+                res += External.core.EC_GETVALUE_i32(p, $a);
+                $a += 3;
+            } else if (length - $a > 2) {
+                res += External.core.EC_GETVALUE_i16(p, $a);
+                $a += 1;
+            } else {
+                // for alpha - 31 (this only happens to the last ch in the array)
+                res += External.core.EC_GETVALUE_i8(p, $a) - 31;
+            }
         }
-    }
-
-    /**
-    * String Concatenation
-    */
-    public String(pointer str, pointer str2) {
-        i64 len = External.stdio.strlen(str) + External.stdio.strlen(str2) + 1;
-        value = this.alloc(len);
-        External.stdio.strcpy(value, str);
-        External.stdio.strcat(value, str2);
-    }
-
-    private String();
-
-    public String asString() {
-        return this;
-    }
-
-    public u64 length() {
-      return External.stdio.strlen(value);
-    }
-
-    public void println() {
-        External.stdio.printf(`%s\n`, this.asStr());
-    }
-
-    public String appendStr(pointer str) {
-        // i64 len = 0;
-        i64 len = External.stdio.strlen(value) + External.stdio.strlen(str) + 1;
-        value = this.realloc(value, len);
-        External.stdio.strcat(value, str);
-
-        return this;
-    }
-
-    public String append(String string) {
-        appendStr(string.asStr());
-        return this;
-    }
-
-    public String prependStr(pointer str4) {
-        i64 len = External.stdio.strlen(value) + External.stdio.strlen(str4) + 1;
-        value = realloc(value, len);
-        External.stdio.memmove(
-          EC_ADDRESS(
-            EC_ARRAY(value, External.stdio.strlen(str4))), value, External.stdio.strlen(value) +1);
-        External.stdio.memcpy(value, str4, External.stdio.strlen(str4));
-
-        return this;
-    }
-
-    public String prepend(String string1) {
-        prependStr(string1.asStr());
-
-        return this;
-    }
-
-    public i64 compareStr(pointer str5) {
-        i64 res = External.stdio.strcmp(value, str5);
-        return res;
-    }
-
-    public i64 compare(String string5) {
-        i64 res = External.stdio.strcmp(value, string5.asStr());
-        return res;
-    }
-
-    public i64 findStr(i64 from, pointer str6) {
-        pointer p = External.stdio.strstr(EC_ADDRESS(EC_ARRAY(value, from)), str6);
-
-        if (p == null) {
-            return -1;
-        }
-        i64 res = p - value;
 
         return res;
     }
-
-    public i64 find(i64 from, String string6) {
-        return findStr(from, string6.asStr());
-    }
-
-    /**
-    Array with the offsets of all instances of the sub strings
-    */
-    // public i64[] findAll(pointer str7) {
-    //     int datatype = 10;
-    //     DynamicArray offsets = DynamicArray(64, datatype, 8);
-
-    //     ?offset = findStr(0, str7);
-
-    //     printf(`loop %li\n`, offset);
-
-    //     loop (offset > 0) {
-    //         printf(`loop %li`, offset);
-    //         offsets.addHead(EC_ADDRESS(offset));
-    //         offset = findStr(offset + 1, str7);
-    //     }
-    //     // offsets.addHead(str7);
-    //     printf(`%s %li\n`, offsets.asStr, offsets.length);
-
-
-    //     return offsets;
-    // }
-
-    public void trunc(i64 start, i64 end) {
-        i64 len = External.stdio.strlen(value);
-        if (start < 0) {
-            throwException(`[string trunc] start is less than zero.`);
-        }
-
-        if (end < start) {
-            throwException(`[string trunc] end is less than start.`);
-        }
-
-        if (start > len) {
-            throwException(`[string trunc] start is after length of string.`);
-        }
-
-        if (end > len) {
-            throwException(`[string trunc] end after length of string.`);
-        }
-
-        i64 newLen = end - start;
-        External.stdio.memmove(value, EC_ADDRESS(EC_ARRAY(value, start)), newLen);
-        value = realloc(value, newLen+1);
-        EC_SETVALUE_i8(newLen, value, 0);
-    }
-
-    public pointer asStr() {
-        return value;
-    }
-
-}
-
-public class Core.Exception (Core.Object) {
-    (public, private) properties {
-        String message;
-        Exception root;
-    }
-    private Exception();
-    public Exception(=message);
-    public Exception(=root, =message);
 }
 
 public class signature Core.Array(Core.Object){
@@ -273,12 +125,263 @@ public class signature Core.RefArray(Core.Array){
   public pointer asStr();
   public void printTo(pointer stream);
   public String asString();
-  public i64 hashCode();
+  public i32 hashCode();
   public boolean equals(Object other);
   hidden final void free();
   hidden void release();
   public final pointer alloc(u64 size);
 }
+
+
+public class Core.String (Core.Object) {
+    properties {
+         (public, private) pointer value;
+         (private, private) i32 hash;
+    }
+
+
+    /**
+    * DefaULT
+    */
+    public String(pointer str) {
+        i64 len = External.stdio.strlen(str) + 1;
+        value = this.alloc(len);
+        External.stdio.strcpy(value, str);
+    }
+
+    /**
+    * for strings which are defined in code c will statically allocate
+    * the memory for them
+    */
+    public String(pointer str, boolean staticAlloc) {
+        if (staticAlloc) {
+            value = str;
+        } else {
+            i64 len = External.stdio.strlen(str) + 1;
+            value = this.alloc(len);
+            External.stdio.strcpy(value, str);
+        }
+    }
+
+    /**
+    * String Concatenation
+    */
+    public String(pointer str, pointer str2) {
+        i64 len = External.stdio.strlen(str) + External.stdio.strlen(str2) + 1;
+        value = this.alloc(len);
+        External.stdio.strcpy(value, str);
+        External.stdio.strcat(value, str2);
+    }
+
+    /**
+    create a new String which is a substring of another
+    */
+    public String(pointer str, u64 offset, u64 len) {
+        value = this.alloc(len + 1);
+        External.stdio.memcpy(value, str + offset, len);
+    }
+
+    private String();
+
+    public String asString() {
+        return this;
+    }
+
+    public u64 length() {
+      return External.stdio.strlen(value);
+    }
+
+    public void println() {
+        External.stdio.printf(`%s\n`, this.asStr());
+    }
+
+    public String appendStr(pointer str) {
+        // i64 len = 0;
+        i64 len = External.stdio.strlen(value) + External.stdio.strlen(str) + 1;
+        value = this.realloc(value, len);
+        External.stdio.strcat(value, str);
+
+        return this;
+    }
+
+    public String append(String string) {
+        appendStr(string.asStr());
+        return this;
+    }
+
+    public String prependStr(pointer str4) {
+        i64 len = External.stdio.strlen(value) + External.stdio.strlen(str4) + 1;
+        value = realloc(value, len);
+        External.stdio.memmove(
+          EC_ADDRESS(
+            EC_ARRAY(value, External.stdio.strlen(str4))), value, External.stdio.strlen(value) +1);
+        External.stdio.memcpy(value, str4, External.stdio.strlen(str4));
+
+        return this;
+    }
+
+    public String prepend(String string1) {
+        prependStr(string1.asStr());
+
+        return this;
+    }
+
+    /**
+    return 0 if the strings are equal 
+    negative if the ASCII value of the first unmatched character is less than the second.
+    positive if the ASCII value of the first unmatched character is greater than the second.
+
+    */
+    public i64 compareStr(pointer str5) {
+        i64 res = External.stdio.strcmp(value, str5);
+        return res;
+    }
+
+    /**
+      Compare this string to a 'substring' in other
+    */
+    public boolean compareSubStr(pointer str6, u64 offset) {
+        ?l = length();
+        pointer str2 = EC_ADDRESS(EC_ARRAY(str6, offset));
+
+        ?matched = true;
+        loop (l) {
+          if (External.core.EC_GETVALUE_i8(str2, l) != External.core.EC_GETVALUE_i8(value, l)) {
+            matched = false;
+          }
+        }
+        
+        return matched;
+    }
+
+    public i8 getChar(u64 offset) {
+      if (offset > length()) {
+        throwException(`[error] String.getChar offset out of bounds.`);
+      }
+      return External.core.EC_GETVALUE_i8(value, offset);
+    }
+
+    // public i8[] asArray() {
+    //   // Array(u64 capacity, int dataType, u64 dataSize, pointer values);
+    //   return Array(length(), Boxing.i8_, 1, value);
+    // }
+
+    /**
+      is the passed string matched at the given offset 
+    */
+    public boolean isSubStr(pointer str7, u64 offset) {
+        ?l = External.stdio.strlen(str7);
+        pointer str2 = EC_ADDRESS(EC_ARRAY(value, offset));
+
+        loop (l) {
+          if (External.core.EC_GETVALUE_i8(str7, $a) != External.core.EC_GETVALUE_i8(str2, $a)) {
+            return false;
+          }
+        }
+        
+        return true;
+    }
+
+
+    public i64 compare(String string5) {
+        i64 res = External.stdio.strcmp(value, string5.asStr());
+        return res;
+    }
+
+    public i64 findStr(i64 from, pointer str6) {
+        pointer p = External.stdio.strstr(EC_ADDRESS(EC_ARRAY(value, from)), str6);
+
+        if (p == null) {
+            return -1;
+        }
+        i64 res = p - value;
+
+        return res;
+    }
+
+    public i64 find(i64 from, String string6) {
+        return findStr(from, string6.asStr());
+    }
+
+    public boolean equals(String other) {
+      if (this == other) {
+        return true;
+      }
+
+      return !External.stdio.strcmp(value, other.value);
+    } 
+
+
+    /**
+    Array with the offsets of all instances of the sub strings
+    */
+    // public i64[] findAll(pointer str7) {
+    //     int datatype = 10;
+    //     DynamicArray offsets = DynamicArray(64, datatype, 8);
+
+    //     ?offset = findStr(0, str7);
+
+    //     printf(`loop %li\n`, offset);
+
+    //     loop (offset > 0) {
+    //         printf(`loop %li`, offset);
+    //         offsets.addHead(EC_ADDRESS(offset));
+    //         offset = findStr(offset + 1, str7);
+    //     }
+    //     // offsets.addHead(str7);
+    //     printf(`%s %li\n`, offsets.asStr, offsets.length);
+
+
+    //     return offsets;
+    // }
+
+    public void trunc(i64 start, i64 end) {
+        i64 len = External.stdio.strlen(value);
+        if (start < 0) {
+            throwException(`[string trunc] start is less than zero.`);
+        }
+
+        if (end < start) {
+            throwException(`[string trunc] end is less than start.`);
+        }
+
+        if (start > len) {
+            throwException(`[string trunc] start is after length of string.`);
+        }
+
+        if (end > len) {
+            throwException(`[string trunc] end after length of string.`);
+        }
+
+        i64 newLen = end - start;
+        External.stdio.memmove(value, EC_ADDRESS(EC_ARRAY(value, start)), newLen);
+        value = realloc(value, newLen+1);
+        EC_SETVALUE_i8(newLen, value, 0);
+    }
+
+    public pointer asStr() {
+        return value;
+    }
+
+    public i32 hashCode() {
+      if (hash) {
+        return hash;
+      }
+      hash = HashCode.calcFastHash(value, length);
+      return hash;
+    }
+}
+
+public class Core.Exception (Core.Object) {
+    (public, private) properties {
+        String message;
+        Exception root;
+    }
+    private Exception();
+    public Exception(=message);
+    public Exception(=root, =message);
+}
+
 
 // public class DynamicArray (Array) {
 //   pointer get(num b);
@@ -1097,6 +1200,310 @@ public class Core.DynamicArray (Core.Array){
         endIndex = newStart + length;
     }
 }
+
+
+public class Core.Duo (Core.Object) {
+    properties {
+        Object one;
+        Object two;
+    }
+}
+
+/**
+    hash map store, relitively light weight implementation don't expect to much from it.
+*/
+// public class Core.Hashset (Core.Object) {
+
+//     (private, private) properties {
+//         u64 hsitems = 0;
+//         RefArray hslist;
+//         boolean isInit = false;
+//         u64 hssize = 256;
+//     }
+
+//     // public Hashset(=hssize);
+
+//     private void reHash(Object object) {
+//         ?oldSize = hssize;
+//         ?oldlist = hslist;
+
+//         hssize += 512;
+//         ?newlist = RefArray(hssize);
+
+//         hsitems = 0;
+//         loop (oldSize) {
+//             ?ix = $a;  
+//             Object item = oldlist[ix];
+
+//             if (item != 0) {
+//                 if (item.instanceName == Duo.className) {
+//                     Duo d = item;
+//                     addNew(newlist, d.one);
+//                     addNew(newlist, d.two);
+//                 } else {
+//                     addNew(newlist, item);
+//                 }
+//             }
+//         }
+
+//         addNew(newlist, object);
+
+//         hslist = newlist;
+//     }
+
+//     private void startup() {
+//         if (isInit) {
+//             return;
+//         }
+
+//         // 256 *4 = 1kb
+//         if (hssize < 256) {
+//             hssize = 256;
+//         }
+
+//         hslist = RefArray(hssize);
+//         isInit = true;
+//     }
+
+//     public boolean contains(Object object) {
+//         if (!isInit) {
+//             return false;
+//         }
+
+//         i32 index = object.hashCode() % hssize;
+
+//         ?tempList = hslist;
+//         Object item = tempList[index];
+
+//         if (item == 0) {
+//             return false;
+//         } else if (item.equals(object)) {
+//             return true;        
+//         }
+//         return false;
+//     }
+
+//     public void add(Object object) {
+//         if (!isInit) {
+//             startup();
+//         }
+
+//         i32 index = object.hashCode() % hssize;
+
+//         ?tempList = hslist;
+//         Object item = tempList[index];
+
+//         if (item == 0) {
+//             tempList[index] = object;
+//             hsitems++;
+//             return;
+//         } else if (item.equals(object)) {
+//             return;
+//         } else if (item.instanceName == Duo.className) {
+//             Duo duo = item; 
+//             if (duo.one == object || duo.two == object) {
+//                 return;
+//             }
+//             reHash(object);
+//         } else {
+//             ?duo = Duo();
+//             duo.one = item;
+//             duo.two = object;
+//             tempList[index] = duo;
+//             hsitems++;
+//         }
+//     }
+
+//     private void addNew(RefArray newlist, Object object) {
+//         i32 index = object.hashCode() % hssize;
+
+//         ?tempList = newlist;
+//         Object item = tempList[index];
+
+//         if (item == 0) {
+//             tempList[index] = object;
+//             hsitems++;
+//             return;
+//         } else if (item.equals(object)) {
+//             return;
+//         } else if (item.instanceName == Duo.className) {
+            
+//             Duo duo = item; 
+//             if (duo.one == object || duo.two == object) {
+//                 return;
+//             }
+//             throwException(`Reentrant hashset resize.`);
+
+//         } else {
+//             ?duo = Duo();
+//             duo.one = item;
+//             duo.two = object;
+//             tempList[index] = duo;
+//             hsitems++;
+//         }
+//     }
+// };
+
+class Core.Hashset {}
+
+
+public class Core.MapDuo (Core.Object) {
+    properties {
+        Object oneKey;
+        Object twoKey;
+        Object oneValue;
+        Object twoValue;
+    }
+}
+
+
+public class Core.MapEntry (Core.Object) {
+    properties {
+        Object key;
+        Object value;
+    }
+
+    public MapEntry(=key, =value);
+}
+
+
+/**
+    hash map store
+*/
+public class Core.Hashmap (Core.Object) {
+
+    properties {
+        boolean isInitm = false;
+        u64 hmitems = 0;
+        u64 hmsize = 1024;
+        RefArray hmlist;
+    }
+
+    // public Hashmap(=hmsize);
+
+    private void reHash(Object key, Object value) {
+        ?oldSize = hmsize;
+        ?oldlist = this.hmlist;
+
+        hmsize += 512;
+        ?newlist = RefArray(hmsize);
+
+        hmitems = 0;
+        loop (oldSize) {
+            ?ix = $a;  
+            Object item = oldlist[ix];
+
+            if (item != 0) {
+                if (item.instanceName == MapDuo.className) {
+                    MapDuo d = item;
+                    internalPut(newlist, d.oneKey, d.oneValue);
+                    internalPut(newlist, d.twoKey, d.twoValue);
+                } else {
+                    MapEntry e = item;
+                    internalPut(newlist, e.key, e.value);
+                }
+            }
+        }
+
+        internalPut(newlist, key, value);
+
+        this.hmlist = newlist;
+        // printf(`items=%lu size=%lu\n`, items, size);
+    }
+
+    public void startuphm() {
+        if (this.isInitm) {
+            return;
+        }
+        // 256 *4 = 1kb
+        if (hmsize < 256) {
+            hmsize = 256;
+        }
+
+        this.hmlist = RefArray(hmsize);
+        this.isInitm = true;
+    }
+
+    public Object get(Object object) {
+        if (!this.isInitm) {
+            return 0;
+        }
+        i32 index = object.hashCode() % hmsize;
+
+        ?tempList = this.hmlist;
+        MapEntry item = tempList[index];
+
+        if (item == 0) {
+            return 0;
+        } else if (item.instanceName == MapDuo.className) {
+            MapDuo duo = item; 
+            if (duo.oneKey == object) {
+                return duo.oneValue;
+            } else if(duo.twoKey == object) {
+                return duo.twoValue;
+            }
+        } else if (item.instanceName == MapEntry.className) {
+            MapEntry e = item;
+            if (e.key.equals(object)) {
+                return e.value;        
+            }
+        }
+        return 0;
+    }
+
+    private void internalPut(RefArray refArray, Object key, Object value) {
+        i32 index = key.hashCode() % hmsize;
+
+        ?tempList = refArray;
+        Object item = tempList[index];
+
+        if (item == 0) {
+            tempList[index] = MapEntry(key, value);
+            hmitems++;
+            return;
+        } else if (item.instanceName == MapDuo.className) {
+            MapDuo duo = item; 
+            if (duo.oneKey == key) {
+                duo.oneValue = value;
+                return;
+            } else if(duo.twoKey == key) {
+                duo.twoValue = value;
+                return;
+            }
+            // only allow 2 key collisions
+            reHash(key, value);
+            return;
+        } else if (item.instanceName == MapEntry.className) {
+            MapEntry entry = item;
+            if (entry.key.equals(key)) {
+                entry.value = value;
+                return;
+            } else {
+                ?duo = MapDuo();
+                duo.oneKey = entry.key;
+                duo.oneValue = entry.value;
+                duo.twoKey = key;
+                duo.twoValue = value;
+                tempList[index] = duo;
+                hmitems++;
+                return;
+            }
+        }
+        throwException(`you shouldnt be here.`);
+    }
+
+    /**
+    Unconditional put
+    */
+    public void put(Object key, Object value) {
+        if (!this.isInitm) {
+            startuphm();
+        }
+
+        internalPut(this.hmlist, key, value);
+    }
+}
+
 
 // public final class Core.Observer (Core.Object) {
 //   (public, public) properties {

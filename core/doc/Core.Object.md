@@ -2,6 +2,13 @@ class Core.Object
 ===
 
 ---
+Properties
+---
+|type|name|read|write|value|comments|
+|--- |--- |--- |--- |--- |--- |
+|pointer|__instanceName__|public|public|||
+
+---
 Constructors
 ---
 
@@ -33,7 +40,7 @@ __`public pointer objectData()`__
 </div>
 
 
-__`public i64 hashCode()`__
+__`public i32 hashCode()`__
 <div style="margin:1em">
 
 </div>

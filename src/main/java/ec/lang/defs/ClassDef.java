@@ -873,6 +873,9 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
             }
         }
 
+        //(c_2106303_I64*)_c_2106303_I64->instanceName = c_2106303_I64className();
+        res += "\n/*cdv1*/(("+getCName()+"*)_"+getCName()+")->instanceName = "+ getCName() +"className();";
+
         return res;
     }
 

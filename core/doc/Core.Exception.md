@@ -8,6 +8,7 @@ Properties
 |--- |--- |--- |--- |--- |--- |
 |String|__message__|public|public|||
 |Exception|__root__|public|public|||
+|pointer|__instanceName__|public|public|||
 
 ---
 Constructors

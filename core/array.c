@@ -309,6 +309,7 @@ pointer getc_2106303_RefArray_cm() {
   if (!_refArrayClassModel_init) {
     registerClassModel(&_refArrayClassModel);
     populatec_2106303_RefArray_cm(&_refArrayClassModel);
+    _refArrayClassModel_init = true;
   }
   return &_refArrayClassModel;
 }

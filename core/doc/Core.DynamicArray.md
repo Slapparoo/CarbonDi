@@ -14,6 +14,7 @@ Properties
 |int|__dataType__|public|public|||
 |u64|__dataSize__|public|public|||
 |boolean|__managed__|public|public|||
+|pointer|__instanceName__|public|public|||
 
 ---
 Static Properties

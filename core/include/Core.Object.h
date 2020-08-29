@@ -5,13 +5,14 @@
 /* includes */
 
 // @TODO include class dependancies
-#define __C_2106303_OBJECT_DATA_ 
+#define __C_2106303_OBJECT_DATA_  \
+ pointer instanceName;
 #define __C_2106303_OBJECT_CLASS_  \
 pointer *parent;  \
   pointer (*asStr)(num);  \
   void (*printTo)(num,pointer);  \
   pointer (*objectData)(num);  \
-  i64 (*hashCode)(num);  \
+  i32 (*hashCode)(num);  \
   boolean (*equals)(num,num);  \
   void (*free)(num);  \
   void (*release)(num);  \
@@ -21,7 +22,9 @@ pointer *parent;  \
   pointer (*classShortName)();  \
   pointer (*classCName)();  \
   pointer (*classPackage)();  \
-  u64 (*objectDatasize)();
+  u64 (*objectDatasize)();  \
+  pointer (*get_instanceName)(num);  \
+  void (*set_instanceName)(num,pointer);
 typedef struct c_2106303_Object_cm {
 __C_2106303_OBJECT_CLASS_
 } c_2106303_Object_cm;

@@ -32,11 +32,16 @@ protected final class SimpleObject (SimpleObject1) {
     }
 }
 
-@mySimpleObject = SimpleObject(55);
+switch (value) {
+    case : 1..5 : break;
+    default : break;
+}
+
+?mySimpleObject = SimpleObject(55);
 mySimpleObject.package = "mySimpleObject";
 mySimpleObject.myPrint();
 
-@simpleObject = SimpleObject(23489, "Simple String Init");
+?simpleObject = SimpleObject(23489, "Simple String Init");
 simpleObject.myPrint();
 
 

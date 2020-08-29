@@ -179,6 +179,13 @@ public class TypeExpr extends ExprDef implements MultiTypeId {
 
             } else {
                 if (isGet) {
+
+                    /** @TODO 
+                     * make a function "class model" variable, then use the variable, navigate backwards to find the function 
+                     * statement block
+                     */
+
+
                     if (variableDef.functionDef == null) {
                         resolvedExpr = "/*te14a*/"
                         + SnippetFactory.classModelStatement(memberOf.getCName(), ref_id, false) 

@@ -1,10 +1,11 @@
 // Core.Object
 #include "Core.Core_main.h"
 #include "Core.Object.h"
-#include "Core.String.h"
-#include "Core.Exception.h"
+#include "Core.HashCode.h"
 #include "Core.Array.h"
 #include "Core.RefArray.h"
+#include "Core.String.h"
+#include "Core.Exception.h"
 #include "Core.Boxing.h"
 #include "Core.BaseBoxing.h"
 #include "Core.B8.h"
@@ -22,6 +23,11 @@
 #include "Core.FileUtils.h"
 #include "Core.Charactor.h"
 #include "Core.DynamicArray.h"
+#include "Core.Duo.h"
+#include "Core.Hashset.h"
+#include "Core.MapDuo.h"
+#include "Core.MapEntry.h"
+#include "Core.Hashmap.h"
 
 /*fd1*/pointer c_2106303_ObjectasStr(num this){
 
@@ -43,9 +49,9 @@ u64 entry__ = __onEnter();/*rx2*/ return __exitReturn_pointer_un(/*fc2 null */Ob
 }
 
 
-/*fd1*/i64 c_2106303_ObjecthashCode(num this){
+/*fd1*/i32 c_2106303_ObjecthashCode(num this){
 
-u64 entry__ = __onEnter();return __exitReturn_i64_un(/*oxa*/(/*oxa*//*te8*/this * /*oxb*//* csf */0xff3ff3ff3ff3ff13) >> /*oxb*/3, entry__);
+u64 entry__ = __onEnter();/*rx2*/ return __exitReturn_ref_un(/*te8*/this, entry__);
 }
 
 
@@ -104,6 +110,16 @@ u64 entry__ = __onEnter();/*rx2*/ return __exitReturn_pointer_un(/*fc2 null */Ob
 }
 
 
+/*fd1*/pointer c_2106303_Objectget_instanceName(num this){
+  return  ((c_2106303_Object*)useObject(this)->data)->instanceName;
+}
+
+
+/*fd1*/void c_2106303_Objectset_instanceName(num this, pointer a__a){
+/*cda1*/((c_2106303_Object*)useObject(this)->data)->instanceName = a__a;
+}
+
+
 void c_2106303_Object_free(num this) { Object_ref *object_ref = useObject(this);
 }
 
@@ -111,6 +127,7 @@ void c_2106303_Object_free(num this) { Object_ref *object_ref = useObject(this);
 
 num create_c_2106303_Object() {
   c_2106303_Object * _c_2106303_Object = ec_calloc(sizeof(c_2106303_Object), sizeof(char));
+/*cdv1*/((c_2106303_Object*)_c_2106303_Object)->instanceName = c_2106303_ObjectclassName();
   return createObject(_c_2106303_Object, getc_2106303_Object_cm(), false);
 }
 
@@ -145,6 +162,8 @@ void populatec_2106303_Object_cm(pointer classModel) {
   thisClassModel->classCName = c_2106303_ObjectclassCName;
   thisClassModel->classPackage = c_2106303_ObjectclassPackage;
   thisClassModel->objectDatasize = c_2106303_ObjectobjectDatasize;
+  thisClassModel->get_instanceName = c_2106303_Objectget_instanceName;
+  thisClassModel->set_instanceName = c_2106303_Objectset_instanceName;
   thisClassModel->free = c_2106303_Object_free;
 }
 

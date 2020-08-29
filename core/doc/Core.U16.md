@@ -7,6 +7,7 @@ Properties
 |type|name|read|write|value|comments|
 |--- |--- |--- |--- |--- |--- |
 |u16|__value__|public|public|||
+|pointer|__instanceName__|public|public|||
 
 ---
 Constructors

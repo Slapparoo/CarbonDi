@@ -154,6 +154,62 @@
 #define TOKEN_COMMA         177
 
 
+// special words
+#define TOKEN_ID_U8	        200
+#define TOKEN_ID_I8	        201
+#define TOKEN_ID_B8	        202
+#define TOKEN_ID_IF         203
+#define TOKEN_ID_IS         204
+#define TOKEN_ID_IN         205
+#define TOKEN_ID_U16	    206
+#define TOKEN_ID_I16	    207
+#define TOKEN_ID_U32	    208
+#define TOKEN_ID_I32	    209
+#define TOKEN_ID_F32	    210
+#define TOKEN_ID_U64	    211
+#define TOKEN_ID_I64	    212
+#define TOKEN_ID_F64	    213
+#define TOKEN_ID_F80	    214
+#define TOKEN_ID_NUM	    215
+#define TOKEN_ID_INT	    216
+#define TOKEN_ID_TRY        217
+#define TOKEN_ID_F128	    218
+#define TOKEN_ID_NULL	    219
+#define TOKEN_ID_ELSE       220
+#define TOKEN_ID_LOOP       221
+#define TOKEN_ID_WITH       222
+#define TOKEN_ID_CASE       223
+#define TOKEN_ID_VOID       224
+#define TOKEN_ID_ENUM       225
+#define TOKEN_ID_PLAN       226
+#define TOKEN_ID_STUB       227
+#define TOKEN_ID_TRUE       228
+#define TOKEN_ID_BOOLEAN	229
+#define TOKEN_ID_POINTER	230
+#define TOKEN_ID_PUBLIC     231
+#define TOKEN_ID_PRIVATE    232
+#define TOKEN_ID_PROTECTED  233
+#define TOKEN_ID_HIDDEN     234
+#define TOKEN_ID_IMPORTS    235
+#define TOKEN_ID_CATCH      236
+#define TOKEN_ID_FINALLY    237
+#define TOKEN_ID_THROWS     238
+#define TOKEN_ID_BREAK      239
+#define TOKEN_ID_CONTINUE   240
+#define TOKEN_ID_SWITCH     241
+#define TOKEN_ID_DEFAULT    242
+#define TOKEN_ID_RETURN     243
+#define TOKEN_ID_RETURN_ADD 244
+#define TOKEN_ID_STATIC     245
+#define TOKEN_ID_FINAL      246
+#define TOKEN_ID_SIGNATURE  247
+#define TOKEN_ID_CLASS      248
+#define TOKEN_ID_PROPERTIES 249
+#define TOKEN_ID_FUNCTION   250
+#define TOKEN_ID_FALSE      251
+
+
+
 // Length 1 compound
 #define KEYWORD_STAR 		`*` 
 #define KEYWORD_DIV 		`/`
@@ -275,36 +331,5 @@
 //#define KEYWORD_// keyword_array       'array' 
 //#define KEYWORD_// keyword_map         'map' 
 #define KEYWORD_FALSE       'false' 
-//#define KEYWORD_// keyword_this        'this' 
-//#define KEYWORD_// keyword_super       'super' 
-//#define KEYWORD_// keyword_set         'set' 
-//#define KEYWORD_// keyword_get         'get' 
-//#define KEYWORD_// keyword_extern      'extern' 
-//#define KEYWORD_// keyword_extern_c    'extern_c' 
 
 
-
-//#define KEYWORD_NAMESPACE   'namespace' 
-//#define KEYWORD_GLOBAL   'global' 
-//#define KEYWORD_INLINE   'inline' 
-//#define KEYWORD_   ( NUM | ID | STRING ) '..' ( NUM | ID | STRING )
-//#define KEYWORD_   '$'[a-z]
-//#define KEYWORD_    '-'? [1-9] (DIGIT)*
-//#define KEYWORD_   | '0'
-//#define KEYWORD_   | '0x' (HEX | '_')*
-//#define KEYWORD_   | '0b' [0-1_]*
-//#define KEYWORD_   '-'? (DIGIT)+ '.' (DIGIT)*
-//#define KEYWORD_   | '-'? (DIGIT)* '.' (DIGIT)+
-//#define KEYWORD_   | '-'? (DIGIT)* ('.' (DIGIT)+)? 'f'
-//#define KEYWORD_   '"' (ESC_1 | SAFECODEPOINT | ['])+ '"'
-//#define KEYWORD_   | ['] (ESC_2 | SAFECODEPOINT | ["])+ [']
-//#define KEYWORD_   '`' ( ESC_1 | NOTBACKQUOTE)+ '`' 
-//#define KEYWORD_   '\\' (["\\/bfnrt] | UNICODE)
-//#define KEYWORD_fragment TRIPLE_SQ ['][']['] 
-//#define KEYWORD_   '\\' (['\\/bfnrt] | UNICODE)
-//#define KEYWORD_   'u' HEX HEX HEX HEX
-//#define KEYWORD_   '#' ~[\r\n]* -> channel(HIDDEN)
-//#define KEYWORD_	'/**' .*? '*/' -> channel(HIDDEN)
-//#define KEYWORD_	'/*' .*? '*/' -> channel(HIDDEN)
-//#define KEYWORD_	'//' ~[\r\n]* -> channel(HIDDEN)
-//#define KEYWORD_

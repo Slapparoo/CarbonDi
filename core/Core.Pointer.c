@@ -2,10 +2,11 @@
 #include "Core.Core_main.h"
 #include "Core.Pointer.h"
 #include "Core.Object.h"
-#include "Core.String.h"
-#include "Core.Exception.h"
+#include "Core.HashCode.h"
 #include "Core.Array.h"
 #include "Core.RefArray.h"
+#include "Core.String.h"
+#include "Core.Exception.h"
 #include "Core.Boxing.h"
 #include "Core.BaseBoxing.h"
 #include "Core.B8.h"
@@ -22,6 +23,11 @@
 #include "Core.FileUtils.h"
 #include "Core.Charactor.h"
 #include "Core.DynamicArray.h"
+#include "Core.Duo.h"
+#include "Core.Hashset.h"
+#include "Core.MapDuo.h"
+#include "Core.MapEntry.h"
+#include "Core.Hashmap.h"
 
 /*fd1*/int c_2106303_Pointerdatatype(){
 
@@ -92,6 +98,7 @@ void c_2106303_Pointer_free(num this) { Object_ref *object_ref = useObject(this)
 
 num create_c_2106303_Pointer() {
   c_2106303_Pointer * _c_2106303_Pointer = ec_calloc(sizeof(c_2106303_Pointer), sizeof(char));
+/*cdv1*/((c_2106303_Pointer*)_c_2106303_Pointer)->instanceName = c_2106303_PointerclassName();
   return createObject(_c_2106303_Pointer, getc_2106303_Pointer_cm(), false);
 }
 

@@ -17,7 +17,7 @@ FROM mcr.microsoft.com/vscode/devcontainers/base:0-ubuntu${VARIANT}
 
 RUN apt-get update \
     && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends default-jdk git maven make clang clang-format valgrind
+    && apt-get -y install --no-install-recommends default-jdk git maven make clang clang-format valgrind vim
 
 RUN echo "PATH=$PATH:/workspaces/ec-lang" >> /root/.bashrc
 

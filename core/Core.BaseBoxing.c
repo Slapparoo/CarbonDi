@@ -2,10 +2,11 @@
 #include "Core.Core_main.h"
 #include "Core.BaseBoxing.h"
 #include "Core.Object.h"
-#include "Core.String.h"
-#include "Core.Exception.h"
+#include "Core.HashCode.h"
 #include "Core.Array.h"
 #include "Core.RefArray.h"
+#include "Core.String.h"
+#include "Core.Exception.h"
 #include "Core.Boxing.h"
 #include "Core.B8.h"
 #include "Core.U8.h"
@@ -22,6 +23,11 @@
 #include "Core.FileUtils.h"
 #include "Core.Charactor.h"
 #include "Core.DynamicArray.h"
+#include "Core.Duo.h"
+#include "Core.Hashset.h"
+#include "Core.MapDuo.h"
+#include "Core.MapEntry.h"
+#include "Core.Hashmap.h"
 
 /*fd1*/int c_2106303_BaseBoxingdatatype(){
 
@@ -76,6 +82,7 @@ void c_2106303_BaseBoxing_free(num this) { Object_ref *object_ref = useObject(th
 
 num create_c_2106303_BaseBoxing() {
   c_2106303_BaseBoxing * _c_2106303_BaseBoxing = ec_calloc(sizeof(c_2106303_BaseBoxing), sizeof(char));
+/*cdv1*/((c_2106303_BaseBoxing*)_c_2106303_BaseBoxing)->instanceName = c_2106303_BaseBoxingclassName();
   return createObject(_c_2106303_BaseBoxing, getc_2106303_BaseBoxing_cm(), false);
 }
 

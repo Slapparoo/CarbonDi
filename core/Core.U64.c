@@ -2,10 +2,11 @@
 #include "Core.Core_main.h"
 #include "Core.U64.h"
 #include "Core.Object.h"
-#include "Core.String.h"
-#include "Core.Exception.h"
+#include "Core.HashCode.h"
 #include "Core.Array.h"
 #include "Core.RefArray.h"
+#include "Core.String.h"
+#include "Core.Exception.h"
 #include "Core.Boxing.h"
 #include "Core.BaseBoxing.h"
 #include "Core.B8.h"
@@ -22,6 +23,11 @@
 #include "Core.FileUtils.h"
 #include "Core.Charactor.h"
 #include "Core.DynamicArray.h"
+#include "Core.Duo.h"
+#include "Core.Hashset.h"
+#include "Core.MapDuo.h"
+#include "Core.MapEntry.h"
+#include "Core.Hashmap.h"
 
 /*fd1*/int c_2106303_U64datatype(){
 
@@ -92,6 +98,7 @@ void c_2106303_U64_free(num this) { Object_ref *object_ref = useObject(this);
 
 num create_c_2106303_U64() {
   c_2106303_U64 * _c_2106303_U64 = ec_calloc(sizeof(c_2106303_U64), sizeof(char));
+/*cdv1*/((c_2106303_U64*)_c_2106303_U64)->instanceName = c_2106303_U64className();
   return createObject(_c_2106303_U64, getc_2106303_U64_cm(), false);
 }
 

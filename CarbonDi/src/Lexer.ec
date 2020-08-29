@@ -1,5 +1,4 @@
 
-#include "TokenIds.ec"
 
 public class Token (Core.Object) {
     properties {
@@ -20,7 +19,7 @@ public class Token (Core.Object) {
 /**
     Lexer
 */
-public class Lex (Core.Object) {
+public class Lexer (Core.Object) {
 
     properties {
         i8 iChar0 = 0;
@@ -30,7 +29,73 @@ public class Lex (Core.Object) {
         u64 lineCount = 0;
         u64 lineIndex = 0;
         u64 index = 0;
+
+        Hashmap specialWordsmap;
     }
+
+    void loadSpecialWords () {
+        if (specialWordsmap != 0) {
+            return;
+        }
+
+        ?specialWords = Hashmap();
+
+        specialWords.put(KEYWORD_U8, U32(TOKEN_ID_U8));
+        specialWords.put(KEYWORD_I8, U32(TOKEN_ID_I8));
+        specialWords.put(KEYWORD_B8, U32(TOKEN_ID_B8));
+        specialWords.put(KEYWORD_IF, U32(TOKEN_ID_IF));
+        specialWords.put(KEYWORD_IS, U32(TOKEN_ID_IS));
+        specialWords.put(KEYWORD_IN, U32(TOKEN_ID_IN));
+        specialWords.put(KEYWORD_U16, U32(TOKEN_ID_U16));
+        specialWords.put(KEYWORD_I16, U32(TOKEN_ID_I16));
+        specialWords.put(KEYWORD_U32, U32(TOKEN_ID_U32));
+        specialWords.put(KEYWORD_I32, U32(TOKEN_ID_I32));
+        specialWords.put(KEYWORD_F32, U32(TOKEN_ID_F32));
+        specialWords.put(KEYWORD_U64, U32(TOKEN_ID_U64));
+        specialWords.put(KEYWORD_I64, U32(TOKEN_ID_I64));
+        specialWords.put(KEYWORD_F64, U32(TOKEN_ID_F64));
+        specialWords.put(KEYWORD_F80, U32(TOKEN_ID_F80));
+        specialWords.put(KEYWORD_NUM, U32(TOKEN_ID_NUM));
+        specialWords.put(KEYWORD_INT, U32(TOKEN_ID_INT));
+        specialWords.put(KEYWORD_TRY, U32(TOKEN_ID_TRY));
+        specialWords.put(KEYWORD_F128, U32(TOKEN_ID_F128));
+        specialWords.put(KEYWORD_NULL, U32(TOKEN_ID_NULL));
+        specialWords.put(KEYWORD_ELSE, U32(TOKEN_ID_ELSE));
+        specialWords.put(KEYWORD_LOOP, U32(TOKEN_ID_LOOP));
+        specialWords.put(KEYWORD_WITH, U32(TOKEN_ID_WITH));
+        specialWords.put(KEYWORD_CASE, U32(TOKEN_ID_CASE));
+        specialWords.put(KEYWORD_VOID, U32(TOKEN_ID_VOID));
+        specialWords.put(KEYWORD_ENUM, U32(TOKEN_ID_ENUM));
+        specialWords.put(KEYWORD_PLAN, U32(TOKEN_ID_PLAN));
+        specialWords.put(KEYWORD_STUB, U32(TOKEN_ID_STUB));
+        specialWords.put(KEYWORD_TRUE, U32(TOKEN_ID_TRUE));
+        specialWords.put(KEYWORD_BOOLEAN, U32(TOKEN_ID_BOOLEAN));
+        specialWords.put(KEYWORD_POINTER, U32(TOKEN_ID_POINTER));
+        specialWords.put(KEYWORD_PUBLIC, U32(TOKEN_ID_PUBLIC));
+        specialWords.put(KEYWORD_PRIVATE, U32(TOKEN_ID_PRIVATE));
+        specialWords.put(KEYWORD_PROTECTED, U32(TOKEN_ID_PROTECTED));
+        specialWords.put(KEYWORD_HIDDEN, U32(TOKEN_ID_HIDDEN));
+        specialWords.put(KEYWORD_IMPORTS, U32(TOKEN_ID_IMPORTS));
+        specialWords.put(KEYWORD_CATCH, U32(TOKEN_ID_CATCH));
+        specialWords.put(KEYWORD_FINALLY, U32(TOKEN_ID_FINALLY));
+        specialWords.put(KEYWORD_THROWS, U32(TOKEN_ID_THROWS));
+        specialWords.put(KEYWORD_BREAK, U32(TOKEN_ID_BREAK));
+        specialWords.put(KEYWORD_CONTINUE, U32(TOKEN_ID_CONTINUE));
+        specialWords.put(KEYWORD_SWITCH, U32(TOKEN_ID_SWITCH));
+        specialWords.put(KEYWORD_DEFAULT, U32(TOKEN_ID_DEFAULT));
+        specialWords.put(KEYWORD_RETURN, U32(TOKEN_ID_RETURN));
+        specialWords.put(KEYWORD_RETURN_ADD, U32(TOKEN_ID_RETURN_ADD));
+        specialWords.put(KEYWORD_STATIC, U32(TOKEN_ID_STATIC));
+        specialWords.put(KEYWORD_FINAL, U32(TOKEN_ID_FINAL));
+        specialWords.put(KEYWORD_SIGNATURE, U32(TOKEN_ID_SIGNATURE));
+        specialWords.put(KEYWORD_CLASS, U32(TOKEN_ID_CLASS));
+        specialWords.put(KEYWORD_PROPERTIES, U32(TOKEN_ID_PROPERTIES));
+        specialWords.put(KEYWORD_FUNCTION, U32(TOKEN_ID_FUNCTION));
+        specialWords.put(KEYWORD_FALSE, U32(TOKEN_ID_FALSE));
+
+        specialWordsmap = specialWords;
+    }
+
 
     public void forward(i8 ch) {
         iChar0 = iChar1;
@@ -57,6 +122,20 @@ public class Lex (Core.Object) {
 
     public Token createToken(u64 length, u32 tokenId) {
         return Token(index - length - 2, length, tokenId);
+    }
+
+    public static boolean isWhitespace(i8 ch) {
+        ?isWs = false;
+        switch (ch) {
+            case ' ' :
+            case 10 :
+            case 13 :
+            case 7 :
+            case 9 :
+            case 0 :
+            isWs = true;
+        }
+        return isWs;
     }
 
     /**
@@ -87,21 +166,31 @@ public class Lex (Core.Object) {
         return isNum;
     }
 
-    public u32 matchKeywordToken(u64 len, u64 ix) {
-        // return Token(index - length, length, tokenId);
-        // ?ix = token.offset - 2;
+    public u32 matchKeywordToken(i8[] content, u64 len, u64 ix) {
+        String subString = String(content.values, ix - len - 1, len);
+
+        // printf(`substring %s, `, subString.asStr);
+
+        // String subString = "return";
+        ?sp = specialWordsmap;
+        U32 tokenType = sp.get(subString);
+        
+
+        if (tokenType != 0) {
+            printf(`found token %s:%i `, subString.asStr, tokenType.value);
+        }
+
         return TOKEN_ID;
     }
 
     /* lex the content */
     public void lex(i8[] content) {
+        loadSpecialWords();
         ?currentToken = 0;
         ?thisToken = 0;
         Token token;
         ?roll = 0;
         ?tokenStart = 0;
-
-        // addToken(5, 1030);
 
         loop (content.length) {
             forward(content[$a]);
@@ -112,107 +201,106 @@ public class Lex (Core.Object) {
             ?char1 = iChar1;
             ?char2 = iChar2;
 
-            // printf(`@%lu,%c@`, currentToken, char0);
+            // nested switch not working
+            if (currentToken != 0) {
+                switch (currentToken) {
+                    case CURRENTTOKEN_DOCCOMMENT :
+                        if (char0 == KEYWORD_STAR && char1 == KEYWORD_DIV) { 
+                            currentToken = 0;
+                            thisToken = TOKEN_DOC_COMMENT;
+                            roll = 1;
+                        }
+                        break;
+                     case CURRENTTOKEN_STARCOMMENT :
+                        if (char0 == KEYWORD_STAR && char1 == KEYWORD_DIV) { 
+                            currentToken = 0;
+                            thisToken = TOKEN_BLOCK_COMMENT;
+                            roll = 1;
+                        }
+                        break;
+                    case CURRENTTOKEN_LINECOMMENT :
+                        // roll forward until EOL
+                        if (char0 == 10 || char0 == 13) { 
+                            currentToken = 0;
+                            thisToken = TOKEN_LINE_COMMENT;
+                        }
+                        break;
+                    case CURRENTTOKEN_SQSTRING :
+                        // if it spans a line thats an error
+                        if (char0 == 10 || char0 == 13) { 
+                            throwException (`[error] no string end (SQString).`);
+                        }
 
-            if (currentToken == CURRENTTOKEN_DOCCOMMENT) {
-                if (char0 == KEYWORD_STAR && char1 == KEYWORD_DIV) { 
-                    currentToken = 0;
-                    thisToken = TOKEN_DOC_COMMENT;
-                    roll = 1;
-                }
-            } else if (currentToken == CURRENTTOKEN_STARCOMMENT) {
-                if (char0 == KEYWORD_STAR && char1 == KEYWORD_DIV) { 
-                    currentToken = 0;
-                    thisToken = TOKEN_BLOCK_COMMENT;
-                    roll = 1;
-                }
-            } else if (currentToken == CURRENTTOKEN_LINECOMMENT) {
-                // roll forward until EOL
-                if (char0 == 10 || char0 == 13) { 
-                    currentToken = 0;
-                    thisToken = TOKEN_LINE_COMMENT;
-                }
-            } else if (currentToken == CURRENTTOKEN_SQSTRING) {
-                // if it spans a line thats an error
-                if (char0 == 10 || char0 == 13) { 
-                    throwException (`[error] no string end (SQString).`);
-                }
+                        if (char0 == 39) { 
+                            currentToken = 0;
+                            thisToken = TOKEN_SSTRING;
+                        }
+                        break;
+                    case CURRENTTOKEN_DQSTRING :
+                        if (char0 == 10 || char0 == 13) { 
+                            throwException (`[error] no string end (DQString).`);
+                        }
 
-                if (char0 == 39) { 
-                    currentToken = 0;
-                    thisToken = TOKEN_SSTRING;
-                }
-            } else if (currentToken == CURRENTTOKEN_DQSTRING) {
-                if (char0 == 10 || char0 == 13) { 
-                    throwException (`[error] no string end (DQString).`);
-                }
+                        if (char0 == 34) { 
+                            currentToken = 0;
+                            thisToken = TOKEN_DSTRING;
+                        }
+                        break;
+                    case CURRENTTOKEN_CSTRING :
+                        // if it spans a line thats an error
+                        if (char0 == 10 || char0 == 13) { 
+                            throwException (`[error] no string end. (CString)`);
+                        }
 
-                if (char0 == 34) { 
-                    currentToken = 0;
-                    thisToken = TOKEN_DSTRING;
+                        if (char0 == 96) { 
+                            currentToken = 0;
+                            thisToken = TOKEN_CSTRING;
+                        }
+                        break;
+                    case CURRENTTOKEN_STRINGBLOCK :
+                        printf(`@@st %lu@@`, currentToken);
+                        currentToken = 0;
+                        break;
+                    case CURRENTTOKEN_ID :
+                        if (!Lexer.isChar(char1)) {
+                            currentToken = 0;
+                            thisToken = TOKEN_ID;
+                        }
+                        break;
+                    case CURRENTTOKEN_NUM :
+                        // resolve float, decimal
+                        if (char1 == KEYWORD_DOT) {
+                            currentToken = CURRENTTOKEN_FLOAT;
+                        } else if (!Charactor.isNumber(char1)) {
+                            // check for l at end?
+                            currentToken = 0;
+                            thisToken = TOKEN_NUM;
+                        }
+                        break;
+                    case CURRENTTOKEN_HEX :
+                        // resolve hex
+                        if (!Charactor.isHex(char1)) {
+                            currentToken = 0;
+                            thisToken = TOKEN_HEX;
+                        }
+                        break;
+                    case CURRENTTOKEN_BIN :
+                        // resolve binary
+                        if (!Charactor.isBinary(char1)) {
+                            currentToken = 0;
+                            thisToken = TOKEN_BINARY;
+                        }
+                        break;
+                    case CURRENTTOKEN_FLOAT :
+                        // resolve float
+                        if (!Charactor.isFloat(char1)) {
+                            currentToken = 0;
+                            thisToken = TOKEN_FLOAT;
+                        }
+                        break;
+                    } 
                 }
-            } else if (currentToken == CURRENTTOKEN_CSTRING) {
-                // if it spans a line thats an error
-                if (char0 == 10 || char0 == 13) { 
-                    throwException (`[error] no string end. (CString)`);
-                }
-
-                if (char0 == 96) { 
-                    currentToken = 0;
-                    thisToken = TOKEN_CSTRING;
-                }
-            } else if (currentToken == CURRENTTOKEN_STRINGBLOCK) {
-                printf(`@@st %lu@@`, currentToken);
-                currentToken = 0;
-            } else if (currentToken == CURRENTTOKEN_ID) {
-                // printf(`%c`, char0);
-                if (!isChar(char1)) {
-                    // printf(` \n`);
-                    currentToken = 0;
-                    thisToken = TOKEN_ID;
-                }
-            } else if (currentToken == CURRENTTOKEN_NUM) {
-                // resolve float, decimal
-                // printf(`%c`, char0);
-                if (char1 == KEYWORD_DOT) {
-                    currentToken = CURRENTTOKEN_FLOAT;
-                } else if (!Charactor.isNumber(char1)) {
-                    // check for l at end?
-                    // printf(` \n`);
-                    currentToken = 0;
-                    thisToken = TOKEN_NUM;
-                }
-            } else if (currentToken == CURRENTTOKEN_HEX) {
-                // resolve hex
-                // printf(`%c`, char0);
-                if (!Charactor.isHex(char1)) {
-                    // check for l at end?
-                    // printf(` \n`);
-                    currentToken = 0;
-                    thisToken = TOKEN_HEX;
-                }
-            } else if (currentToken == CURRENTTOKEN_BIN) {
-                // resolve binary
-                // printf(`%c`, char0);
-                if (!Charactor.isBinary(char1)) {
-                    // check for l at end?
-                    // printf(` \n`);
-                    currentToken = 0;
-                    thisToken = TOKEN_BINARY;
-                }
-            } else if (currentToken == CURRENTTOKEN_FLOAT) {
-                // resolve hex, binary, float, decimal
-                // printf(`%c`, char0);
-                if (!Charactor.isFloat(char1)) {
-                    // check for l at end?
-                    // printf(` \n`);
-                    currentToken = 0;
-                    thisToken = TOKEN_FLOAT;
-                }
-            } else {
-                if (currentToken != 0) {
-                    throwException (`[error] currentToken != zero`);
-                }
+            else  {
                 tokenStart = $a;                
                 switch (char0) {
                     case KEYWORD_DIV :
@@ -371,11 +459,6 @@ public class Lex (Core.Object) {
                         }
                         break;
                     // 1 length special
-// #define KEYWORD_VAR_TYPE 	`?`
-// #define KEYWORD_LBRACE      `{` 
-// #define KEYWORD_RBRACE      `}` 
-// #define KEYWORD_LPAREN      `(` 
-// #define KEYWORD_RPAREN      `)` 
                     case KEYWORD_VAR_TYPE :
                         thisToken = TOKEN_QUESTION;
                         break;
@@ -391,14 +474,6 @@ public class Lex (Core.Object) {
                     case KEYWORD_RPAREN :
                         thisToken = TOKEN_RPAREN;
                         break;
-// #define KEYWORD_LBRACKET    `[` 
-// #define KEYWORD_RBRACKET    `]` 
-// #define KEYWORD_SEMI        `;` 
-// #define KEYWORD_COLON       `:` 
-// #define KEYWORD_CARET       `^` 
-// #define KEYWORD_HASH        `#` 
-// #define KEYWORD_COMMA       `,`
-// #define KEYWORD_DOLLAR      `$` 
                     case KEYWORD_LBRACKET :
                         thisToken = TOKEN_LBRACKET;
                         break;
@@ -426,10 +501,7 @@ public class Lex (Core.Object) {
                     case 'a'..'z' :
                     case 'A'..'Z' :
                         currentToken = CURRENTTOKEN_ID;
-
-                        // printf(`ID=%c`, char0);
-
-                        if (!Lex.isChar(char1)) {
+                        if (!Lexer.isChar(char1)) {
                             currentToken = 0;
                             thisToken = TOKEN_ID;
                         }
@@ -439,43 +511,36 @@ public class Lex (Core.Object) {
                         if (char1 == `B` || char1 == `b`) { // binary num
                             currentToken = CURRENTTOKEN_BIN;    
                             roll = 1;
-                            // printf(`binary=`);
                         } else if (char1 == `X` || char1 == `x`) { // hex
                             currentToken = CURRENTTOKEN_HEX;    
                             roll = 1;
-                            // printf(`hex=`);
                         } else if (char1 == KEYWORD_DOT) { // float
                             currentToken = CURRENTTOKEN_FLOAT;    
-                            // printf(`float=%c`, char0);
                         } else {
                             currentToken = CURRENTTOKEN_NUM;
 
                             // check for 1 length
                             // valid 2nd char combinations
-                            if (!Lex.is2ndNum(char1)) {
+                            if (!Lexer.is2ndNum(char1)) {
                                 currentToken = 0;
                                 thisToken = TOKEN_DECIMAL;
-                            //     printf(`num=%c\n`, char0);
-                            // } else {
-                            //     printf(`num=%c`, char0);
                             }
                         }
                         break;
                     case '1'..'9' :
                         currentToken = CURRENTTOKEN_NUM;
-
                         // check for 1 length
                         // valid 2nd char combinations
-                        if (!Lex.is2ndNum(char1)) {
+                        if (!Lexer.is2ndNum(char1)) {
                             currentToken = 0;
                             thisToken = TOKEN_DECIMAL;
-                            // printf(`num=%c\n`, char0);
-                        } else {
-                            // printf(`num=%c`, char0);
-                            break;
                         }
-                    // default :
-                    //     printf(`%c`, char0);      
+                        break;
+                    default :
+                        if (!Lexer.isWhitespace(char0)) {
+                            printf(`%c (%lu) [%lu:%lu]`, char0, index, lineCount, lineIndex);  
+                            throwException(`[error] unexpected charactor.`);
+                        }
                 }
             }
 
@@ -491,7 +556,7 @@ public class Lex (Core.Object) {
 
                 if (thisToken == TOKEN_ID) {
                     // convert ID tokens to keyword tokens
-                    thisToken = matchKeywordToken(tLen, ix);
+                    thisToken = matchKeywordToken(content, tLen, ix);
                 }
                 
                 ?tk = createToken(tLen, thisToken);
@@ -509,28 +574,3 @@ public class Lex (Core.Object) {
 }
 
 
-?content = FileUtils.fileread("Lexer.ec");
-// ?content = FileUtils.fileread("TokenIds.ec");
-// ?output = DynamicArray(Boxing.i8_);
-// ?tokenIds = DynamicArray(Boxing.u16_);
-
-?lex = Lex();
-// lex.content = content;
-
-// printf(`(1) classname %s\n`, content.className());
-
-lex.lex(content);
-// lex.lex();
-
-// doSomeLexing(content, output, tokenIds);
-
-// ?len = output.endIndex - output.startIndex;
-
-// printf(`\n%li %li %li %li %li`, output.startIndex, output.endIndex, output.length, content.length, len);
-
-0b0_1_01;
-0xaef54F;
-0.234;
-12;
-1;
-23423.343;

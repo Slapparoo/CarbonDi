@@ -25,5 +25,11 @@
 #include "Core.Pointer.h"
 #include "Core.Charactor.h"
 #include "Core.FileUtils.h"
+#include "Core.HashCode.h"
+#include "Core.Hashset.h"
+#include "Core.Duo.h"
+#include "Core.MapEntry.h"
+#include "Core.MapDuo.h"
+#include "Core.Hashmap.h"
 void Core_370391182_main();
 #endif

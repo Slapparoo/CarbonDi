@@ -1,7 +1,7 @@
 {
-    "name": "ec-lang-support",
-    "displayName": "EC Lang Support",
-    "description": "Basic EC Langauge Support",
+    "name": "carbondi-lang-support",
+    "displayName": "CarbonDi Lang Support",
+    "description": "Basic CarbonDi Langauge Support",
     "version": "0.0.1",
     "engines": {
         "vscode": "^1.43.0"
@@ -11,15 +11,15 @@
     ],
     "contributes": {
         "languages": [{
-            "id": "ec",
-            "aliases": ["EC", "ec"],
-            "extensions": [".ec"],
+            "id": "CarbonDi",
+            "aliases": ["CarbonDi", "carbondi"],
+            "extensions": [".carb", ".condi", ".cardi", ".bondi"],
             "configuration": "./language-configuration.json"
         }],
         "grammars": [{
-            "language": "ec",
-            "scopeName": "source.ec",
-            "path": "./syntaxes/ec.tmLanguage.json"
+            "language": "CarbonDi",
+            "scopeName": "source.carbondi",
+            "path": "./carbondi.language.json"
         }]
     }
 }

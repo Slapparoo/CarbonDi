@@ -1,0 +1,227 @@
+
+    static void printBinary(i32 number) {
+        loop (32) {
+            number = (number >> 1);
+            printf(`%u`, number & 1);
+        }
+    }
+
+
+public class Duo {
+    properties {
+        Object one;
+        Object two;
+    }
+}
+
+/**
+    hash map store, relitively light weight implementation don't expect to much from it.
+*/
+public class Hashset (Core.Object) {
+
+    (private, private) properties {
+        u64 items = 0;
+        u64 size = 256;
+        RefArray list;
+        boolean isInit = false;
+    }
+
+    public Hashset(=size);
+
+    private void reHash(Object object) {
+        ?oldSize = size;
+        ?oldlist = list;
+
+        size += 512;
+        ?newlist = RefArray(size);
+
+        items = 0;
+        loop (oldSize) {
+            ?ix = $a;  
+            Object item = oldlist[ix];
+
+            if (item != 0) {
+                if (item.instanceName == Duo.className) {
+                    Duo d = item;
+                    addNew(newlist, d.one);
+                    addNew(newlist, d.two);
+                } else {
+                    addNew(newlist, item);
+                }
+            }
+        }
+
+        addNew(newlist, object);
+
+        list = newlist;
+    }
+
+    private void startup() {
+        if (isInit) {
+            return;
+        }
+
+        // 256 *4 = 1kb
+        if (size < 256) {
+            size = 256;
+        }
+
+        list = RefArray(size);
+        isInit = true;
+    }
+
+    public boolean contains(Object object) {
+        if (!isInit) {
+            return false;
+        }
+
+        i32 index = object.hashCode() % size;
+
+        ?tempList = list;
+        Object item = tempList[index];
+
+        if (item == 0) {
+            return false;
+        } else if (item.equals(object)) {
+            return true;        
+        }
+        return false;
+    }
+
+    public void add(Object object) {
+        if (!isInit) {
+            startup();
+        }
+
+        i32 index = object.hashCode() % size;
+
+        ?tempList = list;
+        Object item = tempList[index];
+
+        if (item == 0) {
+            tempList[index] = object;
+            items++;
+            return;
+        } else if (item.equals(object)) {
+            return;
+        } else if (item.instanceName == Duo.className) {
+            Duo duo = item; 
+            if (duo.one == object || duo.two == object) {
+                return;
+            }
+            reHash(object);
+        } else {
+            ?duo = Duo();
+            duo.one = item;
+            duo.two = object;
+            tempList[index] = duo;
+            items++;
+        }
+    }
+
+    private void addNew(RefArray newlist, Object object) {
+        i32 index = object.hashCode() % size;
+
+        ?tempList = newlist;
+        Object item = tempList[index];
+
+        if (item == 0) {
+            tempList[index] = object;
+            items++;
+            return;
+        } else if (item.equals(object)) {
+            return;
+        } else if (item.instanceName == Duo.className) {
+            
+            Duo duo = item; 
+            if (duo.one == object || duo.two == object) {
+                return;
+            }
+            throwException(`Reentrant hashset resize.`);
+
+        } else {
+            ?duo = Duo();
+            duo.one = item;
+            duo.two = object;
+            tempList[index] = duo;
+            items++;
+        }
+    }
+}
+
+?ar = Hashset();
+
+?str1 = "String1";
+
+printf(`ar contains %i\n`, ar.contains(str1));
+ar.add(str1);
+printf(`ar contains %i\n`, ar.contains(str1));
+ar.add(str1);
+
+?String1 = "String1";
+?String2 = "String2";
+?String3 = "String3";
+?String4 = "String4";
+?String5 = "String5";
+?String6 = "String6";
+?String7 = "String7";
+?su8 = "u8";
+?si8 = "i8";
+?su64 = "u64";
+?sswitch = "switch";
+?scase = "case";
+?sreturn = "return";
+?svoid = "void";
+?sloop = "loop";
+?selse = "else";
+
+// loop (100000) {
+loop (100000) {
+    ar.add(String1);
+    ar.add(String1);
+    ar.add(String1);
+    ar.add(String1);
+    ar.contains(String1);
+
+    ar.contains(String2);
+    ar.add(String2);
+    ar.contains(String3);
+    ar.add(String3);
+    ar.add(String4);
+    ar.contains(String4);
+    ar.add(String5);
+    ar.contains(String5);
+    ar.contains(String6);
+    ar.add(String6);
+    ar.add(String7);
+    ar.contains(String7);
+
+    ar.contains(su8);
+    ar.add(su8);
+    ar.add(si8);
+    ar.contains(si8);
+    ar.contains(su64);
+    ar.add(su64);
+    ar.add(sswitch);
+    ar.contains(sswitch);
+    ar.contains(scase);
+    ar.add(scase);
+    ar.add(sreturn);
+    ar.contains(sreturn);
+    ar.contains(scase);
+    ar.add(scase);
+    ar.add(svoid);
+    ar.contains(svoid);
+    ar.contains(sloop);
+    ar.add(sloop);
+    ar.add(selse);
+    ar.contains(selse);
+}
+
+Object d = Duo();
+Duo d2 = 2;
+
+printf(`class %s %s`, d.classCName, d2.classCName);
+
+
+printf(`%lu\n`, ar.items);

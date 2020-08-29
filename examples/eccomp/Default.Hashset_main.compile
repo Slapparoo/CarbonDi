@@ -1,0 +1,5 @@
+
+cc -std=gnu11 -O3 -g -c -I/workspaces/ec-lang/core/include -o obj/Default.Duo.o Default.Duo.c
+cc -std=gnu11 -O3 -g -c -I/workspaces/ec-lang/core/include -o obj/Default.Hashset.o Default.Hashset.c
+cc -std=gnu11 -O3 -g -c -I/workspaces/ec-lang/core/include -o obj/Default.Hashset_main.o Default.Hashset_main.c
+cc -std=gnu11 -O3 -g -I/workspaces/ec-lang/core/include /workspaces/ec-lang/core/obj/*.o obj/*.o  -o Default.Hashset_main Default.Hashset_main.run.c

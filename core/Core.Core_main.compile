@@ -1,5 +1,6 @@
 
 clang -std=gnu17 -O3 -g -c -I/workspaces/ec-lang/core/include -o obj/Core.Object.o Core.Object.c
+clang -std=gnu17 -O3 -g -c -I/workspaces/ec-lang/core/include -o obj/Core.HashCode.o Core.HashCode.c
 clang -std=gnu17 -O3 -g -c -I/workspaces/ec-lang/core/include -o obj/Core.String.o Core.String.c
 clang -std=gnu17 -O3 -g -c -I/workspaces/ec-lang/core/include -o obj/Core.Exception.o Core.Exception.c
 clang -std=gnu17 -O3 -g -c -I/workspaces/ec-lang/core/include -o obj/Core.Boxing.o Core.Boxing.c
@@ -19,5 +20,10 @@ clang -std=gnu17 -O3 -g -c -I/workspaces/ec-lang/core/include -o obj/Core.Pointe
 clang -std=gnu17 -O3 -g -c -I/workspaces/ec-lang/core/include -o obj/Core.FileUtils.o Core.FileUtils.c
 clang -std=gnu17 -O3 -g -c -I/workspaces/ec-lang/core/include -o obj/Core.Charactor.o Core.Charactor.c
 clang -std=gnu17 -O3 -g -c -I/workspaces/ec-lang/core/include -o obj/Core.DynamicArray.o Core.DynamicArray.c
+clang -std=gnu17 -O3 -g -c -I/workspaces/ec-lang/core/include -o obj/Core.Duo.o Core.Duo.c
+clang -std=gnu17 -O3 -g -c -I/workspaces/ec-lang/core/include -o obj/Core.Hashset.o Core.Hashset.c
+clang -std=gnu17 -O3 -g -c -I/workspaces/ec-lang/core/include -o obj/Core.MapDuo.o Core.MapDuo.c
+clang -std=gnu17 -O3 -g -c -I/workspaces/ec-lang/core/include -o obj/Core.MapEntry.o Core.MapEntry.c
+clang -std=gnu17 -O3 -g -c -I/workspaces/ec-lang/core/include -o obj/Core.Hashmap.o Core.Hashmap.c
 clang -std=gnu17 -O3 -g -c -I/workspaces/ec-lang/core/include -o obj/Core.Core_main.o Core.Core_main.c
 clang -std=gnu17 -O3 -g -I/workspaces/ec-lang/core/include /workspaces/ec-lang/core/obj/*.o obj/*.o  -o Core.Core_main Core.Core_main.run.c

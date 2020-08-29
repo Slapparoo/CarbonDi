@@ -7,6 +7,7 @@ Properties
 |type|name|read|write|value|comments|
 |--- |--- |--- |--- |--- |--- |
 |f64|__value__|public|public|||
+|pointer|__instanceName__|public|public|||
 
 ---
 Constructors

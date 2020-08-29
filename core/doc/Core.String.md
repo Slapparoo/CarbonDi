@@ -7,6 +7,8 @@ Properties
 |type|name|read|write|value|comments|
 |--- |--- |--- |--- |--- |--- |
 |pointer|__value__|public|public|||
+|i32|__hash__|public|public|||
+|pointer|__instanceName__|public|public|||
 
 ---
 Constructors
@@ -31,6 +33,12 @@ __`public String(pointer str,boolean staticAlloc)`__
 
 
 __`public String(pointer str,pointer str2)`__
+<div style="margin:1em">
+
+</div>
+
+
+__`public String(pointer str,u64 offset,u64 len)`__
 <div style="margin:1em">
 
 </div>
@@ -88,6 +96,24 @@ __`public i64 compareStr(pointer str5)`__
 </div>
 
 
+__`public boolean compareSubStr(pointer str6,u64 offset)`__
+<div style="margin:1em">
+
+</div>
+
+
+__`public i8 getChar(u64 offset)`__
+<div style="margin:1em">
+
+</div>
+
+
+__`public boolean isSubStr(pointer str7,u64 offset)`__
+<div style="margin:1em">
+
+</div>
+
+
 __`public i64 compare(String string5)`__
 <div style="margin:1em">
 
@@ -106,6 +132,12 @@ __`public i64 find(i64 from,String string6)`__
 </div>
 
 
+__`(override) public boolean equals(String other)`__
+<div style="margin:1em">
+
+</div>
+
+
 __`public void trunc(i64 start,i64 end)`__
 <div style="margin:1em">
 
@@ -113,6 +145,12 @@ __`public void trunc(i64 start,i64 end)`__
 
 
 __`(override) public pointer asStr()`__
+<div style="margin:1em">
+
+</div>
+
+
+__`(override) public i32 hashCode()`__
 <div style="margin:1em">
 
 </div>

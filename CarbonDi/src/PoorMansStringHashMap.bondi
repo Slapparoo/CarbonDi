@@ -1,0 +1,208 @@
+// #include "TokenIds.ec"
+// #include "Lexer.ec"
+
+
+// ?content = FileUtils.fileread("Lexer.ec");
+// ?lex = Lexer();
+// lex.lex(content);
+
+// String str1 = String(content.values);
+
+// // printf(`%s`, str1.asStr());
+
+class AlphaRefArray {
+    properties {
+        u64 size = 1;
+        i64 index = 0;
+        RefArray refArray; // = RefArray(8);
+        boolean hasInit = false;
+    }
+
+    AlphaRefArray(=size);
+
+    private void startup() {
+        printf(`refArray %lu `, refArray);
+
+        refArray = RefArray(size);
+        printf(`AlphaRefArray.init %lu\n`, size);
+        hasInit = true;
+    }
+
+    private void increaseSize() {
+        size = size + 1;
+        ?newRefArray = RefArray(size);
+
+        ?ra = refArray;
+
+        loop (index) {
+            newRefArray[$a] = ra[$a];
+            // ra.setObject($a, 0);
+            printf(`AlphaRefArray.increaseSize copy %lu\n`, $a);        
+        }
+        // refArray.free();// = newRefArray;
+        refArray = newRefArray;
+
+        printf(`AlphaRefArray.increaseSize %lu\n`, newRefArray.length);        
+    }
+
+    void add(String string) {
+        if (!hasInit) {
+            startup();
+        }
+
+        if (index >= size) {
+            // throwException(`[error] AlphaRefArray Capacity reached.`);
+            increaseSize();
+            // resize instead
+        }
+
+        ?ix = index;
+        ?ra = refArray;
+
+        ra.setObject(ix, string);
+        // ra[ix] = string;
+
+        printf(`AlphaRefArray.add %lu %s\n`, index, string.asStr());
+        index++;
+    }
+
+    void printValues () {
+        ?ra = refArray;
+        loop (index) {
+            printf(`AlphaRefArray.printValues %lu %s\n`, $a, ra[$a].asStr());
+        }
+    }
+
+}
+
+
+class HashCode {
+    static i32 calcFastHash(pointer p, u64 length) {
+        i32 res = 0;
+
+        loop (length) {
+            if (length - $a > 4) {
+                res += External.core.EC_GETVALUE_i32(p, $a);
+                $a += 3;
+            } else if (length - $a > 2) {
+                res += External.core.EC_GETVALUE_i16(p, $a);
+                $a += 1;
+            } else {
+                // for alpha - 31 (this only happens to the last ch in the array)
+                res += External.core.EC_GETVALUE_i8(p, $a) - 31;
+            }
+        }
+
+        return res;
+    }
+}
+
+
+// class Default.AlphaHashMap {
+
+//     properties {
+//         AlphaRefArray ac; // = AlphaRefArray(); 
+//     }
+
+//     // AlphaHashMap() {
+//     //     startup();
+//     // }
+
+//     void startup() {
+//         ac = AlphaRefArray();
+//         ac.startup();
+//         printf(`AlphaHashMap.init\n`);
+//     }
+
+//     void addString(String alphaString) {
+//         if (alphaString.length == 0) {
+//             return;
+//         }
+
+//         // if (!init) {
+//         //     init();
+//         // }
+//         ?acc = ac;
+
+//         if (acc == null) {
+//             printf(`ac == null\n`);
+//             startup();
+//         } else {
+//             printf(`ac != null %s\n`, acc.className);
+//             // acc.length;
+//         }
+
+//         // ?daac = ac;//DynamicArray(Boxing.u64_);
+
+//         // daac[0] = alphaString;
+
+//         i8 firstChar = alphaString.getChar(0);
+//         // pointer address = EC_ADDRESS(alphaString);
+//         // daac.className();
+//         // daac.addTail(address);
+
+//         switch (firstChar) {
+//             case 'a'..'c' : 
+                
+//                 break;
+//             case 'd'..'f' :
+//             case 'h'..'j' :
+//             case 'k'..'m' :
+//             case 'n'..'p' :
+//             case 'q'..'r' :
+//             case 's'..'u' :
+//             case 'v'..'z' :
+//                 break;
+//         }
+//     }
+// }
+
+
+// ?ahm = AlphaHashMap();
+
+// // ahm.startup();
+
+// ahm.addString("a string");
+// ahm.addString("b string");
+
+// // printf(`length = %lu\n`, ahm.ac.index);
+
+// // printf(`matched? %c\n`, str1.getChar(2));
+// // printf(`matched? %i\n`, str1.isSubStr(`public`, 2));
+
+
+?ara = AlphaRefArray();
+
+?str1 = "String 1";
+ara.add(str1);
+ara.add("String 2");
+ara.add("String 3");
+ara.add("String 4");
+
+ara.printValues();
+
+?s_case = "case";
+?s_switch = "switch";
+?s_u16 = "u16";
+?s_u32 = "u32";
+?s_i32 = "i32";
+// ?s_a = "a";
+
+
+printf(`\n\n`);
+printf(`calc hash %i\n`, HashCode.calcFastHash(str1.asStr(), str1.length));
+printf(`calc hash %i\n`, HashCode.calcFastHash(s_case.asStr(), s_case.length));
+printf(`calc hash %i\n`, HashCode.calcFastHash(s_switch.asStr(), s_switch.length));
+printf(`calc hash %i\n`, HashCode.calcFastHash(s_u16.asStr(), s_u16.length));
+printf(`calc hash %i\n`, HashCode.calcFastHash(s_u32.asStr(), s_u32.length));
+printf(`calc hash %i\n`, HashCode.calcFastHash(s_i32.asStr(), s_i32.length));
+// printf(`calc hash %i\n`, HashCode.calcFastHash(s_a.asStr(), s_a.length));
+
+printf(`data %p, %lu\n`, s_switch.objectData(), String.objectDatasize());
+
+printf(`calc hash %i\n`, HashCode.calcFastHash(str1.objectData(), String.objectDatasize()));
+printf(`calc hash %i\n`, HashCode.calcFastHash(s_case.objectData(), String.objectDatasize()));
+printf(`calc hash %i\n`, HashCode.calcFastHash(s_switch.objectData(), String.objectDatasize()));
+printf(`calc hash %i\n`, HashCode.calcFastHash(s_u16.objectData(), String.objectDatasize()));
+printf(`calc hash %i\n`, HashCode.calcFastHash(s_u32.objectData(), String.objectDatasize()));
+printf(`calc hash %i\n`, HashCode.calcFastHash(s_i32.objectData(), String.objectDatasize()));

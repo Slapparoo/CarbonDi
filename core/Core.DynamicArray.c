@@ -2,10 +2,11 @@
 #include "Core.Core_main.h"
 #include "Core.DynamicArray.h"
 #include "Core.Object.h"
-#include "Core.String.h"
-#include "Core.Exception.h"
+#include "Core.HashCode.h"
 #include "Core.Array.h"
 #include "Core.RefArray.h"
+#include "Core.String.h"
+#include "Core.Exception.h"
 #include "Core.Boxing.h"
 #include "Core.BaseBoxing.h"
 #include "Core.B8.h"
@@ -22,6 +23,11 @@
 #include "Core.Pointer.h"
 #include "Core.FileUtils.h"
 #include "Core.Charactor.h"
+#include "Core.Duo.h"
+#include "Core.Hashset.h"
+#include "Core.MapDuo.h"
+#include "Core.MapEntry.h"
+#include "Core.Hashmap.h"
 
 /*fd1*/pointer c_2106303_DynamicArraygetValue(num this, u64 index){
 
@@ -491,6 +497,7 @@ void c_2106303_DynamicArray_free(num this) { Object_ref *object_ref = useObject(
 
 num create_c_2106303_DynamicArray() {
   c_2106303_DynamicArray * _c_2106303_DynamicArray = ec_calloc(sizeof(c_2106303_DynamicArray), sizeof(char));
+/*cdv1*/((c_2106303_DynamicArray*)_c_2106303_DynamicArray)->instanceName = c_2106303_DynamicArrayclassName();
   return createObject(_c_2106303_DynamicArray, getc_2106303_DynamicArray_cm(), false);
 }
 

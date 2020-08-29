@@ -1,0 +1,19 @@
+#include "TokenIds.ec"
+#include "Lexer.ec"
+
+
+?content = FileUtils.fileread("Lexer.ec");
+?lex = Lexer();
+lex.lex(content);
+
+String str1 = String(content.values);
+
+// printf(`%s`, str1.asStr());
+
+printf(`matched? %c\n`, str1.getChar(2));
+printf(`matched? %i\n`, str1.isSubStr(`public`, 2));
+
+
+?myU32 = U32(20);
+
+printf(`%s %i\n`, myU32.asStr, myU32.value);

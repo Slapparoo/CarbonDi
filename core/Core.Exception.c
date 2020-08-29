@@ -2,9 +2,10 @@
 #include "Core.Core_main.h"
 #include "Core.Exception.h"
 #include "Core.Object.h"
-#include "Core.String.h"
+#include "Core.HashCode.h"
 #include "Core.Array.h"
 #include "Core.RefArray.h"
+#include "Core.String.h"
 #include "Core.Boxing.h"
 #include "Core.BaseBoxing.h"
 #include "Core.B8.h"
@@ -22,6 +23,11 @@
 #include "Core.FileUtils.h"
 #include "Core.Charactor.h"
 #include "Core.DynamicArray.h"
+#include "Core.Duo.h"
+#include "Core.Hashset.h"
+#include "Core.MapDuo.h"
+#include "Core.MapEntry.h"
+#include "Core.Hashmap.h"
 
 /*fd1*/pointer c_2106303_ExceptionclassName(){
   return  "Core.Exception";
@@ -86,6 +92,7 @@ void c_2106303_Exception_free(num this) { Object_ref *object_ref = useObject(thi
 
 num create_c_2106303_Exception() {
   c_2106303_Exception * _c_2106303_Exception = ec_calloc(sizeof(c_2106303_Exception), sizeof(char));
+/*cdv1*/((c_2106303_Exception*)_c_2106303_Exception)->instanceName = c_2106303_ExceptionclassName();
   return createObject(_c_2106303_Exception, getc_2106303_Exception_cm(), false);
 }
 

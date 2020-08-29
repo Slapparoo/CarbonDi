@@ -2,10 +2,11 @@
 #include "Core.Core_main.h"
 #include "Core.Charactor.h"
 #include "Core.Object.h"
-#include "Core.String.h"
-#include "Core.Exception.h"
+#include "Core.HashCode.h"
 #include "Core.Array.h"
 #include "Core.RefArray.h"
+#include "Core.String.h"
+#include "Core.Exception.h"
 #include "Core.Boxing.h"
 #include "Core.BaseBoxing.h"
 #include "Core.B8.h"
@@ -22,6 +23,11 @@
 #include "Core.Pointer.h"
 #include "Core.FileUtils.h"
 #include "Core.DynamicArray.h"
+#include "Core.Duo.h"
+#include "Core.Hashset.h"
+#include "Core.MapDuo.h"
+#include "Core.MapEntry.h"
+#include "Core.Hashmap.h"
 
 /*fd1*/boolean c_2106303_CharactorisLetter(i8 chr){
 
@@ -84,7 +90,7 @@ case 121 :
 case 122 :/*Ax6*//*te8*/res/*te8*/=true;
 
 }
-return __exitReturn_i64_un(/*te8*/res, entry__);
+return __exitReturn_i32_un(/*te8*/res, entry__);
 }
 
 
@@ -151,7 +157,7 @@ case 121 :
 case 122 :/*Ax6*//*te8*/res/*te8*/=true;
 
 }
-return __exitReturn_i64_un(/*te8*/res, entry__);
+return __exitReturn_i32_un(/*te8*/res, entry__);
 }
 
 
@@ -189,7 +195,7 @@ case 89 :
 case 90 :/*Ax6*//*te8*/res/*te8*/=true;
 
 }
-return __exitReturn_i64_un(/*te8*/res, entry__);
+return __exitReturn_i32_un(/*te8*/res, entry__);
 }
 
 
@@ -227,7 +233,7 @@ case 121 :
 case 122 :/*Ax6*//*te8*/res/*te8*/=true;
 
 }
-return __exitReturn_i64_un(/*te8*/res, entry__);
+return __exitReturn_i32_un(/*te8*/res, entry__);
 }
 
 
@@ -305,7 +311,7 @@ case 121 :
 case 122 :/*Ax6*//*te8*/res/*te8*/=true;
 
 }
-return __exitReturn_i64_un(/*te8*/res, entry__);
+return __exitReturn_i32_un(/*te8*/res, entry__);
 }
 
 
@@ -381,7 +387,7 @@ case 121 :
 case 122 :/*Ax6*//*te8*/res/*te8*/=true;
 
 }
-return __exitReturn_i64_un(/*te8*/res, entry__);
+return __exitReturn_i32_un(/*te8*/res, entry__);
 }
 
 
@@ -405,7 +411,7 @@ case 57 :
 case 95 :/*Ax6*//*te8*/res/*te8*/=true;
 
 }
-return __exitReturn_i64_un(/*te8*/res, entry__);
+return __exitReturn_i32_un(/*te8*/res, entry__);
 }
 
 
@@ -431,7 +437,7 @@ case 95 :
 case 46 :/*Ax6*//*te8*/res/*te8*/=true;
 
 }
-return __exitReturn_i64_un(/*te8*/res, entry__);
+return __exitReturn_i32_un(/*te8*/res, entry__);
 }
 
 
@@ -469,7 +475,7 @@ case 70 :
 case 95 :/*Ax6*//*te8*/res/*te8*/=true;
 
 }
-return __exitReturn_i64_un(/*te8*/res, entry__);
+return __exitReturn_i32_un(/*te8*/res, entry__);
 }
 
 
@@ -485,7 +491,7 @@ case 49 :
 case 95 :/*Ax6*//*te8*/res/*te8*/=true;
 
 }
-return __exitReturn_i64_un(/*te8*/res, entry__);
+return __exitReturn_i32_un(/*te8*/res, entry__);
 }
 
 
@@ -530,6 +536,7 @@ void c_2106303_Charactor_free(num this) { Object_ref *object_ref = useObject(thi
 
 num create_c_2106303_Charactor() {
   c_2106303_Charactor * _c_2106303_Charactor = ec_calloc(sizeof(c_2106303_Charactor), sizeof(char));
+/*cdv1*/((c_2106303_Charactor*)_c_2106303_Charactor)->instanceName = c_2106303_CharactorclassName();
   return createObject(_c_2106303_Charactor, getc_2106303_Charactor_cm(), false);
 }
 

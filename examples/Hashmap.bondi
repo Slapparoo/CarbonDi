@@ -1,0 +1,39 @@
+
+
+?ar = Hashmap();
+
+?str1 = "String1";
+?String1 = "String1";
+?String2 = "String2";
+?String3 = "String3";
+?String4 = "String4";
+?String5 = "String5";
+?String6 = "String6";
+?String7 = "String7";
+?su8 = "u8";
+?si8 = "i8";
+?su64 = "u64";
+?sswitch = "switch";
+?scase = "case";
+?sreturn = "return";
+?svoid = "void";
+?sloop = "loop";
+?selse = "else";
+
+ar.put(String1, String2);
+ar.put(String2, String1);
+ar.put(String3, String1);
+
+String res1 = ar.get(String1);
+
+printf(`res %lu\n`, res1);
+printf(`res1 %lu\n`, res1.instanceName);
+printf(`res2 %lu\n`, res1.className);
+printf(`res3 %lu\n`, res1.className);
+
+res1.instanceName = res1.className;
+printf(`inst %s\n`, res1.instanceName);
+printf(`res %s\n`, res1.asStr);
+
+printf(`res %lu\n`, ar.get(String2));
+// printf(`res %s\n`, res1.asStr);
