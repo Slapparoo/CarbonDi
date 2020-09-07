@@ -24,6 +24,7 @@
 #include "Core.FileUtils.h"
 #include "Core.Charactor.h"
 #include "Core.DynamicArray.h"
+#include "Core.RefArrayList.h"
 #include "Core.Duo.h"
 #include "Core.Hashset.h"
 #include "Core.MapEntry.h"

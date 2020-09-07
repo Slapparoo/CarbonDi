@@ -33,7 +33,8 @@
 #define ANSI_BOLD_WHITE "\033[1;37m"
 #define ANSI_DEFAULT "\033[0m"
 
-#define PM_LIST_LENGTH 1024
+// #define PM_LIST_LENGTH 1024
+#define PM_LIST_LENGTH 4096
 #define INFLIGHT_MEMSIZE 10
 
 // 

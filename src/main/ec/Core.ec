@@ -1202,6 +1202,59 @@ public class Core.DynamicArray (Core.Array){
 }
 
 
+class Core.RefArrayList (Core.Object) {
+    (private, private) properties {
+        RefArray list;
+        (public,) u64 ralsize;
+        boolean isInit = false;
+
+        static u64 growBy = 256;
+    }
+
+    private void startup() {
+        if (isInit) {
+            return;
+        }
+        isInit = true;
+        list = RefArray(growBy);
+    }
+
+    private void growList() {
+        ?tempList = list;
+        ?newList = RefArray(tempList.length + growBy);
+
+        loop (tempList.length) {
+            ?ix = $a;
+            newList[ix] = tempList[ix];
+        }
+
+        list = newList;
+    }
+
+    public void add(Object object) {
+        startup();
+        ?tempList = list;
+
+        if (tempList.length == ralsize) {
+            growList();
+            // tempList = list;
+        }
+
+        ?tempList2 = list;
+
+        tempList2[ralsize] = object;
+        ralsize++;
+    }
+
+    public Object get(u64 index) {
+        ?tempList = list;
+        Object o = tempList[index];
+        return o;
+    }
+}
+
+
+
 public class Core.Duo (Core.Object) {
     properties {
         Object one;
@@ -1437,9 +1490,9 @@ public class Core.Hashmap (Core.Object) {
             return 0;
         } else if (item.instanceName == MapDuo.className) {
             MapDuo duo = item; 
-            if (duo.oneKey == object) {
+            if (duo.oneKey.equals(object)) {
                 return duo.oneValue;
-            } else if(duo.twoKey == object) {
+            } else if(duo.twoKey.equals(object)) {
                 return duo.twoValue;
             }
         } else if (item.instanceName == MapEntry.className) {
@@ -1463,13 +1516,14 @@ public class Core.Hashmap (Core.Object) {
             return;
         } else if (item.instanceName == MapDuo.className) {
             MapDuo duo = item; 
-            if (duo.oneKey == key) {
+            if (duo.oneKey.equals(key)) {
                 duo.oneValue = value;
                 return;
-            } else if(duo.twoKey == key) {
+            } else if(duo.twoKey.equals(key)) {
                 duo.twoValue = value;
                 return;
             }
+
             // only allow 2 key collisions
             reHash(key, value);
             return;

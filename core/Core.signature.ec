@@ -714,6 +714,38 @@ hidden final void free();
 hidden void release();
 public final pointer alloc(u64 size);
 public final pointer realloc(pointer ptr, u64 size);
+}// Core.RefArrayList Signature compiled
+/* imports {} */
+
+public class signature Core.RefArrayList(Core.Object){
+  (public,public) properties {
+    (public,public) RefArray list;
+    (public,public) u64 ralsize;
+    (public,public) boolean isInit;
+    (public,public)  static u64 growBy;
+    (public,public) pointer instanceName;
+  }
+
+  /* default constructor */
+
+private void startup();
+private void growList();
+public void add(Object object);
+public Object get(u64 index);
+public static final pointer className();
+public static final pointer classShortName();
+public static final pointer classCName();
+public static final pointer classPackage();
+public static final u64 objectDatasize();
+public pointer asStr();
+public void printTo(pointer stream);
+public pointer objectData();
+public i32 hashCode();
+public boolean equals(Object other);
+hidden final void free();
+hidden void release();
+public final pointer alloc(u64 size);
+public final pointer realloc(pointer ptr, u64 size);
 }// Core.Duo Signature compiled
 /* imports {} */
 

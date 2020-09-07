@@ -521,6 +521,9 @@ num createObject(pointer object_data, pointer class_model, boolean is_stack) {
   refStack[refStackIndex++] = id;
 
   if (id == PM_LIST_LENGTH -1) {
+
+    // grow
+
     throwException("Out of memory Exception [Object allocation space].");
   }
 

@@ -23,6 +23,7 @@
 #include "Core.Pointer.h"
 #include "Core.FileUtils.h"
 #include "Core.DynamicArray.h"
+#include "Core.RefArrayList.h"
 #include "Core.Duo.h"
 #include "Core.Hashset.h"
 #include "Core.MapDuo.h"

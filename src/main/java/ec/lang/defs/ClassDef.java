@@ -834,8 +834,10 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
         return  ""
         + "\nnum create_"+getCName()+"() {"
         + "\n  "+getCName()+" * _"+getCName()+" = ec_calloc(sizeof("+getCName()+"), sizeof(char));"
+        + "\n  num this = createObject(_"+getCName()+", get"+getCName()+"_cm(), false);"
         + populateDefaultValues()
-        + "\n  return createObject(_"+getCName()+", get"+getCName()+"_cm(), false);"
+        // + "\n  return createObject(_"+getCName()+", get"+getCName()+"_cm(), false);"
+        + "\n  return this;"
         + "\n}\n"
         + "\n"+getCName()+"_cm _"+getCName()+"_cm;"
         + "\nboolean _"+getCName()+"_init = false;"
@@ -866,10 +868,22 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
                 continue;
             }
 
-            if (var.assignValue != null && var.assignValue.expr != null) {
-                // "(("+name+"*)_"+getClassVar()+")->
-                res += "\n/*cdv1*/(("+getCName()+"*)_"+getCName()+")->"+ var.getName() +" = "+ var.assignValue.asCode() +";";
-                // TODO Arrays
+            if (var.assignValue != null) {
+
+                if (var.assignValue.expr != null) {
+                    // "(("+name+"*)_"+getClassVar()+")->
+                    res += "\n/*cdv1*/(("+getCName()+"*)_"+getCName()+")->"+ var.getName() +" = "+ var.assignValue.asCode() +";";
+                    // TODO Arrays
+                } else {
+                    // call setter
+                    String dataAccess = SnippetFactory.dataModelStatement(getCName(), "this", var.is_static);
+                    if (var.isPrimative()) {
+                        res += "/*pr1*/"+ dataAccess +"->"+var.getName() + " = "+ var.assignValue.asCode() + ";";
+                    } else {
+                        res += "/*pr2*/ assignObject(&"+dataAccess+"->"+var.getName()+", "+ var.assignValue.asCode()+");";
+                    }                    
+                    // res += "\n/*cdv1*/(("+getCName()+"*)_"+getCName()+")->"+ var.getName() +" = "+ var.assignValue.asCode() +";";
+                }
             }
         }
 

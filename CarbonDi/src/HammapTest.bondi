@@ -1,0 +1,249 @@
+#include "TokenIds.ec"
+
+/**
+    hash map store
+*/
+public class MyHashmap (Core.Object) {
+
+    properties {
+        boolean isInitm = false;
+        u64 hmitems = 0;
+        u64 hmsize = 1024;
+        RefArray hmlist;
+    }
+
+    // public Hashmap(=hmsize);
+
+    private void reHash(Object key, Object value) {
+        ?oldSize = hmsize;
+        ?oldlist = this.hmlist;
+
+        hmsize += 512;
+        ?newlist = RefArray(hmsize);
+
+        hmitems = 0;
+        loop (oldSize) {
+            ?ix = $a;  
+            Object item = oldlist[ix];
+
+            if (item != 0) {
+                if (item.instanceName == MapDuo.className) {
+                    MapDuo d = item;
+                    internalPut(newlist, d.oneKey, d.oneValue);
+                    internalPut(newlist, d.twoKey, d.twoValue);
+                } else {
+                    MapEntry e = item;
+                    internalPut(newlist, e.key, e.value);
+                }
+            }
+        }
+
+        internalPut(newlist, key, value);
+
+        this.hmlist = newlist;
+        // printf(`items=%lu size=%lu\n`, items, size);
+    }
+
+    public void startuphm() {
+        if (this.isInitm) {
+            return;
+        }
+        // 256 *4 = 1kb
+        if (hmsize < 256) {
+            hmsize = 256;
+        }
+
+        this.hmlist = RefArray(hmsize);
+        this.isInitm = true;
+    }
+
+    public Object get(Object object) {
+        if (!this.isInitm) {
+            return 0;
+        }
+        i32 index = object.hashCode() % hmsize;
+
+        ?tempList = this.hmlist;
+        MapEntry item = tempList[index];
+
+        if (item == 0) {
+            return 0;
+        } else if (item.instanceName == MapDuo.className) {
+            MapDuo duo = item; 
+            if (duo.oneKey.equals(object)) {
+                return duo.oneValue;
+            } else if(duo.twoKey.equals(object)) {
+                return duo.twoValue;
+            }
+        } else if (item.instanceName == MapEntry.className) {
+            MapEntry e = item;
+            if (e.key.equals(object)) {
+                return e.value;        
+            }
+        }
+        return 0;
+    }
+
+    void dump() {
+        ?tempList = hmlist;
+
+        ?count = 0;
+        loop (hmsize) {
+            ?ix = $a;  
+            Object item = tempList[ix];
+
+            if (item != 0) {
+                // printf(`item %s\n`, item.instanceName);
+
+                if (item.instanceName == MapDuo.className) {
+                    MapDuo d = item;
+
+                    String s1 = d.oneKey;
+                    String s2 = d.twoKey;
+
+                    printf(`MapDuo %lu %s\n`, d.oneKey, s1.asStr);
+                    printf(`MapDuo %lu %s\n`, d.twoKey, s2.asStr);
+                    count++;
+                    count++;
+                } else {
+                    MapEntry e = item;
+                    String s3 = e.key;
+
+                    printf(`MapEntry %lu %s\n`, e.key, s3.asStr);
+                    count++;
+                }
+            }
+        }
+        printf(`count %lu\n`, count);
+    }
+
+    private void internalPut(RefArray refArray, Object key, Object value) {
+        i32 index = key.hashCode() % hmsize;
+
+        ?tempList = refArray;
+        Object item = tempList[index];
+
+        if (item == 0) {
+            tempList[index] = MapEntry(key, value);
+            hmitems++;
+            return;
+        } else if (item.instanceName == MapDuo.className) {
+            MapDuo duo = item; 
+            if (duo.oneKey == key) {
+                duo.oneValue = value;
+                return;
+            } else if(duo.twoKey == key) {
+                duo.twoValue = value;
+                return;
+            }
+            // only allow 2 key collisions
+            reHash(key, value);
+            return;
+        } else if (item.instanceName == MapEntry.className) {
+            MapEntry entry = item;
+            if (entry.key.equals(key)) {
+                entry.value = value;
+                return;
+            } else {
+                ?duo = MapDuo();
+                duo.oneKey = entry.key;
+                duo.oneValue = entry.value;
+                duo.twoKey = key;
+                duo.twoValue = value;
+                tempList[index] = duo;
+                hmitems++;
+                return;
+            }
+        }
+        throwException(`you shouldnt be here.`);
+    }
+
+    /**
+    Unconditional put
+    */
+    public void put(Object key, Object value) {
+        if (!this.isInitm) {
+            startuphm();
+        }
+
+        internalPut(this.hmlist, key, value);
+    }
+}
+
+
+
+
+
+        ?specialWords = MyHashmap();
+
+        specialWords.put(KEYWORD_U8, U32(TOKEN_ID_U8));
+        specialWords.put(KEYWORD_I8, U32(TOKEN_ID_I8));
+        specialWords.put(KEYWORD_B8, U32(TOKEN_ID_B8));
+        specialWords.put(KEYWORD_IF, U32(TOKEN_ID_IF));
+        specialWords.put(KEYWORD_IS, U32(TOKEN_ID_IS));
+        specialWords.put(KEYWORD_IN, U32(TOKEN_ID_IN));
+        specialWords.put(KEYWORD_U16, U32(TOKEN_ID_U16));
+        specialWords.put(KEYWORD_I16, U32(TOKEN_ID_I16));
+        specialWords.put(KEYWORD_U32, U32(TOKEN_ID_U32));
+        specialWords.put(KEYWORD_I32, U32(TOKEN_ID_I32));
+        specialWords.put(KEYWORD_F32, U32(TOKEN_ID_F32));
+        specialWords.put(KEYWORD_U64, U32(TOKEN_ID_U64));
+        specialWords.put(KEYWORD_I64, U32(TOKEN_ID_I64));
+        specialWords.put(KEYWORD_F64, U32(TOKEN_ID_F64));
+        specialWords.put(KEYWORD_F80, U32(TOKEN_ID_F80));
+        specialWords.put(KEYWORD_NUM, U32(TOKEN_ID_NUM));
+        specialWords.put(KEYWORD_INT, U32(TOKEN_ID_INT));
+        specialWords.put(KEYWORD_TRY, U32(TOKEN_ID_TRY));
+        specialWords.put(KEYWORD_F128, U32(TOKEN_ID_F128));
+        specialWords.put(KEYWORD_NULL, U32(TOKEN_ID_NULL));
+        specialWords.put(KEYWORD_ELSE, U32(TOKEN_ID_ELSE));
+        specialWords.put(KEYWORD_LOOP, U32(TOKEN_ID_LOOP));
+        specialWords.put(KEYWORD_WITH, U32(TOKEN_ID_WITH));
+        specialWords.put(KEYWORD_CASE, U32(TOKEN_ID_CASE));
+        specialWords.put(KEYWORD_VOID, U32(TOKEN_ID_VOID));
+        specialWords.put(KEYWORD_ENUM, U32(TOKEN_ID_ENUM));
+        specialWords.put(KEYWORD_PLAN, U32(TOKEN_ID_PLAN));
+        specialWords.put(KEYWORD_STUB, U32(TOKEN_ID_STUB));
+        specialWords.put(KEYWORD_TRUE, U32(TOKEN_ID_TRUE));
+        specialWords.put(KEYWORD_BOOLEAN, U32(TOKEN_ID_BOOLEAN));
+        specialWords.put(KEYWORD_POINTER, U32(TOKEN_ID_POINTER));
+        specialWords.put(KEYWORD_PUBLIC, U32(TOKEN_ID_PUBLIC));
+        specialWords.put(KEYWORD_PRIVATE, U32(TOKEN_ID_PRIVATE));
+        specialWords.put(KEYWORD_PROTECTED, U32(TOKEN_ID_PROTECTED));
+        specialWords.put(KEYWORD_HIDDEN, U32(TOKEN_ID_HIDDEN));
+        specialWords.put(KEYWORD_IMPORTS, U32(TOKEN_ID_IMPORTS));
+        specialWords.put(KEYWORD_CATCH, U32(TOKEN_ID_CATCH));
+        specialWords.put(KEYWORD_FINALLY, U32(TOKEN_ID_FINALLY));
+        specialWords.put(KEYWORD_THROWS, U32(TOKEN_ID_THROWS));
+        specialWords.put(KEYWORD_BREAK, U32(TOKEN_ID_BREAK));
+        specialWords.put(KEYWORD_CONTINUE, U32(TOKEN_ID_CONTINUE));
+        specialWords.put(KEYWORD_SWITCH, U32(TOKEN_ID_SWITCH));
+        specialWords.put(KEYWORD_DEFAULT, U32(TOKEN_ID_DEFAULT));
+        specialWords.put(KEYWORD_RETURN, U32(TOKEN_ID_RETURN));
+        specialWords.put(KEYWORD_RETURN_ADD, U32(TOKEN_ID_RETURN_ADD));
+        specialWords.put(KEYWORD_STATIC, U32(TOKEN_ID_STATIC));
+        specialWords.put(KEYWORD_FINAL, U32(TOKEN_ID_FINAL));
+        specialWords.put(KEYWORD_SIGNATURE, U32(TOKEN_ID_SIGNATURE));
+        specialWords.put(KEYWORD_CLASS, U32(TOKEN_ID_CLASS));
+        specialWords.put(KEYWORD_PROPERTIES, U32(TOKEN_ID_PROPERTIES));
+        specialWords.put(KEYWORD_FUNCTION, U32(TOKEN_ID_FUNCTION));
+        specialWords.put(KEYWORD_FALSE, U32(TOKEN_ID_FALSE));
+
+
+U32 id = specialWords.get('case');
+
+if (id == 0) {
+    printf(`case == 0\n`);
+} else {
+    printf(`case = %i\n`, id.value);
+} 
+
+U32 id2 = specialWords.get('hidden');
+
+if (id2 == 0) {
+    printf(`hidden == 0\n`);
+} else {
+    printf(`hidden = %i\n`, id2.value);
+} 
+
+// specialWords.dump();

@@ -6,6 +6,7 @@ import java.util.List;
 import ec.lang.defs.Enums.Accessor;
 import ec.lang.defs.expressions.MultiTypeExpr;
 import ec.lang.defs.expressions.TypeExpr;
+import ec.lang.defs.expressions.StringExpr;
 
 public class VariableDef extends StatementDef {
     String debugValue;
@@ -330,8 +331,12 @@ public class VariableDef extends StatementDef {
     }
 
 	public boolean compatableWith(ExprDef exprDef) {
+        if (exprDef.thisType == null && exprDef instanceof StringExpr) {
+            exprDef.resolve_01();
+        }
+
         if (exprDef.thisType == null) {
-            System.out.println("[warn] expr has no type " + exprDef);
+            System.out.println("[warn] expr has no type " + exprDef + " " + exprDef.getClass());
             return false;
         }
 

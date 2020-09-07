@@ -31,5 +31,6 @@
 #include "Core.MapEntry.h"
 #include "Core.MapDuo.h"
 #include "Core.Hashmap.h"
+#include "Core.RefArrayList.h"
 void Core_370391182_main();
 #endif

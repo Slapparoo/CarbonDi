@@ -24,6 +24,7 @@
 #include "Core.FileUtils.h"
 #include "Core.Charactor.h"
 #include "Core.DynamicArray.h"
+#include "Core.RefArrayList.h"
 #include "Core.Duo.h"
 #include "Core.Hashset.h"
 #include "Core.MapDuo.h"
@@ -107,12 +108,12 @@ __onEnter();return __exitReturn_i64_un(0, entry__);
  else if (/*oxa*//*te14a*/((c_2106303_Object_cm*)useObject(/*te8*/item)->classmodel)->get_instanceName(/*te8*/item) == /*oxb*//*te141*/((c_2106303_MapDuo_cm*)getc_2106303_MapDuo_cm())->className()) {
 
 __onEnter();/*va1*/num duo = /*te8*/item;
-if (/*oxa*//*te14a*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->get_oneKey(/*te8*/duo) == /*oxb*//*te8*/object) {
+if (/* switch from fc5 to te4*/((c_2106303_Object_cm*)useObject(/*te14a*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->get_oneKey(/*te8*/duo))->classmodel)->equals(/*te14a*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->get_oneKey(/*te8*/duo), /*te8*/object)) {
 
 __onEnter();/*rx2*/ return __exitReturn_ref_un(/*te14a*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->get_oneValue(/*te8*/duo), entry__);
 }
 
- else if (/*oxa*//*te14a*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->get_twoKey(/*te8*/duo) == /*oxb*//*te8*/object) {
+ else if (/* switch from fc5 to te4*/((c_2106303_Object_cm*)useObject(/*te14a*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->get_twoKey(/*te8*/duo))->classmodel)->equals(/*te14a*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->get_twoKey(/*te8*/duo), /*te8*/object)) {
 
 __onEnter();/*rx2*/ return __exitReturn_ref_un(/*te14a*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->get_twoValue(/*te8*/duo), entry__);
 }
@@ -150,13 +151,13 @@ return __exitReturn_void_un(entry__);
  else if (/*oxa*//*te14a*/((c_2106303_Object_cm*)useObject(/*te8*/item)->classmodel)->get_instanceName(/*te8*/item) == /*oxb*//*te141*/((c_2106303_MapDuo_cm*)getc_2106303_MapDuo_cm())->className()) {
 
 __onEnter();/*va1*/num duo = /*te8*/item;
-if (/*oxa*//*te14a*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->get_oneKey(/*te8*/duo) == /*oxb*//*te8*/key) {
+if (/* switch from fc5 to te4*/((c_2106303_Object_cm*)useObject(/*te14a*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->get_oneKey(/*te8*/duo))->classmodel)->equals(/*te14a*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->get_oneKey(/*te8*/duo), /*te8*/key)) {
 
 __onEnter();/*Ax2*//*te14b*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->set_oneValue(/*te8*/duo, /*te8*/value);
 return __exitReturn_void_un(entry__);
 }
 
- else if (/*oxa*//*te14a*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->get_twoKey(/*te8*/duo) == /*oxb*//*te8*/key) {
+ else if (/* switch from fc5 to te4*/((c_2106303_Object_cm*)useObject(/*te14a*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->get_twoKey(/*te8*/duo))->classmodel)->equals(/*te14a*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->get_twoKey(/*te8*/duo), /*te8*/key)) {
 
 __onEnter();/*Ax2*//*te14b*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->set_twoValue(/*te8*/duo, /*te8*/value);
 return __exitReturn_void_un(entry__);

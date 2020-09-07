@@ -1,0 +1,16 @@
+?myList = RefArrayList();
+
+myList.add("String 0");
+myList.add("String 1");
+myList.add("String 2");
+myList.add("String 3");
+myList.add("String 4");
+myList.add("String 5");
+myList.add("String 6");
+myList.add("String 7");
+
+printf(`List %li\n`, myList.ralsize);
+String item = myList.get(5);
+
+printf(`List 5 %s\n`, item.asStr);
+

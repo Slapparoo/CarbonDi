@@ -20,6 +20,7 @@ clang -std=gnu17 -O3 -g -c -I/workspaces/ec-lang/core/include -o obj/Core.Pointe
 clang -std=gnu17 -O3 -g -c -I/workspaces/ec-lang/core/include -o obj/Core.FileUtils.o Core.FileUtils.c
 clang -std=gnu17 -O3 -g -c -I/workspaces/ec-lang/core/include -o obj/Core.Charactor.o Core.Charactor.c
 clang -std=gnu17 -O3 -g -c -I/workspaces/ec-lang/core/include -o obj/Core.DynamicArray.o Core.DynamicArray.c
+clang -std=gnu17 -O3 -g -c -I/workspaces/ec-lang/core/include -o obj/Core.RefArrayList.o Core.RefArrayList.c
 clang -std=gnu17 -O3 -g -c -I/workspaces/ec-lang/core/include -o obj/Core.Duo.o Core.Duo.c
 clang -std=gnu17 -O3 -g -c -I/workspaces/ec-lang/core/include -o obj/Core.Hashset.o Core.Hashset.c
 clang -std=gnu17 -O3 -g -c -I/workspaces/ec-lang/core/include -o obj/Core.MapDuo.o Core.MapDuo.c

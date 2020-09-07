@@ -1,3 +1,7 @@
+
+#ifndef __BONDI_TOKENIDS__
+#define __BONDI_TOKENIDS__
+ 
 #define CURRENTTOKEN_LINECOMMENT 1
 #define CURRENTTOKEN_STARCOMMENT 2
 #define CURRENTTOKEN_DOCCOMMENT  3
@@ -152,6 +156,11 @@
 #define TOKEN_CARET         175
 #define TOKEN_DOLLAR        176
 #define TOKEN_COMMA         177
+#define TOKEN_DOLLARBRACE   178
+#define TOKEN_DOLLARBRACKET 179
+#define TOKEN_BRACESTAR     180
+#define TOKEN_BRACEPLUS     181
+#define TOKEN_BRACEQUESTION 182
 
 
 // special words
@@ -227,6 +236,7 @@
 
 // 1 length only
 #define KEYWORD_VAR_TYPE 	`?`
+#define KEYWORD_QUESTION 	`?`
 #define KEYWORD_LBRACE      `{` 
 #define KEYWORD_RBRACE      `}` 
 #define KEYWORD_LPAREN      `(` 
@@ -331,5 +341,33 @@
 //#define KEYWORD_// keyword_array       'array' 
 //#define KEYWORD_// keyword_map         'map' 
 #define KEYWORD_FALSE       'false' 
+
+
+
+public class Lexer.Token (Core.Object) {
+    properties {
+        u64 offset;
+        // u64 length;
+        u32 type;
+        String value;
+    }
+
+    public Token(=offset, =type, =value) {
+        // printf(`Token(%lu, %lu, %u)`, offset, length, type);
+    }
+
+    public void printDetail() {
+        if (value == 0) {
+            printf(`Token(%lu, %u)`, offset, type);
+        } else {
+            ?v = value;
+            printf(`Token(%lu, %u, %s)`, offset, type, v.asStr);
+        }
+    }
+}
+
+
+
+#endif
 
 

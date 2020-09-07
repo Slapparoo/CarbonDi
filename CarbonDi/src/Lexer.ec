@@ -1,20 +1,5 @@
+#include "TokenIds.ec"
 
-
-public class Token (Core.Object) {
-    properties {
-        u64 offset;
-        u64 length;
-        u32 type;
-    }
-
-    public Token(=offset, =length, =type) {
-        // printf(`Token(%lu, %lu, %u)`, offset, length, type);
-    }
-
-    public void printDetail() {
-        printf(`Token(%lu, %lu, %u)`, offset, length, type);
-    }
-}
 
 /**
     Lexer
@@ -28,72 +13,10 @@ public class Lexer (Core.Object) {
 
         u64 lineCount = 0;
         u64 lineIndex = 0;
-        u64 index = 0;
+        u64 lxindex = 0;
 
         Hashmap specialWordsmap;
-    }
-
-    void loadSpecialWords () {
-        if (specialWordsmap != 0) {
-            return;
-        }
-
-        ?specialWords = Hashmap();
-
-        specialWords.put(KEYWORD_U8, U32(TOKEN_ID_U8));
-        specialWords.put(KEYWORD_I8, U32(TOKEN_ID_I8));
-        specialWords.put(KEYWORD_B8, U32(TOKEN_ID_B8));
-        specialWords.put(KEYWORD_IF, U32(TOKEN_ID_IF));
-        specialWords.put(KEYWORD_IS, U32(TOKEN_ID_IS));
-        specialWords.put(KEYWORD_IN, U32(TOKEN_ID_IN));
-        specialWords.put(KEYWORD_U16, U32(TOKEN_ID_U16));
-        specialWords.put(KEYWORD_I16, U32(TOKEN_ID_I16));
-        specialWords.put(KEYWORD_U32, U32(TOKEN_ID_U32));
-        specialWords.put(KEYWORD_I32, U32(TOKEN_ID_I32));
-        specialWords.put(KEYWORD_F32, U32(TOKEN_ID_F32));
-        specialWords.put(KEYWORD_U64, U32(TOKEN_ID_U64));
-        specialWords.put(KEYWORD_I64, U32(TOKEN_ID_I64));
-        specialWords.put(KEYWORD_F64, U32(TOKEN_ID_F64));
-        specialWords.put(KEYWORD_F80, U32(TOKEN_ID_F80));
-        specialWords.put(KEYWORD_NUM, U32(TOKEN_ID_NUM));
-        specialWords.put(KEYWORD_INT, U32(TOKEN_ID_INT));
-        specialWords.put(KEYWORD_TRY, U32(TOKEN_ID_TRY));
-        specialWords.put(KEYWORD_F128, U32(TOKEN_ID_F128));
-        specialWords.put(KEYWORD_NULL, U32(TOKEN_ID_NULL));
-        specialWords.put(KEYWORD_ELSE, U32(TOKEN_ID_ELSE));
-        specialWords.put(KEYWORD_LOOP, U32(TOKEN_ID_LOOP));
-        specialWords.put(KEYWORD_WITH, U32(TOKEN_ID_WITH));
-        specialWords.put(KEYWORD_CASE, U32(TOKEN_ID_CASE));
-        specialWords.put(KEYWORD_VOID, U32(TOKEN_ID_VOID));
-        specialWords.put(KEYWORD_ENUM, U32(TOKEN_ID_ENUM));
-        specialWords.put(KEYWORD_PLAN, U32(TOKEN_ID_PLAN));
-        specialWords.put(KEYWORD_STUB, U32(TOKEN_ID_STUB));
-        specialWords.put(KEYWORD_TRUE, U32(TOKEN_ID_TRUE));
-        specialWords.put(KEYWORD_BOOLEAN, U32(TOKEN_ID_BOOLEAN));
-        specialWords.put(KEYWORD_POINTER, U32(TOKEN_ID_POINTER));
-        specialWords.put(KEYWORD_PUBLIC, U32(TOKEN_ID_PUBLIC));
-        specialWords.put(KEYWORD_PRIVATE, U32(TOKEN_ID_PRIVATE));
-        specialWords.put(KEYWORD_PROTECTED, U32(TOKEN_ID_PROTECTED));
-        specialWords.put(KEYWORD_HIDDEN, U32(TOKEN_ID_HIDDEN));
-        specialWords.put(KEYWORD_IMPORTS, U32(TOKEN_ID_IMPORTS));
-        specialWords.put(KEYWORD_CATCH, U32(TOKEN_ID_CATCH));
-        specialWords.put(KEYWORD_FINALLY, U32(TOKEN_ID_FINALLY));
-        specialWords.put(KEYWORD_THROWS, U32(TOKEN_ID_THROWS));
-        specialWords.put(KEYWORD_BREAK, U32(TOKEN_ID_BREAK));
-        specialWords.put(KEYWORD_CONTINUE, U32(TOKEN_ID_CONTINUE));
-        specialWords.put(KEYWORD_SWITCH, U32(TOKEN_ID_SWITCH));
-        specialWords.put(KEYWORD_DEFAULT, U32(TOKEN_ID_DEFAULT));
-        specialWords.put(KEYWORD_RETURN, U32(TOKEN_ID_RETURN));
-        specialWords.put(KEYWORD_RETURN_ADD, U32(TOKEN_ID_RETURN_ADD));
-        specialWords.put(KEYWORD_STATIC, U32(TOKEN_ID_STATIC));
-        specialWords.put(KEYWORD_FINAL, U32(TOKEN_ID_FINAL));
-        specialWords.put(KEYWORD_SIGNATURE, U32(TOKEN_ID_SIGNATURE));
-        specialWords.put(KEYWORD_CLASS, U32(TOKEN_ID_CLASS));
-        specialWords.put(KEYWORD_PROPERTIES, U32(TOKEN_ID_PROPERTIES));
-        specialWords.put(KEYWORD_FUNCTION, U32(TOKEN_ID_FUNCTION));
-        specialWords.put(KEYWORD_FALSE, U32(TOKEN_ID_FALSE));
-
-        specialWordsmap = specialWords;
+        // RefArrayList tokens;
     }
 
 
@@ -101,7 +24,7 @@ public class Lexer (Core.Object) {
         iChar0 = iChar1;
         iChar1 = iChar2;
         iChar2 = ch;
-        index++;
+        lxindex++;
 
         switch (ch) {
             case '\n' : // <CR>
@@ -111,17 +34,15 @@ public class Lexer (Core.Object) {
         }
     }
 
-    public void printToken(Token token, i8[] content) {
-        ?ix = token.offset;
+    public void printToken(Token token) {
         token.printDetail();
-        loop (token.length) {
-            ?off = $a + ix;
-            printf(`%c`, content[off]);
-        }
     }
 
-    public Token createToken(u64 length, u32 tokenId) {
-        return Token(index - length - 2, length, tokenId);
+    public Token createToken(u64 offset, u32 tokenId, String value) {
+        ?tmptoken = Token(offset, tokenId, value);
+        // ?tmptokens = tokens;
+        // tmptokens.add(tmptoken);
+        return tmptoken;
     }
 
     public static boolean isWhitespace(i8 ch) {
@@ -166,26 +87,25 @@ public class Lexer (Core.Object) {
         return isNum;
     }
 
-    public u32 matchKeywordToken(i8[] content, u64 len, u64 ix) {
-        String subString = String(content.values, ix - len - 1, len);
-
-        // printf(`substring %s, `, subString.asStr);
-
-        // String subString = "return";
+    public u32 matchKeywordToken(String subString) {
         ?sp = specialWordsmap;
         U32 tokenType = sp.get(subString);
-        
 
-        if (tokenType != 0) {
-            printf(`found token %s:%i `, subString.asStr, tokenType.value);
+        if (tokenType == 0) {
+            return TOKEN_ID;
         }
 
-        return TOKEN_ID;
+        return tokenType.value;
     }
 
-    /* lex the content */
-    public void lex(i8[] content) {
-        loadSpecialWords();
+    /* lex the content 
+        return a list of tokens
+    */
+    public RefArrayList lex(i8[] content, Hashmap specialwords) {
+
+        specialWordsmap = specialwords;
+        ?tokens = RefArrayList();
+
         ?currentToken = 0;
         ?thisToken = 0;
         Token token;
@@ -401,6 +321,18 @@ public class Lexer (Core.Object) {
                             thisToken = TOKEN_XOR;
                         }
                         break;
+
+                    case KEYWORD_DOLLAR :
+                        if (char1 == KEYWORD_LBRACE) {
+                            thisToken = TOKEN_DOLLARBRACE;
+                            roll = 1;
+                        } else if (char1 == KEYWORD_LBRACKET) { //&&
+                            thisToken = TOKEN_DOLLARBRACKET;
+                            roll = 1;
+                        } else {
+                            thisToken = TOKEN_DOLLAR;
+                        }
+                        break;  
                     case KEYWORD_OR :
                         if (char1 == KEYWORD_EQUAL) { //|=
                             thisToken = TOKEN_OEQ;
@@ -458,15 +390,27 @@ public class Lexer (Core.Object) {
                             thisToken = TOKEN_DOT;
                         }
                         break;
+                    case KEYWORD_RBRACE :
+                        if (char1 == KEYWORD_QUESTION) { //}?
+                            thisToken = TOKEN_BRACEQUESTION;
+                            roll = 1;
+                        } else if (char1 == KEYWORD_STAR) { //}*
+                            thisToken = TOKEN_BRACESTAR;
+                            roll = 1;
+                        } else if (char1 == KEYWORD_PLUS) { //}*
+                            thisToken = TOKEN_BRACEPLUS;
+                            roll = 1;
+                        } else {
+                            thisToken = TOKEN_RBRACE;
+                        }
+                        break;
+
                     // 1 length special
                     case KEYWORD_VAR_TYPE :
                         thisToken = TOKEN_QUESTION;
                         break;
                     case KEYWORD_LBRACE :
                         thisToken = TOKEN_LBRACE;
-                        break;
-                    case KEYWORD_RBRACE :
-                        thisToken = TOKEN_RBRACE;
                         break;
                     case KEYWORD_LPAREN :
                         thisToken = TOKEN_LPAREN;
@@ -478,7 +422,7 @@ public class Lexer (Core.Object) {
                         thisToken = TOKEN_LBRACKET;
                         break;
                     case KEYWORD_RBRACKET :
-                        thisToken = KEYWORD_RBRACKET;
+                        thisToken = TOKEN_RBRACKET;
                         break;
                     case KEYWORD_SEMI :
                         thisToken = TOKEN_SEMI;
@@ -494,9 +438,6 @@ public class Lexer (Core.Object) {
                         break;
                     case KEYWORD_COMMA :
                         thisToken = TOKEN_COMMA;
-                        break;
-                    case KEYWORD_DOLLAR :
-                        thisToken = TOKEN_DOLLAR;
                         break;
                     case 'a'..'z' :
                     case 'A'..'Z' :
@@ -538,7 +479,7 @@ public class Lexer (Core.Object) {
                         break;
                     default :
                         if (!Lexer.isWhitespace(char0)) {
-                            printf(`%c (%lu) [%lu:%lu]`, char0, index, lineCount, lineIndex);  
+                            printf(`%c (%lu) [%lu:%lu]`, char0, lxindex, lineCount, lineIndex);  
                             throwException(`[error] unexpected charactor.`);
                         }
                 }
@@ -556,20 +497,36 @@ public class Lexer (Core.Object) {
 
                 if (thisToken == TOKEN_ID) {
                     // convert ID tokens to keyword tokens
-                    thisToken = matchKeywordToken(content, tLen, ix);
-                }
-                
-                ?tk = createToken(tLen, thisToken);
+                    ?subString = String(content.values, tokenStart - 2, tLen);
+                    thisToken = matchKeywordToken(subString);
 
-                if (thisToken == TOKEN_ID || thisToken == TOKEN_HEX || thisToken == TOKEN_BINARY || thisToken == TOKEN_CSTRING) {
-                    printToken(tk, content);
+                    // tokenString = subString;
+                    if (thisToken == TOKEN_ID) { 
+                        ?tk = createToken(tokenStart - 2, thisToken, subString);
+                        tokens.add(tk);
+                        printToken(tk);
+                        printf(`--\n`);
+                    } else {
+                        ?tk = createToken(tokenStart - 2, thisToken, 0);
+                        tokens.add(tk);
+                        printToken(tk);
+                        printf(`--\n`);
+                    }
+
+                } else {
+                    ?tk = createToken(tokenStart - 2, thisToken, 0);
+                    tokens.add(tk);
+                    printToken(tk);
                     printf(`--\n`);
                 }
+
                 thisToken = 0;
             }
         }
 
         printf(`\nlinecount=%lu\n`, lineCount);
+
+        return tokens;
     }
 }
 
