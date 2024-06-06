@@ -11,9 +11,17 @@ The compiler generates 'C' source code which means that it can use existing C li
 
 The language uses a mix of primative types and Objects.
 
+
+Current status
+--
+This prototype was created to demonstrate the viability of the langauge.
+* non optimised, even with optimisation performance may not be as good as other binary compilable langauges.
+* a bit rough around the edges, some short cuts were made to push through and create the proto type.
+
+
 Type Naming
 --
-As it is binary compilable primative type names include the number of bits the represent and the type the represent i for intiger, u for unsigned, f for float:
+As it is binary compilable primative type names include the number of bits the represent and the type the represent i for integer, u for unsigned, f for float:
 ```
 b8 - boolean
 i8 - 8 bit integer (also char as defined by C)
@@ -25,10 +33,24 @@ f80 - 80 bit float (where available)
 f128 - 128 bit float (where available)
 ```
 
+Strong types
+--
+variables can either be defined directly or with auto typing. ? is similar to var or auto in other languages
+
+`?number = 10;`
+is the same as
+`num number = 10;`
+
+Main not required
+--
+a source file doesn not require a main method or similar
+e.g a file contain just will compile and print hello world!
+`printf(`Hello world!\n`);`
+
 
 Some pointers
 --
-One of the fundimental idea behind CarbonDi is that you do not have to deal will pointers, so it manages memory allocation and deallocation, and objects are based by reference
+One of the fundamental ideas behind CarbonDi is that you do not have to deal will pointers, so it manages memory allocation and deallocation, and objects are based by reference
 
 The reference is not a pointer it is a reference for the memory manager.
 
@@ -215,23 +237,21 @@ switch(ch) {
 `if (value in 1..5) {...}`
 
 class properties
-
-get == read
-set == write
-
-Default accessors **public read** and **public write**
-
 --
+Default accessors **public get** and **public set**
+
+All class properties a wrapped with accessors and mutators by default. and sit in the **properties** section of the class definition.
+
 definition
-[([read], [write])] properties {
-    &nbsp;[([read], [write])] &lt;Type&gt; &lt;name&gt;;
+[([get], [set])] properties {
+    &nbsp;[([set], [set])] &lt;Type&gt; &lt;name&gt;;
 }
 example 
 
 Using all defaults:
 ```javascript
 class Person {
-    properties {
+    properties {  // public get, public set
         String name;
     }
 }
@@ -239,8 +259,8 @@ class Person {
 or
 ```javascript
 class Person {
-    (,)properties {
-        (,)String name;
+    (,)properties {  //  public get, public set
+        (,)String name; // public get, public set
     }
 }
 
@@ -249,8 +269,8 @@ class Person {
 Specific accessors
 ```javascript
 class Person {
-    (public, private) properties {
-        (protected, protected) String name;
+    (public, private) properties {  // the class defaults are now set to public get, private set
+        (protected, protected) String name; // this methods has overridden the class default with protected get, protected set 
     }
 }
 ```
@@ -263,8 +283,8 @@ so in the following example if I defined the following property to count all the
 
 ```javascript
 class Person {
-    (public, private) properties {
-        (protected, protected) u8 number;
+    (public, private) properties {   // the class defaults are now set to public get, private set
+        (protected, protected) u8 number;  // this methods has overridden the class default with protected get, protected set 
     }
 
     // not required
@@ -296,10 +316,12 @@ loop exit - break, return, return.add;
 loop goto next iteration - continue;
 
 4 loop types
-* boolean `loop(true) {...}`
-* number `loop(10) {...}`
-* range `loop(10..20) {...}`
-* iterator `loop(items) {...}`
+* boolean `loop(true) {...}` while(boolean)
+* number `loop(10) {...}` 0 -> 9
+* range `loop(10..20) {...}` 10 -> 20
+* iterator `loop(items) {...}` iterate a list
+
+* number `loop(-10) {...}` count down from 10 to 0
 
 **named param**
 iterator `loop(items) item {...}`
@@ -432,6 +454,11 @@ To prototype an external function use standard function prototyping.
 function External.stdio.printf := int(pointer, ..);
 ```
 
+try, catch, finally
+---
+Exception blocks are supported
+
+
 Class Internals
 ---
 
@@ -447,6 +474,7 @@ The Object reference table will contain a reference to the object type and the o
 
 Static functions and non-oo functions will be access directly - constructors are static functions.
 
+what the result would look like in C
 ```javascript
 struct MyClassFunctionPointers {
     BaseClass super;
