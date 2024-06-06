@@ -299,6 +299,19 @@ class Person {
 }
 ```
 
+class constructors
+--
+A constructor can be defined with parameters to set properties directly with `=<property name>` so in the following example, a constructor will be created with a parameter of the same type as the property `size` and set the value of size when the class is called.
+
+class AlphaRefArray {
+    properties {
+        u64 size = 1;
+    }
+
+    AlphaRefArray(=size);
+    ...
+}
+
 Derived type
 --
 All types must be resolve able at compile time
