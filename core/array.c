@@ -224,6 +224,16 @@ num create_c_2106303_Array_1(u64 capacity, int dataType, u64 dataSize) {
 
   // error on an unexpected size != 1,2,4,8,10,16
   // setjmp - jmplong
+  switch(dataSize) {
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 8:
+    case 10:
+    case 16: break;
+    default: throwException("Expecting dataSize to be one of [1,2,4,8,10,16].");
+  }
 
   c_2106303_Array* _Array = ec_malloc(sizeof(c_2106303_Array));
   _Array->length = capacity;
@@ -238,15 +248,14 @@ num create_c_2106303_Array_1(u64 capacity, int dataType, u64 dataSize) {
   return id;
 }
 
-
-
-
 void populatec_2106303_Array_cm(pointer _classModel) {
   populatec_2106303_Object_cm(_classModel);
 
   c_2106303_Array_cm *classModel = (c_2106303_Array_cm *)_classModel;
 
   classModel->parent = getc_2106303_Object_cm();
+  classModel->alloc = Object_alloc;
+  classModel->free = Object_free;
   // classModel->name = "Array";
   // classModel->package = "Core";
   classModel->asStr = Array_asStr;

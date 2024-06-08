@@ -177,7 +177,7 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
 
         // System.out.println("@@resolveclass " + this);
         if (extendsclass == null && !getFqn().equals("Core.Object") ) {
-            setCastType("Core.Object");
+            // setCastType("Core.Object");
         } 
         
         blockDef.isClass = true;
@@ -624,13 +624,28 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
         + getDependancies()
         // @TODO include class dependancies
         + "\n\n// @TODO include class dependancies\n"
+        + String.format("typedef struct %s_or %s_or; // forward declaration\n", getCName(), getCName())
         // content here
         + createDataModel()
         + createClassMethodsHeader()
         + "typedef struct " + getCName()+ " {\n"
         // type lookup information is in the reference table (the same meory reference table)
         + getParentDataModel()
-        + getDataModelName() + "\n} " + getCName() +";"
+        + getDataModelName() + "\n} " + getCName() +";\n\n"
+/* kind of risky as now these two structs need to be aligned
+typedef struct Object_ref {
+  pointer data;
+  pointer classmodel;
+  i64 refCounter;
+  boolean is_stack;
+} Object_ref;
+*/        
+        + String.format("typedef struct %s_or  /* = Object_Ref*/ {\n", getCName())
+        + String.format(" %s * data;\n", getCName())
+        + String.format(" %s_cm * classmodel;\n", getCName())
+        + "i64 refCounter;\n  boolean is_stack;\n"
+        + String.format("} %s_or;\n\n", getCName())
+
         + "\npointer get" +getCName()+"_cm();"
         + "\nvoid populate" +getCName()+"_cm(pointer classModel);"
         + "\nnum create_"+getCName()+"();"
@@ -760,8 +775,10 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
     private String populateClassMethods() {
         String res = "";
         for(FunctionDef funct : functionDefs) {
-            if (!funct.is_parent) {
-                res += "\n  thisClassModel->"+ funct.name +" = "+ getCName() + funct.name +";";
+            if (!funct.is_parent && parent != null) {
+                res += "\n /*cds2*/ thisClassModel->"+ funct.name +" = "+ getCName() + funct.name +";";
+            } else if (funct.is_property) {
+                res += "\n /*cds3*/ thisClassModel->"+ funct.name +" = "+ getCName() + funct.name +";";
             }
         }
 
@@ -778,7 +795,9 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
             }
         }
 
-        res += "\n  thisClassModel->free = "+ getCName() +"_free;";
+        if (parent != null) {
+            res += "\n  thisClassModel->free = "+ getCName() +"_free;";
+        }
         return res;
 
     }
@@ -856,7 +875,9 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
         // + "\n  populateObjectClassModel(classModel);"
         + "\n "+ getPopulateParent()
         + "\n  "+getCName()+"_cm* thisClassModel = ("+getCName()+"_cm*)classModel;"
-        + (getFqn().equals("Core.Object") ?  "\n  thisClassModel->parent = null;" :  "\n  thisClassModel->parent = "+getObjectClassModel()+";")
+        + (getFqn().equals("Core.Object") 
+            ?  "\n  thisClassModel->parent = null;" 
+            : (parent == null) ? "" : "\n  thisClassModel->parent = "+getObjectClassModel()+";")
         + populateClassMethods() 
         + "\n}\n\n";
     }
@@ -888,7 +909,11 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
         }
 
         //(c_2106303_I64*)_c_2106303_I64->instanceName = c_2106303_I64className();
-        res += "\n/*cdv1*/(("+getCName()+"*)_"+getCName()+")->instanceName = "+ getCName() +"className();";
+        if (getFqn().equals("Core.Object")) {
+            res += "\n/*cdv2 "+parent+ getFqn() +" */(("+getCName()+"*)_"+getCName()+")->instanceName = "+ getCName() +"className();";
+        } else if (parent != null) {
+            res += "\n/*cdv2 "+parent+ getFqn() +" */(("+getCName()+"*)_"+getCName()+")->instanceName = "+ getCName() +"className();";
+        }
 
         return res;
     }

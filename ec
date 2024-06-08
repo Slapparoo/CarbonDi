@@ -1,7 +1,8 @@
 #!/bin/sh
 BASEDIR=$(dirname "$0")
 JAVA=`which java`
-CC=cc
+CC=clang
+#CC=cc
 ECDIR=`realpath ${BASEDIR}`
 RUN=false
 VERBOSE=false

@@ -74,7 +74,7 @@ public class ClassDefTest {
     @Test
     public void testThisPropertyAccess() throws IOException {
         String ecCode = ""
-        + "class Default.MyClass1p{\n  properties {\nint nl = 10;\n}\npointer number() {\nreturn this.asStr();\n}}";
+        + "class Default.MyClass1p(Core.Object){\n  properties {\nint nl = 10;\n}\npointer number() {\nreturn this.asStr();\n}}";
 
         BaseTest.preLoad();
         BaseTest.lex(new ecLexer(new ANTLRInputStream(ecCode)));
@@ -88,5 +88,24 @@ public class ClassDefTest {
         String res = "pointernumber(numthis){u64entry__=__onEnter();return__exitReturn_pointer_un(((c_1085510111_MyClass1p_cm*)useObject(this)->classmodel)->asStr(this)entry__);}";
         assertEquals(BaseTest.stripWhiteSpace(fd2.asCode()), res, "function generated");
     }
+
     
+    @Test
+    public void testClassNoExtends() throws IOException {
+        String ecCode = ""
+        + "class Default.MyClass3p{\n  properties {\nint nl = 10;\n}\nint number() {\nreturn this.nl;\n}}";
+
+        BaseTest.preLoad();
+        BaseTest.lex(new ecLexer(new ANTLRInputStream(ecCode)));
+
+        ClassDef myClass1 = DefFactory.resolveClass("MyClass3p");
+
+        myClass1.asCode();
+
+        FunctionDef fd2 = myClass1.resolveFunction("number");
+
+        String res = "intnumber(numthis){u64entry__=__onEnter();return__exitReturn_int_un(((c_1085510111_MyClass3p_cm*)useObject(this)->classmodel)->get_nl(this)entry__);}";
+        assertEquals(BaseTest.stripWhiteSpace(fd2.asCode()), res, "function generated");
+    }
+
 }

@@ -25,7 +25,7 @@ printf(`numbers %s\n`, numbers.values);
 u64 len2 = External.stdio.strlen(numbers.values);
 testi64Equal(`numbers length 2`, 0, len2);
 
-printf(`numbers %u\n`, numbers.capacity);
+printf(`numbers %lu\n`, numbers.capacity);
 printf(`numbers %s\n`, numbers.typename);
 // printf(`numbers %s\n`, numbers.class);
 

@@ -75,7 +75,7 @@ $(OBJDIR)/%.o : %.c
 
 $(OBJDIR)/%.e : %.c 
 	@echo "COMPILING SOURCE $< INTO MAIN $@"
-	@$(CC)  $(OPTIMISATION) $(PARAMS) $(LIBDIR)/*.so $< -o $@	
+	$(CC)  $(OPTIMISATION) $(PARAMS) $(LIBDIR)/*.so $< -o $@	
 	# resample the newly compiled mains
 	$(call MAIN)
 

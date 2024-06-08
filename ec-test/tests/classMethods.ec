@@ -1,4 +1,4 @@
-class MyClass {
+class MyClass (Core.Object) {
     properties {
         i64 value;
         String name;

@@ -74,9 +74,9 @@ pointer Object_data(num ref) {
   return useObject(ref)->data;
 }
 
-// void Object_free(num ref) {
-//   debug_println("%ld", ref);
-// }
+void Object_free(num ref) {
+  debug_println("%ld", ref);
+}
 
 // // ObjectClassModel *_objectClassModel = NULL;
 // // Str _ObjectName = NULL;

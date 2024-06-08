@@ -32,7 +32,8 @@
         "default.looparray_main.h": "c",
         "core.refarray.h": "c",
         "core.exception.h": "c",
-        "core-support.h": "c"
+        "core-support.h": "c",
+        "default.objectlite.h": "c"
     },
     "java.configuration.updateBuildConfiguration": "automatic"
 }

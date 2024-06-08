@@ -33,7 +33,7 @@ class Default.MySecondClass(Default.MyClass) {
     }
 }
 
-class Default.MyOtherClass {
+class Default.MyOtherClass (Core.Object)  {
     properties {
         MyClass myClass;
     }
