@@ -61,7 +61,6 @@ public class BlockDef extends StatementDef implements ContainerDef {
                 exprDef.resolve_01();
             }
 
-
             if (exprDef instanceof ContainerDef) {
                 ((ContainerDef)exprDef).getBlockDef().includeEntryExit = includeEntryExit;
                 ((ContainerDef)exprDef).getBlockDef().directAccess.addAll(directAccess);
@@ -84,13 +83,13 @@ public class BlockDef extends StatementDef implements ContainerDef {
             if (functionBlock) { 
                 res += "\nu64 entry__ = __onEnter();";
             } else {
-                res += "\n__onEnter();";
+                // res += "\n__onEnter();";
             }
         }
 
         res += statementsAsCode();
         
-        if (includeEntryExit && !hasReturn) {
+        if (includeEntryExit && !hasReturn && functionBlock) {
             res += "\n__onExit();";
         }
         

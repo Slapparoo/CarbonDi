@@ -707,6 +707,7 @@ public final class Core.FileUtils (Core.Object) {
       }
       ?size = filesize(fp);
       ?szp1 = size+1;
+      // @TODO malloc 
       ?buffer = i8[szp1]; // +1 so we can have a null terminated str
       ?result = External.stdio.fread(buffer.values, 1, size, fp);
 
@@ -865,6 +866,10 @@ All singing all dancing Dynamic array can be used as
 * lifo
 * fifo
 
+In the implementation the "data" sits in the middle of the array so new values can be added to the start
+or to the end. (hence the all singing all dancing)
+
+It will auto expand using realloc and auto shrink using realloc
 */
 
 public class Core.DynamicArray (Core.Array){
@@ -1533,6 +1538,7 @@ public class Core.Hashmap (Core.Object) {
                 entry.value = value;
                 return;
             } else {
+                // store collisions in a MapDuo
                 ?duo = MapDuo();
                 duo.oneKey = entry.key;
                 duo.oneValue = entry.value;

@@ -2,6 +2,7 @@
     "java.dependency.packagePresentation": "flat",
     "java.dependency.syncWithFolderExplorer": true,
     "files.associations": {
+        "*.ZC": "c",
         "*.HC": "cpp",
         "array.h": "c",
         "std.library.class_main.h": "c",
@@ -26,7 +27,12 @@
         "*.tcc": "c",
         "cinttypes": "c",
         "typeinfo": "c",
-        "eccore.h": "c"
+        "eccore.h": "c",
+        "core.boxing.h": "c",
+        "default.looparray_main.h": "c",
+        "core.refarray.h": "c",
+        "core.exception.h": "c",
+        "core-support.h": "c"
     },
     "java.configuration.updateBuildConfiguration": "automatic"
 }

@@ -33,9 +33,7 @@ protected class Default.Encapsulation (Core.Object) {
     }
 
     void printMe() {
-        printf(`count1=%li, count2=%li, count3=%li`, count1, count2, count3);
-        // printf(`count1=%li`, count1);
-
+        printf(`count1=%li, count2=%li, count3=%li\n`, count1, count2, count3);
     }
 }
 

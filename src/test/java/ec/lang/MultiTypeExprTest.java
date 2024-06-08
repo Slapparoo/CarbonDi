@@ -122,7 +122,8 @@ public class MultiTypeExprTest extends BaseTest {
         blockDef.prepare_03();
 
         actual = BaseTest.stripWhiteSpace(blockDef.asCode());
-        expected = "{__onEnter();nummyArray=arrayFunction();((c_2106303_Array_cm*)useObject(myArray)->classmodel)->get_length(myArray);__onExit();}";
+        expected = "{nummyArray=arrayFunction();((c_2106303_Array_cm*)useObject(myArray)->classmodel)->get_length(myArray);}";
+        // expected = "{__onEnter();nummyArray=arrayFunction();((c_2106303_Array_cm*)useObject(myArray)->classmodel)->get_length(myArray);__onExit();}";
         assertEquals(expected, actual);
     }
 

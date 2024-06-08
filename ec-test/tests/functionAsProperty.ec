@@ -7,7 +7,6 @@ code to release and hardware, or resources which are "unmanaged".
 class Default.MyFunctionAsProperty (Core.Object) {
     properties {
         String name;
-        
     }
 
     void setName(String name) {

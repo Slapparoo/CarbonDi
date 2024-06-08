@@ -10,12 +10,12 @@
 # make clean all // clean build
 
 
-CC		 	 := cc
+CC		 	 := clang
 VALGRIND     := valgrind  --track-origins=yes --leak-check=full --error-exitcode=2
 SRCDIR 	     := .
 SRC          := $(shell find $(SRCDIR) -maxdepth 1 -name "*.c" -not -name "main*.c" )
 SRCMAIN      := $(shell find $(SRCDIR) -name "main*.c")
-MAINS        = $(shell find $(OBJDIR) -name "main*.e")
+MAINS        := $(shell find $(OBJDIR) -name "main*.e")
 GENDIR	     := gen
 INCLUDEDIR   := include
 OBJDIR       := obj

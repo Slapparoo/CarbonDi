@@ -13,7 +13,7 @@
         "languages": [{
             "id": "CarbonDi",
             "aliases": ["CarbonDi", "carbondi"],
-            "extensions": [".carb", ".condi", ".cardi", ".bondi"],
+            "extensions": [".carb", ".condi", ".cardi", ".bondi", ".ec"],
             "configuration": "./language-configuration.json"
         }],
         "grammars": [{

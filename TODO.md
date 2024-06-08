@@ -1,3 +1,4 @@
+
 loop returns
 loop types
 cast
@@ -50,6 +51,7 @@ enum
 create object with a passed array - so it doen't alllocate its own data
 line numbers - $statement.start
 casting
+some of the eccore functions are returning string on stack
 
 memcopy - data pointer and size - expose array
 use Array for string etc - expose array

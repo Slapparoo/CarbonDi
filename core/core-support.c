@@ -1,7 +1,11 @@
 #include "eccore.h"
+#include <stdarg.h>
 
+
+char tmpBuffer[1024];
 
 // @TODO these stacks need to have one per thread
+// @TODO get rid of the indirection and just have the pointer to the object?
 Object_ref *poorMansMap[PM_LIST_LENGTH];
 num refStack[PM_LIST_LENGTH];
 u64 refStackIndex = 0;

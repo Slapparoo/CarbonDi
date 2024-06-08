@@ -108,7 +108,7 @@
         do { if (PRINT_ERROR) fprintf(stdout, ANSI_RED "(ERROR)[%s:%d]%s(): " fmt "\n" ANSI_DEFAULT, __FILE__, \
                                 __LINE__, __func__, __VA_ARGS__); } while (0)
 
-char tmpBuffer[1024];
+extern char tmpBuffer[1024];
 
 typedef num ObjectRef;
 

@@ -1,5 +1,7 @@
 package ec.lang;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.IOException;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -18,6 +20,11 @@ public class IfElseTest {
         BaseTest.preLoad();
         BaseTest.lex(new ecLexer(new ANTLRInputStream(code)));
 
-        System.out.println(DefFactory.currentBlock.get(1).getBlockDef().asCode());
+        // System.out.println(DefFactory.currentBlock.get(1).getBlockDef().asCode());
+        // System.out.println(DefFactory.currentBlock.get(1).getBlockDef().asCode().replaceAll("[' ',\n,\r,\t]", ""));
+
+        // assertEquals("{__onEnter();if(true){__onEnter();/*st*/1;__onExit();}elseif(false){__onEnter();/*st*/2;__onExit();}/*else?*/else{__onEnter();/*st*/3;__onExit();}__onExit();}".replaceAll("[' ',\n,\r,\t]", ""), 
+        //                 DefFactory.currentBlock.get(1).getBlockDef().asCode()
+        //                     .replaceAll("[' ',\n,\r,\t]", ""));
     }
 }

@@ -1,5 +1,6 @@
 
 num[] getNumbers(num howMany) {
+    // @TODO doesn't work
     i8[10] result;        
     return result;
 }
@@ -21,6 +22,22 @@ numbers[3] = `i`;
 numbers[4] = `n`;
 numbers[5] = `g`;
 numbers[6] = `\n`;
+
+// out of bounds check
+// numbers[10] = `\n`;
+// numbers[11] = `\n`;
+
+try {
+    numbers[10] = `\n`;
+} catch (Exception) {
+    printf(`Exception\n`) ;
+    if ($a == 0) {
+        printf(`Exception is null??? - this is bad\n`) ;
+    } else {
+        printf(`catch %s\n`, $a.message.asStr);
+    }
+}
+
 
 ?otherNumbers = numbers;
 otherNumbers[0] = `S`;

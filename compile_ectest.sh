@@ -15,12 +15,14 @@ mkdir ec-test/obj
 FRS=0
 
 
-for ff in ec-test/tests/*
+for ff in ec-test/tests/*.ec
 do
     filename=$(basename -- ${ff%.*})
 
     $CC -Wno-invalid-pp-token -xc --include=core/include/Core.macro.h -E ec-test/tests/${filename}.ec > ec-test/${filename}.ec
-    $JAVA -jar target/ec-1.0-SNAPSHOT-jar-with-dependencies.jar ec-test/${filename}.ec -ODec-test -CD${PWD} -CCclang -CO'-std=gnu11 -O3 -g' -CF -clean > /dev/null
+    # $JAVA -jar target/ec-1.0-SNAPSHOT-jar-with-dependencies.jar ec-test/${filename}.ec -ODec-test -CD${PWD} -CCclang -CO'-std=gnu11 -O3 -g' -CF -clean > /dev/null
+    $JAVA -jar target/ec-1.0-SNAPSHOT-jar-with-dependencies.jar ec-test/${filename}.ec -ODec-test -CD${PWD} -CCclang -CO'-std=gnu11 -O3 -g' -CF > /dev/null
+    # ./ec ec-test/tests/${filename}.ec
 
     if [ -e ec-test/Default.${filename}_main ]
     then
