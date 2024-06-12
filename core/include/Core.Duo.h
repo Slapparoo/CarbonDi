@@ -6,6 +6,7 @@
 /* includes */
 
 // @TODO include class dependancies
+typedef struct c_2106303_Duo_or c_2106303_Duo_or; // forward declaration
 #define __C_2106303_DUO_DATA_  \
  num one; \
  num two;
@@ -25,6 +26,8 @@ typedef struct c_2106303_Duo {
 __C_2106303_OBJECT_DATA_
 __C_2106303_DUO_DATA_
 } c_2106303_Duo;
+
+
 pointer getc_2106303_Duo_cm();
 void populatec_2106303_Duo_cm(pointer classModel);
 num create_c_2106303_Duo();

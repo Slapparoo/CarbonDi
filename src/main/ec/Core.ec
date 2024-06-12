@@ -44,12 +44,6 @@ public class Core.Object {
     }
 }
 
-public class Core.ObjectLite {
-    properties {
-      u64 value;
-    }
-}
-
 public class Core.HashCode (Core.Object) {
     public static i32 calcFastHash(pointer p, u64 length) {
         i32 res = 0;
@@ -459,10 +453,9 @@ public final class Core.B8 (Core.BaseBoxing) {
   public pointer asStr() {
     if (value) {
       return `true`;
-    } else {
-      return `false`;
-    }
-  };
+    } 
+    return `false`;
+  }
 }
 
 public final class Core.U8 (Core.BaseBoxing) {

@@ -33,23 +33,19 @@
 /*fd1*/i32 c_2106303_BoxinggetSizeBytes(i32 type){
 
 u64 entry__ = __onEnter();if (/*oxa*//*oxa*//*oxa*//*oxa*//*oxa*//*te8*/type == /*oxb*/1 || /*oxb*//*te8*/type == /*oxb*/2 || /*oxb*//*te8*/type == /*oxb*/3) {
-
-__onEnter();return __exitReturn_i64_un(1, entry__);
+return __exitReturn_i64_un(1, entry__);
 }
 
  else if (/*oxa*//*oxa*//*oxa*//*te8*/type == /*oxb*/4 || /*oxb*//*te8*/type == /*oxb*/5) {
-
-__onEnter();return __exitReturn_i64_un(2, entry__);
+return __exitReturn_i64_un(2, entry__);
 }
 
  else if (/*oxa*//*oxa*//*oxa*//*oxa*//*oxa*//*te8*/type == /*oxb*/6 || /*oxb*//*te8*/type == /*oxb*/7 || /*oxb*//*te8*/type == /*oxb*/8) {
-
-__onEnter();return __exitReturn_i64_un(4, entry__);
+return __exitReturn_i64_un(4, entry__);
 }
 
  else if (/*oxa*//*oxa*//*oxa*//*oxa*//*oxa*//*te8*/type == /*oxb*/9 || /*oxb*//*te8*/type == /*oxb*/10 || /*oxb*//*te8*/type == /*oxb*/11) {
-
-__onEnter();return __exitReturn_i64_un(8, entry__);
+return __exitReturn_i64_un(8, entry__);
 }
 
 return __exitReturn_i64_un(0, entry__);
@@ -217,8 +213,9 @@ void c_2106303_Boxing_free(num this) { Object_ref *object_ref = useObject(this);
 
 num create_c_2106303_Boxing() {
   c_2106303_Boxing * _c_2106303_Boxing = ec_calloc(sizeof(c_2106303_Boxing), sizeof(char));
-/*cdv1*/((c_2106303_Boxing*)_c_2106303_Boxing)->instanceName = c_2106303_BoxingclassName();
-  return createObject(_c_2106303_Boxing, getc_2106303_Boxing_cm(), false);
+  num this = createObject(_c_2106303_Boxing, getc_2106303_Boxing_cm(), false);
+/*cdv2 Core.ObjectCore.Boxing */((c_2106303_Boxing*)_c_2106303_Boxing)->instanceName = c_2106303_BoxingclassName();
+  return this;
 }
 
 c_2106303_Boxing_cm _c_2106303_Boxing_cm;
@@ -238,36 +235,36 @@ void populatec_2106303_Boxing_cm(pointer classModel) {
  populatec_2106303_Object_cm(classModel);
   c_2106303_Boxing_cm* thisClassModel = (c_2106303_Boxing_cm*)classModel;
   thisClassModel->parent = getc_2106303_Object_cm();
-  thisClassModel->getSizeBytes = c_2106303_BoxinggetSizeBytes;
-  thisClassModel->className = c_2106303_BoxingclassName;
-  thisClassModel->classShortName = c_2106303_BoxingclassShortName;
-  thisClassModel->classCName = c_2106303_BoxingclassCName;
-  thisClassModel->classPackage = c_2106303_BoxingclassPackage;
-  thisClassModel->objectDatasize = c_2106303_BoxingobjectDatasize;
-  thisClassModel->get_b8_ = c_2106303_Boxingget_b8_;
-  thisClassModel->set_b8_ = c_2106303_Boxingset_b8_;
-  thisClassModel->get_i8_ = c_2106303_Boxingget_i8_;
-  thisClassModel->set_i8_ = c_2106303_Boxingset_i8_;
-  thisClassModel->get_u8_ = c_2106303_Boxingget_u8_;
-  thisClassModel->set_u8_ = c_2106303_Boxingset_u8_;
-  thisClassModel->get_i16_ = c_2106303_Boxingget_i16_;
-  thisClassModel->set_i16_ = c_2106303_Boxingset_i16_;
-  thisClassModel->get_u16_ = c_2106303_Boxingget_u16_;
-  thisClassModel->set_u16_ = c_2106303_Boxingset_u16_;
-  thisClassModel->get_i32_ = c_2106303_Boxingget_i32_;
-  thisClassModel->set_i32_ = c_2106303_Boxingset_i32_;
-  thisClassModel->get_u32_ = c_2106303_Boxingget_u32_;
-  thisClassModel->set_u32_ = c_2106303_Boxingset_u32_;
-  thisClassModel->get_f32_ = c_2106303_Boxingget_f32_;
-  thisClassModel->set_f32_ = c_2106303_Boxingset_f32_;
-  thisClassModel->get_i64_ = c_2106303_Boxingget_i64_;
-  thisClassModel->set_i64_ = c_2106303_Boxingset_i64_;
-  thisClassModel->get_u64_ = c_2106303_Boxingget_u64_;
-  thisClassModel->set_u64_ = c_2106303_Boxingset_u64_;
-  thisClassModel->get_f64_ = c_2106303_Boxingget_f64_;
-  thisClassModel->set_f64_ = c_2106303_Boxingset_f64_;
-  thisClassModel->get_pointer_ = c_2106303_Boxingget_pointer_;
-  thisClassModel->set_pointer_ = c_2106303_Boxingset_pointer_;
+ /*cds2*/ thisClassModel->getSizeBytes = c_2106303_BoxinggetSizeBytes;
+ /*cds2*/ thisClassModel->className = c_2106303_BoxingclassName;
+ /*cds2*/ thisClassModel->classShortName = c_2106303_BoxingclassShortName;
+ /*cds2*/ thisClassModel->classCName = c_2106303_BoxingclassCName;
+ /*cds2*/ thisClassModel->classPackage = c_2106303_BoxingclassPackage;
+ /*cds2*/ thisClassModel->objectDatasize = c_2106303_BoxingobjectDatasize;
+ /*cds2*/ thisClassModel->get_b8_ = c_2106303_Boxingget_b8_;
+ /*cds2*/ thisClassModel->set_b8_ = c_2106303_Boxingset_b8_;
+ /*cds2*/ thisClassModel->get_i8_ = c_2106303_Boxingget_i8_;
+ /*cds2*/ thisClassModel->set_i8_ = c_2106303_Boxingset_i8_;
+ /*cds2*/ thisClassModel->get_u8_ = c_2106303_Boxingget_u8_;
+ /*cds2*/ thisClassModel->set_u8_ = c_2106303_Boxingset_u8_;
+ /*cds2*/ thisClassModel->get_i16_ = c_2106303_Boxingget_i16_;
+ /*cds2*/ thisClassModel->set_i16_ = c_2106303_Boxingset_i16_;
+ /*cds2*/ thisClassModel->get_u16_ = c_2106303_Boxingget_u16_;
+ /*cds2*/ thisClassModel->set_u16_ = c_2106303_Boxingset_u16_;
+ /*cds2*/ thisClassModel->get_i32_ = c_2106303_Boxingget_i32_;
+ /*cds2*/ thisClassModel->set_i32_ = c_2106303_Boxingset_i32_;
+ /*cds2*/ thisClassModel->get_u32_ = c_2106303_Boxingget_u32_;
+ /*cds2*/ thisClassModel->set_u32_ = c_2106303_Boxingset_u32_;
+ /*cds2*/ thisClassModel->get_f32_ = c_2106303_Boxingget_f32_;
+ /*cds2*/ thisClassModel->set_f32_ = c_2106303_Boxingset_f32_;
+ /*cds2*/ thisClassModel->get_i64_ = c_2106303_Boxingget_i64_;
+ /*cds2*/ thisClassModel->set_i64_ = c_2106303_Boxingset_i64_;
+ /*cds2*/ thisClassModel->get_u64_ = c_2106303_Boxingget_u64_;
+ /*cds2*/ thisClassModel->set_u64_ = c_2106303_Boxingset_u64_;
+ /*cds2*/ thisClassModel->get_f64_ = c_2106303_Boxingget_f64_;
+ /*cds2*/ thisClassModel->set_f64_ = c_2106303_Boxingset_f64_;
+ /*cds2*/ thisClassModel->get_pointer_ = c_2106303_Boxingget_pointer_;
+ /*cds2*/ thisClassModel->set_pointer_ = c_2106303_Boxingset_pointer_;
 /*cds1*/thisClassModel->b8_ = 1;
 /*cds1*/thisClassModel->i8_ = 2;
 /*cds1*/thisClassModel->u8_ = 3;

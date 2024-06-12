@@ -99,8 +99,9 @@ void c_2106303_U16_free(num this) { Object_ref *object_ref = useObject(this);
 
 num create_c_2106303_U16() {
   c_2106303_U16 * _c_2106303_U16 = ec_calloc(sizeof(c_2106303_U16), sizeof(char));
-/*cdv1*/((c_2106303_U16*)_c_2106303_U16)->instanceName = c_2106303_U16className();
-  return createObject(_c_2106303_U16, getc_2106303_U16_cm(), false);
+  num this = createObject(_c_2106303_U16, getc_2106303_U16_cm(), false);
+/*cdv2 Core.BaseBoxingCore.U16 */((c_2106303_U16*)_c_2106303_U16)->instanceName = c_2106303_U16className();
+  return this;
 }
 
 c_2106303_U16_cm _c_2106303_U16_cm;
@@ -127,16 +128,16 @@ void populatec_2106303_U16_cm(pointer classModel) {
  populatec_2106303_BaseBoxing_cm(classModel);
   c_2106303_U16_cm* thisClassModel = (c_2106303_U16_cm*)classModel;
   thisClassModel->parent = getc_2106303_BaseBoxing_cm();
-  thisClassModel->datatype = c_2106303_U16datatype;
-  thisClassModel->typename = c_2106303_U16typename;
-  thisClassModel->asStr = c_2106303_U16asStr;
-  thisClassModel->className = c_2106303_U16className;
-  thisClassModel->classShortName = c_2106303_U16classShortName;
-  thisClassModel->classCName = c_2106303_U16classCName;
-  thisClassModel->classPackage = c_2106303_U16classPackage;
-  thisClassModel->objectDatasize = c_2106303_U16objectDatasize;
-  thisClassModel->get_value = c_2106303_U16get_value;
-  thisClassModel->set_value = c_2106303_U16set_value;
+ /*cds2*/ thisClassModel->datatype = c_2106303_U16datatype;
+ /*cds2*/ thisClassModel->typename = c_2106303_U16typename;
+ /*cds2*/ thisClassModel->asStr = c_2106303_U16asStr;
+ /*cds2*/ thisClassModel->className = c_2106303_U16className;
+ /*cds2*/ thisClassModel->classShortName = c_2106303_U16classShortName;
+ /*cds2*/ thisClassModel->classCName = c_2106303_U16classCName;
+ /*cds2*/ thisClassModel->classPackage = c_2106303_U16classPackage;
+ /*cds2*/ thisClassModel->objectDatasize = c_2106303_U16objectDatasize;
+ /*cds2*/ thisClassModel->get_value = c_2106303_U16get_value;
+ /*cds2*/ thisClassModel->set_value = c_2106303_U16set_value;
   thisClassModel->free = c_2106303_U16_free;
 }
 

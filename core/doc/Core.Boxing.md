@@ -4,14 +4,14 @@ class Core.Boxing extends [Core.Object](Core.Object.md)
 ---
 Properties
 ---
-|type|name|read|write|value|comments|
+|type|name|getter|setter|value|comments|
 |--- |--- |--- |--- |--- |--- |
 |pointer|__instanceName__|public|public|||
 
 ---
 Static Properties
 ---
-|type|name|read|write|value|comments|
+|type|name|getter|setter|value|comments|
 |--- |--- |--- |--- |--- |--- |
 |int|__b8___|public|public|1||
 |int|__i8___|public|public|2||

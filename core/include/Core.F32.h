@@ -6,6 +6,7 @@
 /* includes */
 
 // @TODO include class dependancies
+typedef struct c_2106303_F32_or c_2106303_F32_or; // forward declaration
 #define __C_2106303_F32_DATA_  \
  f32 value;
 #define __C_2106303_F32_CLASS_  \
@@ -26,6 +27,8 @@ __C_2106303_OBJECT_DATA_
 __C_2106303_BASEBOXING_DATA_
 __C_2106303_F32_DATA_
 } c_2106303_F32;
+
+
 pointer getc_2106303_F32_cm();
 void populatec_2106303_F32_cm(pointer classModel);
 num create_c_2106303_F32();

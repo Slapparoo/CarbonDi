@@ -1,6 +1,8 @@
 package ec.lang.defs;
 
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import ec.lang.defs.Enums.Accessor;
 import ec.lang.defs.expressions.FunctionCallExpr;
@@ -144,18 +146,22 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
 
 
     private String paramsAsCode() {
-        String res = "";
-        boolean first = true;
+        return getParameters().stream()
+            .map(VariableDef::asHeader)
+            .collect(Collectors.joining(", "));
 
-        for(VariableDef param : getParameters()) {
-            if (!first) {
-                res += ", ";
-            }
-            // code will insert an assigned value
-            res += param.asHeader();
-            first = false;
-        }
-        return res;
+        // String res = "";
+        // boolean first = true;
+
+        // for(VariableDef param : getParameters()) {
+        //     if (!first) {
+        //         res += ", ";
+        //     }
+        //     // code will insert an assigned value
+        //     res += param.asHeader();
+        //     first = false;
+        // }
+        // return res;
     }
 
     private String contentAsCode() {
@@ -199,26 +205,32 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
     }
 
     private String paramsAsSignature() {
-        String res = "";
-        boolean first = true;
-        // boolean thisParam = classDef != null && !is_static && is_override;
 
-        for(VariableDef param : getParameters()) {
-            if (param.getName().equals("this")) {
-                continue;
-            }
+        return getParameters().stream()
+            .filter(param -> !param.getName().equals("this"))
+            .map(VariableDef::asParameterSignature)
+            .collect(Collectors.joining(", "));
 
-            // if (thisParam) {
-            //     thisParam = false;
-            //     continue;
-            // } 
-            if (!first) {
-                res += ", ";
-            }
-            res += param.asParameterSignature();
-            first = false;
-        }
-        return res;
+        // String res = "";
+        // boolean first = true;
+        // // boolean thisParam = classDef != null && !is_static && is_override;
+
+        // for(VariableDef param : getParameters()) {
+        //     if (param.getName().equals("this")) {
+        //         continue;
+        //     }
+
+        //     // if (thisParam) {
+        //     //     thisParam = false;
+        //     //     continue;
+        //     // } 
+        //     if (!first) {
+        //         res += ", ";
+        //     }
+        //     res += param.asParameterSignature();
+        //     first = false;
+        // }
+        // return res;
     }
 
     private String sigReturnType() {
@@ -251,7 +263,7 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
     }
 
     @Override
-    public List<VariableDef> variableDefs() {
+    public List<VariableDef> getVariableDefs() {
         // make the parameters vars
         return getParameters();
     }

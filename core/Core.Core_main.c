@@ -2,5 +2,5 @@
 
 void Core_370391182_main() {
 
-__onEnter();
-__onExit();}
+u64 entry__ = __onEnter();
+return __exitReturn_void_un(entry__);}

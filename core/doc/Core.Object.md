@@ -4,7 +4,7 @@ class Core.Object
 ---
 Properties
 ---
-|type|name|read|write|value|comments|
+|type|name|getter|setter|value|comments|
 |--- |--- |--- |--- |--- |--- |
 |pointer|__instanceName__|public|public|||
 

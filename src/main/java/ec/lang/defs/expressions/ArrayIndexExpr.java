@@ -1,6 +1,5 @@
 package ec.lang.defs.expressions;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import ec.lang.defs.ExprDef;
@@ -8,18 +7,10 @@ import ec.lang.defs.SnippetFactory;
 import ec.lang.defs.VariableDef;
 
 public class ArrayIndexExpr extends TypeExpr {
-    // public ExprDef arrayIndex = null;
     public boolean resolved = false;
     private VariableDef variableDef = null;
 
-    public static final Set<String> ARRAY_TYPES = new HashSet<>();
-
-    static {
-        ARRAY_TYPES.add("Array");
-        ARRAY_TYPES.add("RefArray");
-        ARRAY_TYPES.add("DynamicArray");
-        ARRAY_TYPES.add("DynamicRefArray");
-    }
+    public static final Set<String> ARRAY_TYPES = Set.of("Array", "RefArray", "DynamicArray", "DynamicRefArray");
 
     public void resolve_01() {
         arrayIndex.containedInBlock = containedInBlock;

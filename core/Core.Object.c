@@ -41,7 +41,7 @@ u64 entry__ = __onEnter();/*st*/ /*fc2 null */sprintf(/*fc2 null */getTmpBuffer(
 
 u64 entry__ = __onEnter();/*st*/ /*fc2 null */fprintf(/*te8*/stream, "%s", /* switch from fc5 to te4*/((c_2106303_Object_cm*)useObject(this)->classmodel)->asStr(this));
 
-__onExit();}
+return __exitReturn_void_un(entry__);}
 
 
 /*fd1*/pointer c_2106303_ObjectobjectData(num this){
@@ -52,7 +52,7 @@ u64 entry__ = __onEnter();/*rx2*/ return __exitReturn_pointer_un(/*fc2 null */Ob
 
 /*fd1*/i32 c_2106303_ObjecthashCode(num this){
 
-u64 entry__ = __onEnter();/*rx2*/ return __exitReturn_ref_un(/*te8*/this, entry__);
+u64 entry__ = __onEnter();/*rx4*/ return __exitReturn_ref_un(/*te8*/this, entry__);
 }
 
 
@@ -65,13 +65,13 @@ u64 entry__ = __onEnter();return __exitReturn_i8_un(/*oxa*//*te8*/this == /*oxb*
 /*fd1*/void c_2106303_Objectfree(num this){
 
 u64 entry__ = __onEnter();
-__onExit();}
+return __exitReturn_void_un(entry__);}
 
 
 /*fd1*/void c_2106303_Objectrelease(num this){
 
 u64 entry__ = __onEnter();
-__onExit();}
+return __exitReturn_void_un(entry__);}
 
 
 /*fd1*/pointer c_2106303_Objectalloc(num this, u64 size){
@@ -128,8 +128,9 @@ void c_2106303_Object_free(num this) { Object_ref *object_ref = useObject(this);
 
 num create_c_2106303_Object() {
   c_2106303_Object * _c_2106303_Object = ec_calloc(sizeof(c_2106303_Object), sizeof(char));
-/*cdv1*/((c_2106303_Object*)_c_2106303_Object)->instanceName = c_2106303_ObjectclassName();
-  return createObject(_c_2106303_Object, getc_2106303_Object_cm(), false);
+  num this = createObject(_c_2106303_Object, getc_2106303_Object_cm(), false);
+/*cdv2 nullCore.Object */((c_2106303_Object*)_c_2106303_Object)->instanceName = c_2106303_ObjectclassName();
+  return this;
 }
 
 c_2106303_Object_cm _c_2106303_Object_cm;
@@ -149,22 +150,21 @@ void populatec_2106303_Object_cm(pointer classModel) {
  
   c_2106303_Object_cm* thisClassModel = (c_2106303_Object_cm*)classModel;
   thisClassModel->parent = null;
-  thisClassModel->asStr = c_2106303_ObjectasStr;
-  thisClassModel->printTo = c_2106303_ObjectprintTo;
-  thisClassModel->objectData = c_2106303_ObjectobjectData;
-  thisClassModel->hashCode = c_2106303_ObjecthashCode;
-  thisClassModel->equals = c_2106303_Objectequals;
-  thisClassModel->free = c_2106303_Objectfree;
-  thisClassModel->release = c_2106303_Objectrelease;
-  thisClassModel->alloc = c_2106303_Objectalloc;
-  thisClassModel->realloc = c_2106303_Objectrealloc;
-  thisClassModel->className = c_2106303_ObjectclassName;
-  thisClassModel->classShortName = c_2106303_ObjectclassShortName;
-  thisClassModel->classCName = c_2106303_ObjectclassCName;
-  thisClassModel->classPackage = c_2106303_ObjectclassPackage;
-  thisClassModel->objectDatasize = c_2106303_ObjectobjectDatasize;
-  thisClassModel->get_instanceName = c_2106303_Objectget_instanceName;
-  thisClassModel->set_instanceName = c_2106303_Objectset_instanceName;
-  thisClassModel->free = c_2106303_Object_free;
+ /*cds2*/ thisClassModel->asStr = c_2106303_ObjectasStr;
+ /*cds2*/ thisClassModel->printTo = c_2106303_ObjectprintTo;
+ /*cds2*/ thisClassModel->objectData = c_2106303_ObjectobjectData;
+ /*cds2*/ thisClassModel->hashCode = c_2106303_ObjecthashCode;
+ /*cds2*/ thisClassModel->equals = c_2106303_Objectequals;
+ /*cds2*/ thisClassModel->free = c_2106303_Objectfree;
+ /*cds2*/ thisClassModel->release = c_2106303_Objectrelease;
+ /*cds2*/ thisClassModel->alloc = c_2106303_Objectalloc;
+ /*cds2*/ thisClassModel->realloc = c_2106303_Objectrealloc;
+ /*cds2*/ thisClassModel->className = c_2106303_ObjectclassName;
+ /*cds2*/ thisClassModel->classShortName = c_2106303_ObjectclassShortName;
+ /*cds2*/ thisClassModel->classCName = c_2106303_ObjectclassCName;
+ /*cds2*/ thisClassModel->classPackage = c_2106303_ObjectclassPackage;
+ /*cds2*/ thisClassModel->objectDatasize = c_2106303_ObjectobjectDatasize;
+ /*cds2*/ thisClassModel->get_instanceName = c_2106303_Objectget_instanceName;
+ /*cds2*/ thisClassModel->set_instanceName = c_2106303_Objectset_instanceName;
 }
 

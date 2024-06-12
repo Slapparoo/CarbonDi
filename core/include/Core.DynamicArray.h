@@ -6,6 +6,7 @@
 /* includes */
 
 // @TODO include class dependancies
+typedef struct c_2106303_DynamicArray_or c_2106303_DynamicArray_or; // forward declaration
 #define __C_2106303_DYNAMICARRAY_DATA_  \
  u64 startIndex; \
  u64 endIndex;
@@ -55,6 +56,8 @@ __C_2106303_OBJECT_DATA_
 __C_2106303_ARRAY_DATA_
 __C_2106303_DYNAMICARRAY_DATA_
 } c_2106303_DynamicArray;
+
+
 pointer getc_2106303_DynamicArray_cm();
 void populatec_2106303_DynamicArray_cm(pointer classModel);
 num create_c_2106303_DynamicArray();

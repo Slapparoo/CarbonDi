@@ -4,14 +4,14 @@ import java.util.List;
 
 import org.antlr.v4.runtime.Token;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class BaseDef {
     public BlockDef containedInBlock;
     public List<Token> comments;
-
     public String hasNot = "";
-
-    private String line;
-    
+    @Getter @Setter private String line;
     private int resolveCount = 0;
 
     public void resetResolved() {
@@ -85,13 +85,5 @@ public class BaseDef {
 
     public boolean validate_02() {
         return true;
-    }
-
-    public String getLine() {
-        return line;
-    }
-
-    public void setLine(String line) {
-        this.line = line;
     }
 }

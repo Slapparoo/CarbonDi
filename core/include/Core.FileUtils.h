@@ -6,6 +6,7 @@
 /* includes */
 
 // @TODO include class dependancies
+typedef struct c_2106303_FileUtils_or c_2106303_FileUtils_or; // forward declaration
 #define __C_2106303_FILEUTILS_DATA_ 
 #define __C_2106303_FILEUTILS_CLASS_  \
   u64 (*filesize)(pointer);  \
@@ -21,6 +22,8 @@ typedef struct c_2106303_FileUtils {
 __C_2106303_OBJECT_DATA_
 __C_2106303_FILEUTILS_DATA_
 } c_2106303_FileUtils;
+
+
 pointer getc_2106303_FileUtils_cm();
 void populatec_2106303_FileUtils_cm(pointer classModel);
 num create_c_2106303_FileUtils();

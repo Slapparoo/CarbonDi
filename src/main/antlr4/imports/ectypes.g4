@@ -99,6 +99,7 @@ keyword_rbracket    : ']' ;
 keyword_semi        : ';' ;
 keyword_equals      : '=' ;   
 keyword_comma       : ',' ;   
+keyword_at       : '@' ;   
 
 keyword_if          : 'if' ;
 keyword_not         : '!' ;

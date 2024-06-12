@@ -4,7 +4,7 @@ class Core.RefArrayList extends [Core.Object](Core.Object.md)
 ---
 Properties
 ---
-|type|name|read|write|value|comments|
+|type|name|getter|setter|value|comments|
 |--- |--- |--- |--- |--- |--- |
 |RefArray|__list__|public|public|||
 |u64|__ralsize__|public|public|||
@@ -14,7 +14,7 @@ Properties
 ---
 Static Properties
 ---
-|type|name|read|write|value|comments|
+|type|name|getter|setter|value|comments|
 |--- |--- |--- |--- |--- |--- |
 |u64|__growBy__|public|public|256||
 

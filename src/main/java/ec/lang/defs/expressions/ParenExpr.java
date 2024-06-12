@@ -4,6 +4,12 @@ import ec.lang.defs.*;
 
 public class ParenExpr extends ExprDef {
     public ExprDef enclosed;
+
+    public ParenExpr(ExprDef enclosed) {
+        super();
+        this.enclosed = enclosed;
+    }
+
     @Override
     public String asCode() {
         if (enclosed == null) {

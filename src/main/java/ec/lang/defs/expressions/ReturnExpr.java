@@ -3,10 +3,7 @@ package ec.lang.defs.expressions;
 import ec.lang.defs.*;
 
 public class ReturnExpr extends StatementDef {
-    // // public ExprDef rExpr;
-    // public BlockDef containedInblock;
     boolean resolved = false;
-
     public TypeIdDef functionReturn = null;
 
     @Override
@@ -23,7 +20,6 @@ public class ReturnExpr extends StatementDef {
         }
 
         containedInBlock.hasReturn = true;
-        // super.resolve_01();
     }
 
 
@@ -65,11 +61,11 @@ public class ReturnExpr extends StatementDef {
         if (statement.thisType.isPrimative()) {
             return "return __exitReturn_" + mapReturnName(statement.thisType.getName()) + "_un(" + statement.asCode() + ", entry__);";
         } else {
-            // Make the assumption that C generally returns int
+            // Make the assumption that Clib generally returns int
             if (statement.thisType.getName().equals("External")) {
                 return "/*rx2*/ return __exitReturn_" + mapReturnName(functionReturn.getName()) + "_un(" + statement.asCode() + ", entry__);";
             }
-            return "/*rx2*/ return __exitReturn_ref_un(" + statement.asCode() + ", entry__);";
+            return "/*rx4*/ return __exitReturn_ref_un(" + statement.asCode() + ", entry__);";
         }
     }
 }

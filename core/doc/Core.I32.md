@@ -4,7 +4,7 @@ class Core.I32 extends [Core.BaseBoxing](Core.BaseBoxing.md)
 ---
 Properties
 ---
-|type|name|read|write|value|comments|
+|type|name|getter|setter|value|comments|
 |--- |--- |--- |--- |--- |--- |
 |i32|__value__|public|public|||
 |pointer|__instanceName__|public|public|||

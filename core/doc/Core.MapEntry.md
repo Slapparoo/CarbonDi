@@ -4,7 +4,7 @@ class Core.MapEntry extends [Core.Object](Core.Object.md)
 ---
 Properties
 ---
-|type|name|read|write|value|comments|
+|type|name|getter|setter|value|comments|
 |--- |--- |--- |--- |--- |--- |
 |Object|__key__|public|public|||
 |Object|__value__|public|public|||

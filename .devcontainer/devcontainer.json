@@ -1,12 +1,13 @@
 // For format details, see https://aka.ms/vscode-remote/devcontainer.json or this file's README at:
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.122.1/containers/ubuntu
 {
-	"name": "Ubuntu",
+	"name": "ubuntu-24.04",
 	"build": {
-		"dockerfile": "Dockerfile",
+		"dockerfile": "Dockerfile"
+		// ,
 		// Update 'VARIANT' to pick an Ubuntu version. Rebuild the container 
 		// if it already exists to update. Available variants: 18.04, 20.04
-		"args": { "VARIANT": "20.04" }
+		// "args": { "VARIANT": "20.04" }
 	},
 
 	// Set *default* container specific settings.json values on container create.
@@ -27,7 +28,8 @@
 		"felipecaputo.git-project-manager",
 		"technosophos.vscode-make",
 		"tobiastao.vscode-md",
-		"walkme.java-extension-pack"
+		"walkme.java-extension-pack",
+		"ms-azuretools.vscode-docker"
 	]
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.

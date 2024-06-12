@@ -6,6 +6,7 @@
 /* includes */
 
 // @TODO include class dependancies
+typedef struct c_2106303_Exception_or c_2106303_Exception_or; // forward declaration
 #define __C_2106303_EXCEPTION_DATA_  \
  num message; \
  num root;
@@ -25,6 +26,8 @@ typedef struct c_2106303_Exception {
 __C_2106303_OBJECT_DATA_
 __C_2106303_EXCEPTION_DATA_
 } c_2106303_Exception;
+
+
 pointer getc_2106303_Exception_cm();
 void populatec_2106303_Exception_cm(pointer classModel);
 num create_c_2106303_Exception();

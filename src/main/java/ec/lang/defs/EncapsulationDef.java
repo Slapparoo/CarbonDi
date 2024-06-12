@@ -215,7 +215,7 @@ public class EncapsulationDef extends FunctionDefBase implements Cloneable {
     }
 
     @Override
-    public List<VariableDef> variableDefs() {
+    public List<VariableDef> getVariableDefs() {
         // make the parameters vars
         return getParameters();
     }

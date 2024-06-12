@@ -6,6 +6,7 @@
 /* includes */
 
 // @TODO include class dependancies
+typedef struct c_2106303_HashCode_or c_2106303_HashCode_or; // forward declaration
 #define __C_2106303_HASHCODE_DATA_ 
 #define __C_2106303_HASHCODE_CLASS_  \
   i32 (*calcFastHash)(pointer,u64);
@@ -20,6 +21,8 @@ typedef struct c_2106303_HashCode {
 __C_2106303_OBJECT_DATA_
 __C_2106303_HASHCODE_DATA_
 } c_2106303_HashCode;
+
+
 pointer getc_2106303_HashCode_cm();
 void populatec_2106303_HashCode_cm(pointer classModel);
 num create_c_2106303_HashCode();

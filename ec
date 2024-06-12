@@ -74,7 +74,7 @@ fi
 # run the c pre=processor over it prior to EC -> C 
 ${CC} -Wno-invalid-pp-token -xc -CC --include=${ECDIR}/core/include/Core.macro.h -E ${FULLNAME} > ${TMPDIR}/${FILENAME}
 # EC to C compile
-${JAVA} -jar ${ECDIR}/target/ec-1.0-SNAPSHOT-jar-with-dependencies.jar ${TMPDIR}/${FILENAME} -OD${TMPDIR} -CD${ECDIR}  -CC${CC} -CO'-std=gnu11 -O3 -g' -CF -norun 
+${JAVA} -jar ${ECDIR}/target/ec-1.0-SNAPSHOT-jar-with-dependencies.jar ${TMPDIR}/${FILENAME} -OD${TMPDIR} -CD${ECDIR}  -CC${CC} -CO'-std=gnu11 -O3 -g -Wno-format' -CF -norun 
 # TODO seperate out the c compile from the java
 
 ( mv ${TMPDIR}/Default.${FF}_main ${WORKINGDIR}) > /dev/null

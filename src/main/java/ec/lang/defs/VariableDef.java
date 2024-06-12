@@ -121,7 +121,7 @@ public class VariableDef extends StatementDef {
             }
             if (var != this) {
                 // throw new RuntimeException("duplicate variable declared " + name + " " + getLine());
-                System.out.println("duplicate variable declared " + name + " " + getLine());
+                // System.out.println("duplicate variable declared " + name + " " + getLine());
             }
         }
 
@@ -148,13 +148,13 @@ public class VariableDef extends StatementDef {
         }
 
 
-        if (type == null) {
-            System.out.println("type == null " + name);
-        }
+        // if (type == null) {
+        //     System.out.println("type == null " + name);
+        // }
 
-        if (type.getName() == null) {
-            System.out.println("type.name == null " + name);
-        }
+        // if (type.getName() == null) {
+        //     System.out.println("type.name == null " + name);
+        // }
 
         if (type.getName().equals("?") ) {
             // equals something - so the type of the equals
@@ -190,7 +190,7 @@ public class VariableDef extends StatementDef {
                     }
                 }
             } else {
-                System.out.println("@@Not resolved " + name + ", " + assignValue.getClass() + " " + assignValue);
+                // System.out.println("@@Not resolved " + name + ", " + assignValue.getClass() + " " + assignValue);
             }
         }
 
@@ -233,6 +233,10 @@ public class VariableDef extends StatementDef {
 
        
     public String asHeader() {
+        // System.out.println(this);
+        if (type == null) {
+            throw new NullPointerException(this.toString());
+        }
 
         // if (!is_static) {
         //     return "";
@@ -345,7 +349,7 @@ public class VariableDef extends StatementDef {
         }
 
         if (isPrimative()) {
-            System.out.println(exprDef.thisType.getName() + " = " + type.getName()  + " " + PrimativeTypes.areCompatable32(exprDef.thisType.getName(), type.getName())); 
+            // System.out.println(exprDef.thisType.getName() + " = " + type.getName()  + " " + PrimativeTypes.areCompatable32(exprDef.thisType.getName(), type.getName())); 
             return PrimativeTypes.areCompatable32(exprDef.thisType.getName(), type.getName());
         }
 

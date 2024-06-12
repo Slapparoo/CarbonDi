@@ -4,7 +4,7 @@ class Core.Pointer extends [Core.BaseBoxing](Core.BaseBoxing.md)
 ---
 Properties
 ---
-|type|name|read|write|value|comments|
+|type|name|getter|setter|value|comments|
 |--- |--- |--- |--- |--- |--- |
 |pointer|__value__|public|public|||
 |pointer|__instanceName__|public|public|||

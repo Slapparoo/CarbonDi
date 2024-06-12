@@ -10,6 +10,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 
 import ec.lang.defs.ClassDef;
 import ec.lang.defs.DefFactory;
@@ -23,10 +24,22 @@ import ec.lang.model.ecParser.ProgramContext;
 
 public class BaseTest {
 
+    @BeforeEach
+    public void preLoader() throws IOException {
+        lex(new ecLexer(new ANTLRInputStream(new FileInputStream("core/Core.signature.ec"))));
+
+        ClassDef classDef = DefFactory.resolveClass("Object");
+        assertNotNull(classDef, "Core.Object not found?");
+    }
+
 
 
     @BeforeAll
     public static void preLoad() throws IOException {
+        // if (DefFactory.CLASS_DEFS.contains("Core.Object")) {
+        //     return;
+        // }
+
         lex(new ecLexer(new ANTLRInputStream(new FileInputStream("core/Core.signature.ec"))));
 
         ClassDef classDef = DefFactory.resolveClass("Object");
@@ -41,6 +54,16 @@ public class BaseTest {
         return string.replaceAll("[\t,\n,\r, ]", "").replaceAll("/\\*.*?\\*/", "");
     }
 
+    /**
+     * Utility method to strip whitespace and comments
+     */
+    public static String stripComments(String string) {
+        return string.replaceAll("//.*|(\"(?:\\\\[^\"]|\\\\\"|.)*?\")|(?s)/\\*.*?\\*/", "$1");
+    }
+
+    protected static void lex(String ecCode) {
+        lex(new ecLexer(new ANTLRInputStream(ecCode)));
+    }
 
     protected static void lex(ecLexer lexer) {
         try {

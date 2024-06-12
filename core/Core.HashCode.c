@@ -35,29 +35,21 @@
 u64 entry__ = __onEnter();/*va1*/i32 res = 0;
 
 for (num a__a = 0; a__a < /*te8*/length; a__a++){
-
-__onEnter();if (/*oxa*//*te8*/length - /*oxb*//*oxa*//*te8*/a__a > /*oxb*/4) {
-
-__onEnter();/*Ax7*//*te8*/res/*te8*/+=/*fc2 null */EC_GETVALUE_i32(/*te8*/p, /*te8*/a__a);
+if (/*oxa*//*te8*/length - /*oxb*//*oxa*//*te8*/a__a > /*oxb*/4) {
+/*Ax7*//*te8*/res/*te8*/+=/*fc2 null */EC_GETVALUE_i32(/*te8*/p, /*te8*/a__a);
 /*Ax7*//*te8*/a__a/*te8*/+=3;
-
-__onExit();}
+}
 
  else if (/*oxa*//*te8*/length - /*oxb*//*oxa*//*te8*/a__a > /*oxb*/2) {
-
-__onEnter();/*Ax7*//*te8*/res/*te8*/+=/*fc2 null */EC_GETVALUE_i16(/*te8*/p, /*te8*/a__a);
+/*Ax7*//*te8*/res/*te8*/+=/*fc2 null */EC_GETVALUE_i16(/*te8*/p, /*te8*/a__a);
 /*Ax7*//*te8*/a__a/*te8*/+=1;
-
-__onExit();}
+}
 
 /* else? */ else {
+/*Ax7*//*te8*/res/*te8*/+=/*oxa*//*fc2 null */EC_GETVALUE_i8(/*te8*/p, /*te8*/a__a) - /*oxb*/31;
+}
 
-__onEnter();/*Ax7*//*te8*/res/*te8*/+=/*oxa*//*fc2 null */EC_GETVALUE_i8(/*te8*/p, /*te8*/a__a) - /*oxb*/31;
-
-__onExit();}
-
-
-__onExit();}
+}
 
 return __exitReturn_i32_un(/*te8*/res, entry__);
 }
@@ -104,8 +96,9 @@ void c_2106303_HashCode_free(num this) { Object_ref *object_ref = useObject(this
 
 num create_c_2106303_HashCode() {
   c_2106303_HashCode * _c_2106303_HashCode = ec_calloc(sizeof(c_2106303_HashCode), sizeof(char));
-/*cdv1*/((c_2106303_HashCode*)_c_2106303_HashCode)->instanceName = c_2106303_HashCodeclassName();
-  return createObject(_c_2106303_HashCode, getc_2106303_HashCode_cm(), false);
+  num this = createObject(_c_2106303_HashCode, getc_2106303_HashCode_cm(), false);
+/*cdv2 Core.ObjectCore.HashCode */((c_2106303_HashCode*)_c_2106303_HashCode)->instanceName = c_2106303_HashCodeclassName();
+  return this;
 }
 
 c_2106303_HashCode_cm _c_2106303_HashCode_cm;
@@ -125,12 +118,12 @@ void populatec_2106303_HashCode_cm(pointer classModel) {
  populatec_2106303_Object_cm(classModel);
   c_2106303_HashCode_cm* thisClassModel = (c_2106303_HashCode_cm*)classModel;
   thisClassModel->parent = getc_2106303_Object_cm();
-  thisClassModel->calcFastHash = c_2106303_HashCodecalcFastHash;
-  thisClassModel->className = c_2106303_HashCodeclassName;
-  thisClassModel->classShortName = c_2106303_HashCodeclassShortName;
-  thisClassModel->classCName = c_2106303_HashCodeclassCName;
-  thisClassModel->classPackage = c_2106303_HashCodeclassPackage;
-  thisClassModel->objectDatasize = c_2106303_HashCodeobjectDatasize;
+ /*cds2*/ thisClassModel->calcFastHash = c_2106303_HashCodecalcFastHash;
+ /*cds2*/ thisClassModel->className = c_2106303_HashCodeclassName;
+ /*cds2*/ thisClassModel->classShortName = c_2106303_HashCodeclassShortName;
+ /*cds2*/ thisClassModel->classCName = c_2106303_HashCodeclassCName;
+ /*cds2*/ thisClassModel->classPackage = c_2106303_HashCodeclassPackage;
+ /*cds2*/ thisClassModel->objectDatasize = c_2106303_HashCodeobjectDatasize;
   thisClassModel->free = c_2106303_HashCode_free;
 }
 

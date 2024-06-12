@@ -99,8 +99,9 @@ void c_2106303_F64_free(num this) { Object_ref *object_ref = useObject(this);
 
 num create_c_2106303_F64() {
   c_2106303_F64 * _c_2106303_F64 = ec_calloc(sizeof(c_2106303_F64), sizeof(char));
-/*cdv1*/((c_2106303_F64*)_c_2106303_F64)->instanceName = c_2106303_F64className();
-  return createObject(_c_2106303_F64, getc_2106303_F64_cm(), false);
+  num this = createObject(_c_2106303_F64, getc_2106303_F64_cm(), false);
+/*cdv2 Core.BaseBoxingCore.F64 */((c_2106303_F64*)_c_2106303_F64)->instanceName = c_2106303_F64className();
+  return this;
 }
 
 c_2106303_F64_cm _c_2106303_F64_cm;
@@ -127,16 +128,16 @@ void populatec_2106303_F64_cm(pointer classModel) {
  populatec_2106303_BaseBoxing_cm(classModel);
   c_2106303_F64_cm* thisClassModel = (c_2106303_F64_cm*)classModel;
   thisClassModel->parent = getc_2106303_BaseBoxing_cm();
-  thisClassModel->datatype = c_2106303_F64datatype;
-  thisClassModel->typename = c_2106303_F64typename;
-  thisClassModel->asStr = c_2106303_F64asStr;
-  thisClassModel->className = c_2106303_F64className;
-  thisClassModel->classShortName = c_2106303_F64classShortName;
-  thisClassModel->classCName = c_2106303_F64classCName;
-  thisClassModel->classPackage = c_2106303_F64classPackage;
-  thisClassModel->objectDatasize = c_2106303_F64objectDatasize;
-  thisClassModel->get_value = c_2106303_F64get_value;
-  thisClassModel->set_value = c_2106303_F64set_value;
+ /*cds2*/ thisClassModel->datatype = c_2106303_F64datatype;
+ /*cds2*/ thisClassModel->typename = c_2106303_F64typename;
+ /*cds2*/ thisClassModel->asStr = c_2106303_F64asStr;
+ /*cds2*/ thisClassModel->className = c_2106303_F64className;
+ /*cds2*/ thisClassModel->classShortName = c_2106303_F64classShortName;
+ /*cds2*/ thisClassModel->classCName = c_2106303_F64classCName;
+ /*cds2*/ thisClassModel->classPackage = c_2106303_F64classPackage;
+ /*cds2*/ thisClassModel->objectDatasize = c_2106303_F64objectDatasize;
+ /*cds2*/ thisClassModel->get_value = c_2106303_F64get_value;
+ /*cds2*/ thisClassModel->set_value = c_2106303_F64set_value;
   thisClassModel->free = c_2106303_F64_free;
 }
 

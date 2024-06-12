@@ -115,8 +115,9 @@ void c_2106303_MapDuo_free(num this) { Object_ref *object_ref = useObject(this);
 
 num create_c_2106303_MapDuo() {
   c_2106303_MapDuo * _c_2106303_MapDuo = ec_calloc(sizeof(c_2106303_MapDuo), sizeof(char));
-/*cdv1*/((c_2106303_MapDuo*)_c_2106303_MapDuo)->instanceName = c_2106303_MapDuoclassName();
-  return createObject(_c_2106303_MapDuo, getc_2106303_MapDuo_cm(), false);
+  num this = createObject(_c_2106303_MapDuo, getc_2106303_MapDuo_cm(), false);
+/*cdv2 Core.ObjectCore.MapDuo */((c_2106303_MapDuo*)_c_2106303_MapDuo)->instanceName = c_2106303_MapDuoclassName();
+  return this;
 }
 
 c_2106303_MapDuo_cm _c_2106303_MapDuo_cm;
@@ -136,19 +137,19 @@ void populatec_2106303_MapDuo_cm(pointer classModel) {
  populatec_2106303_Object_cm(classModel);
   c_2106303_MapDuo_cm* thisClassModel = (c_2106303_MapDuo_cm*)classModel;
   thisClassModel->parent = getc_2106303_Object_cm();
-  thisClassModel->className = c_2106303_MapDuoclassName;
-  thisClassModel->classShortName = c_2106303_MapDuoclassShortName;
-  thisClassModel->classCName = c_2106303_MapDuoclassCName;
-  thisClassModel->classPackage = c_2106303_MapDuoclassPackage;
-  thisClassModel->objectDatasize = c_2106303_MapDuoobjectDatasize;
-  thisClassModel->get_oneKey = c_2106303_MapDuoget_oneKey;
-  thisClassModel->set_oneKey = c_2106303_MapDuoset_oneKey;
-  thisClassModel->get_twoKey = c_2106303_MapDuoget_twoKey;
-  thisClassModel->set_twoKey = c_2106303_MapDuoset_twoKey;
-  thisClassModel->get_oneValue = c_2106303_MapDuoget_oneValue;
-  thisClassModel->set_oneValue = c_2106303_MapDuoset_oneValue;
-  thisClassModel->get_twoValue = c_2106303_MapDuoget_twoValue;
-  thisClassModel->set_twoValue = c_2106303_MapDuoset_twoValue;
+ /*cds2*/ thisClassModel->className = c_2106303_MapDuoclassName;
+ /*cds2*/ thisClassModel->classShortName = c_2106303_MapDuoclassShortName;
+ /*cds2*/ thisClassModel->classCName = c_2106303_MapDuoclassCName;
+ /*cds2*/ thisClassModel->classPackage = c_2106303_MapDuoclassPackage;
+ /*cds2*/ thisClassModel->objectDatasize = c_2106303_MapDuoobjectDatasize;
+ /*cds2*/ thisClassModel->get_oneKey = c_2106303_MapDuoget_oneKey;
+ /*cds2*/ thisClassModel->set_oneKey = c_2106303_MapDuoset_oneKey;
+ /*cds2*/ thisClassModel->get_twoKey = c_2106303_MapDuoget_twoKey;
+ /*cds2*/ thisClassModel->set_twoKey = c_2106303_MapDuoset_twoKey;
+ /*cds2*/ thisClassModel->get_oneValue = c_2106303_MapDuoget_oneValue;
+ /*cds2*/ thisClassModel->set_oneValue = c_2106303_MapDuoset_oneValue;
+ /*cds2*/ thisClassModel->get_twoValue = c_2106303_MapDuoget_twoValue;
+ /*cds2*/ thisClassModel->set_twoValue = c_2106303_MapDuoset_twoValue;
   thisClassModel->free = c_2106303_MapDuo_free;
 }
 

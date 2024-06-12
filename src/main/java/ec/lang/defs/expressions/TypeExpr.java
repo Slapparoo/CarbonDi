@@ -42,7 +42,6 @@ public class TypeExpr extends ExprDef implements MultiTypeId {
         }
 
         if (memberOf != null && containedInBlock.directAccess.contains(expr)) {
-            // System.out.println("@@direct access " + expr);
             directAccess = true;
         }
 
@@ -76,7 +75,6 @@ public class TypeExpr extends ExprDef implements MultiTypeId {
         // array
 
         if (memberOf != null && containedInBlock.directAccess.contains(expr)) {
-            // System.out.println("@@direct access " + expr);
             directAccess = true;
         }
 
@@ -107,9 +105,6 @@ public class TypeExpr extends ExprDef implements MultiTypeId {
                 }
             } else {
                 if (isGet) {
-
-                    // System.out.println(variableDef);
-
                     if (variableDef.functionDef == null) {
                         resolvedExpr = "/*te14*/"
                         + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true) 

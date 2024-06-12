@@ -6,6 +6,7 @@
 /* includes */
 
 // @TODO include class dependancies
+typedef struct c_2106303_Hashmap_or c_2106303_Hashmap_or; // forward declaration
 #define __C_2106303_HASHMAP_DATA_  \
  boolean isInitm; \
  u64 hmitems; \
@@ -36,6 +37,8 @@ typedef struct c_2106303_Hashmap {
 __C_2106303_OBJECT_DATA_
 __C_2106303_HASHMAP_DATA_
 } c_2106303_Hashmap;
+
+
 pointer getc_2106303_Hashmap_cm();
 void populatec_2106303_Hashmap_cm(pointer classModel);
 num create_c_2106303_Hashmap();

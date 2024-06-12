@@ -2,16 +2,19 @@ package ec.lang.defs.expressions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import ec.lang.defs.ConstructorDef;
 import ec.lang.defs.ExprDef;
 import ec.lang.defs.FunctionDefBase;
 import ec.lang.defs.SnippetFactory;
 import ec.lang.defs.VariableDef;
+import lombok.Getter;
+import lombok.Setter;
 
 public class FunctionCallExpr extends ExprDef implements MultiTypeId {
     public List<ExprDef> params = new ArrayList<>();
-    private String name;
+    @Getter @Setter private String name;
     private FunctionDefBase resolvedTo;
     public boolean classMethod = false;
     private String resolve02 = "";
@@ -31,33 +34,13 @@ public class FunctionCallExpr extends ExprDef implements MultiTypeId {
     }
 
     public String getParamsSignature() {
-        String res = "";
-        boolean first = true;
-
-        for (ExprDef param : params) {
-            if (!first) {
-                res += ",";
-            }
-            if (param.thisType == null) {
-                res += "<unknown>";
-            } else {
-                res += param.thisType.getName();
-            }
-            first = false;
-        }
-        return res;
+        return params.stream()
+            .map(p -> p.thisType == null ? "<unknown>" : p.thisType.getName())
+            .collect(Collectors.joining(", "));
     }
 
 
     public FunctionCallExpr() {
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
     }
 
     private String paramsAsCode(String res) {
@@ -155,6 +138,6 @@ public class FunctionCallExpr extends ExprDef implements MultiTypeId {
 
     @Override
     public void setIsGet(boolean isGet) {
-
+        // a bit wierd
     }
 }

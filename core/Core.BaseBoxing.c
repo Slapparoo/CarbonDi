@@ -83,8 +83,9 @@ void c_2106303_BaseBoxing_free(num this) { Object_ref *object_ref = useObject(th
 
 num create_c_2106303_BaseBoxing() {
   c_2106303_BaseBoxing * _c_2106303_BaseBoxing = ec_calloc(sizeof(c_2106303_BaseBoxing), sizeof(char));
-/*cdv1*/((c_2106303_BaseBoxing*)_c_2106303_BaseBoxing)->instanceName = c_2106303_BaseBoxingclassName();
-  return createObject(_c_2106303_BaseBoxing, getc_2106303_BaseBoxing_cm(), false);
+  num this = createObject(_c_2106303_BaseBoxing, getc_2106303_BaseBoxing_cm(), false);
+/*cdv2 Core.ObjectCore.BaseBoxing */((c_2106303_BaseBoxing*)_c_2106303_BaseBoxing)->instanceName = c_2106303_BaseBoxingclassName();
+  return this;
 }
 
 c_2106303_BaseBoxing_cm _c_2106303_BaseBoxing_cm;
@@ -104,13 +105,13 @@ void populatec_2106303_BaseBoxing_cm(pointer classModel) {
  populatec_2106303_Object_cm(classModel);
   c_2106303_BaseBoxing_cm* thisClassModel = (c_2106303_BaseBoxing_cm*)classModel;
   thisClassModel->parent = getc_2106303_Object_cm();
-  thisClassModel->datatype = c_2106303_BaseBoxingdatatype;
-  thisClassModel->typename = c_2106303_BaseBoxingtypename;
-  thisClassModel->className = c_2106303_BaseBoxingclassName;
-  thisClassModel->classShortName = c_2106303_BaseBoxingclassShortName;
-  thisClassModel->classCName = c_2106303_BaseBoxingclassCName;
-  thisClassModel->classPackage = c_2106303_BaseBoxingclassPackage;
-  thisClassModel->objectDatasize = c_2106303_BaseBoxingobjectDatasize;
+ /*cds2*/ thisClassModel->datatype = c_2106303_BaseBoxingdatatype;
+ /*cds2*/ thisClassModel->typename = c_2106303_BaseBoxingtypename;
+ /*cds2*/ thisClassModel->className = c_2106303_BaseBoxingclassName;
+ /*cds2*/ thisClassModel->classShortName = c_2106303_BaseBoxingclassShortName;
+ /*cds2*/ thisClassModel->classCName = c_2106303_BaseBoxingclassCName;
+ /*cds2*/ thisClassModel->classPackage = c_2106303_BaseBoxingclassPackage;
+ /*cds2*/ thisClassModel->objectDatasize = c_2106303_BaseBoxingobjectDatasize;
   thisClassModel->free = c_2106303_BaseBoxing_free;
 }
 

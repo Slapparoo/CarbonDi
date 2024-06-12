@@ -6,6 +6,7 @@
 /* includes */
 
 // @TODO include class dependancies
+typedef struct c_2106303_RefArrayList_or c_2106303_RefArrayList_or; // forward declaration
 #define __C_2106303_REFARRAYLIST_DATA_  \
  num list; \
  u64 ralsize; \
@@ -35,6 +36,8 @@ typedef struct c_2106303_RefArrayList {
 __C_2106303_OBJECT_DATA_
 __C_2106303_REFARRAYLIST_DATA_
 } c_2106303_RefArrayList;
+
+
 pointer getc_2106303_RefArrayList_cm();
 void populatec_2106303_RefArrayList_cm(pointer classModel);
 num create_c_2106303_RefArrayList();

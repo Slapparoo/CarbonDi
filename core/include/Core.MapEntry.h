@@ -6,6 +6,7 @@
 /* includes */
 
 // @TODO include class dependancies
+typedef struct c_2106303_MapEntry_or c_2106303_MapEntry_or; // forward declaration
 #define __C_2106303_MAPENTRY_DATA_  \
  num key; \
  num value;
@@ -25,6 +26,8 @@ typedef struct c_2106303_MapEntry {
 __C_2106303_OBJECT_DATA_
 __C_2106303_MAPENTRY_DATA_
 } c_2106303_MapEntry;
+
+
 pointer getc_2106303_MapEntry_cm();
 void populatec_2106303_MapEntry_cm(pointer classModel);
 num create_c_2106303_MapEntry();

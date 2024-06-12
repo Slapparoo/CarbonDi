@@ -93,8 +93,9 @@ void c_2106303_MapEntry_free(num this) { Object_ref *object_ref = useObject(this
 
 num create_c_2106303_MapEntry() {
   c_2106303_MapEntry * _c_2106303_MapEntry = ec_calloc(sizeof(c_2106303_MapEntry), sizeof(char));
-/*cdv1*/((c_2106303_MapEntry*)_c_2106303_MapEntry)->instanceName = c_2106303_MapEntryclassName();
-  return createObject(_c_2106303_MapEntry, getc_2106303_MapEntry_cm(), false);
+  num this = createObject(_c_2106303_MapEntry, getc_2106303_MapEntry_cm(), false);
+/*cdv2 Core.ObjectCore.MapEntry */((c_2106303_MapEntry*)_c_2106303_MapEntry)->instanceName = c_2106303_MapEntryclassName();
+  return this;
 }
 
 c_2106303_MapEntry_cm _c_2106303_MapEntry_cm;
@@ -122,15 +123,15 @@ void populatec_2106303_MapEntry_cm(pointer classModel) {
  populatec_2106303_Object_cm(classModel);
   c_2106303_MapEntry_cm* thisClassModel = (c_2106303_MapEntry_cm*)classModel;
   thisClassModel->parent = getc_2106303_Object_cm();
-  thisClassModel->className = c_2106303_MapEntryclassName;
-  thisClassModel->classShortName = c_2106303_MapEntryclassShortName;
-  thisClassModel->classCName = c_2106303_MapEntryclassCName;
-  thisClassModel->classPackage = c_2106303_MapEntryclassPackage;
-  thisClassModel->objectDatasize = c_2106303_MapEntryobjectDatasize;
-  thisClassModel->get_key = c_2106303_MapEntryget_key;
-  thisClassModel->set_key = c_2106303_MapEntryset_key;
-  thisClassModel->get_value = c_2106303_MapEntryget_value;
-  thisClassModel->set_value = c_2106303_MapEntryset_value;
+ /*cds2*/ thisClassModel->className = c_2106303_MapEntryclassName;
+ /*cds2*/ thisClassModel->classShortName = c_2106303_MapEntryclassShortName;
+ /*cds2*/ thisClassModel->classCName = c_2106303_MapEntryclassCName;
+ /*cds2*/ thisClassModel->classPackage = c_2106303_MapEntryclassPackage;
+ /*cds2*/ thisClassModel->objectDatasize = c_2106303_MapEntryobjectDatasize;
+ /*cds2*/ thisClassModel->get_key = c_2106303_MapEntryget_key;
+ /*cds2*/ thisClassModel->set_key = c_2106303_MapEntryset_key;
+ /*cds2*/ thisClassModel->get_value = c_2106303_MapEntryget_value;
+ /*cds2*/ thisClassModel->set_value = c_2106303_MapEntryset_value;
   thisClassModel->free = c_2106303_MapEntry_free;
 }
 

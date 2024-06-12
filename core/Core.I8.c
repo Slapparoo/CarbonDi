@@ -99,8 +99,9 @@ void c_2106303_I8_free(num this) { Object_ref *object_ref = useObject(this);
 
 num create_c_2106303_I8() {
   c_2106303_I8 * _c_2106303_I8 = ec_calloc(sizeof(c_2106303_I8), sizeof(char));
-/*cdv1*/((c_2106303_I8*)_c_2106303_I8)->instanceName = c_2106303_I8className();
-  return createObject(_c_2106303_I8, getc_2106303_I8_cm(), false);
+  num this = createObject(_c_2106303_I8, getc_2106303_I8_cm(), false);
+/*cdv2 Core.BaseBoxingCore.I8 */((c_2106303_I8*)_c_2106303_I8)->instanceName = c_2106303_I8className();
+  return this;
 }
 
 c_2106303_I8_cm _c_2106303_I8_cm;
@@ -127,16 +128,16 @@ void populatec_2106303_I8_cm(pointer classModel) {
  populatec_2106303_BaseBoxing_cm(classModel);
   c_2106303_I8_cm* thisClassModel = (c_2106303_I8_cm*)classModel;
   thisClassModel->parent = getc_2106303_BaseBoxing_cm();
-  thisClassModel->datatype = c_2106303_I8datatype;
-  thisClassModel->typename = c_2106303_I8typename;
-  thisClassModel->asStr = c_2106303_I8asStr;
-  thisClassModel->className = c_2106303_I8className;
-  thisClassModel->classShortName = c_2106303_I8classShortName;
-  thisClassModel->classCName = c_2106303_I8classCName;
-  thisClassModel->classPackage = c_2106303_I8classPackage;
-  thisClassModel->objectDatasize = c_2106303_I8objectDatasize;
-  thisClassModel->get_value = c_2106303_I8get_value;
-  thisClassModel->set_value = c_2106303_I8set_value;
+ /*cds2*/ thisClassModel->datatype = c_2106303_I8datatype;
+ /*cds2*/ thisClassModel->typename = c_2106303_I8typename;
+ /*cds2*/ thisClassModel->asStr = c_2106303_I8asStr;
+ /*cds2*/ thisClassModel->className = c_2106303_I8className;
+ /*cds2*/ thisClassModel->classShortName = c_2106303_I8classShortName;
+ /*cds2*/ thisClassModel->classCName = c_2106303_I8classCName;
+ /*cds2*/ thisClassModel->classPackage = c_2106303_I8classPackage;
+ /*cds2*/ thisClassModel->objectDatasize = c_2106303_I8objectDatasize;
+ /*cds2*/ thisClassModel->get_value = c_2106303_I8get_value;
+ /*cds2*/ thisClassModel->set_value = c_2106303_I8set_value;
   thisClassModel->free = c_2106303_I8_free;
 }
 

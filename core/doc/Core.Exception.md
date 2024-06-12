@@ -4,7 +4,7 @@ class Core.Exception extends [Core.Object](Core.Object.md)
 ---
 Properties
 ---
-|type|name|read|write|value|comments|
+|type|name|getter|setter|value|comments|
 |--- |--- |--- |--- |--- |--- |
 |String|__message__|public|public|||
 |Exception|__root__|public|public|||

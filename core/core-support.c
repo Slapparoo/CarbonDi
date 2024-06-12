@@ -125,6 +125,7 @@ Object_ref *borrowObject(num ref) {
  * Called by returnObject if the ref counter == 0
  */
 void freeObject(num ref, Object_ref *object_ref) {
+    debug_println("%ld", ref);
     // dereferenced deallocate etc
     // call the class destructor(s)
     c_2106303_Object_cm* thisObject = (c_2106303_Object_cm*)object_ref->classmodel;
@@ -217,7 +218,7 @@ u64 __onEnter() {
 void __onExit() {
   // pop until 0
   enterExitRatio--;
-  // debug_println("%ld, enterExitRatio=%ld", refStackIndex, enterExitRatio);
+  debug_println("%ld, enterExitRatio=%ld", refStackIndex, enterExitRatio);
 
   num id = refStack[--refStackIndex];
   while (id > 0) {

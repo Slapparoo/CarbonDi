@@ -2,6 +2,7 @@ package ec.lang.defs.expressions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import ec.lang.compiler.Messages;
 import ec.lang.defs.ClassDef;
@@ -12,23 +13,19 @@ import ec.lang.defs.FunctionDef;
 import ec.lang.defs.FunctionDefBase;
 import ec.lang.defs.TypeIdDef;
 import ec.lang.defs.VariableDef;
+import lombok.Getter;
 
 public class MultiTypeExpr extends ExprDef implements MultiTypeId {
 
     public String g4Type;
-
     public List<ExprDef> type_id_list = new ArrayList<>();
     private boolean isGet = true;
     private boolean resolved = false;
-    private VariableDef variableDef = null;
+    @Getter private VariableDef variableDef = null;
     public ExprDef arrayIndex = null;
     public boolean directAccess = false;
     public boolean isExternal = false;
     public boolean isFunction = false; // used to help determine if it is an array index for an array
-
-    public VariableDef getVariableDef() {
-        return variableDef;
-    }
 
     public void addExpr(ExprDef exprDef, String line) {
         if (getLine().length() == 0) {
@@ -55,18 +52,6 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
 
     @Override
     public void prepare_03() {
-        // for (ExprDef exprDef : type_id_list) {
-        // System.out.println("@@Prepare " + this + ", " + exprDef);
-        // if (exprDef instanceof FunctionCallExpr) {
-        // exprDef.prepare_03();
-        // } else if (exprDef instanceof TypeExpr) {
-        // ((TypeExpr)exprDef).prepare_03("");
-        // } else if (exprDef instanceof ArrayIndexExpr) {
-        // exprDef.prepare_03();
-        // }
-        // }
-
-        // super.prepare_03();
     }
 
     @Override
@@ -143,14 +128,9 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
                 } else if (exprDef instanceof TypeExpr) {
                     TypeExpr tx = (TypeExpr) exprDef;
                     tx.directAccess = directAccess;
-                    // if (tx.isGet && tx.thisType.isPrimative()) {
-                    // tx.directAccess = true;
-                    // }
                     tx.containedInBlock = containedInBlock;
                     tx.prepare_03(last);
                     if (tx.directAccess) {
-                        // System.out.println("@@directaccess " + tx.expr + " " + this + " " +
-                        // tx.directAccess);
                         directAccess = true;
                     }
 
@@ -173,9 +153,6 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
         }
 
         if (lastVar != null) {
-            // tx is a property of thistype
-            // ClassDef classDef = DefFactory.resolveClass(lastVar.type);
-
             String sig = fcd.getSignature();
             ClassDef classDef = lastVar.classDef;
 
@@ -201,7 +178,7 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
                 if (!resolvedTo.isCallable(null, fcd.params)) {
 
                     if (!resolvedTo.isClassCallable(null, fcd.params)) {
-                    System.out.println("[warn] function signatures do not match \'" + sig + "\', \'"
+                        Messages.MESSAGES.addWarning("function signatures do not match \'" + sig + "\', \'"
                         + resolvedTo.getSignature() + "\' " + resolvedTo.getParameters().size() + ", " + fcd.params.size());
                     }
                 }
@@ -228,7 +205,6 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
         // resolve constructors
         ClassDef classDef = DefFactory.resolveClass(fcd.getName());
         if (classDef != null) {
-            // FunctionDefBase resolvedTo = classDef.resolveConstructor(fcd.getSignature());
             FunctionDefBase resolvedTo = classDef.resolveConstructor(fcd);
 
             if (resolvedTo == null) {
@@ -240,7 +216,6 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
                         "No matching function found " + fcd.getSignature() + " " + classDef.getFqn());
             }
 
-            // fcd.returnPrimative = false;
             thisType = new TypeIdDef(fcd.getName());
 
             fcd.setFunctionDef(resolvedTo);
@@ -259,7 +234,6 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
             FunctionDef resolvedTo = (FunctionDef) fcd.containedInBlock.classDef.resolveFunction(fcd.getName());
             if (resolvedTo != null) {
                 if (!resolvedTo.isResolved()) {
-                    System.out.println("@@resolveFunction 2 not resolved " + fcd.getName());
                     resolvedTo.resolve_01();
                 }
 
@@ -308,17 +282,10 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
         }
 
         if (isExternal) {
-            System.out.println("[warn] External function not resolved - check it is prototyped " + fcd.getName() + " "
+            Messages.MESSAGES.addWarning("External function not resolved - check it is prototyped " + fcd.getName() + " "
                     + fcd.getSignature());
-            // System.out.println("function External.<header_name>." + fcd.getName() + " :=
-            // " + fcd.getSignature());
             fcd.resolve_01();
         } else {
-            // FunctionDef fd =
-            // fcd.containedInBlock.classDef.resolveFunction(fcd.getName());
-            // System.out.println("@@unres " + fd);
-
-            // System.out.println("[warn] function not resolved " + fcd.getName() + " " + fcd.getSignature() + " " + fcd.getLine());
             throw new RuntimeException("[warn] function not resolved " + fcd.getName() + " " + fcd.getSignature() + " " + fcd.getLine());
         }
 
@@ -330,13 +297,6 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
         if (var != null) {
             return var;
         }
-
-        // if (containedInBlock.classDef != null) {
-        // var = containedInBlock.classDef.resolveProperty(tx);
-        // if (var != null) {
-        // return var;
-        // }
-        // }
 
         ClassDef classDef = DefFactory.resolveClass(tx);
         if (classDef != null) {
@@ -431,7 +391,6 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
         tx.memberOf = classDef;
         tx.thisType = tx.variableDef.type;
         lastVar = tx.variableDef;
-        // arrayIndex = tx.arrayIndex;
         return;
     }
 
@@ -447,7 +406,6 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
     @Override
     public void resolve_01() {
         if (resolved) {
-            // System.out.println("already resolved why are you resolving again? " + type_id_list + ", " + asSignature());
             return;
         }
 
@@ -462,11 +420,8 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
             exprDef.containedInBlock = containedInBlock;
 
             if (exprDef.containedInBlock == null) {
-                
-                System.out.println("exprDef.containedInBlock == null " + exprDef);
                 throw new RuntimeException("exprDef.containedInBlock == null " + exprDef);
             }
-
 
             if (last != null) {
                 last.setIsGet(true);
@@ -557,22 +512,16 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
 
     @Override
     public String toString() {
-        String res = "";
-        for (ExprDef exprDef : type_id_list) {
-            if (res.length() > 0) {
-                res += ".";
-            }
+        String res = type_id_list.stream()
+            .map(exprDef -> {
+                if (exprDef instanceof FunctionCallExpr) {
+                    return ((FunctionCallExpr) exprDef).getName() + "()";
+                } else if (exprDef instanceof TypeExpr || exprDef instanceof ArrayIndexExpr) {
+                    return exprDef.expr;
+                } else return null;})
+            .filter(str -> str != null)    
+            .collect(Collectors.joining("."));
 
-            if (exprDef instanceof FunctionCallExpr) {
-                res += ((FunctionCallExpr) exprDef).getName() + "()";
-            } else if (exprDef instanceof TypeExpr) {
-                res += exprDef.expr;
-            } else if (exprDef instanceof ArrayIndexExpr) {
-                res += exprDef.expr;
-            }
-
-            // res += exprDef.asDebug();
-        }
         return "Multi (" + res + ") ";// + getLine();
     }
 

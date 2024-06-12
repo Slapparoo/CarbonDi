@@ -24,8 +24,8 @@ OPTIMISATION := -O3
 PARAMS       := -Wall -Wno-format -Wno-unused-variable -std=gnu17 -I$(INCLUDEDIR)
 
 OBJ 		:= $(SRC:%.c=$(OBJDIR)/%.o)
-MAIN 		= $(SRCMAIN:%.c=$(OBJDIR)/%.e)
-RUNMAINS 	= $(MAINS:%.e=$(OBJDIR)/%.e)
+MAIN 		:= $(SRCMAIN:%.c=$(OBJDIR)/%.e)
+RUNMAINS 	:= $(MAINS:%.e=$(OBJDIR)/%.e)
 LIB 		:= $(SRC:%.c=$(LIBDIR)/libec.so)
 
 all 	: compile test

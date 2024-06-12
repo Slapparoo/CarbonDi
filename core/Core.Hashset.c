@@ -71,8 +71,9 @@ void c_2106303_Hashset_free(num this) { Object_ref *object_ref = useObject(this)
 
 num create_c_2106303_Hashset() {
   c_2106303_Hashset * _c_2106303_Hashset = ec_calloc(sizeof(c_2106303_Hashset), sizeof(char));
-/*cdv1*/((c_2106303_Hashset*)_c_2106303_Hashset)->instanceName = c_2106303_HashsetclassName();
-  return createObject(_c_2106303_Hashset, getc_2106303_Hashset_cm(), false);
+  num this = createObject(_c_2106303_Hashset, getc_2106303_Hashset_cm(), false);
+/*cdv2 Core.ObjectCore.Hashset */((c_2106303_Hashset*)_c_2106303_Hashset)->instanceName = c_2106303_HashsetclassName();
+  return this;
 }
 
 c_2106303_Hashset_cm _c_2106303_Hashset_cm;
@@ -92,11 +93,11 @@ void populatec_2106303_Hashset_cm(pointer classModel) {
  populatec_2106303_Object_cm(classModel);
   c_2106303_Hashset_cm* thisClassModel = (c_2106303_Hashset_cm*)classModel;
   thisClassModel->parent = getc_2106303_Object_cm();
-  thisClassModel->className = c_2106303_HashsetclassName;
-  thisClassModel->classShortName = c_2106303_HashsetclassShortName;
-  thisClassModel->classCName = c_2106303_HashsetclassCName;
-  thisClassModel->classPackage = c_2106303_HashsetclassPackage;
-  thisClassModel->objectDatasize = c_2106303_HashsetobjectDatasize;
+ /*cds2*/ thisClassModel->className = c_2106303_HashsetclassName;
+ /*cds2*/ thisClassModel->classShortName = c_2106303_HashsetclassShortName;
+ /*cds2*/ thisClassModel->classCName = c_2106303_HashsetclassCName;
+ /*cds2*/ thisClassModel->classPackage = c_2106303_HashsetclassPackage;
+ /*cds2*/ thisClassModel->objectDatasize = c_2106303_HashsetobjectDatasize;
   thisClassModel->free = c_2106303_Hashset_free;
 }
 

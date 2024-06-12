@@ -1,7 +1,6 @@
 package ec.lang.defs;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import ec.lang.defs.Enums.Accessor;

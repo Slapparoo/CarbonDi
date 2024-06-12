@@ -5,6 +5,7 @@
 /* includes */
 
 // @TODO include class dependancies
+typedef struct c_2106303_Object_or c_2106303_Object_or; // forward declaration
 #define __C_2106303_OBJECT_DATA_  \
  pointer instanceName;
 #define __C_2106303_OBJECT_CLASS_  \
@@ -32,6 +33,8 @@ __C_2106303_OBJECT_CLASS_
 typedef struct c_2106303_Object {
 __C_2106303_OBJECT_DATA_
 } c_2106303_Object;
+
+
 pointer getc_2106303_Object_cm();
 void populatec_2106303_Object_cm(pointer classModel);
 num create_c_2106303_Object();

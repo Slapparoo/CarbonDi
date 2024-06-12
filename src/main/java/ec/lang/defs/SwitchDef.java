@@ -53,7 +53,7 @@ public class SwitchDef extends StatementDef implements ContainerDef {
     }
 
     @Override
-    public List<VariableDef> variableDefs() {
+    public List<VariableDef> getVariableDefs() {
         return null;
     }
 

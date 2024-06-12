@@ -33,14 +33,13 @@
 /*fd1*/void c_2106303_RefArrayListstartup(num this){
 
 u64 entry__ = __onEnter();if (/*te14a*/((c_2106303_RefArrayList_cm*)useObject(/*te8*/this)->classmodel)->get_isInit(/*te8*/this)) {
-
-__onEnter();return __exitReturn_void_un(entry__);
+return __exitReturn_void_un(entry__);
 }
 
 /*Ax5*//*te14b*/((c_2106303_RefArrayList_cm*)useObject(/*te8*/this)->classmodel)->set_isInit(/*te8*/this, true);
 /*Ax3*//*te14b*/((c_2106303_RefArrayList_cm*)useObject(/*te8*/this)->classmodel)->set_list(/*te8*/this, /*cd1*/ create_c_2106303_RefArray_1(/*te14*/((c_2106303_RefArrayList_cm*)getc_2106303_RefArrayList_cm())->get_growBy()));
 
-__onExit();}
+return __exitReturn_void_un(entry__);}
 
 
 /*fd1*/void c_2106303_RefArrayListgrowList(num this){
@@ -49,15 +48,13 @@ u64 entry__ = __onEnter();/*va1*/num tempList = /*te14a*/((c_2106303_RefArrayLis
 /*va1*/num newList = /*cd1*/ create_c_2106303_RefArray_1(/*oxa*//*te14a*/((c_2106303_RefArray_cm*)useObject(/*te8*/tempList)->classmodel)->get_length(/*te8*/tempList) + /*oxb*//*te14*/((c_2106303_RefArrayList_cm*)getc_2106303_RefArrayList_cm())->get_growBy());
 
 for (num a__a = 0; a__a < /*te14a*/((c_2106303_RefArray_cm*)useObject(/*te8*/tempList)->classmodel)->get_length(/*te8*/tempList); a__a++){
-
-__onEnter();/*va1*/i64 ix = /*te8*/a__a;
+/*va1*/i64 ix = /*te8*/a__a;
 /*Ax3*/((c_2106303_RefArray_cm*)getc_2106303_RefArray_cm())->setObject(newList, /*te8*/ix,/*te4*/ *((num *)((c_2106303_RefArray_cm*)getc_2106303_RefArray_cm())->get(tempList, /*te8*/ix)));
-
-__onExit();}
+}
 
 /*Ax3*//*te14b*/((c_2106303_RefArrayList_cm*)useObject(/*te8*/this)->classmodel)->set_list(/*te8*/this, /*te8*/newList);
 
-__onExit();}
+return __exitReturn_void_un(entry__);}
 
 
 /*fd1*/void c_2106303_RefArrayListadd(num this, num object){
@@ -65,23 +62,21 @@ __onExit();}
 u64 entry__ = __onEnter();/*st*/ /* switch from fc5 to te4*/((c_2106303_RefArrayList_cm*)useObject(this)->classmodel)->startup(this);
 /*va1*/num tempList = /*te14a*/((c_2106303_RefArrayList_cm*)useObject(/*te8*/this)->classmodel)->get_list(/*te8*/this);
 if (/*oxa*//*te14a*/((c_2106303_RefArray_cm*)useObject(/*te8*/tempList)->classmodel)->get_length(/*te8*/tempList) == /*oxb*//*te14a*/((c_2106303_RefArrayList_cm*)useObject(/*te8*/this)->classmodel)->get_ralsize(/*te8*/this)) {
-
-__onEnter();/*st*/ /*fc3*/((c_2106303_RefArrayList_cm*)useObject(this)->classmodel)->growList(this);
-
-__onExit();}
+/*st*/ /*fc3*/((c_2106303_RefArrayList_cm*)useObject(this)->classmodel)->growList(this);
+}
 
 /*va1*/num tempList2 = /*te14a*/((c_2106303_RefArrayList_cm*)useObject(/*te8*/this)->classmodel)->get_list(/*te8*/this);
 /*Ax3*/((c_2106303_RefArray_cm*)getc_2106303_RefArray_cm())->setObject(tempList2, /*te14a*/((c_2106303_RefArrayList_cm*)useObject(/*te8*/this)->classmodel)->get_ralsize(/*te8*/this),/*te8*/object);
 /*st*/ /*te15a*/((c_2106303_RefArrayList*)useObject(/*te8*/this)->data)->ralsize++;
 
-__onExit();}
+return __exitReturn_void_un(entry__);}
 
 
 /*fd1*/num c_2106303_RefArrayListget(num this, u64 index){
 
 u64 entry__ = __onEnter();/*va1*/num tempList = /*te14a*/((c_2106303_RefArrayList_cm*)useObject(/*te8*/this)->classmodel)->get_list(/*te8*/this);
 /*va1*/num o = /*te4*/ *((num *)((c_2106303_RefArray_cm*)getc_2106303_RefArray_cm())->get(tempList, /*te8*/index));
-/*rx2*/ return __exitReturn_ref_un(/*te8*/o, entry__);
+/*rx4*/ return __exitReturn_ref_un(/*te8*/o, entry__);
 }
 
 
@@ -167,9 +162,10 @@ void c_2106303_RefArrayList_free(num this) { Object_ref *object_ref = useObject(
 
 num create_c_2106303_RefArrayList() {
   c_2106303_RefArrayList * _c_2106303_RefArrayList = ec_calloc(sizeof(c_2106303_RefArrayList), sizeof(char));
+  num this = createObject(_c_2106303_RefArrayList, getc_2106303_RefArrayList_cm(), false);
 /*cdv1*/((c_2106303_RefArrayList*)_c_2106303_RefArrayList)->isInit = false;
-/*cdv1*/((c_2106303_RefArrayList*)_c_2106303_RefArrayList)->instanceName = c_2106303_RefArrayListclassName();
-  return createObject(_c_2106303_RefArrayList, getc_2106303_RefArrayList_cm(), false);
+/*cdv2 Core.ObjectCore.RefArrayList */((c_2106303_RefArrayList*)_c_2106303_RefArrayList)->instanceName = c_2106303_RefArrayListclassName();
+  return this;
 }
 
 c_2106303_RefArrayList_cm _c_2106303_RefArrayList_cm;
@@ -189,23 +185,23 @@ void populatec_2106303_RefArrayList_cm(pointer classModel) {
  populatec_2106303_Object_cm(classModel);
   c_2106303_RefArrayList_cm* thisClassModel = (c_2106303_RefArrayList_cm*)classModel;
   thisClassModel->parent = getc_2106303_Object_cm();
-  thisClassModel->startup = c_2106303_RefArrayListstartup;
-  thisClassModel->growList = c_2106303_RefArrayListgrowList;
-  thisClassModel->add = c_2106303_RefArrayListadd;
-  thisClassModel->get = c_2106303_RefArrayListget;
-  thisClassModel->className = c_2106303_RefArrayListclassName;
-  thisClassModel->classShortName = c_2106303_RefArrayListclassShortName;
-  thisClassModel->classCName = c_2106303_RefArrayListclassCName;
-  thisClassModel->classPackage = c_2106303_RefArrayListclassPackage;
-  thisClassModel->objectDatasize = c_2106303_RefArrayListobjectDatasize;
-  thisClassModel->get_list = c_2106303_RefArrayListget_list;
-  thisClassModel->set_list = c_2106303_RefArrayListset_list;
-  thisClassModel->get_ralsize = c_2106303_RefArrayListget_ralsize;
-  thisClassModel->set_ralsize = c_2106303_RefArrayListset_ralsize;
-  thisClassModel->get_isInit = c_2106303_RefArrayListget_isInit;
-  thisClassModel->set_isInit = c_2106303_RefArrayListset_isInit;
-  thisClassModel->get_growBy = c_2106303_RefArrayListget_growBy;
-  thisClassModel->set_growBy = c_2106303_RefArrayListset_growBy;
+ /*cds2*/ thisClassModel->startup = c_2106303_RefArrayListstartup;
+ /*cds2*/ thisClassModel->growList = c_2106303_RefArrayListgrowList;
+ /*cds2*/ thisClassModel->add = c_2106303_RefArrayListadd;
+ /*cds2*/ thisClassModel->get = c_2106303_RefArrayListget;
+ /*cds2*/ thisClassModel->className = c_2106303_RefArrayListclassName;
+ /*cds2*/ thisClassModel->classShortName = c_2106303_RefArrayListclassShortName;
+ /*cds2*/ thisClassModel->classCName = c_2106303_RefArrayListclassCName;
+ /*cds2*/ thisClassModel->classPackage = c_2106303_RefArrayListclassPackage;
+ /*cds2*/ thisClassModel->objectDatasize = c_2106303_RefArrayListobjectDatasize;
+ /*cds2*/ thisClassModel->get_list = c_2106303_RefArrayListget_list;
+ /*cds2*/ thisClassModel->set_list = c_2106303_RefArrayListset_list;
+ /*cds2*/ thisClassModel->get_ralsize = c_2106303_RefArrayListget_ralsize;
+ /*cds2*/ thisClassModel->set_ralsize = c_2106303_RefArrayListset_ralsize;
+ /*cds2*/ thisClassModel->get_isInit = c_2106303_RefArrayListget_isInit;
+ /*cds2*/ thisClassModel->set_isInit = c_2106303_RefArrayListset_isInit;
+ /*cds2*/ thisClassModel->get_growBy = c_2106303_RefArrayListget_growBy;
+ /*cds2*/ thisClassModel->set_growBy = c_2106303_RefArrayListset_growBy;
 /*cds1*/thisClassModel->growBy = 256;
   thisClassModel->free = c_2106303_RefArrayList_free;
 }

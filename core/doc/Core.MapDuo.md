@@ -4,7 +4,7 @@ class Core.MapDuo extends [Core.Object](Core.Object.md)
 ---
 Properties
 ---
-|type|name|read|write|value|comments|
+|type|name|getter|setter|value|comments|
 |--- |--- |--- |--- |--- |--- |
 |Object|__oneKey__|public|public|||
 |Object|__twoKey__|public|public|||

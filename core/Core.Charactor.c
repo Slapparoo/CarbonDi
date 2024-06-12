@@ -537,8 +537,9 @@ void c_2106303_Charactor_free(num this) { Object_ref *object_ref = useObject(thi
 
 num create_c_2106303_Charactor() {
   c_2106303_Charactor * _c_2106303_Charactor = ec_calloc(sizeof(c_2106303_Charactor), sizeof(char));
-/*cdv1*/((c_2106303_Charactor*)_c_2106303_Charactor)->instanceName = c_2106303_CharactorclassName();
-  return createObject(_c_2106303_Charactor, getc_2106303_Charactor_cm(), false);
+  num this = createObject(_c_2106303_Charactor, getc_2106303_Charactor_cm(), false);
+/*cdv2 Core.ObjectCore.Charactor */((c_2106303_Charactor*)_c_2106303_Charactor)->instanceName = c_2106303_CharactorclassName();
+  return this;
 }
 
 c_2106303_Charactor_cm _c_2106303_Charactor_cm;
@@ -558,21 +559,21 @@ void populatec_2106303_Charactor_cm(pointer classModel) {
  populatec_2106303_Object_cm(classModel);
   c_2106303_Charactor_cm* thisClassModel = (c_2106303_Charactor_cm*)classModel;
   thisClassModel->parent = getc_2106303_Object_cm();
-  thisClassModel->isLetter = c_2106303_CharactorisLetter;
-  thisClassModel->isAlpha = c_2106303_CharactorisAlpha;
-  thisClassModel->isUpper = c_2106303_CharactorisUpper;
-  thisClassModel->isLower = c_2106303_CharactorisLower;
-  thisClassModel->isAlphaNumeric = c_2106303_CharactorisAlphaNumeric;
-  thisClassModel->isLetterorNumber = c_2106303_CharactorisLetterorNumber;
-  thisClassModel->isNumber = c_2106303_CharactorisNumber;
-  thisClassModel->isFloat = c_2106303_CharactorisFloat;
-  thisClassModel->isHex = c_2106303_CharactorisHex;
-  thisClassModel->isBinary = c_2106303_CharactorisBinary;
-  thisClassModel->className = c_2106303_CharactorclassName;
-  thisClassModel->classShortName = c_2106303_CharactorclassShortName;
-  thisClassModel->classCName = c_2106303_CharactorclassCName;
-  thisClassModel->classPackage = c_2106303_CharactorclassPackage;
-  thisClassModel->objectDatasize = c_2106303_CharactorobjectDatasize;
+ /*cds2*/ thisClassModel->isLetter = c_2106303_CharactorisLetter;
+ /*cds2*/ thisClassModel->isAlpha = c_2106303_CharactorisAlpha;
+ /*cds2*/ thisClassModel->isUpper = c_2106303_CharactorisUpper;
+ /*cds2*/ thisClassModel->isLower = c_2106303_CharactorisLower;
+ /*cds2*/ thisClassModel->isAlphaNumeric = c_2106303_CharactorisAlphaNumeric;
+ /*cds2*/ thisClassModel->isLetterorNumber = c_2106303_CharactorisLetterorNumber;
+ /*cds2*/ thisClassModel->isNumber = c_2106303_CharactorisNumber;
+ /*cds2*/ thisClassModel->isFloat = c_2106303_CharactorisFloat;
+ /*cds2*/ thisClassModel->isHex = c_2106303_CharactorisHex;
+ /*cds2*/ thisClassModel->isBinary = c_2106303_CharactorisBinary;
+ /*cds2*/ thisClassModel->className = c_2106303_CharactorclassName;
+ /*cds2*/ thisClassModel->classShortName = c_2106303_CharactorclassShortName;
+ /*cds2*/ thisClassModel->classCName = c_2106303_CharactorclassCName;
+ /*cds2*/ thisClassModel->classPackage = c_2106303_CharactorclassPackage;
+ /*cds2*/ thisClassModel->objectDatasize = c_2106303_CharactorobjectDatasize;
   thisClassModel->free = c_2106303_Charactor_free;
 }
 

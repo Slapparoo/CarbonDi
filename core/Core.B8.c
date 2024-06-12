@@ -45,17 +45,11 @@ u64 entry__ = __onEnter();return __exitReturn_pointer_un("b8", entry__);
 /*fd1*/pointer c_2106303_B8asStr(num this){
 
 u64 entry__ = __onEnter();if (/*te14a*/((c_2106303_B8_cm*)useObject(/*te8*/this)->classmodel)->get_value(/*te8*/this)) {
-
-__onEnter();return __exitReturn_pointer_un("true", entry__);
+return __exitReturn_pointer_un("true", entry__);
 }
 
-/* else? */ else {
-
-__onEnter();return __exitReturn_pointer_un("false", entry__);
+return __exitReturn_pointer_un("false", entry__);
 }
-
-
-__onExit();}
 
 
 /*fd1*/pointer c_2106303_B8className(){
@@ -108,8 +102,9 @@ void c_2106303_B8_free(num this) { Object_ref *object_ref = useObject(this);
 
 num create_c_2106303_B8() {
   c_2106303_B8 * _c_2106303_B8 = ec_calloc(sizeof(c_2106303_B8), sizeof(char));
-/*cdv1*/((c_2106303_B8*)_c_2106303_B8)->instanceName = c_2106303_B8className();
-  return createObject(_c_2106303_B8, getc_2106303_B8_cm(), false);
+  num this = createObject(_c_2106303_B8, getc_2106303_B8_cm(), false);
+/*cdv2 Core.BaseBoxingCore.B8 */((c_2106303_B8*)_c_2106303_B8)->instanceName = c_2106303_B8className();
+  return this;
 }
 
 c_2106303_B8_cm _c_2106303_B8_cm;
@@ -136,16 +131,16 @@ void populatec_2106303_B8_cm(pointer classModel) {
  populatec_2106303_BaseBoxing_cm(classModel);
   c_2106303_B8_cm* thisClassModel = (c_2106303_B8_cm*)classModel;
   thisClassModel->parent = getc_2106303_BaseBoxing_cm();
-  thisClassModel->datatype = c_2106303_B8datatype;
-  thisClassModel->typename = c_2106303_B8typename;
-  thisClassModel->asStr = c_2106303_B8asStr;
-  thisClassModel->className = c_2106303_B8className;
-  thisClassModel->classShortName = c_2106303_B8classShortName;
-  thisClassModel->classCName = c_2106303_B8classCName;
-  thisClassModel->classPackage = c_2106303_B8classPackage;
-  thisClassModel->objectDatasize = c_2106303_B8objectDatasize;
-  thisClassModel->get_value = c_2106303_B8get_value;
-  thisClassModel->set_value = c_2106303_B8set_value;
+ /*cds2*/ thisClassModel->datatype = c_2106303_B8datatype;
+ /*cds2*/ thisClassModel->typename = c_2106303_B8typename;
+ /*cds2*/ thisClassModel->asStr = c_2106303_B8asStr;
+ /*cds2*/ thisClassModel->className = c_2106303_B8className;
+ /*cds2*/ thisClassModel->classShortName = c_2106303_B8classShortName;
+ /*cds2*/ thisClassModel->classCName = c_2106303_B8classCName;
+ /*cds2*/ thisClassModel->classPackage = c_2106303_B8classPackage;
+ /*cds2*/ thisClassModel->objectDatasize = c_2106303_B8objectDatasize;
+ /*cds2*/ thisClassModel->get_value = c_2106303_B8get_value;
+ /*cds2*/ thisClassModel->set_value = c_2106303_B8set_value;
   thisClassModel->free = c_2106303_B8_free;
 }
 

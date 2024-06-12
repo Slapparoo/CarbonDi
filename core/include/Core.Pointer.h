@@ -6,6 +6,7 @@
 /* includes */
 
 // @TODO include class dependancies
+typedef struct c_2106303_Pointer_or c_2106303_Pointer_or; // forward declaration
 #define __C_2106303_POINTER_DATA_  \
  pointer value;
 #define __C_2106303_POINTER_CLASS_  \
@@ -26,6 +27,8 @@ __C_2106303_OBJECT_DATA_
 __C_2106303_BASEBOXING_DATA_
 __C_2106303_POINTER_DATA_
 } c_2106303_Pointer;
+
+
 pointer getc_2106303_Pointer_cm();
 void populatec_2106303_Pointer_cm(pointer classModel);
 num create_c_2106303_Pointer();

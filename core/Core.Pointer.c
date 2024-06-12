@@ -99,8 +99,9 @@ void c_2106303_Pointer_free(num this) { Object_ref *object_ref = useObject(this)
 
 num create_c_2106303_Pointer() {
   c_2106303_Pointer * _c_2106303_Pointer = ec_calloc(sizeof(c_2106303_Pointer), sizeof(char));
-/*cdv1*/((c_2106303_Pointer*)_c_2106303_Pointer)->instanceName = c_2106303_PointerclassName();
-  return createObject(_c_2106303_Pointer, getc_2106303_Pointer_cm(), false);
+  num this = createObject(_c_2106303_Pointer, getc_2106303_Pointer_cm(), false);
+/*cdv2 Core.BaseBoxingCore.Pointer */((c_2106303_Pointer*)_c_2106303_Pointer)->instanceName = c_2106303_PointerclassName();
+  return this;
 }
 
 c_2106303_Pointer_cm _c_2106303_Pointer_cm;
@@ -127,16 +128,16 @@ void populatec_2106303_Pointer_cm(pointer classModel) {
  populatec_2106303_BaseBoxing_cm(classModel);
   c_2106303_Pointer_cm* thisClassModel = (c_2106303_Pointer_cm*)classModel;
   thisClassModel->parent = getc_2106303_BaseBoxing_cm();
-  thisClassModel->datatype = c_2106303_Pointerdatatype;
-  thisClassModel->typename = c_2106303_Pointertypename;
-  thisClassModel->asStr = c_2106303_PointerasStr;
-  thisClassModel->className = c_2106303_PointerclassName;
-  thisClassModel->classShortName = c_2106303_PointerclassShortName;
-  thisClassModel->classCName = c_2106303_PointerclassCName;
-  thisClassModel->classPackage = c_2106303_PointerclassPackage;
-  thisClassModel->objectDatasize = c_2106303_PointerobjectDatasize;
-  thisClassModel->get_value = c_2106303_Pointerget_value;
-  thisClassModel->set_value = c_2106303_Pointerset_value;
+ /*cds2*/ thisClassModel->datatype = c_2106303_Pointerdatatype;
+ /*cds2*/ thisClassModel->typename = c_2106303_Pointertypename;
+ /*cds2*/ thisClassModel->asStr = c_2106303_PointerasStr;
+ /*cds2*/ thisClassModel->className = c_2106303_PointerclassName;
+ /*cds2*/ thisClassModel->classShortName = c_2106303_PointerclassShortName;
+ /*cds2*/ thisClassModel->classCName = c_2106303_PointerclassCName;
+ /*cds2*/ thisClassModel->classPackage = c_2106303_PointerclassPackage;
+ /*cds2*/ thisClassModel->objectDatasize = c_2106303_PointerobjectDatasize;
+ /*cds2*/ thisClassModel->get_value = c_2106303_Pointerget_value;
+ /*cds2*/ thisClassModel->set_value = c_2106303_Pointerset_value;
   thisClassModel->free = c_2106303_Pointer_free;
 }
 

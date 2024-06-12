@@ -5,7 +5,6 @@ import ec.lang.defs.*;
 public class StringExpr extends ExprDef {
     boolean cstring = false;
     boolean resolved = false;
-    // boolean staticAlloc = false;
 
     @Override
     public void resolve_01() {
@@ -13,7 +12,7 @@ public class StringExpr extends ExprDef {
 
         if (expr.startsWith("`")) {
             cstring = true;
-            thisType = new TypeIdDef("pointer");
+            thisType = new TypeIdDef("pointer");  // also want pChar for printf
         } else {
             if (expr.startsWith("'''")) {
                 //replace lf and cr with \n
@@ -61,7 +60,6 @@ public class StringExpr extends ExprDef {
         if (expr.length() == 3) {
             return expr.replace('`', '\'');
         }
-
 
         if (cstring) {
             if (expr.length() == 3) {

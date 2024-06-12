@@ -2404,7 +2404,7 @@ public class ecParser extends Parser {
 				setState(594);
 				((Parameter_definitionContext)_localctx).type_id = type_id();
 				 _localctx.fp.type = new TypeIdDef((((Parameter_definitionContext)_localctx).type_id!=null?_input.getText(((Parameter_definitionContext)_localctx).type_id.start,((Parameter_definitionContext)_localctx).type_id.stop):null));
-				System.out.println(_localctx.fp);
+				// System.out.println(_localctx.fp);
 				}
 				break;
 			case 5:

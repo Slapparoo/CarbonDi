@@ -4,40 +4,29 @@ import java.util.List;
 
 import ec.lang.defs.expressions.RangeExpr;
 import ec.lang.defs.expressions.StringExpr;
+import lombok.Getter;
+import lombok.Setter;
 
 public class CaseStatement extends StatementDef implements ContainerDef {
-
-    private BlockDef blockDef = new BlockDef();
+    @Getter @Setter private BlockDef blockDef = new BlockDef();
     private boolean defaultStatement = false;
     private ExprDef expr;
 
     public void setExprDef(ExprDef exprDef) {
         this.expr = exprDef;
-
         defaultStatement = expr.asCode().equals("default");
     }
-
 
     public void addStatement(StatementDef statementDef) {
         blockDef.statementDefs.add(statementDef);
     }
 
     @Override
-    public List<VariableDef> variableDefs() {
+    public List<VariableDef> getVariableDefs() {
         if (blockDef != null) {
-            return blockDef.variableDefs();
+            return blockDef.getVariableDefs();
         }
         return null;
-    }
-
-    @Override
-    public BlockDef getBlockDef() {
-        return blockDef;
-    }
-
-    @Override
-    public void setBlockDef(BlockDef blockDef) {
-        this.blockDef = blockDef;
     }
 
     @Override

@@ -6,7 +6,7 @@ import ec.lang.defs.*;
  * General purpose used for num, float, bool
  */
 public class ConstExpr extends ExprDef {
-    String type;
+    private String type;
 
     public ConstExpr (String value) {
         expr = value;
@@ -34,8 +34,6 @@ public class ConstExpr extends ExprDef {
 
     @Override
     public void resolve_01() {
-        // System.out.println("@@COnst resolve " + expr);
-
         if (type != null) {
             thisType = new TypeIdDef(type);
         } else {
@@ -56,7 +54,6 @@ public class ConstExpr extends ExprDef {
     @Override
     public String asCode() {
         if (type == null) {
-
             try {
                 new Integer(expr);
                 return "/*cn*/ "+ expr;

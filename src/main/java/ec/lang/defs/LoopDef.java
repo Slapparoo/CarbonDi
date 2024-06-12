@@ -197,7 +197,7 @@ public class LoopDef extends StatementDef implements ContainerDef {
     }
 
     @Override
-    public List<VariableDef> variableDefs() {
+    public List<VariableDef> getVariableDefs() {
         return (List<VariableDef>)Arrays.asList(variable);
     }
 

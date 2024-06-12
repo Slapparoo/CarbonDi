@@ -6,6 +6,7 @@
 /* includes */
 
 // @TODO include class dependancies
+typedef struct c_2106303_I16_or c_2106303_I16_or; // forward declaration
 #define __C_2106303_I16_DATA_  \
  i16 value;
 #define __C_2106303_I16_CLASS_  \
@@ -26,6 +27,8 @@ __C_2106303_OBJECT_DATA_
 __C_2106303_BASEBOXING_DATA_
 __C_2106303_I16_DATA_
 } c_2106303_I16;
+
+
 pointer getc_2106303_I16_cm();
 void populatec_2106303_I16_cm(pointer classModel);
 num create_c_2106303_I16();

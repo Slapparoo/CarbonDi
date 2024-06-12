@@ -2,8 +2,6 @@ package ec.lang.defs.expressions;
 
 import ec.lang.defs.ExprDef;
 
-// import ec.lang.defs.*;
-
 public class IncDecDef extends TypeExpr {
     public IncDecDef(String value) {
         super(value);

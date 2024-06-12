@@ -1,19 +1,18 @@
 package ec.lang.defs;
 
-import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import ec.lang.compiler.Messages;
+import lombok.Getter;
 
 public class BlockDef extends StatementDef implements ContainerDef {
     public List<StatementDef> statementDefs = new ArrayList<>();
     // tracked for validation
-    private List<VariableDef> variableDefs = new ArrayList<>();
+    @Getter private List<VariableDef> variableDefs = new ArrayList<>();
 
-    // private List<FunctionDef> functionDefs = new ArrayList<>();
     private char currentAnnoymous = 'a';
     private int internalUnique = 0;
 
@@ -55,7 +54,6 @@ public class BlockDef extends StatementDef implements ContainerDef {
         String res = "";
 
         for (StatementDef exprDef : statementDefs) {
-  //          exprDef.containedInBlock = this;
             if (exprDef.containedInBlock == null) {
                 exprDef.containedInBlock = this;
                 exprDef.resolve_01();
@@ -78,27 +76,22 @@ public class BlockDef extends StatementDef implements ContainerDef {
 
     public String asCode() {
         String res = "{\n";
+        boolean onExit = false;
         
         if (includeEntryExit) {
             if (functionBlock) { 
+                onExit = true;
                 res += "\nu64 entry__ = __onEnter();";
-            } else {
-                // res += "\n__onEnter();";
             }
         }
 
         res += statementsAsCode();
         
-        if (includeEntryExit && !hasReturn && functionBlock) {
-            res += "\n__onExit();";
+        if (!hasReturn && onExit) {
+            res += "\nreturn __exitReturn_void_un(entry__);";
         }
         
         return res + "}\n";
-    }
-
-    @Override
-    public List<VariableDef> variableDefs() {
-        return variableDefs;
     }
 
     public void addVariable(VariableDef variableDef) {
@@ -110,12 +103,8 @@ public class BlockDef extends StatementDef implements ContainerDef {
                 Messages.MESSAGES.addInfo("no Redefine this " + variableDef.type + " " + existingVar.type);
                 return;
             } else {
-
-                if (existingVar.type.getName().equals(variableDef.type.getName()) ) {
-
-                } else {
+                if (!existingVar.type.getName().equals(variableDef.type.getName()) ) {
                     if (existingVar.type.getName().equals("?")) {
-                        System.out.println("Replace this " + variableDef.type + " " + existingVar.type);                        
                         existingVar.type = variableDef.type;
                         return;
                     }
@@ -160,13 +149,10 @@ public class BlockDef extends StatementDef implements ContainerDef {
 
     public void setBlockDef(BlockDef blockDef) {
         throw new RuntimeException("Cant set BlockDef of Blockdef");
-        // this.blockDef = blockDef;
     }
 
 	public VariableDef resolveVariable(String name) {
-
         for (VariableDef variableDef : variableDefs) {
-
             if (name.matches("\\$[a-z]")) {
                 if (variableDef.getName().equals("a__" +name.charAt(1) )) {
                     return variableDef;

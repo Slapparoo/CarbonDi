@@ -36,23 +36,14 @@ public class AssignExpr extends StatementDef {
         
             assignLeft.containedInBlock = containedInBlock;
             assignLeft.resolve_01();
-
-            // throw new RuntimeException("Some assign types aren't implemented yet like " + assignOperator.expr);
         }
-
-
-
-        
         super.resolve_01();
     }
-
 
     public AssignExpr(ExprDef assignLeft, String assignOperator, ExprDef assignRight) {
         this.assignLeft = assignLeft;
         this.assignOperator = new TypeExpr(assignOperator);
         this.assignRight = assignRight;
-
-        // System.out.println("@@Assign " + this.assignLeft + " " + this.assignOperator + " " + this.assignRight);
     }
 
     public AssignExpr(String assignLeft, String indexValue, String assignOperator, ExprDef assignRight) {
@@ -61,8 +52,6 @@ public class AssignExpr extends StatementDef {
         this.assignRight = assignRight;
     }
 
-
-    // @Override
     public String asCode() {
         if (classVar) {
             return "/*Ax1*/" + assignLeft.asCode() + ";";
@@ -81,9 +70,6 @@ public class AssignExpr extends StatementDef {
         if (assignLeft instanceof MultiTypeExpr) {
             MultiTypeExpr al = (MultiTypeExpr)assignLeft;
             if (al.isProperty) {
-
-                // System.out.println("@@blockdef " + al.containedInBlock.hashCode());
-                // System.out.println("@@ax " + al.getVariableDef().getName() + " " + al.containedInBlock.directAccess);
                 if (al.containedInBlock.directAccess.contains(al.getVariableDef().getName())) {
                     al.directAccess = true;
                 }
@@ -107,18 +93,15 @@ public class AssignExpr extends StatementDef {
                 return "/*Ax6*/" + assignLeft.asCode() + assignOperator.asCode() + assignRight.asCode() + ";";
             }
 
-            if (!al.getIsGet() && !ArrayIndexExpr.ARRAY_TYPES.contains(al.thisType.getObjectType())   ) {
+            if (!al.getIsGet() && (al.thisType.getObjectType() == null || !ArrayIndexExpr.ARRAY_TYPES.contains(al.thisType.getObjectType()))) {
                 
                 // prepare_03 not called yet
                 al.asCode();
-                // System.out.println("@@al " + al + " " + al.directAccess);
                 if (!al.directAccess) {
                     return "/*Ax5*/" + al.asCode() + assignRight.asCode() + ");";
                 }
             }
         }
-
-        // System.out.println("@@assignLeft " + assignLeft.getClass() + " " + assignLeft.expr);
 
         return "/*Ax4*/" + assignLeft.asCode() + assignOperator.asCode() + assignRight.asCode() + ";";
     }

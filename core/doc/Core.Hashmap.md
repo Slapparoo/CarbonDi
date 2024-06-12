@@ -4,7 +4,7 @@ class Core.Hashmap extends [Core.Object](Core.Object.md)
 ---
 Properties
 ---
-|type|name|read|write|value|comments|
+|type|name|getter|setter|value|comments|
 |--- |--- |--- |--- |--- |--- |
 |boolean|__isInitm__|public|public|false||
 |u64|__hmitems__|public|public|0||

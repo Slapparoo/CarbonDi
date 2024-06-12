@@ -4,7 +4,7 @@ class Core.Duo extends [Core.Object](Core.Object.md)
 ---
 Properties
 ---
-|type|name|read|write|value|comments|
+|type|name|getter|setter|value|comments|
 |--- |--- |--- |--- |--- |--- |
 |Object|__one__|public|public|||
 |Object|__two__|public|public|||

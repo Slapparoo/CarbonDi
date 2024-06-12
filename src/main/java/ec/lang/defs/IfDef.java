@@ -49,7 +49,7 @@ public class IfDef extends StatementDef implements ContainerDef {
 
     public String asCode() {
         if (!resolved) {
-            System.out.println("if Not resolved.");
+            // System.out.println("if Not resolved.");
             resolve_01();
         }
 
@@ -69,7 +69,7 @@ public class IfDef extends StatementDef implements ContainerDef {
 	}
 
     @Override
-    public List<VariableDef> variableDefs() {
+    public List<VariableDef> getVariableDefs() {
         return null;
     }
     

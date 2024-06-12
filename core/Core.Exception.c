@@ -93,8 +93,9 @@ void c_2106303_Exception_free(num this) { Object_ref *object_ref = useObject(thi
 
 num create_c_2106303_Exception() {
   c_2106303_Exception * _c_2106303_Exception = ec_calloc(sizeof(c_2106303_Exception), sizeof(char));
-/*cdv1*/((c_2106303_Exception*)_c_2106303_Exception)->instanceName = c_2106303_ExceptionclassName();
-  return createObject(_c_2106303_Exception, getc_2106303_Exception_cm(), false);
+  num this = createObject(_c_2106303_Exception, getc_2106303_Exception_cm(), false);
+/*cdv2 Core.ObjectCore.Exception */((c_2106303_Exception*)_c_2106303_Exception)->instanceName = c_2106303_ExceptionclassName();
+  return this;
 }
 
 c_2106303_Exception_cm _c_2106303_Exception_cm;
@@ -129,15 +130,15 @@ void populatec_2106303_Exception_cm(pointer classModel) {
  populatec_2106303_Object_cm(classModel);
   c_2106303_Exception_cm* thisClassModel = (c_2106303_Exception_cm*)classModel;
   thisClassModel->parent = getc_2106303_Object_cm();
-  thisClassModel->className = c_2106303_ExceptionclassName;
-  thisClassModel->classShortName = c_2106303_ExceptionclassShortName;
-  thisClassModel->classCName = c_2106303_ExceptionclassCName;
-  thisClassModel->classPackage = c_2106303_ExceptionclassPackage;
-  thisClassModel->objectDatasize = c_2106303_ExceptionobjectDatasize;
-  thisClassModel->get_message = c_2106303_Exceptionget_message;
-  thisClassModel->set_message = c_2106303_Exceptionset_message;
-  thisClassModel->get_root = c_2106303_Exceptionget_root;
-  thisClassModel->set_root = c_2106303_Exceptionset_root;
+ /*cds2*/ thisClassModel->className = c_2106303_ExceptionclassName;
+ /*cds2*/ thisClassModel->classShortName = c_2106303_ExceptionclassShortName;
+ /*cds2*/ thisClassModel->classCName = c_2106303_ExceptionclassCName;
+ /*cds2*/ thisClassModel->classPackage = c_2106303_ExceptionclassPackage;
+ /*cds2*/ thisClassModel->objectDatasize = c_2106303_ExceptionobjectDatasize;
+ /*cds2*/ thisClassModel->get_message = c_2106303_Exceptionget_message;
+ /*cds2*/ thisClassModel->set_message = c_2106303_Exceptionset_message;
+ /*cds2*/ thisClassModel->get_root = c_2106303_Exceptionget_root;
+ /*cds2*/ thisClassModel->set_root = c_2106303_Exceptionset_root;
   thisClassModel->free = c_2106303_Exception_free;
 }
 

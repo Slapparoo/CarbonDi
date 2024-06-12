@@ -1,6 +1,7 @@
 package ec.lang.defs;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import ec.lang.defs.Enums.Accessor;
 import ec.lang.defs.expressions.FunctionCallExpr;
@@ -24,38 +25,19 @@ public class ConstructorDef extends FunctionDefBase implements Cloneable {
     }
     
     private String paramsAsHeader() {
-        String res = "/* param */";
-        boolean first = true;
-
-        for(VariableDef param : getParameters()) {
-            if (!first) {
-                res += ", ";
-            }
-            res += param.asCode();
-            first = false;
-        }
-        return res;
+        return "/* param */" + getParameters().stream()
+            .map(VariableDef::asCode)
+            .collect(Collectors.joining(", "));
     }
-
 
     private String paramsAsSignature() {
-        String res = "";
-        boolean first = true;
-
-        for(VariableDef param : getParameters()) {
-            if (!first) {
-                res += ", ";
-            }
-            res += param.asParameterSignature();
-            first = false;
-        }
-        return res;
+        return getParameters().stream()
+        .map(VariableDef::asParameterSignature)
+        .collect(Collectors.joining(", "));
     }
-
 
     public String asHeader() {
         if (name == null || getParameters().size() == 0) {
-            // System.out.println("@@ConstructorDef.asHeader name == null");
             return "";
         }
 
@@ -63,7 +45,6 @@ public class ConstructorDef extends FunctionDefBase implements Cloneable {
     }
 
     String getBlockasCode() {
-        // System.out.println(getSignature());
         if (getBlockDef() == null || getBlockDef().statementDefs == null) {
             return "";
         }
@@ -102,7 +83,6 @@ public class ConstructorDef extends FunctionDefBase implements Cloneable {
         return accessor + " " +name+"("+ paramsAsSignature() +");";
     }
 
-
     private String getSetValuesAsCode() {
         String res = "";
         for (VariableDef def : getParameters()) {
@@ -132,14 +112,12 @@ public class ConstructorDef extends FunctionDefBase implements Cloneable {
 
         ClassDef cp = classDef.parent;
 
-        // String thisSignature = asClassModelDef();
         String thisSignature = "name";
 
         while (cp != null) {
             FunctionDef functionDef = cp.resolveFunction(name);
 
             if (functionDef != null) {
-                System.out.println("@@Function override " + name + " " + thisSignature + " == " + functionDef.getParamsSignature());
                 if (thisSignature.equals(functionDef.getParamsSignature())) {
                     is_override = true;
                 } else {
@@ -155,7 +133,6 @@ public class ConstructorDef extends FunctionDefBase implements Cloneable {
         
         for (VariableDef  param : getParameters()) {
             param.isParam = true;
-            // System.out.println("@@Constructor param type resolving " + param.getName() +" "+ param.type + " "+ param.is_property);
             
             if (param.equalsParam) {
                 VariableDef def =  classDef.resolveProperty(param.getName());
@@ -172,49 +149,17 @@ public class ConstructorDef extends FunctionDefBase implements Cloneable {
             }
         }
 
-
         if (getBlockDef() != null) {
             getBlockDef().resolve_01();
         }
     }
 
-
     @Override
     public void prepare_03() {
     }
 
-    // private String paramsAsCode() {
-    //     String res = "/* param */";
-    //     boolean first = true;
-
-    //     // the first param is the class object
-    //     for(VariableDef param : getParameters()) {
-    //         if (!first) {
-    //             res += ", ";
-    //         }
-    //         res += param.asCode();
-    //         first = false;
-    //     }
-    //     return res;
-    // }
-
-    // private String contentAsCode() {
-
-    //     if (classDef == null) {
-    //         return (getBlockDef() == null ? "" : getBlockDef().asCode()) +"\n" ;
-    //     } else {
-    //         if (classDef.classType == Enums.ClassType.PLAN) {
-    //             return "";
-    //         } else {
-    //             // this. will need to be added
-    //             return (getBlockDef() == null ? "" : getBlockDef().asCode()) +"\n" ;
-    //         }
-    //     }
-    //     // return "";
-    // }
-
     @Override
-    public List<VariableDef> variableDefs() {
+    public List<VariableDef> getVariableDefs() {
         // make the parameters vars
         return getParameters();
     }
@@ -242,5 +187,4 @@ public class ConstructorDef extends FunctionDefBase implements Cloneable {
         + "`__\n";
         return res + super.asDoc() ;
     }
-
 }

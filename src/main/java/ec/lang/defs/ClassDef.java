@@ -9,47 +9,39 @@ import java.util.Map;
 
 import ec.lang.defs.Enums.Accessor;
 import ec.lang.defs.expressions.FunctionCallExpr;
+import lombok.Getter;
+import lombok.Setter;
 
 public class ClassDef extends StatementDef implements ContainerDef, Castable {
 
     private ClassName classname;
     private ClassName extendsclass;
-    // private ExprDef purename;
     public Enums.Accessor acccessor = Accessor.PUBLIC;
     public Enums.ClassType classType;
     public boolean is_final;
     public boolean is_signature = false;
     public String namespace;
-    public  List<VariableDef> variableDefs = new ArrayList<>();
+    @Getter public  List<VariableDef> variableDefs = new ArrayList<>();
     private List<FunctionDef> functionDefs = new ArrayList<>();
     private List<EncapsulationDef> encapsulationDefs = new ArrayList<>();
     private List<String> implementations = new ArrayList<>();
-    private List<ConstructorDef> constructorDefs = new ArrayList<>();
+    @Getter private List<ConstructorDef> constructorDefs = new ArrayList<>();
     private List<String> generics = new ArrayList<>();
-    
+    public FileDef fileDef = null;
+    public Accessor readAccessor = Accessor.PUBLIC;
+    public Accessor writeAccessor = Accessor.PUBLIC;
+    private Map<String, ConstructorDef> constructors = new HashMap<>();
+    public List<VariableDef> properties = new ArrayList<>();
+    public List<VariableDef> allProperties = new ArrayList<>();
+    @Getter @Setter private BlockDef blockDef;
+    public ClassDef parent = null;
+    private boolean is_class = true;
+    private boolean is_stub = false;
+    static SortbySignature SortbySignature = new SortbySignature();
 
     public List<FunctionDef> getFunctionDefs() {
         return Collections.unmodifiableList(functionDefs);
     } 
-
-    public FileDef fileDef = null;
-    public Accessor readAccessor = Accessor.PUBLIC;
-    public Accessor writeAccessor = Accessor.PUBLIC;
-
-    private Map<String, ConstructorDef> constructors = new HashMap<>();
-
-
-    public List<VariableDef> properties = new ArrayList<>();
-    public List<VariableDef> allProperties = new ArrayList<>();
-
-
-    private BlockDef blockDef;
-
-    public ClassDef parent = null;
-
-    // private String classVar = null;
-    private boolean is_class = true;
-    private boolean is_stub = false; // should be mutually exclusive with isClass
 
     public static class SortbySignature implements Comparator<FunctionDefBase> {
         // Used for sorting in ascending order of
@@ -60,8 +52,6 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
             return a.getSignature().compareTo(b.getSignature());
         }
     }
-
-    static SortbySignature SortbySignature = new SortbySignature();
 
     public VariableDef resolveProperty(String name) {
         // System.out.println("@@resolveProperty " + name + " " + properties);
@@ -109,11 +99,8 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
         return null;
     }
 
-
-
     // is this required?
     public VariableDef resolveVariable(String name) {
-        System.out.println("@@classdef.resolveVariable " + name );
         for (VariableDef var : variableDefs) {
             if (var.getName().equals(name)) {
                 return var;
@@ -145,7 +132,6 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
         return null;
     }
 
-
     public ConstructorDef resolveConstructor(FunctionCallExpr functionCallExpr) {
         for (ConstructorDef cd : constructorDefs) {
             if (cd.isCallable(null, functionCallExpr.params)) {
@@ -154,7 +140,6 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
         }
         return null;
     }
-
 
     public String getNamespace() {
         if (namespace == null) {
@@ -167,19 +152,12 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
         implementations.add(implmentation);
     }
 
-
     public void addGenerics(String generic) {
         generics.add(generic);
     }
 
     @Override
     public void resolve_01() {
-
-        // System.out.println("@@resolveclass " + this);
-        if (extendsclass == null && !getFqn().equals("Core.Object") ) {
-            // setCastType("Core.Object");
-        } 
-        
         blockDef.isClass = true;
 
         if (blockDef == null) {
@@ -189,9 +167,6 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
         DefFactory.FUNCT_DEFS.add(new FunctionDef(classname.getShortName(), "create_" + getCName()));
 
         for (StatementDef statementDef : blockDef.statementDefs) {
-
-            // System.out.println(this + " " +  statementDef.getClass());
-
             if (statementDef instanceof FunctionDef) {
                 FunctionDef fd = (FunctionDef) statementDef;
                 if (parent != null && parent.resolveFunction(fd.name) != null) {
@@ -199,14 +174,6 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
                 }
                 functionDefs.add(fd);
                 fd.classDef = this;
-
-                // if (((FunctionDefBase)statementDef).getBlockDef() != null) {
-                //     ((FunctionDefBase)statementDef).getBlockDef().isClass = true;
-                //     ((FunctionDefBase)statementDef).getBlockDef().classDef = this;
-                //     statementDef.containedInBlock = blockDef;
-                //     System.out.println("@@class " + fd.name + " " + fd.getBlockDef().classDef);
-                // }
-
             }
 
             if (statementDef instanceof EncapsulationDef) {
@@ -247,7 +214,6 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
         constructorDefs.add(defaultConstructor);
 
         for (VariableDef variableDef : properties) {
-            // variableDef.is_property = true;
             variableDef.classDef = this;
         }
 
@@ -305,7 +271,6 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
                     boolean exists = false;
                     
                     for (FunctionDef tc : functionDefs) {
-                        // if (tc.name.equals(nc.name)) {
                         if (tc.name.equals(c.name)) {
                             exists = true;
 
@@ -328,7 +293,6 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
                             }
                         }
                         functionDefs.add(nc);
-                        // nc.resolve_01();
                     }
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
@@ -372,7 +336,6 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
             if (c.name.equals(classname.getShortName())) {
                 constructors.put(c.getSignature(), c);
             }
-            
         }
 
         // find the constructor with the lowest priverledge level
@@ -470,7 +433,6 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
 
     @Override
     public void prepare_03() {
-
         // most of this needs to move to resolve
 
         // loop through the children
@@ -484,10 +446,7 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
         }
 
         // change all the function sigs
-
-
         // mark override accessors as parent so they don't get created
-
         // generate the properties functions
 
         boolean optimise = true;
@@ -520,7 +479,6 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
             String dataAccess = "";
 
             if (overrideGetter != null) {
-                // overrideGetter.containedInBlock = funct.getBlockDef();
                 overrideGetter.resolve_01();
                 overrideGetter.prepare_03();
                 overrideGetter.optimise_04();
@@ -530,8 +488,8 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
             }
 
             FunctionDef funct = SnippetFactory.addReturnFunction("get_" + var.getName(), 
-            body, 
-            var.type, false, var.is_static, true
+                body, 
+                var.type, false, var.is_static, true
             );
 
             funct.classDef = this;
@@ -545,11 +503,8 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
 
             functionDefs.add(funct);
 
-
             funct.accessor = var.readAccessor;
             funct.is_property = true;
-            // private FunctionDef addVoidFunction(String functionName, String body,  
-            // boolean isOverride, boolean is_static, boolean is_final) {
 
             dataAccess = SnippetFactory.dataModelStatement(getCName(), "this", var.is_static);
             if (var.isPrimative()) {
@@ -566,7 +521,6 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
                 overrideSetter.resolve_01();
                 overrideSetter.prepare_03();
                 overrideSetter.optimise_04();
-                // overrideSetter.getBlockDef().statementDefs.add(0, new DirectStatement(body + ";\n"));
                 setter.setBlockDef(overrideSetter.getBlockDef());
             }
 
@@ -579,7 +533,6 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
             }
 
             VariableDef param = new VariableDef();
-            // param.setName("$a");
             param.type = var.type;
 
             setter.classDef = this;
@@ -632,19 +585,11 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
         // type lookup information is in the reference table (the same meory reference table)
         + getParentDataModel()
         + getDataModelName() + "\n} " + getCName() +";\n\n"
-/* kind of risky as now these two structs need to be aligned
-typedef struct Object_ref {
-  pointer data;
-  pointer classmodel;
-  i64 refCounter;
-  boolean is_stack;
-} Object_ref;
-*/        
-        + String.format("typedef struct %s_or  /* = Object_Ref*/ {\n", getCName())
-        + String.format(" %s * data;\n", getCName())
-        + String.format(" %s_cm * classmodel;\n", getCName())
-        + "i64 refCounter;\n  boolean is_stack;\n"
-        + String.format("} %s_or;\n\n", getCName())
+        // + String.format("typedef struct %s_or  /* = Object_Ref*/ {\n", getCName())
+        // + String.format(" %s * data;\n", getCName())
+        // + String.format(" %s_cm * classmodel;\n", getCName())
+        // + "i64 refCounter;\n  boolean is_stack;\n"
+        // + String.format("} %s_or;\n\n", getCName())
 
         + "\npointer get" +getCName()+"_cm();"
         + "\nvoid populate" +getCName()+"_cm(pointer classModel);"
@@ -686,7 +631,6 @@ typedef struct Object_ref {
     }
 
     public void addProperty(VariableDef variableDef) {
-        // System.out.println("@@ClassDef add " + classname.getFqn() + " " + variableDef);
         properties.add(variableDef);
     }
 
@@ -705,18 +649,6 @@ typedef struct Object_ref {
             first = false;
         }
 
-        // for(EncapsulationDef funct : encapsulationDefs) {
-        //     if (!first) {
-        //         res += "\n";
-        //     }
-        //     String n = funct.name;
-        //     funct.name = getCName()+ funct.getFunctioname();
-        //     res += funct.asCode();
-        //     funct.name = n;
-        //     first = false;
-        // }
-
-
         res += "\n" + getFreeMethod() + "\n";
 
         return res;
@@ -732,12 +664,10 @@ typedef struct Object_ref {
         }
 
         return false;
-
     }
 
     private String createDataModel() {
         String res = "#define " + getDataModelName() + " ";
-
 
         for(VariableDef var : variableDefs) {
             if (!(isParentProperty(var) || var.is_static)) {
@@ -758,10 +688,6 @@ typedef struct Object_ref {
             res += "  \\\n  "+funct.getExpandedSignature() +";";
         }
 
-        // for(EncapsulationDef funct : encapsulationDefs) {
-        //     res += "  \\\n  "+funct.getExpandedSignature() +";";
-        // }
-
         for(VariableDef var : variableDefs) {
             if (!var.is_static ) {
                 continue;
@@ -775,16 +701,14 @@ typedef struct Object_ref {
     private String populateClassMethods() {
         String res = "";
         for(FunctionDef funct : functionDefs) {
-            if (!funct.is_parent && parent != null) {
+            
+            // if (!funct.is_parent && parent != null) {
+            if (!funct.is_parent) {
                 res += "\n /*cds2*/ thisClassModel->"+ funct.name +" = "+ getCName() + funct.name +";";
-            } else if (funct.is_property) {
-                res += "\n /*cds3*/ thisClassModel->"+ funct.name +" = "+ getCName() + funct.name +";";
+            // } else if (funct.is_property) {
+            //     res += "\n /*cds3*/ thisClassModel->"+ funct.name +" = "+ getCName() + funct.name +";";
             }
         }
-
-        // for(EncapsulationDeffor(EncapsulationDef funct : encapsulationDefs) {
-        //     res += "\n  thisClassModel->"+ funct.name +" = "+ getCName() + funct.name +";";
-        // }
 
         for(VariableDef var : variableDefs) {
             if (isParentProperty(var) || !var.is_static) {
@@ -890,9 +814,7 @@ typedef struct Object_ref {
             }
 
             if (var.assignValue != null) {
-
                 if (var.assignValue.expr != null) {
-                    // "(("+name+"*)_"+getClassVar()+")->
                     res += "\n/*cdv1*/(("+getCName()+"*)_"+getCName()+")->"+ var.getName() +" = "+ var.assignValue.asCode() +";";
                     // TODO Arrays
                 } else {
@@ -903,12 +825,10 @@ typedef struct Object_ref {
                     } else {
                         res += "/*pr2*/ assignObject(&"+dataAccess+"->"+var.getName()+", "+ var.assignValue.asCode()+");";
                     }                    
-                    // res += "\n/*cdv1*/(("+getCName()+"*)_"+getCName()+")->"+ var.getName() +" = "+ var.assignValue.asCode() +";";
                 }
             }
         }
 
-        //(c_2106303_I64*)_c_2106303_I64->instanceName = c_2106303_I64className();
         if (getFqn().equals("Core.Object")) {
             res += "\n/*cdv2 "+parent+ getFqn() +" */(("+getCName()+"*)_"+getCName()+")->instanceName = "+ getCName() +"className();";
         } else if (parent != null) {
@@ -943,10 +863,6 @@ typedef struct Object_ref {
     }
 
     public String asCode() {
-        /* struct classVar {
-            int value;
-        }
-        */
         return  "// " + getFqn()+ "\n"
             + "#include \"Core.Core_main.h\""
             + "\n#include \""+ getFqn()+ ".h\""
@@ -1013,20 +929,6 @@ typedef struct Object_ref {
     }
 
     @Override
-    public List<VariableDef> variableDefs() {
-        return variableDefs;
-    }
-
-    public BlockDef getBlockDef() {
-        return blockDef;
-    }
-
-    public void setBlockDef(BlockDef blockDef) {
-        // System.out.println("*ClassDef setBlock " + blockDef);
-        this.blockDef = blockDef;
-    }
-
-    @Override
     public void setCastType(String casttype) {
         if (casttype.contains(".")) {
             extendsclass = new ClassName(casttype);
@@ -1046,10 +948,6 @@ typedef struct Object_ref {
         if (parent == null) {
             throw new RuntimeException("Can't resolve parent class " + extendsclass + " for " + classname);
         }
-    }
-
-    public List<ConstructorDef> getConstructorDefs() {
-        return constructorDefs;
     }
 
     public String getShortname() {
@@ -1089,7 +987,7 @@ typedef struct Object_ref {
 
         if (vars > 0) {
             res += "\n---\nProperties\n---\n"
-            + "|type|name|read|write|value|comments|\n|--- |--- |--- |--- |--- |--- |\n";
+            + "|type|name|getter|setter|value|comments|\n|--- |--- |--- |--- |--- |--- |\n";
 
             for (VariableDef var : properties ) {
                 if (!var.is_static) {
@@ -1107,7 +1005,7 @@ typedef struct Object_ref {
 
         if (vars > 0) {
             res += "\n---\nStatic Properties\n---\n"
-            + "|type|name|read|write|value|comments|\n|--- |--- |--- |--- |--- |--- |\n";
+            + "|type|name|getter|setter|value|comments|\n|--- |--- |--- |--- |--- |--- |\n";
 
             for (VariableDef var : properties ) {
                 if (var.is_static) {
@@ -1115,7 +1013,6 @@ typedef struct Object_ref {
                 }
             }
         }
-
 
         res += "\n---\nConstructors\n---\n";
 

@@ -159,13 +159,16 @@ public class FileDef extends BaseDef implements ContainerDef {
     }
 
     public String asCode() {
+        if (blockDef != null) {
+            blockDef.functionBlock = true;
+        } 
         return "#include \""+ filename + ".h\""
             + getMethodsAsCode()
             + "\nvoid "+mainName() +" " + (blockDef == null ? "" : blockDef.asCode());
     }
 
     @Override
-    public List<VariableDef> variableDefs() {
+    public List<VariableDef> getVariableDefs() {
         return variableDefs;
     }
 

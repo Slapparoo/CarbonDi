@@ -4,7 +4,7 @@ class Core.String extends [Core.Object](Core.Object.md)
 ---
 Properties
 ---
-|type|name|read|write|value|comments|
+|type|name|getter|setter|value|comments|
 |--- |--- |--- |--- |--- |--- |
 |pointer|__value__|public|public|||
 |i32|__hash__|public|public|||

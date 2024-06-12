@@ -11,8 +11,8 @@ public class TryCatchDef extends StatementDef implements ContainerDef {
         private BlockDef blockDef = new BlockDef();
 
         @Override
-        public List<VariableDef> variableDefs() {
-            return getBlockDef().variableDefs();
+        public List<VariableDef> getVariableDefs() {
+            return getBlockDef().getVariableDefs();
         }
 
         @Override
@@ -111,8 +111,8 @@ public class TryCatchDef extends StatementDef implements ContainerDef {
     private FinallyBlock finallyBlock;
 
     @Override
-    public List<VariableDef> variableDefs() {
-        return tryBlock.getBlockDef().variableDefs();
+    public List<VariableDef> getVariableDefs() {
+        return tryBlock.getBlockDef().getVariableDefs();
     }
 
     @Override

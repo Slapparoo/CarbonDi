@@ -93,8 +93,9 @@ void c_2106303_Duo_free(num this) { Object_ref *object_ref = useObject(this);
 
 num create_c_2106303_Duo() {
   c_2106303_Duo * _c_2106303_Duo = ec_calloc(sizeof(c_2106303_Duo), sizeof(char));
-/*cdv1*/((c_2106303_Duo*)_c_2106303_Duo)->instanceName = c_2106303_DuoclassName();
-  return createObject(_c_2106303_Duo, getc_2106303_Duo_cm(), false);
+  num this = createObject(_c_2106303_Duo, getc_2106303_Duo_cm(), false);
+/*cdv2 Core.ObjectCore.Duo */((c_2106303_Duo*)_c_2106303_Duo)->instanceName = c_2106303_DuoclassName();
+  return this;
 }
 
 c_2106303_Duo_cm _c_2106303_Duo_cm;
@@ -114,15 +115,15 @@ void populatec_2106303_Duo_cm(pointer classModel) {
  populatec_2106303_Object_cm(classModel);
   c_2106303_Duo_cm* thisClassModel = (c_2106303_Duo_cm*)classModel;
   thisClassModel->parent = getc_2106303_Object_cm();
-  thisClassModel->className = c_2106303_DuoclassName;
-  thisClassModel->classShortName = c_2106303_DuoclassShortName;
-  thisClassModel->classCName = c_2106303_DuoclassCName;
-  thisClassModel->classPackage = c_2106303_DuoclassPackage;
-  thisClassModel->objectDatasize = c_2106303_DuoobjectDatasize;
-  thisClassModel->get_one = c_2106303_Duoget_one;
-  thisClassModel->set_one = c_2106303_Duoset_one;
-  thisClassModel->get_two = c_2106303_Duoget_two;
-  thisClassModel->set_two = c_2106303_Duoset_two;
+ /*cds2*/ thisClassModel->className = c_2106303_DuoclassName;
+ /*cds2*/ thisClassModel->classShortName = c_2106303_DuoclassShortName;
+ /*cds2*/ thisClassModel->classCName = c_2106303_DuoclassCName;
+ /*cds2*/ thisClassModel->classPackage = c_2106303_DuoclassPackage;
+ /*cds2*/ thisClassModel->objectDatasize = c_2106303_DuoobjectDatasize;
+ /*cds2*/ thisClassModel->get_one = c_2106303_Duoget_one;
+ /*cds2*/ thisClassModel->set_one = c_2106303_Duoset_one;
+ /*cds2*/ thisClassModel->get_two = c_2106303_Duoget_two;
+ /*cds2*/ thisClassModel->set_two = c_2106303_Duoset_two;
   thisClassModel->free = c_2106303_Duo_free;
 }
 

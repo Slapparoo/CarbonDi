@@ -4,7 +4,7 @@ class Core.DynamicArray extends [Core.Array](Core.Array.md)
 ---
 Properties
 ---
-|type|name|read|write|value|comments|
+|type|name|getter|setter|value|comments|
 |--- |--- |--- |--- |--- |--- |
 |u64|__startIndex__|public|public|||
 |u64|__endIndex__|public|public|||
@@ -19,7 +19,7 @@ Properties
 ---
 Static Properties
 ---
-|type|name|read|write|value|comments|
+|type|name|getter|setter|value|comments|
 |--- |--- |--- |--- |--- |--- |
 |u64|__initialSize__|public|public|8||
 |u64|__growBy__|public|public|8||

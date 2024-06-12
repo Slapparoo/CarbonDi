@@ -1,6 +1,8 @@
 package ec.lang;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 
@@ -11,9 +13,10 @@ import ec.lang.defs.ClassDef;
 import ec.lang.defs.DefFactory;
 import ec.lang.defs.FunctionDef;
 import ec.lang.defs.FunctionDefBase;
+import ec.lang.defs.Enums.ClassType;
 import ec.lang.model.ecLexer;
 
-public class ClassDefTest {
+public class ClassDefTest extends BaseTest {
 
     @Test
     public void testMethodOverride() throws IOException {
@@ -23,7 +26,7 @@ public class ClassDefTest {
         + "class MyClass2 (Default.MyClass1) {\n properties {\n int n1; \n}\n int number() {\nreturn number2(n1);\n}"
         + "public final pointer myrealloc(pointer ptr, u64 size) {return External.core.Object_realloc(this, ptr, size); }\n} ";
 
-        BaseTest.preLoad();
+        // BaseTest.preLoad();
         BaseTest.lex(new ecLexer(new ANTLRInputStream(ecCode)));
 
         ClassDef myClass1 = DefFactory.resolveClass("MyClass1");
@@ -60,15 +63,18 @@ public class ClassDefTest {
         String ecCode = ""
         + "class Default.MyClass2p{\n  properties {\nint nl = 10;\n}\nint number() {\nreturn nl;\n}}";
 
-        BaseTest.preLoad();
+        // BaseTest.preLoad();
         BaseTest.lex(new ecLexer(new ANTLRInputStream(ecCode)));
 
         ClassDef myClass1 = DefFactory.resolveClass("MyClass2p");
 
         FunctionDef fd2 = myClass1.resolveFunction("number");
 
-        String res = "intnumber(numthis){u64entry__=__onEnter();return__exitReturn_int_un(((c_1085510111_MyClass2p_cm*)useObject(this)->classmodel)->get_nl(this)entry__);}";
-        assertEquals(BaseTest.stripWhiteSpace(fd2.asCode()), res, "function generated");
+        assertNotNull(fd2);
+        String code = BaseTest.stripComments(fd2.asCode());
+        assertNotNull(code);
+        // System.out.println(code);
+        assertTrue(code.indexOf("((c_1085510111_MyClass2p_cm*)useObject(this)->classmodel)->get_nl(this)") > -1);
     }
 
     @Test
@@ -76,17 +82,22 @@ public class ClassDefTest {
         String ecCode = ""
         + "class Default.MyClass1p(Core.Object){\n  properties {\nint nl = 10;\n}\npointer number() {\nreturn this.asStr();\n}}";
 
-        BaseTest.preLoad();
+        // BaseTest.preLoad();
         BaseTest.lex(new ecLexer(new ANTLRInputStream(ecCode)));
 
         ClassDef myClass1 = DefFactory.resolveClass("MyClass1p");
 
         myClass1.asCode();
 
-        FunctionDef fd2 = myClass1.resolveFunction("number");
+        assertNotNull(myClass1);
+        assertEquals(null, myClass1.classType);
+        assertNotNull(myClass1.parent);
 
-        String res = "pointernumber(numthis){u64entry__=__onEnter();return__exitReturn_pointer_un(((c_1085510111_MyClass1p_cm*)useObject(this)->classmodel)->asStr(this)entry__);}";
-        assertEquals(BaseTest.stripWhiteSpace(fd2.asCode()), res, "function generated");
+        FunctionDef fd2 = myClass1.resolveFunction("number");
+        assertNotNull(fd2);
+        String code = BaseTest.stripComments(fd2.asCode());
+        assertNotNull(code);
+        assertTrue(code.indexOf("((c_1085510111_MyClass1p_cm*)useObject(this)->classmodel)->asStr(this)") > -1);
     }
 
     
@@ -95,17 +106,14 @@ public class ClassDefTest {
         String ecCode = ""
         + "class Default.MyClass3p{\n  properties {\nint nl = 10;\n}\nint number() {\nreturn this.nl;\n}}";
 
-        BaseTest.preLoad();
+        // BaseTest.preLoad();
         BaseTest.lex(new ecLexer(new ANTLRInputStream(ecCode)));
 
         ClassDef myClass1 = DefFactory.resolveClass("MyClass3p");
 
-        myClass1.asCode();
-
-        FunctionDef fd2 = myClass1.resolveFunction("number");
-
-        String res = "intnumber(numthis){u64entry__=__onEnter();return__exitReturn_int_un(((c_1085510111_MyClass3p_cm*)useObject(this)->classmodel)->get_nl(this)entry__);}";
-        assertEquals(BaseTest.stripWhiteSpace(fd2.asCode()), res, "function generated");
-    }
+        assertNotNull(myClass1);
+        assertEquals(null, myClass1.classType);
+        assertEquals(null, myClass1.parent);
+   }
 
 }

@@ -7,10 +7,13 @@
 **/*.gch
 **/gen/*
 coregen
+coregen.old
 core.old
 target/**
 c-lang/**
 ec-test/*
+vgcore*
+!ec-test/test/**
 /.antlr
 /.settings
 core/include/eccore.h

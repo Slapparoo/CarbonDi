@@ -6,6 +6,7 @@
 /* includes */
 
 // @TODO include class dependancies
+typedef struct c_2106303_String_or c_2106303_String_or; // forward declaration
 #define __C_2106303_STRING_DATA_  \
  pointer value; \
  i32 hash;
@@ -40,6 +41,8 @@ typedef struct c_2106303_String {
 __C_2106303_OBJECT_DATA_
 __C_2106303_STRING_DATA_
 } c_2106303_String;
+
+
 pointer getc_2106303_String_cm();
 void populatec_2106303_String_cm(pointer classModel);
 num create_c_2106303_String();

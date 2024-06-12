@@ -99,8 +99,9 @@ void c_2106303_I32_free(num this) { Object_ref *object_ref = useObject(this);
 
 num create_c_2106303_I32() {
   c_2106303_I32 * _c_2106303_I32 = ec_calloc(sizeof(c_2106303_I32), sizeof(char));
-/*cdv1*/((c_2106303_I32*)_c_2106303_I32)->instanceName = c_2106303_I32className();
-  return createObject(_c_2106303_I32, getc_2106303_I32_cm(), false);
+  num this = createObject(_c_2106303_I32, getc_2106303_I32_cm(), false);
+/*cdv2 Core.BaseBoxingCore.I32 */((c_2106303_I32*)_c_2106303_I32)->instanceName = c_2106303_I32className();
+  return this;
 }
 
 c_2106303_I32_cm _c_2106303_I32_cm;
@@ -127,16 +128,16 @@ void populatec_2106303_I32_cm(pointer classModel) {
  populatec_2106303_BaseBoxing_cm(classModel);
   c_2106303_I32_cm* thisClassModel = (c_2106303_I32_cm*)classModel;
   thisClassModel->parent = getc_2106303_BaseBoxing_cm();
-  thisClassModel->datatype = c_2106303_I32datatype;
-  thisClassModel->typename = c_2106303_I32typename;
-  thisClassModel->asStr = c_2106303_I32asStr;
-  thisClassModel->className = c_2106303_I32className;
-  thisClassModel->classShortName = c_2106303_I32classShortName;
-  thisClassModel->classCName = c_2106303_I32classCName;
-  thisClassModel->classPackage = c_2106303_I32classPackage;
-  thisClassModel->objectDatasize = c_2106303_I32objectDatasize;
-  thisClassModel->get_value = c_2106303_I32get_value;
-  thisClassModel->set_value = c_2106303_I32set_value;
+ /*cds2*/ thisClassModel->datatype = c_2106303_I32datatype;
+ /*cds2*/ thisClassModel->typename = c_2106303_I32typename;
+ /*cds2*/ thisClassModel->asStr = c_2106303_I32asStr;
+ /*cds2*/ thisClassModel->className = c_2106303_I32className;
+ /*cds2*/ thisClassModel->classShortName = c_2106303_I32classShortName;
+ /*cds2*/ thisClassModel->classCName = c_2106303_I32classCName;
+ /*cds2*/ thisClassModel->classPackage = c_2106303_I32classPackage;
+ /*cds2*/ thisClassModel->objectDatasize = c_2106303_I32objectDatasize;
+ /*cds2*/ thisClassModel->get_value = c_2106303_I32get_value;
+ /*cds2*/ thisClassModel->set_value = c_2106303_I32set_value;
   thisClassModel->free = c_2106303_I32_free;
 }
 

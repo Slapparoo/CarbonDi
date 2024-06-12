@@ -40,7 +40,7 @@ public class ExternalTest {
 
         FunctionDef getSomeLength1 = classDef.resolveFunction("getSomeLength1");
         String expected = BaseTest.stripWhiteSpace(getSomeLength1.asCode());
-        assertEquals(expected, "voidgetSomeLength1(numthispointerp){u64entry__=__onEnter();strlen(p);__onExit();}", "void getSomeLength1(pointer p) { External.stdio.strlen(p);}");
+        assertEquals(expected, "voidgetSomeLength1(numthispointerp){u64entry__=__onEnter();strlen(p);return__exitReturn_void_un(entry__);}", "void getSomeLength1(pointer p) { External.stdio.strlen(p);}");
 
         FunctionDef getSomeLength2 = classDef.resolveFunction("getSomeLength2");
 
