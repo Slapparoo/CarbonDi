@@ -142,7 +142,7 @@ public class ConstructorDef extends FunctionDefBase implements Cloneable {
                 }
             }
 
-            param.containedInBlock = containedInBlock;
+            param.setContainedInBlock(getContainedInBlock());
             param.resolve_01();
             if (getBlockDef() != null) {
                 getBlockDef().addVariable(param);

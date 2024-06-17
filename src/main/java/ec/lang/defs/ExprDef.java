@@ -1,7 +1,12 @@
 package ec.lang.defs;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class ExprDef extends BaseDef {
     public String expr;
+    @Getter
+    @Setter
     public TypeIdDef thisType;
     public boolean isProperty = false;
 
@@ -18,16 +23,19 @@ public class ExprDef extends BaseDef {
             return "(incomplete expr)";
         }
 
+        if (expr.equals("")) {
+            throw new RuntimeException("expression is empty.");
+        }
 
         if (expr.matches("\\$[a-z]")) {
-            
+
             if (thisType.isIs_array()) {
                 if (thisType.getObjectType().equals("RefArray")) {
                     // TODO add RefArray
                     System.out.println("@@ExprDef (RefArray not implemented) " + this.getClass() + " " + expr);
                     return hasNot + "*a__" + expr.charAt(1);
                 }
-                
+
                 return hasNot + "*a__" + expr.charAt(1);
             } else {
                 return hasNot + "a__" + expr.charAt(1);
@@ -46,6 +54,6 @@ public class ExprDef extends BaseDef {
 
     @Override
     public String toString() {
-        return "["+this.getClass().getSimpleName()+"] " + expr;
+        return "[" + this.getClass().getSimpleName() + "] " + expr;
     }
 }

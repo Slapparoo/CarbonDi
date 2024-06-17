@@ -1,6 +1,8 @@
 #include "TokenIds.ec"
 #include "Lexer.ec"
 
+// Parser By Example - Parser
+
 Hashmap getSpecialWords () {
     ?specialWords = Hashmap();
     specialWords.put(KEYWORD_U8, U32(TOKEN_ID_U8));
@@ -8,7 +10,7 @@ Hashmap getSpecialWords () {
 }
 
 printf(`line-4\n`);
-?content = FileUtils.fileread("langdesc.pp");
+?content = FileUtils.fileread("langdesc.pbe");
 printf(`line-3\n`);
 ?lex = Lexer();
 printf(`line-2\n`);
@@ -20,7 +22,7 @@ printf(`line-1\n`);
 /**
 Output from the lexer
 */
-class Parser.TokenSequence {
+class Parser.TokenSequence (Object) {
     properties {
         u64 tsindex = 0;
         RefArrayList tokenList; // list of tokens from lexer
@@ -48,10 +50,8 @@ class Parser.TokenMatcher (Parser.Matcher) {
     TokenMatcher(=tokenId, =isNot);
 
     boolean match(TokenSequence tokenSequence) {
-        ?ts = tokenSequence;
-        Token token = ts.tokenList.get(ts.tsindex);
-
-        printf(`TokenMatcher.match1 sequence=%u this=%u\n`, token.type, tokenId);
+        Token token = tokenSequence.tokenList.get(tokenSequence.tsindex);
+        print("TokenMatcher.match1 sequence=%i this=%i\n", token.type, tokenId);
 
         return !isNot && token.type == tokenId;
     }
@@ -63,8 +63,7 @@ class Parser.OrMatcher (Parser.Matcher) {
     }
 
     void add(Matcher matcher) {
-        ?sq = options;
-        sq.add(matcher);
+        options.add(matcher);
     }
 
     boolean match(TokenSequence tokenSequence) {
@@ -75,38 +74,37 @@ class Parser.OrMatcher (Parser.Matcher) {
 
 class Parser.SequenceMatcher (Parser.Matcher) {
     properties {
-        Array attributes = Array(20, Boxing.u8_, 1);  // required, 0-many, 1-many, not? 
+        DynamicArray attributes = DynamicArray(20, Boxing.u8_, 1);  // required, 0-many, 1-many, not? 
         RefArrayList sequence = RefArrayList();  // what this class will match against
     }
 
     void add(Matcher matcher, u8 attribute) {
-        ?sq = sequence;
-        ?at = attributes;
+        // ?sq = sequence;
+        // ?at = attributes;
 
-        printf(`SequenceMatcher.add %lu %u %lu %lu\n`, sq.ralsize, attribute, at.length, at.dataSize);
-        at[sq.ralsize] = attribute;
-        printf(`SequenceMatcher.add_1 \n`);
-        sq.add(matcher);
+        printf(`SequenceMatcher.add %lu %u %lu %lu\n`, sequence.ralsize, attribute, attributes.length, attributes.dataSize);
+        attributes[sequence.ralsize] = attribute;
+        print("SequenceMatcher.add_1\n");
+        sequence.add(matcher);
     }
 
     boolean match(TokenSequence tokenSequence) {
-        ?sq = sequence;
+        print("match\n");
+        // ?sq = sequence;
         ?index = tokenSequence.tsindex;
         ?inc = tokenSequence.tsindex;
-        printf(`sq=%lu\n`, sq.ralsize);
-        loop (sq.ralsize) {
-            ?ix = $a;
-
-            Matcher matcher = sq.get(ix);
+        print("sequence=%i\n", sequence.ralsize);
+        loop (sequence.ralsize) {
+            Matcher matcher = sequence.get($a);
             tokenSequence.tsindex = inc;
             if (!matcher.match(tokenSequence)) {
                 // restore index
                 tokenSequence.tsindex = index;
-                printf(`match false\n`);
+                print("match false\n");
                 return false;
             }
             inc++;
-            printf(`matchinc %lu\n`, inc);
+            print("matchinc %i\n", inc);
 
         }
 
@@ -128,7 +126,10 @@ sm.add(TokenMatcher(TOKEN_ASSIGN), 0);
 
 sm.add(TokenMatcher(TOKEN_DOLLARBRACE), 0);
 sm.add(TokenMatcher(TOKEN_ID), 0);
+print("call match\n");
 sm.add(TokenMatcher(TOKEN_RBRACE), 0);
+
+print("call match\n");
 
 boolean valid = sm.match(ts);
 

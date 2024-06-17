@@ -131,6 +131,8 @@ typedef struct Object_ref {
   boolean is_stack;
 } Object_ref;
 
+int ecprintf(num format, ...);
+
 u64 __onEnter();
 void __onExit();
 void __unWindTo(u64);

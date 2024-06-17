@@ -18,7 +18,7 @@ public class BlockDefTest {
         assertEquals('a', annoy, "first annoymous");
 
         BlockDef blockDef2 = new BlockDef();
-        blockDef2.containedInBlock = blockDef;
+        blockDef2.setContainedInBlock(blockDef);
 
         annoy = blockDef2.getNextAnnoymous();
         assertEquals('b', annoy, "second annoymous");

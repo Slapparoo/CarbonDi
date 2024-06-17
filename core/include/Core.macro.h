@@ -13,3 +13,6 @@
 
 #define testStrEqual(x...) External.core.testStrEqual(x)
 #define testi64Equal(x...) External.core.testi64Equal(x)
+
+#define ecprintf(x...) External.core.ecprintf(x)
+#define print(x...) External.core.ecprintf(x)

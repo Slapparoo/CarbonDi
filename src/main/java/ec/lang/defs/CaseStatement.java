@@ -32,7 +32,7 @@ public class CaseStatement extends StatementDef implements ContainerDef {
     @Override
     public void resolve_01() {
         if (blockDef != null) {
-            blockDef.containedInBlock = containedInBlock;
+            blockDef.setContainedInBlock(getContainedInBlock());
         }
         
         super.resolve_01();

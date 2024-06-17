@@ -22,11 +22,11 @@ public class ReturnDefTest {
 
         FunctionDef fd = (FunctionDef)DefFactory.resolveFunction("returnFunction");
         assertNotNull(fd);
-        fd.containedInBlock = DefFactory.getCurrentBlock();
+        fd.setContainedInBlock(DefFactory.getCurrentBlock());
         fd.resolve_01();
         fd.validate_02();
         fd.prepare_03();
-        // fd.containedInBlock = DefFactory.getCurrentBlock();
+        // fd.getContainedInBlock() = DefFactory.getCurrentBlock();
         // System.out.println(fd.asCode());
 
         // System.out.println(DefFactory.getCurrentBlock().asCode());
@@ -46,7 +46,7 @@ public class ReturnDefTest {
 
     FunctionDef fd = (FunctionDef)DefFactory.resolveFunction("getNumbers");
     assertNotNull(fd);
-    fd.containedInBlock = DefFactory.getCurrentBlock();
+    fd.setContainedInBlock(DefFactory.getCurrentBlock());
     fd.resolve_01();
     fd.validate_02();
     fd.prepare_03();

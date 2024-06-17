@@ -16,9 +16,7 @@ public class Lexer (Core.Object) {
         u64 lxindex = 0;
 
         Hashmap specialWordsmap;
-        // RefArrayList tokens;
     }
-
 
     public void forward(i8 ch) {
         iChar0 = iChar1;
@@ -40,8 +38,6 @@ public class Lexer (Core.Object) {
 
     public Token createToken(u64 offset, u32 tokenId, String value) {
         ?tmptoken = Token(offset, tokenId, value);
-        // ?tmptokens = tokens;
-        // tmptokens.add(tmptoken);
         return tmptoken;
     }
 
@@ -49,8 +45,8 @@ public class Lexer (Core.Object) {
         ?isWs = false;
         switch (ch) {
             case ' ' :
-            case 10 :
-            case 13 :
+            case '\n' : // <CR>
+            case '\r' : // <LF>
             case 7 :
             case 9 :
             case 0 :
@@ -100,6 +96,7 @@ public class Lexer (Core.Object) {
 
     /* lex the content 
         return a list of tokens
+        @TODO add lineno and offset
     */
     public RefArrayList lex(i8[] content, Hashmap specialwords) {
 
@@ -529,5 +526,11 @@ public class Lexer (Core.Object) {
         return tokens;
     }
 }
+
+// ?multiLineString = '''
+// blah
+// blah
+// blah
+// ''';
 
 

@@ -16,7 +16,6 @@ public class TypeExpr extends ExprDef implements MultiTypeId {
     public boolean is_static = false;
     public boolean directAccess = false;
 
-
     @Override
     public void resolve_02(String red_id) {
         super.resolve_01();
@@ -34,14 +33,14 @@ public class TypeExpr extends ExprDef implements MultiTypeId {
                 // FIXME
                 variableDef = new VariableDef();
                 variableDef.type = new TypeIdDef("i64");
-                thisType= variableDef.type;
+                setThisType(variableDef.type);
             }
         }
         if (variableDef != null && variableDef.is_static) {
             prepare_03("");
         }
 
-        if (memberOf != null && containedInBlock.directAccess.contains(expr)) {
+        if (memberOf != null && getContainedInBlock().directAccess.contains(expr)) {
             directAccess = true;
         }
 
@@ -50,31 +49,36 @@ public class TypeExpr extends ExprDef implements MultiTypeId {
 
     public void prepare_03(String ref_id) {
         if (variableDef == null) {
-            throw new RuntimeException("variableDef == null " + expr + " " + isResolved() + " " + getLine()  );
+            throw new RuntimeException(
+                    "variableDef == null " + expr + " " + isResolved() + " " + getLine() + " " + ref_id);
         }
 
         if (arrayIndex != null) {
             boolean isStatic = (variableDef != null ? variableDef.is_static : false);
 
-            if (thisType.isPrimative()) {
-                resolvedExpr = "/*te3*/*(" + thisType.asCode() + "*)"
+            if (getThisType().isPrimative()) {
+                resolvedExpr = "/*te3*/*(" + getThisType().asCode() + "*)"
                         + SnippetFactory.classModelStatement("Array", super.asCode(), isStatic) + "->get("
                         + super.asCode() + ", " + arrayIndex.asCode() + ")";
             } else {
                 if (isGet) {
-                    resolvedExpr = "/*te4*/*(" + thisType.asCode() + "*)"
+                    resolvedExpr = "/*te4*/*(" + getThisType().asCode() + "*)"
                             + SnippetFactory.classModelStatement("RefArray", super.asCode(), isStatic) + "->get("
                             + super.asCode() + ", " + arrayIndex.asCode() + ")";
                 } else {
+                    if (arrayIndex.getContainedInBlock() == null) {
+                        arrayIndex.setContainedInBlock(getContainedInBlock());
+                    }
+
                     resolvedExpr = "/*te5*/" + SnippetFactory.classModelStatement("RefArray", super.asCode(), isStatic)
                             + "->setObject(" + super.asCode() + ", " + arrayIndex.asCode() + ",";
                 }
             }
             return;
-        }        
+        }
         // array
 
-        if (memberOf != null && containedInBlock.directAccess.contains(expr)) {
+        if (memberOf != null && getContainedInBlock().directAccess.contains(expr)) {
             directAccess = true;
         }
 
@@ -85,44 +89,44 @@ public class TypeExpr extends ExprDef implements MultiTypeId {
                 if (isGet) {
                     if (variableDef.functionDef == null) {
                         resolvedExpr = "/*te14da*/"
-                        + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true) 
-                        + "->" + expr ;
+                                + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true)
+                                + "->" + expr;
                     } else {
                         resolvedExpr = "/*te141da*/"
-                        + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true) 
-                        + "->" + expr + "()";
+                                + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true)
+                                + "->" + expr + "()";
                     }
                 } else {
                     if (variableDef.functionDef == null) {
                         resolvedExpr = "/*te14cda*/"
-                        + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true) 
-                        + "->" + expr ;
+                                + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true)
+                                + "->" + expr;
                     } else {
                         resolvedExpr = "/*te14c1da*/"
-                        + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true) 
-                        + "->" + expr + "(";
+                                + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true)
+                                + "->" + expr + "(";
                     }
                 }
             } else {
                 if (isGet) {
                     if (variableDef.functionDef == null) {
                         resolvedExpr = "/*te14*/"
-                        + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true) 
-                        + "->get_" + expr + "()";
+                                + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true)
+                                + "->get_" + expr + "()";
                     } else {
                         resolvedExpr = "/*te141*/"
-                        + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true) 
-                        + "->" + expr + "()";
+                                + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true)
+                                + "->" + expr + "()";
                     }
                 } else {
-                    if (variableDef.functionDef == null) { 
+                    if (variableDef.functionDef == null) {
                         resolvedExpr = "/*te14c*/"
-                        + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true) 
-                        + "->set_" + expr + "(";
+                                + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true)
+                                + "->set_" + expr + "(";
                     } else {
                         resolvedExpr = "/*te14c1*/"
-                        + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true) 
-                        + "->" + expr + "(";
+                                + SnippetFactory.classModelStatement(memberOf.getCName(), expr, true)
+                                + "->" + expr + "(";
                     }
                 }
             }
@@ -133,7 +137,7 @@ public class TypeExpr extends ExprDef implements MultiTypeId {
                 }
 
                 resolvedExpr = "/*te14e*/"
-                + expr;
+                        + expr;
 
                 return;
             }
@@ -141,67 +145,67 @@ public class TypeExpr extends ExprDef implements MultiTypeId {
             // Direct static Access?
             if (memberOf.getShortname().equals(variableDef.getName())) {
                 resolvedExpr = "/*te14f*/"
-                + expr;
+                        + expr;
 
                 return;
             }
-
 
             if (directAccess) {
                 // directly access through the data model, rather than through the acessors
                 if (isGet) {
                     if (variableDef.functionDef == null) {
                         resolvedExpr = "/*te15a*/"
-                        + SnippetFactory.dataModelStatement(memberOf.getCName(), ref_id, false) 
-                        + "->" + expr;
+                                + SnippetFactory.dataModelStatement(memberOf.getCName(), ref_id, false)
+                                + "->" + expr;
                     } else {
                         resolvedExpr = "/*te15a1*/"
-                        + SnippetFactory.classModelStatement(memberOf.getCName(), ref_id, false) 
-                        + "->" + expr + "("
-                        + ref_id + ")";
+                                + SnippetFactory.classModelStatement(memberOf.getCName(), ref_id, false)
+                                + "->" + expr + "("
+                                + ref_id + ")";
                     }
                 } else {
                     if (variableDef.functionDef == null) {
                         resolvedExpr = "/*te15b*/"
-                        + SnippetFactory.dataModelStatement(memberOf.getCName(), ref_id, false) 
-                        + "->" + expr ;
+                                + SnippetFactory.dataModelStatement(memberOf.getCName(), ref_id, false)
+                                + "->" + expr;
                     } else {
                         resolvedExpr = "/*te15b1*/"
-                        + SnippetFactory.classModelStatement(memberOf.getCName(), ref_id, false) 
-                        + "->" + expr + "(" + ref_id + ", ";
+                                + SnippetFactory.classModelStatement(memberOf.getCName(), ref_id, false)
+                                + "->" + expr + "(" + ref_id + ", ";
                     }
                 }
 
             } else {
                 if (isGet) {
 
-                    /** @TODO 
-                     * make a function "class model" variable, then use the variable, navigate backwards to find the function 
-                     * statement block
+                    /**
+                     * @TODO
+                     *       make a function "class model" variable, then use the variable, navigate
+                     *       backwards to find the function
+                     *       statement block
                      */
-
 
                     if (variableDef.functionDef == null) {
                         resolvedExpr = "/*te14a*/"
-                        + SnippetFactory.classModelStatement(memberOf.getCName(), ref_id, false) 
-                        + "->get_" + expr + "("
-                        + ref_id + ")";
+                                + SnippetFactory.classModelStatement(memberOf.getCName(), ref_id, false)
+                                + "->get_" + expr + "("
+                                + ref_id + ")";
                     } else {
                         resolvedExpr = "/*te14a1*/"
-                        + SnippetFactory.classModelStatement(memberOf.getCName(), ref_id, false) 
-                        + "->" + expr + "("
-                        + ref_id + ")";
+                                + SnippetFactory.classModelStatement(memberOf.getCName(), ref_id, false)
+                                + "->" + expr + "("
+                                + ref_id + ")";
 
                     }
                 } else {
                     if (variableDef.functionDef == null) {
                         resolvedExpr = "/*te14b*/"
-                        + SnippetFactory.classModelStatement(memberOf.getCName(), ref_id, false) 
-                        + "->set_" + expr + "(" + ref_id + ", ";
+                                + SnippetFactory.classModelStatement(memberOf.getCName(), ref_id, false)
+                                + "->set_" + expr + "(" + ref_id + ", ";
                     } else {
                         resolvedExpr = "/*te14b1*/"
-                        + SnippetFactory.classModelStatement(memberOf.getCName(), ref_id, false) 
-                        + "->" + expr + "(" + ref_id + ", ";
+                                + SnippetFactory.classModelStatement(memberOf.getCName(), ref_id, false)
+                                + "->" + expr + "(" + ref_id + ", ";
                     }
                 }
             }
@@ -214,7 +218,8 @@ public class TypeExpr extends ExprDef implements MultiTypeId {
             return resolvedExpr;
         }
 
-        return "/*te8*/" + super.asCode();
+        return super.asCode();
+        // return "/*te8*/" + super.asCode();
     }
 
     public TypeExpr(String value) {

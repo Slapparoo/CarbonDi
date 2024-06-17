@@ -8,14 +8,14 @@ import ec.lang.defs.*;
 public class ConstExpr extends ExprDef {
     private String type;
 
-    public ConstExpr (String value) {
+    public ConstExpr(String value) {
         expr = value;
         if (value.equals("true") || value.equals("false")) {
             this.type = "boolean";
         }
     }
 
-    public ConstExpr (String value, String type) {
+    public ConstExpr(String value, String type) {
         expr = value;
         this.type = type;
 
@@ -35,9 +35,9 @@ public class ConstExpr extends ExprDef {
     @Override
     public void resolve_01() {
         if (type != null) {
-            thisType = new TypeIdDef(type);
+            setThisType(new TypeIdDef(type));
         } else {
-            thisType = new TypeIdDef("i64");
+            setThisType(new TypeIdDef("i64"));
             type = "i64";
         }
 
@@ -50,13 +50,13 @@ public class ConstExpr extends ExprDef {
         super.resolve_01();
     }
 
-    @SuppressWarnings( "deprecation" )
+    @SuppressWarnings("deprecation")
     @Override
     public String asCode() {
         if (type == null) {
             try {
                 new Integer(expr);
-                return "/*cn*/ "+ expr;
+                return "/*cn*/ " + expr;
             } catch (NumberFormatException nfe) {
                 throw new RuntimeException("/* undefined */ " + expr);
             }

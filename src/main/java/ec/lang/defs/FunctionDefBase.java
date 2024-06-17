@@ -5,6 +5,8 @@ import java.util.List;
 
 import ec.lang.defs.Enums.Accessor;
 import ec.lang.defs.expressions.ConstExpr;
+import lombok.Getter;
+import lombok.Setter;
 
 public abstract class FunctionDefBase extends StatementDef implements ContainerDef, Cloneable {
     public ClassDef classDef; // null or value
@@ -12,7 +14,7 @@ public abstract class FunctionDefBase extends StatementDef implements ContainerD
     public String name;
     public List<String> exceptions = new ArrayList<>();
     private List<VariableDef> parameters = new ArrayList<>();
-    private BlockDef blockDef;
+    @Getter @Setter private BlockDef blockDef;
     public Enums.Accessor accessor = Accessor.PUBLIC;
     public boolean is_final = false;
     public boolean is_override = false;
@@ -108,15 +110,6 @@ public abstract class FunctionDefBase extends StatementDef implements ContainerD
         return res;
     }
 
-
-    public BlockDef getBlockDef() {
-        return blockDef;
-    }
-
-    public void setBlockDef(BlockDef blockDef) {
-        this.blockDef = blockDef;
-    }
-
     @Override
     public void resolve_01() {
         if (accessor == null) {
@@ -156,7 +149,7 @@ public abstract class FunctionDefBase extends StatementDef implements ContainerD
 
     public void addParameter(VariableDef parameter) {
         if (parameter.getName().length() == 0) {
-            if (getBlockDef() == null && containedInBlock == null) {
+            if (getBlockDef() == null && getContainedInBlock() == null) {
                 // well
                 // System.out.println("Annonymous param with null block..");
             } 

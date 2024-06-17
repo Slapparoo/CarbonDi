@@ -5,7 +5,7 @@ import ec.lang.defs.OperatorTypes;
 import ec.lang.defs.StatementDef;
 
 public class AssignExpr extends StatementDef {
-    
+
     public ExprDef assignLeft;
     // = += ...
     public ExprDef assignOperator;
@@ -16,25 +16,28 @@ public class AssignExpr extends StatementDef {
     @Override
     public void resolve_01() {
         if (assignRight instanceof MultiTypeId) {
-            ((MultiTypeId)assignRight).setIsGet(true);;
+            ((MultiTypeId) assignRight).setIsGet(true);
+            ;
         }
 
-        assignRight.containedInBlock = containedInBlock;
+        assignRight.setContainedInBlock(getContainedInBlock());
         assignRight.resolve_01();
 
         if (assignOperator.expr.equals("=")) {
             if (assignLeft instanceof MultiTypeId) {
-                ((MultiTypeId)assignLeft).setIsGet(false);;
+                ((MultiTypeId) assignLeft).setIsGet(false);
+                ;
             }
-        
-            assignLeft.containedInBlock = containedInBlock;
+
+            assignLeft.setContainedInBlock(getContainedInBlock());
             assignLeft.resolve_01();
         } else {
             if (assignLeft instanceof MultiTypeId) {
-                ((MultiTypeId)assignLeft).setIsGet(true);;
+                ((MultiTypeId) assignLeft).setIsGet(true);
+                ;
             }
-        
-            assignLeft.containedInBlock = containedInBlock;
+
+            assignLeft.setContainedInBlock(getContainedInBlock());
             assignLeft.resolve_01();
         }
         super.resolve_01();
@@ -59,7 +62,7 @@ public class AssignExpr extends StatementDef {
 
         // TODO +=, -= ...
         if (OperatorTypes.ASSIGNEQUALS.contains(assignOperator.expr)) {
-            if (assignLeft instanceof MultiTypeExpr ) {
+            if (assignLeft instanceof MultiTypeExpr) {
                 MultiTypeExpr al = (MultiTypeExpr) assignLeft;
                 al.directAccess = true;
             }
@@ -68,9 +71,9 @@ public class AssignExpr extends StatementDef {
         }
 
         if (assignLeft instanceof MultiTypeExpr) {
-            MultiTypeExpr al = (MultiTypeExpr)assignLeft;
+            MultiTypeExpr al = (MultiTypeExpr) assignLeft;
             if (al.isProperty) {
-                if (al.containedInBlock.directAccess.contains(al.getVariableDef().getName())) {
+                if (al.getContainedInBlock().directAccess.contains(al.getVariableDef().getName())) {
                     al.directAccess = true;
                 }
 
@@ -81,20 +84,28 @@ public class AssignExpr extends StatementDef {
                 }
             }
 
-            if (assignLeft.thisType != null && !assignLeft.thisType.isPrimative()) {
+            if (assignLeft.getThisType() != null && !assignLeft.getThisType().isPrimative()) {
                 return "/*Ax3*/" + al.asCode() + assignRight.asCode() + ");";
             }
 
             // local var
             if (al.type_id_list.size() == 1) {
-                assignLeft.containedInBlock = containedInBlock;
-                assignOperator.containedInBlock = containedInBlock;
-                assignRight.containedInBlock = containedInBlock;
+                assignLeft.setContainedInBlock(getContainedInBlock());
+                assignOperator.setContainedInBlock(getContainedInBlock());
+                assignRight.setContainedInBlock(getContainedInBlock());
                 return "/*Ax6*/" + assignLeft.asCode() + assignOperator.asCode() + assignRight.asCode() + ";";
             }
 
-            if (!al.getIsGet() && (al.thisType.getObjectType() == null || !ArrayIndexExpr.ARRAY_TYPES.contains(al.thisType.getObjectType()))) {
-                
+            if (al.getThisType() == null) {
+                resolve_01();
+                if (al.getThisType() == null) {
+                    throw new RuntimeException("al.getThisType() " + asDebug() + al);
+                }
+            }
+
+            if (!al.getIsGet() && (al.getThisType().getObjectType() == null
+                    || !ArrayIndexExpr.ARRAY_TYPES.contains(al.getThisType().getObjectType()))) {
+
                 // prepare_03 not called yet
                 al.asCode();
                 if (!al.directAccess) {

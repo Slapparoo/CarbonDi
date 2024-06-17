@@ -44,7 +44,7 @@ public class BlockDef extends StatementDef implements ContainerDef {
     @Override
     public void resolve_01() {
         for (StatementDef statementDef : statementDefs) {
-            statementDef.containedInBlock = this;
+            statementDef.setContainedInBlock(this);
             statementDef.resolve_01();
         }
         super.resolve_01();
@@ -54,8 +54,8 @@ public class BlockDef extends StatementDef implements ContainerDef {
         String res = "";
 
         for (StatementDef exprDef : statementDefs) {
-            if (exprDef.containedInBlock == null) {
-                exprDef.containedInBlock = this;
+            if (exprDef.getContainedInBlock() == null) {
+                exprDef.setContainedInBlock(this);
                 exprDef.resolve_01();
             }
 
@@ -164,9 +164,9 @@ public class BlockDef extends StatementDef implements ContainerDef {
             }
         }
 
-        if (containedInBlock != null) {
-            if (containedInBlock != this) {
-                VariableDef res = containedInBlock.resolveVariable(name);
+        if (getContainedInBlock() != null) {
+            if (getContainedInBlock() != this) {
+                VariableDef res = getContainedInBlock().resolveVariable(name);
                 if (res != null) {
                     return res;
                 }
@@ -177,8 +177,8 @@ public class BlockDef extends StatementDef implements ContainerDef {
 	}
 
 	public char getNextAnnoymous() {
-        if (containedInBlock != null && currentAnnoymous == 'a') {
-            currentAnnoymous = containedInBlock.currentAnnoymous;
+        if (getContainedInBlock() != null && currentAnnoymous == 'a') {
+            currentAnnoymous = getContainedInBlock().currentAnnoymous;
         }
 
         if (currentAnnoymous == 'z') {
@@ -188,8 +188,8 @@ public class BlockDef extends StatementDef implements ContainerDef {
     }
     
 	public int getNextinternalUnique() {
-        if (containedInBlock != null && internalUnique == 0)  {
-            internalUnique = containedInBlock.getNextinternalUnique();
+        if (getContainedInBlock() != null && internalUnique == 0)  {
+            internalUnique = getContainedInBlock().getNextinternalUnique();
         }
 
         return internalUnique++;

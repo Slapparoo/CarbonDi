@@ -30,25 +30,27 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
         }
 
         // if (classDef == null && (accessor != null && accessor == Accessor.PUBLIC)) {
-        //     return (returnType.getName().equals("void") ? "void" : returnType.asCode()) + (returnType.isIs_array() ? "[]" : "")  + " "+ name + "(" + paramsAsCode() + ");";
+        // return (returnType.getName().equals("void") ? "void" : returnType.asCode()) +
+        // (returnType.isIs_array() ? "[]" : "") + " "+ name + "(" + paramsAsCode() +
+        // ");";
         // }
         if (classDef == null && (accessor != null && accessor == Accessor.PUBLIC)) {
-            return (returnType.getName().equals("void") ? "void" : returnType.asCode()) 
-            + " "+ name + "(" + paramsAsCode() + ");";
+            return (returnType.getName().equals("void") ? "void" : returnType.asCode())
+                    + " " + name + "(" + paramsAsCode() + ");";
         }
         return "";
     }
 
     public String asEcSignature() {
         // old function x := void(int, int, int)
-        // return "function " + name + ":=" + (returnType.getName().equals("void") ? "void" : returnType.asCode())
-        //     + "(" + getParamsSignature() + ")";
-        return  (returnType.getName().equals("void") ? "void" : returnType.asCode())
-        + " " + name
-        + "(" + getParamsSignature() + ")";
+        // return "function " + name + ":=" + (returnType.getName().equals("void") ?
+        // "void" : returnType.asCode())
+        // + "(" + getParamsSignature() + ")";
+        return (returnType.getName().equals("void") ? "void" : returnType.asCode())
+                + " " + name
+                + "(" + getParamsSignature() + ")";
 
     }
-
 
     public String asSignature() {
         if (is_property) {
@@ -59,23 +61,24 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
             String ex = "throws ";
             boolean first = true;
             for (String string : exceptions) {
-              ex += string;  
-              if (!first) {
-                  ex += ",";
-              }
-              first = false;
-            } 
-            return "\n /*fns1*/" + accessor + " " 
-            + (is_static ? "static " : "")
-            + (is_final ? "final " : "")
-            + (returnType.getName().equals("void") ? "void" : returnType.asSignature()) + " " +name+"("+ paramsAsSignature() +") "+ex+";";
+                ex += string;
+                if (!first) {
+                    ex += ",";
+                }
+                first = false;
+            }
+            return "\n /*fns1*/" + accessor + " "
+                    + (is_static ? "static " : "")
+                    + (is_final ? "final " : "")
+                    + (returnType.getName().equals("void") ? "void" : returnType.asSignature()) + " " + name + "("
+                    + paramsAsSignature() + ") " + ex + ";";
         }
-        return "\n" + accessor + " " 
-        + (is_static ? "static " : "")
-        + (is_final ? "final " : "")
-        + (returnType.getName().equals("void") ? "void" : returnType.asSignature()) + " " +name+"("+ paramsAsSignature() +");";
+        return "\n" + accessor + " "
+                + (is_static ? "static " : "")
+                + (is_final ? "final " : "")
+                + (returnType.getName().equals("void") ? "void" : returnType.asSignature()) + " " + name + "("
+                + paramsAsSignature() + ");";
     }
-
 
     @Override
     public void resolve_01() {
@@ -99,11 +102,16 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
                 if (functionDef != null && !is_parent) {
                     if (functionDef.isCallableVar(returnType, getParameters())) {
                         is_override = true;
-                    // } else {
+                        // } else {
                     } else if (!is_override) {
-                        System.out.println(getLine());   
-                        System.out.println("method signature overloads are not currently supported, a method with the name " + name + " already exists " + functionDef.getParamsSignature() + " " + classDef.getShortname() );   
-                        // throw new RuntimeException("method signature overloads are not currently supported, a method with the name " + name + " already exists " + functionDef.getParamsSignature());
+                        System.out.println(getLine());
+                        System.out.println(
+                                "method signature overloads are not currently supported, a method with the name " + name
+                                        + " already exists " + functionDef.getParamsSignature() + " "
+                                        + classDef.getShortname());
+                        // throw new RuntimeException("method signature overloads are not currently
+                        // supported, a method with the name " + name + " already exists " +
+                        // functionDef.getParamsSignature());
                     }
                 }
 
@@ -113,12 +121,12 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
                 cp = cp.parent;
             }
         }
-        
-        for (VariableDef  param : getParameters()) {
+
+        for (VariableDef param : getParameters()) {
             if (getBlockDef() != null) {
                 param.isParam = true;
                 getBlockDef().addVariable(param);
-                param.containedInBlock = getBlockDef();
+                param.setContainedInBlock(getBlockDef());
                 // param.containedInBlock = containedInBlock;
                 param.resolve_01();
             }
@@ -136,30 +144,29 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
                     ReturnExpr rx = (ReturnExpr) def;
 
                     rx.functionReturn = returnType;
-                    if (def.statement.thisType == null) {
-                        def.statement.thisType = returnType;
+                    if (def.statement.getThisType() == null) {
+                        def.statement.setThisType(returnType);
                     }
                 }
             }
         }
     }
 
-
     private String paramsAsCode() {
         return getParameters().stream()
-            .map(VariableDef::asHeader)
-            .collect(Collectors.joining(", "));
+                .map(VariableDef::asHeader)
+                .collect(Collectors.joining(", "));
 
         // String res = "";
         // boolean first = true;
 
         // for(VariableDef param : getParameters()) {
-        //     if (!first) {
-        //         res += ", ";
-        //     }
-        //     // code will insert an assigned value
-        //     res += param.asHeader();
-        //     first = false;
+        // if (!first) {
+        // res += ", ";
+        // }
+        // // code will insert an assigned value
+        // res += param.asHeader();
+        // first = false;
         // }
         // return res;
     }
@@ -169,13 +176,13 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
             getBlockDef().functionBlock = true;
         }
         if (classDef == null) {
-            return (getBlockDef() == null ? "" : getBlockDef().asCode()) +"\n" ;
+            return (getBlockDef() == null ? "" : getBlockDef().asCode()) + "\n";
         } else {
             if (classDef.classType == Enums.ClassType.PLAN) {
                 return "";
             } else {
                 // this. will need to be added
-                return (getBlockDef() == null ? "" : getBlockDef().asCode()) +"\n" ;
+                return (getBlockDef() == null ? "" : getBlockDef().asCode()) + "\n";
             }
         }
     }
@@ -194,41 +201,42 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
             return "";
         }
 
-        // return (returnType.getName().equals("void") ? "void" : returnType.asCode()) + (returnType.isIs_array() ? "[]" : "")  
-        //     + " "+ name + "(" + paramsAsCode() + ")" 
-        //     + contentAsCode() ;
+        // return (returnType.getName().equals("void") ? "void" : returnType.asCode()) +
+        // (returnType.isIs_array() ? "[]" : "")
+        // + " "+ name + "(" + paramsAsCode() + ")"
+        // + contentAsCode() ;
 
-        return "/*fd1*/" + (returnType.getName().equals("void") ? "void" : returnType.asCode()) 
-            + " "+ name + "(" + paramsAsCode() + ")" 
-            + contentAsCode() ;
+        return "/*fd1*/" + (returnType.getName().equals("void") ? "void" : returnType.asCode())
+                + " " + name + "(" + paramsAsCode() + ")"
+                + contentAsCode();
 
     }
 
     private String paramsAsSignature() {
 
         return getParameters().stream()
-            .filter(param -> !param.getName().equals("this"))
-            .map(VariableDef::asParameterSignature)
-            .collect(Collectors.joining(", "));
+                .filter(param -> !param.getName().equals("this"))
+                .map(VariableDef::asParameterSignature)
+                .collect(Collectors.joining(", "));
 
         // String res = "";
         // boolean first = true;
         // // boolean thisParam = classDef != null && !is_static && is_override;
 
         // for(VariableDef param : getParameters()) {
-        //     if (param.getName().equals("this")) {
-        //         continue;
-        //     }
+        // if (param.getName().equals("this")) {
+        // continue;
+        // }
 
-        //     // if (thisParam) {
-        //     //     thisParam = false;
-        //     //     continue;
-        //     // } 
-        //     if (!first) {
-        //         res += ", ";
-        //     }
-        //     res += param.asParameterSignature();
-        //     first = false;
+        // // if (thisParam) {
+        // // thisParam = false;
+        // // continue;
+        // // }
+        // if (!first) {
+        // res += ", ";
+        // }
+        // res += param.asParameterSignature();
+        // first = false;
         // }
         // return res;
     }
@@ -237,21 +245,21 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
         if (returnType == null) {
             return "num";
         }
-        return (returnType.getName().equals("void") ? "void" : returnType.asCode()) + (returnType.isIs_array() ? "*" : "");
+        return (returnType.getName().equals("void") ? "void" : returnType.asCode())
+                + (returnType.isIs_array() ? "*" : "");
     }
-
 
     public String getExpandedSignature() {
-        return String.format(FunctionCallExpr.FUNCTION_SIG_FORMAT,sigReturnType(), getExpandedName(), getParamsSignatureAsCode());
+        return String.format(FunctionCallExpr.FUNCTION_SIG_FORMAT, sigReturnType(), getExpandedName(),
+                getParamsSignatureAsCode());
     }
 
-
     public String getSignature() {
-        return String.format(FunctionCallExpr.FUNCTION_SIG_FORMAT,sigReturnType(), name, getParamsSignature());
+        return String.format(FunctionCallExpr.FUNCTION_SIG_FORMAT, sigReturnType(), name, getParamsSignature());
     }
 
     public String getSignatureAsCode() {
-        return String.format(FunctionCallExpr.FUNCTION_SIG_FORMAT,sigReturnType(), name, getParamsSignatureAsCode());
+        return String.format(FunctionCallExpr.FUNCTION_SIG_FORMAT, sigReturnType(), name, getParamsSignatureAsCode());
     }
 
     @Override
@@ -280,15 +288,15 @@ public class FunctionDef extends FunctionDefBase implements Cloneable {
 
     @Override
     public String asDoc() {
-        String res = "\n__`" 
-        + (is_override ? "(override) " : "")
-        + accessor + " "
-        + (is_static ? "static " : "" )
-        + (is_final ? "final " : "" )
-        + returnType.getName() + " "
-        + getExpandedName()+ "("
-        + getParamsDoc() + ")"
-        + "`__\n";
+        String res = "\n__`"
+                + (is_override ? "(override) " : "")
+                + accessor + " "
+                + (is_static ? "static " : "")
+                + (is_final ? "final " : "")
+                + returnType.getName() + " "
+                + getExpandedName() + "("
+                + getParamsDoc() + ")"
+                + "`__\n";
         return res + super.asDoc();
     }
 

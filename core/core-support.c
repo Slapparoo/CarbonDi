@@ -29,6 +29,59 @@ pointer alloc_max = 0;
 
 i64 enterExitRatio = 0;
 
+
+int ecprintf(num format, ...) {
+    va_list args;
+    va_start(args, format);
+
+    char* fmt = ((c_2106303_String*)useObject(format)->data)->value;
+    char ch;
+
+    while ((ch = *fmt)) {
+        if (ch == '%') {
+            fmt++;
+            switch (*fmt) {
+                case 'c':
+                    putchar(va_arg(args, int));
+                    break;
+                case 's':
+                    printf((char*) ((c_2106303_String*)useObject(va_arg(args, num))->data)->value);
+                    break;
+                case 'x': // hex
+                    printf("0x%x", va_arg(args, num));
+                    break;
+                case 'B': // boolean
+                    int res = va_arg(args, num);
+                    if (res) {
+                        printf("true");
+                    } else {
+                        printf("false");
+                    }
+                    break;
+                case 'b': // binary
+                    printf("0b");
+                    u32 valueb = va_arg(args, num);
+                    for (int i = 31; i >= 0; i--) {
+                        putchar((valueb & (1 << i)) ? '1' : '0');
+                    }
+                    break;
+                case 'i': //integer
+                    printf("%i", va_arg(args, num));
+                    break;    
+                case 'd': //decimal    
+                default:
+                    putchar('%');
+                    putchar(*fmt);
+                    break;
+            }
+        } else {
+            putchar(ch);
+        }
+        fmt++;
+    }
+    va_end(args);
+}
+
 void printClassModels() {
   i64 cms = _class_models_index -1;
   while (cms >= 0) {

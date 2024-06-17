@@ -28,7 +28,6 @@ builtin_values
    | keyword_false
     ;
 
-
 comparator 
    : '<' 
    | '>' 
@@ -65,7 +64,7 @@ operator_mul
 
 operator_add : ( operator_minus  | operator_plus );
 
-operator_plus : '+';
+operator_plus  : '+';
 operator_minus : '-';
 
 keyword_ampersand
@@ -99,7 +98,7 @@ keyword_rbracket    : ']' ;
 keyword_semi        : ';' ;
 keyword_equals      : '=' ;   
 keyword_comma       : ',' ;   
-keyword_at       : '@' ;   
+keyword_at          : '@' ;   
 
 keyword_if          : 'if' ;
 keyword_not         : '!' ;
@@ -116,9 +115,7 @@ keyword_in          : 'in' ;
 keyword_try         : 'try' ;
 keyword_catch       : 'catch' ;
 keyword_finally     : 'finally' ;
-// keyword_throw       : 'throw' ;
 keyword_throws      : 'throws' ;
-// keyword_asm_x64     : 'asm_x64' ;
 keyword_break       : 'break' ;
 keyword_continue    : 'continue' ;
 keyword_switch      : 'switch' ;
@@ -126,35 +123,24 @@ keyword_case        : 'case' ;
 keyword_default     : 'default' ;
 keyword_return      : 'return' ;
 keyword_return_add  : 'return.add' ;
-// keyword_union       : 'union' ;
 keyword_static      : 'static' ;
 keyword_final       : 'final' ;
 keyword_void        : 'void' ;
 
 keyword_signature   : 'signature' ;
-// keyword_object      : 'object' ;
 keyword_enum        : 'enum' ;
 keyword_plan        : 'plan' ;
 keyword_class       : 'class' ;
 keyword_properties  : 'properties' ;
 keyword_stub        : 'stub' ;
 keyword_function    : 'function' ;
-// keyword_type        : 'type' ;
-// keyword_array       : 'array' ;
-// keyword_map         : 'map' ;
 keyword_lambda      : '=>' ;
 keyword_true        : 'true' ;
 keyword_false       : 'false' ;
-// keyword_this        : 'this' ;
-// keyword_super       : 'super' ;
-
-// keyword_set         : 'set' ;
-// keyword_get         : 'get' ;
-// keyword_extern      : 'extern' ;
-// keyword_extern_c    : 'extern_c' ;
 keyword_namespace   : 'namespace' ;
-keyword_global   : 'global' ;
-keyword_inline   : 'inline' ;
+keyword_global      : 'global' ;
+keyword_inline      : 'inline' ;
+keyword_ellipsis    : '...' ;
 
 
 
@@ -172,11 +158,11 @@ ID
    : LETTER ALPHA* 
    ;
 
-
 type_anonymous : ANONYMOUS ;
 
 ANONYMOUS
-   : '$'[a-z]
+   : '$'[a-z0-9]
+
    ;
 
 type_num : NUM;

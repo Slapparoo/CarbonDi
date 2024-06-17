@@ -284,7 +284,7 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
                     if (!exists) {
                         FunctionDef nc = (FunctionDef) c.clone();
                         nc.classDef = this;
-                        nc.containedInBlock = blockDef;
+                        nc.setContainedInBlock(blockDef);
                         if (nc.getParameters().size() > 0) {
                             // why is this being removed? - because its the parent, and the object type is 
                             // for the parent, we want this object type
@@ -312,13 +312,13 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
                 if (((FunctionDefBase)statementDef).getBlockDef() != null) {
                     ((FunctionDefBase)statementDef).getBlockDef().isClass = true;
                     ((FunctionDefBase)statementDef).getBlockDef().classDef = this;
-                    statementDef.containedInBlock = blockDef;
+                    statementDef.setContainedInBlock(blockDef);
                 }
             }
 
-            if (statementDef.containedInBlock == null) {
+            if (statementDef.getContainedInBlock() == null) {
                 blockDef.classDef = this;
-                statementDef.containedInBlock = blockDef;
+                statementDef.setContainedInBlock(blockDef);
             }
 
             statementDef.resolve_01();
@@ -373,7 +373,7 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
         }
 
         for (VariableDef variableDef : properties) {
-            variableDef.containedInBlock = getBlockDef();
+            variableDef.setContainedInBlock(getBlockDef());
             variableDef.classDef = this;
             variableDef.resolve_01();
         }
@@ -517,7 +517,7 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
             functionDefs.add(setter);
 
             if (overrideSetter != null) {
-                overrideSetter.containedInBlock = funct.getBlockDef();
+                overrideSetter.setContainedInBlock(funct.getBlockDef());
                 overrideSetter.resolve_01();
                 overrideSetter.prepare_03();
                 overrideSetter.optimise_04();
@@ -525,7 +525,7 @@ public class ClassDef extends StatementDef implements ContainerDef, Castable {
             }
 
             if (hasOnChange != null) {
-                hasOnChange.containedInBlock = funct.getBlockDef();
+                hasOnChange.setContainedInBlock(funct.getBlockDef());
                 hasOnChange.resolve_01();
                 hasOnChange.prepare_03();
                 hasOnChange.optimise_04();

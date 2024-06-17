@@ -28,9 +28,9 @@ public class EncapsulationTest {
 
         String code = functionDef.asCode();
         // System.out.println(code);
-        String actual = BaseTest.stripWhiteSpace(code);
+        String actual = BaseTest.stripComments(BaseTest.stripWhiteSpace(code));
 
-        String expected = "voidset_count2(numthisinta__a){u64entry__=__onEnter();((c_1085510111_Encaps1*)useObject(this)->data)->count2=a__a+10;return__exitReturn_void_un(entry__);}";
+        String expected = "void set_count2(num this, int a__a){u64 entry__ = __onEnter();((c_1085510111_Encaps1*)useObject(this)->data)->count2=a__a + 10;return __exitReturn_void_un(entry__);}";
         assertEquals(expected, actual);
     }
 

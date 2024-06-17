@@ -39,13 +39,13 @@ public class ExternalTest {
         ClassDef classDef = DefFactory.resolveClass("AsExternal");
 
         FunctionDef getSomeLength1 = classDef.resolveFunction("getSomeLength1");
-        String expected = BaseTest.stripWhiteSpace(getSomeLength1.asCode());
-        assertEquals(expected, "voidgetSomeLength1(numthispointerp){u64entry__=__onEnter();strlen(p);return__exitReturn_void_un(entry__);}", "void getSomeLength1(pointer p) { External.stdio.strlen(p);}");
+        String expected = BaseTest.stripComments(BaseTest.stripWhiteSpace(getSomeLength1.asCode()));
+        assertEquals(expected, "void getSomeLength1(num this, pointer p){u64 entry__ = __onEnter(); strlen(p);return __exitReturn_void_un(entry__);}", "void getSomeLength1(pointer p) { External.stdio.strlen(p);}");
 
         FunctionDef getSomeLength2 = classDef.resolveFunction("getSomeLength2");
 
-        expected = BaseTest.stripWhiteSpace(getSomeLength2.asCode());
-        assertEquals(expected, "intgetSomeLength2(numthis){u64entry__=__onEnter();pointerp;return__exitReturn_int_un(strlen(p)entry__);}", "void getSomeLength1(pointer p) { External.stdio.strlen(p);}");
+        expected = BaseTest.stripComments(BaseTest.stripWhiteSpace(getSomeLength2.asCode()));
+        assertEquals(expected, "int getSomeLength2(num this){u64 entry__ = __onEnter();pointer p; return __exitReturn_int_un(strlen(p), entry__);}", "void getSomeLength1(pointer p) { External.stdio.strlen(p);}");
 
     }
 

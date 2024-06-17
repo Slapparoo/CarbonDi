@@ -13,30 +13,32 @@ public class ArrayIndexExpr extends TypeExpr {
     public static final Set<String> ARRAY_TYPES = Set.of("Array", "RefArray", "DynamicArray", "DynamicRefArray");
 
     public void resolve_01() {
-        arrayIndex.containedInBlock = containedInBlock;
+        arrayIndex.setContainedInBlock(getContainedInBlock());
         super.resolve_01();
     }
 
     @Override
     public String asCode() {
-        arrayIndex.containedInBlock = containedInBlock;
+        arrayIndex.setContainedInBlock(getContainedInBlock());
         arrayIndex.resolve_01();
-        if (thisType == null) {
-            return "/* thisType == null  " + arrayIndex.asCode() + " */" + super.asCode();
+        if (getThisType() == null) {
+            return "/* getThisType() == null  " + arrayIndex.asCode() + " */" + super.asCode();
         }
 
         boolean isStatic = (variableDef != null ? variableDef.is_static : false);
 
-        if (thisType.isPrimative()) {
+        if (getThisType().isPrimative()) {
             isGet = true;
-            return "/*at3*/*(" + thisType.getName() + "*)"
+            return "/*at3*/*(" + getThisType().getName() + "*)"
                     + SnippetFactory.classModelStatement("Array", super.expr, isStatic) + "->get(" + super.expr
                     + ", " + arrayIndex.asCode() + ")";
         } else {
             if (isGet) {
-                return "/*te4*/ *((num *)((c_2106303_RefArray_cm*)getc_2106303_RefArray_cm())->get("+super.expr+", " + arrayIndex.asCode() + "))";
+                return "/*te4*/ *((num *)((c_2106303_RefArray_cm*)getc_2106303_RefArray_cm())->get(" + super.expr + ", "
+                        + arrayIndex.asCode() + "))";
             } else {
-                return "((c_2106303_RefArray_cm*)getc_2106303_RefArray_cm())->setObject("+super.expr+", " + arrayIndex.asCode() + ",";
+                return "((c_2106303_RefArray_cm*)getc_2106303_RefArray_cm())->setObject(" + super.expr + ", "
+                        + arrayIndex.asCode() + ",";
             }
 
         }
@@ -48,6 +50,6 @@ public class ArrayIndexExpr extends TypeExpr {
 
     @Override
     public String toString() {
-        return "aix " + expr +  "[" + arrayIndex + "]";
+        return "aix " + expr + "[" + arrayIndex + "]";
     }
 }

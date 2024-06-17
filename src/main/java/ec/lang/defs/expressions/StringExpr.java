@@ -12,41 +12,40 @@ public class StringExpr extends ExprDef {
 
         if (expr.startsWith("`")) {
             cstring = true;
-            thisType = new TypeIdDef("pointer");  // also want pChar for printf
+            setThisType(new TypeIdDef("pointer")); // also want pChar for printf
         } else {
             if (expr.startsWith("'''")) {
-                //replace lf and cr with \n
-                String tmp = expr.substring(3, expr.length() -3);
+                // replace lf and cr with \n
+                String tmp = expr.substring(3, expr.length() - 3);
                 expr = "\"";
                 for (byte ch : tmp.getBytes()) {
                     if (ch == 13) {
                         expr += "\\r";
                     } else if (ch == 10) {
                         expr += "\\n";
-                    } else if ((char)ch == '\"') {
+                    } else if ((char) ch == '\"') {
                         expr += "\\\"";
                     } else {
-                        expr += (char)ch;
+                        expr += (char) ch;
                     }
-                    
+
                 }
                 expr += "\"";
 
-
             } else if (expr.startsWith("'")) {
-                String tmp = expr.substring(1, expr.length() -1);
+                String tmp = expr.substring(1, expr.length() - 1);
                 expr = "\"";
                 for (byte ch : tmp.getBytes()) {
-                    if ((char)ch == '\"') {
+                    if ((char) ch == '\"') {
                         expr += "\\\"";
                     } else {
-                        expr += (char)ch;
+                        expr += (char) ch;
                     }
                 }
                 expr += "\"";
             }
 
-            thisType = new TypeIdDef("String");
+            setThisType(new TypeIdDef("String"));
         }
         super.resolve_01();
     }
@@ -69,8 +68,8 @@ public class StringExpr extends ExprDef {
             }
             return expr.replace('`', '"').replaceAll("'", "");
         }
-        
-        return "/*se*/ create_c_2106303_String_2(" +expr+ ", true)";
+
+        return "/*se*/ create_c_2106303_String_2(" + expr + ", true)";
     }
 
     public StringExpr(String value) {

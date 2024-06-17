@@ -22,33 +22,33 @@ public class ArrayTest extends BaseTest{
         for (FunctionDefBase fd : DefFactory.FUNCT_DEFS) {
             if (fd.name.equals("testArrayIndexVar")) {
                 fd.resolve_01();
-                res= fd.asCode();
+                res= stripWhiteSpace(stripComments(fd.asCode()));
             }
         }
         assertNotNull(res);
         // System.out.println(res);
-        assertTrue(res.indexOf("void testArrayIndexVar()") > -1);
-        assertTrue(res.indexOf("u64 entry__ = __onEnter()") > -1);
-        assertTrue(res.indexOf("return __exitReturn_void_un(entry__);}") > -1);
+        assertContains(res, "void testArrayIndexVar()");
+        assertContains(res, "u64 entry__ = __onEnter()");
+        assertContains(res, "return __exitReturn_void_un(entry__);}");
     }
 
 
     @Test
     public void testArrayIndexCreate() throws IOException {
         // contains function
-        assertTrue(res.indexOf("num numbers = create_c_2106303_Array_1(10, ((c_2106303_Boxing_cm*) getc_2106303_Boxing_cm())->i8_, sizeof(i8));") > -1);
+        assertContains(res, "num numbers = create_c_2106303_Array_1(10, ((c_2106303_Boxing_cm*) getc_2106303_Boxing_cm())->i8_, sizeof(i8));");
     }
 
     @Test
     public void testArrayIndexVarSet() throws IOException {
         // contains function
-        assertTrue(res.indexOf("(i8*)((c_2106303_Array_cm*)useObject(numbers)->classmodel)->get(numbers, 1)/*te8*/='t';") > -1);
+        assertContains(res, "(i8*)((c_2106303_Array_cm*)useObject(numbers)->classmodel)->get(numbers, 1)='t';");
     }
 
     @Test
     public void testArrayIndexVarGet() throws IOException {
         // contains function
-        assertTrue(res.indexOf("void testArrayIndexVar()") > -1);
-        assertTrue(res.indexOf("(i8*)((c_2106303_Array_cm*)useObject(numbers)->classmodel)->get(numbers, 1);") > -1);
+        assertContains(res, "void testArrayIndexVar()");
+        assertContains(res, "(i8*)((c_2106303_Array_cm*)useObject(numbers)->classmodel)->get(numbers, 1);");
     }
 }

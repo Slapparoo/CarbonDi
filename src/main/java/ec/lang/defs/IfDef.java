@@ -23,20 +23,20 @@ public class IfDef extends StatementDef implements ContainerDef {
     public void resolve_01() {
         resolved = true;
 
-        if (containedInBlock == null) {
+        if (getContainedInBlock() == null) {
             throw new RuntimeException("containedInBlock == null");
         }
 
         if (condition != null) { 
-            condition.containedInBlock = containedInBlock;
+            condition.setContainedInBlock(getContainedInBlock());
             condition.resolve_01();
         }
 
-        blockDef.containedInBlock = containedInBlock;
+        blockDef.setContainedInBlock(getContainedInBlock());
         blockDef.resolve_01();
 
         for (IfDef ifDef : elseIfs) {
-            ifDef.containedInBlock = containedInBlock;
+            ifDef.setContainedInBlock(getContainedInBlock());
             ifDef.resolve_01();
         }
 

@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class BaseDef {
-    public BlockDef containedInBlock;
+    @Getter @Setter private BlockDef containedInBlock;
     public List<Token> comments;
     public String hasNot = "";
     @Getter @Setter private String line;

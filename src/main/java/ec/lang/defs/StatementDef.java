@@ -14,7 +14,7 @@ public class StatementDef extends BaseDef {
     public void resolve_01() {
         // System.out.println("@@StatementDef.resolve, " + this.getClass().getName() + ", " + containedInBlock);
         if (statement != null) {
-            statement.containedInBlock = containedInBlock;
+            statement.setContainedInBlock(getContainedInBlock());
             if (!statement.isResolved()) {
                 statement.resolve_01();
             }
@@ -24,7 +24,7 @@ public class StatementDef extends BaseDef {
 
     public String asCode() {
         if (statement != null) {
-            statement.containedInBlock = containedInBlock;
+            statement.setContainedInBlock(getContainedInBlock());
             return "/*st*/ " + statement.asCode() + ";";
         }
         return "(Undefined Statement) ";

@@ -6,32 +6,31 @@ public class OperationExpr extends ExprDef {
     public ExprDef left;
     public ExprDef right;
 
-
-
     @Override
     public void resolve_01() {
         super.resolve_01();
-        left.containedInBlock = containedInBlock;
+        left.setContainedInBlock(getContainedInBlock());
         if (left instanceof MultiTypeExpr) {
-            ((MultiTypeExpr)left).setIsGet(true);
+            ((MultiTypeExpr) left).setIsGet(true);
         }
         left.resolve_01();
-        
-        right.containedInBlock = containedInBlock;
+
+        right.setContainedInBlock(getContainedInBlock());
         if (right instanceof MultiTypeExpr) {
-            ((MultiTypeExpr)right).setIsGet(true);
+            ((MultiTypeExpr) right).setIsGet(true);
         }
         right.resolve_01();
 
         if (OperatorTypes.COMPARATORS.contains(expr)) {
-            this.thisType = new TypeIdDef("b8");
+            this.setThisType(new TypeIdDef("b8"));
         } else {
-            this.thisType = left.thisType;
+            this.setThisType(left.getThisType());
         }
     }
 
     @Override
     public String asCode() {
-        return  (left == null ? "(left)" : "/*oxa*/"+ left.asCode()) + " " + expr + " " + (right == null ? "" : "/*oxb*/"+ right.asCode());
+        return (left == null ? "(left)" : "/*oxa*/" + left.asCode()) + " " + expr + " "
+                + (right == null ? "" : "/*oxb*/" + right.asCode());
     }
 }

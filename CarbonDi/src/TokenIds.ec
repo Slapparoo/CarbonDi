@@ -16,72 +16,6 @@
 #define CURRENTTOKEN_BIN         11
 #define CURRENTTOKEN_FLOAT       12
 
-// #define TOKEN_PLUS          101  // +
-// #define TOKEN_MINUS         102  // -
-// #define TOKEN_DIV           103  // /
-// #define TOKEN_MOD           104  // %
-// #define TOKEN_STAR          105  // *
-// #define TOKEN_LPAREN        106  // (
-// #define TOKEN_RPAREN        107  // ) 
-// #define TOKEN_LBRACE	    108  // {
-// #define TOKEN_RBRACE	    109  // }
-// #define TOKEN_LBRACKET	    110  // [
-// #define TOKEN_RBRACKET	    111  // ]
-// #define TOKEN_PLUSPLUS	    112  // ++
-// #define TOKEN_MINUSMINUS	113  // --
-// #define TOKEN_PLUSEQUAL	    114  // +=
-// #define TOKEN_MINUDEQUAL	115  // -=
-// #define TOKEN_STAREQUAL	    116  // *=
-// #define TOKEN_DIVEQUAL	    117  // /=
-// #define TOKEN_MODEQUAL	    118  // %=
-// #define TOKEN_LT	        119  // <
-// #define TOKEN_GT	        120  // >
-// #define TOKEN_EQUALEQUAL	121  // ===
-// #define TOKEN_LTE	        122  // <=
-// #define TOKEN_GTE	        123  // >=
-// #define TOKEN_AND	        125  // &
-// #define TOKEN_OR	        126  // |
-// #define TOKEN_ANDAND	    127  // &&
-// #define TOKEN_OROR	        128  // ||
-// #define TOKEN_ASSIGN        129  // =
-// #define TOKEN_NOT	        130  // !
-// #define TOKEN_NEQ	        131  // !=
-// #define TOKEN_ID	        134  // [a..zA..Z][a..zA..Z_0..9]+
-// #define TOKEN_NUMBER	    135  // [0..9_]+
-// #define TOKEN_DSTRING	    136  // "..."
-// #define TOKEN_CSTRING	    137  // `...`
-// #define TOKEN_WS	        138  // [\n\r\t\b ]
-// #define TOKEN_EOL	        139  // [\n\r]
-// #define TOKEN_LINE_COMMENT	140  // //...
-// #define TOKEN_BLOCK_COMMENT	141  // /*...*/
-// #define TOKEN_DOC_COMMENT	142  // /**...*/
-// #define TOKEN_PRECOMPILER	143  // #...
-// #define TOKEN_DIGIT	        144  // [0..9]
-// #define TOKEN_ALPHA	        145  // [a..zA..Z0..9_]
-// #define TOKEN_LETTER	    146  // [a..zA..Z]
-// #define TOKEN_SAFECODEPOINT	147  // 
-// #define TOKEN_NOTBACKQUOTE	148  //
-// #define TOKEN_HEX	        149  // 0x[0..9a..fA..F_]+
-// #define TOKEN_TRIPLE_SQ	    150  // '''
-// #define TOKEN_ESC_1	        152  //
-// #define TOKEN_ESC_2	        153  //
-// #define TOKEN_FLOAT	        154  // [:DIGIT:]?.[:DIGIT:]+
-// #define TOKEN_NUM	        155  // [:BINARY:]|[:HEX:]|[:DECIMAL:]
-// #define TOKEN_ANONYMOUS	    156  // $[a..z]
-// #define TOKEN_RANGE	        157  // ([:ID:]|[:NUM:])..([:ID:]|[:NUM:])
-// #define TOKEN_SSTRING	    158  // '...'
-// #define TOKEN_BSTRING	    139  // [:TRIPLE_SQ:]...[:TRIPLE_SQ:]
-// #define TOKEN_EQUAL  	    140  // ==
-// #define TOKEN_LAMBDA  	    141  // =>
-// #define TOKEN_BINARY  	    142  // 0b[0..1_]+
-// #define TOKEN_DECIMAL  	    143  // [0..9_]+
-// #define TOKEN_SHL     	    144  // <<
-// #define TOKEN_SHR  	        143  // >>
-// #define TOKEN_AEQ  	        145  // &=
-// #define TOKEN_XEQ  	        146  // ~=
-// #define TOKEN_OEQ  	        147  // |=
-// #define TOKEN_XOR  	        148  // ~
-
 #define TOKEN_PLUS          101
 #define TOKEN_MINUS         102
 #define TOKEN_DIV           103
@@ -320,53 +254,38 @@
 #define KEYWORD_IMPORTS     'imports' 
 #define KEYWORD_CATCH       'catch' 
 #define KEYWORD_FINALLY     'finally' 
-//#define KEYWORD_// keyword_throw       'throw' 
 #define KEYWORD_THROWS      'throws' 
-//#define KEYWORD_// keyword_asm_x64     'asm_x64' 
 #define KEYWORD_BREAK       'break' 
 #define KEYWORD_CONTINUE    'continue' 
 #define KEYWORD_SWITCH      'switch' 
 #define KEYWORD_DEFAULT     'default' 
 #define KEYWORD_RETURN      'return' 
 #define KEYWORD_RETURN_ADD  'return.add' 
-//#define KEYWORD_// keyword_union       'union' 
 #define KEYWORD_STATIC      'static' 
 #define KEYWORD_FINAL       'final' 
 #define KEYWORD_SIGNATURE   'signature' 
-//#define KEYWORD_// keyword_object      'object' 
 #define KEYWORD_CLASS       'class' 
 #define KEYWORD_PROPERTIES  'properties' 
 #define KEYWORD_FUNCTION    'function' 
-//#define KEYWORD_// keyword_type        'type' 
-//#define KEYWORD_// keyword_array       'array' 
-//#define KEYWORD_// keyword_map         'map' 
 #define KEYWORD_FALSE       'false' 
-
-
 
 public class Lexer.Token (Core.Object) {
     properties {
         u64 offset;
-        // u64 length;
         u32 type;
         String value;
     }
 
-    public Token(=offset, =type, =value) {
-        // printf(`Token(%lu, %lu, %u)`, offset, length, type);
-    }
+    public Token(=offset, =type, =value);
 
     public void printDetail() {
         if (value == 0) {
             printf(`Token(%lu, %u)`, offset, type);
         } else {
-            ?v = value;
-            printf(`Token(%lu, %u, %s)`, offset, type, v.asStr);
+            printf(`Token(%lu, %u, %s)`, offset, type, value.asStr());
         }
     }
 }
-
-
 
 #endif
 

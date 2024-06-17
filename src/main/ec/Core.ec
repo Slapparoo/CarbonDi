@@ -35,6 +35,10 @@ public class Core.Object {
     hidden final void free() {};
     hidden void release() {}; 
 
+// not working for Array?  classModel->alloc = Object_alloc;
+  // not working for Array?   classModel->free = Object_free;
+
+
     public final pointer alloc(u64 size) {
       return External.core.Object_alloc(this, size);
     }

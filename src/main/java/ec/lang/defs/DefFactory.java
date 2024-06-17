@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Stack;
 
 import ec.lang.defs.TryCatchDef.CatchBlock;
-import ec.lang.defs.TryCatchDef.FinallyBlock;
-import ec.lang.defs.TryCatchDef.TryBlock;
 import ec.lang.defs.expressions.AnonymousExpr;
 import ec.lang.defs.expressions.ArrayIndexExpr;
 import ec.lang.defs.expressions.AssignExpr;

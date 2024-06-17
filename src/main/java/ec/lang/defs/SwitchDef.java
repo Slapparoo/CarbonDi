@@ -21,13 +21,13 @@ public class SwitchDef extends StatementDef implements ContainerDef {
     public void resolve_01() {
         super.resolve_01();
         
-        exprDef.containedInBlock = containedInBlock;
-        getBlockDef().containedInBlock = containedInBlock;
+        exprDef.setContainedInBlock(getContainedInBlock());
+        getBlockDef().setContainedInBlock(getContainedInBlock());
         getBlockDef().resolve_01();
         exprDef.resolve_01();
 
         for (CaseStatement caseStatement : caseStatements) {
-            caseStatement.containedInBlock = getBlockDef();
+            caseStatement.setContainedInBlock(getBlockDef());
             caseStatement.resolve_01();
         }
     }

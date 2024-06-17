@@ -29,8 +29,7 @@ public class VariableDef extends StatementDef {
 
     public boolean equalsParam = false;
 
-
-    public ExprDef assignValue; 
+    public ExprDef assignValue;
 
     // for class member functions which can be used as a property
     public FunctionDef functionDef = null;
@@ -38,7 +37,8 @@ public class VariableDef extends StatementDef {
     // used for constructors
     public List<ExprDef> params = new ArrayList<>();
 
-    public VariableDef() {}
+    public VariableDef() {
+    }
 
     public VariableDef(String name, String type) {
         this.name = name;
@@ -60,16 +60,18 @@ public class VariableDef extends StatementDef {
         return " assignType " + (assignValue == null ? "(undefined)" : (assignValue + " " + assignValue.printType()));
     }
 
-
-    public void setValues(String accessor, String name, String type, boolean isArray, String castTo, String size, String reference, String line, String assignable, ExprDef expr) {
+    public void setValues(String accessor, String name, String type, boolean isArray, String castTo, String size,
+            String reference, String line, String assignable, ExprDef expr) {
         assignValue = expr;
         this.setValues(accessor, name, type, isArray, castTo, size, reference, line);
 
-        // System.out.println("@@assign " + accessor + " " + name + " " + type + " " + isArray + " " + castTo + " " + size + " " + reference + " " + line);
+        // System.out.println("@@assign " + accessor + " " + name + " " + type + " " +
+        // isArray + " " + castTo + " " + size + " " + reference + " " + line);
         // System.out.println("@@Assign = " + size);
     }
 
-    public void setValues2(String accessor, String name, String type, boolean isArray, String castTo, String size, String reference, String line, String assignable, ExprDef expr, String isStatic) {
+    public void setValues2(String accessor, String name, String type, boolean isArray, String castTo, String size,
+            String reference, String line, String assignable, ExprDef expr, String isStatic) {
         this.is_static = isStatic != null && isStatic.equals("static");
         if (assignable != null) {
             assignValue = expr;
@@ -77,15 +79,16 @@ public class VariableDef extends StatementDef {
         this.setValues(accessor, name, type, isArray, castTo, size, reference, line);
     }
 
-    public void setValues(String accessor, String name, String type, 
-        boolean isArray, String castTo, String size, String reference, String line
-        ) {
+    public void setValues(String accessor, String name, String type,
+            boolean isArray, String castTo, String size, String reference, String line) {
 
-            // System.out.println("@@Var " + "accessor=" + accessor +", name=" + name +", type=" + type +" ,isArray=" 
-            // + isArray +", castTo=" + castTo +", size=" + size +", reference=" + reference +", line=" + line + ", assignValue="+ assignValue);
+        // System.out.println("@@Var " + "accessor=" + accessor +", name=" + name +",
+        // type=" + type +" ,isArray="
+        // + isArray +", castTo=" + castTo +", size=" + size +", reference=" + reference
+        // +", line=" + line + ", assignValue="+ assignValue);
 
         this.name = name;
-        //**************** reference */
+        // **************** reference */
         this.type = new TypeIdDef(type);
         this.debugValue = accessor;
 
@@ -102,25 +105,27 @@ public class VariableDef extends StatementDef {
                 // const value
                 arraySize = size;
             }
-            
+
         }
 
         this.setLine(line);
-        // System.out.println("@@vardef " + name + " *" + assignValue + "* "  + toString());
+        // System.out.println("@@vardef " + name + " *" + assignValue + "* " +
+        // toString());
     }
 
     @Override
     public void resolve_01() {
         super.resolve_01();
 
-        if (containedInBlock != null && type == null) {
-            VariableDef var = containedInBlock.resolveVariable(name);
+        if (getContainedInBlock() != null && type == null) {
+            VariableDef var = getContainedInBlock().resolveVariable(name);
 
             if (var == null) {
-                throw new RuntimeException("Variable not declared in contained block " + name + " "  + params);
+                throw new RuntimeException("Variable not declared in contained block " + name + " " + params);
             }
             if (var != this) {
-                // throw new RuntimeException("duplicate variable declared " + name + " " + getLine());
+                // throw new RuntimeException("duplicate variable declared " + name + " " +
+                // getLine());
                 // System.out.println("duplicate variable declared " + name + " " + getLine());
             }
         }
@@ -129,53 +134,53 @@ public class VariableDef extends StatementDef {
             // constructor param - detemine type
             // find the class and match the name to a a property
             if (type == null) {
-                throw new RuntimeException("parameter type has not been determined " + name + " " + getLine() + " " + containedInBlock);
-            }            
+                throw new RuntimeException("parameter type has not been determined " + name + " " + getLine() + " "
+                        + getContainedInBlock());
+            }
 
         }
 
         if (assignValue != null) {
             if (assignValue instanceof MultiTypeExpr) {
-                ((MultiTypeExpr)assignValue).setIsGet(true);
+                ((MultiTypeExpr) assignValue).setIsGet(true);
             }
 
             if (assignValue instanceof TypeExpr) {
-                ((TypeExpr)assignValue).setIsGet(true);
+                ((TypeExpr) assignValue).setIsGet(true);
             }
 
-            assignValue.containedInBlock = containedInBlock;
+            assignValue.setContainedInBlock(getContainedInBlock());
             assignValue.resolve_01();
         }
 
-
         // if (type == null) {
-        //     System.out.println("type == null " + name);
+        // System.out.println("type == null " + name);
         // }
 
         // if (type.getName() == null) {
-        //     System.out.println("type.name == null " + name);
+        // System.out.println("type.name == null " + name);
         // }
 
-        if (type.getName().equals("?") ) {
+        if (type.getName().equals("?")) {
             // equals something - so the type of the equals
             // System.out.println("@@resolve type " + name);
             if (assignValue == null) {
                 throw new RuntimeException("type cannot be resolved for " + name);
             }
 
-            if (assignValue.thisType != null) {
-                // System.out.println("@@assignValue " + name + " " + assignValue.thisType);
-                type = new TypeIdDef(assignValue.thisType.getName());
-                type.setIs_array(assignValue.thisType.isIs_array());
-                type.setIs_boxed(assignValue.thisType.isIs_boxed());
-                type.setObjectType(assignValue.thisType.getObjectType());
-                
+            if (assignValue.getThisType() != null) {
+                // System.out.println("@@assignValue " + name + " " +
+                // assignValue.getThisType());
+                type = new TypeIdDef(assignValue.getThisType().getName());
+                type.setIs_array(assignValue.getThisType().isIs_array());
+                type.setIs_boxed(assignValue.getThisType().isIs_boxed());
+                type.setObjectType(assignValue.getThisType().getObjectType());
 
                 if (type.getName().contains("[]") && !type.isIs_array()) {
                     // change to an array type
-                    type = new TypeIdDef(assignValue.thisType.getName().replace("[]", ""));
+                    type = new TypeIdDef(assignValue.getThisType().getName().replace("[]", ""));
                     type.setIs_array(true);
-                    type.setIs_boxed(assignValue.thisType.isIs_boxed());
+                    type.setIs_boxed(assignValue.getThisType().isIs_boxed());
                     type.setObjectType("Array");
                 }
 
@@ -190,7 +195,8 @@ public class VariableDef extends StatementDef {
                     }
                 }
             } else {
-                // System.out.println("@@Not resolved " + name + ", " + assignValue.getClass() + " " + assignValue);
+                // System.out.println("@@Not resolved " + name + ", " + assignValue.getClass() +
+                // " " + assignValue);
             }
         }
 
@@ -223,7 +229,6 @@ public class VariableDef extends StatementDef {
         return name;
     }
 
-
     public String getNameAsCode() {
         if (name.matches("\\$[a-z]")) {
             return "a__" + name.charAt(1);
@@ -231,7 +236,6 @@ public class VariableDef extends StatementDef {
         return name;
     }
 
-       
     public String asHeader() {
         // System.out.println(this);
         if (type == null) {
@@ -239,7 +243,7 @@ public class VariableDef extends StatementDef {
         }
 
         // if (!is_static) {
-        //     return "";
+        // return "";
         // }
         if (type.isIs_array()) {
             return "num " + getNameAsCode();
@@ -253,18 +257,17 @@ public class VariableDef extends StatementDef {
             return "(incomplete) " + getNameAsCode();
         }
 
-        if (containedInBlock == null) {
+        if (getContainedInBlock() == null) {
             throw new NullPointerException("VariableDef containedInBlock == null" + this);
         }
 
         if (assignValue != null) {
-            assignValue.containedInBlock = containedInBlock;
+            assignValue.setContainedInBlock(getContainedInBlock());
 
             // if (assignValue instanceof TypeExpr) {
-            //     ((TypeExpr)assignValue).variableDef = this;
+            // ((TypeExpr)assignValue).variableDef = this;
             // }
         }
-
 
         String aa = (assignValue == null ? ";" : assignValue.asCode());
         String av = (aa.trim().equals(";") ? "" : " = " + aa);
@@ -282,97 +285,103 @@ public class VariableDef extends StatementDef {
 
             if (type.getObjectType().equals("Array")) {
 
-                if (arraySize.length() == 0)  {
+                if (arraySize.length() == 0) {
                     type.setObjectType("DynamicArray");
-                    return "num " + getNameAsCode() + " = create_c_2106303_NewDynamicArray_1(" 
-                    + "((c_2106303_Boxing_cm*) getc_2106303_Boxing_cm())->"
-                    + type.asCode() + "_, sizeof("+type.asCode() +"))";
+                    return "num " + getNameAsCode() + " = create_c_2106303_NewDynamicArray_1("
+                            + "((c_2106303_Boxing_cm*) getc_2106303_Boxing_cm())->"
+                            + type.asCode() + "_, sizeof(" + type.asCode() + "))";
                 }
 
                 String tp = type.getName();
 
-                return "num " + getNameAsCode() + " = create_c_2106303_Array_1(" 
-                    + arraySize
-                    + ", ((c_2106303_Boxing_cm*) getc_2106303_Boxing_cm())->"
-                    + tp + "_, sizeof("+tp +"))";
+                return "num " + getNameAsCode() + " = create_c_2106303_Array_1("
+                        + arraySize
+                        + ", ((c_2106303_Boxing_cm*) getc_2106303_Boxing_cm())->"
+                        + tp + "_, sizeof(" + tp + "))";
 
             } else if (type.getObjectType().equals("RefArray")) {
-                return "num " + getNameAsCode() + " = create_c_2106303_RefArray_1(" + arraySize+ ")";
-            } 
+                return "num " + getNameAsCode() + " = create_c_2106303_RefArray_1(" + arraySize + ")";
+            }
 
-            return "num " + getNameAsCode() + " = create_c_2106303_"+type.getObjectType()+"$1(" + arraySize+ ", _"+type.asCode() + ", sizeof("+type.asCode() +"))";
+            return "num " + getNameAsCode() + " = create_c_2106303_" + type.getObjectType() + "$1(" + arraySize + ", _"
+                    + type.asCode() + ", sizeof(" + type.asCode() + "))";
         } else {
-            return "/*va1*/"+ type.asCode() + " " + getNameAsCode() + av;
+            return "/*va1*/" + type.asCode() + " " + getNameAsCode() + av;
         }
     }
 
     @Override
     public String asSignature() {
-        return "("+readAccessor+","+writeAccessor+") "  
-        + (is_static ? " static " : "")
-        + type.asSignature() + " " + getNameAsCode() + ";";
+        return "(" + readAccessor + "," + writeAccessor + ") "
+                + (is_static ? " static " : "")
+                + type.asSignature() + " " + getNameAsCode() + ";";
     }
 
     public String asParameterSignature() {
         return type.asSignature() + " " + getNameAsCode();
-        
+
     }
 
-
-	public boolean isPrimative() {
+    public boolean isPrimative() {
         if (type == null) {
-            throw new RuntimeException("Unknown type " + getName() + ", classdef=" + classDef + ", " );
+            throw new RuntimeException("Unknown type " + getName() + ", classdef=" + classDef + ", ");
         }
 
-		return type.isPrimative();
-	}
+        return type.isPrimative();
+    }
 
     @Override
     public String toString() {
-        return "VariableDef ["+debugValue+" arraySize=" + arraySize + ", assignValue=" + assignValue
+        return "VariableDef [" + debugValue + " arraySize=" + arraySize + ", assignValue=" + assignValue
                 + ", cast_to=" + cast_to + ", indexSize=" + indexSize + ", is_annoymous=" + is_annoymous
-                + ", name=" + name + ", params=" + params + ", type=" + type + " line="+getLine()+" ]";
+                + ", name=" + name + ", params=" + params + ", type=" + type + " line=" + getLine() + " ]";
     }
 
-	public boolean compatableWith(ExprDef exprDef) {
-        if (exprDef.thisType == null && exprDef instanceof StringExpr) {
+    public boolean compatableWith(ExprDef exprDef) {
+        if (exprDef.getThisType() == null && exprDef instanceof StringExpr) {
             exprDef.resolve_01();
         }
 
-        if (exprDef.thisType == null) {
+        if (exprDef.getThisType() == null) {
             System.out.println("[warn] expr has no type " + exprDef + " " + exprDef.getClass());
             return false;
         }
 
-        if (exprDef.thisType.getName().equals(type.getName())) {
+        if (exprDef.getThisType().getName().equals(type.getName())) {
             return true;
         }
 
         if (isPrimative()) {
-            // System.out.println(exprDef.thisType.getName() + " = " + type.getName()  + " " + PrimativeTypes.areCompatable32(exprDef.thisType.getName(), type.getName())); 
-            return PrimativeTypes.areCompatable32(exprDef.thisType.getName(), type.getName());
+            // System.out.println(exprDef.getThisType().getName() + " = " + type.getName() +
+            // " " + PrimativeTypes.areCompatable32(exprDef.getThisType().getName(),
+            // type.getName()));
+            return PrimativeTypes.areCompatable32(exprDef.getThisType().getName(), type.getName());
         }
 
-		return false;
+        return false;
     }
-    
-	public boolean compatableWith(VariableDef variableDef) {
+
+    public boolean compatableWith(VariableDef variableDef) {
         if (variableDef.getName().equals(type.getName())) {
             return true;
         }
 
         if (isPrimative()) {
-            // System.out.println(exprDef.thisType.getName() + " = " + type.getName()  + " " + PrimativeTypes.areCompatable32(exprDef.thisType.getName(), type.getName())); 
+            // System.out.println(exprDef.getThisType().getName() + " = " + type.getName() +
+            // " " + PrimativeTypes.areCompatable32(exprDef.getThisType().getName(),
+            // type.getName()));
             return PrimativeTypes.areCompatable32(variableDef.getName(), type.getName());
         }
 
-		return false;
+        return false;
     }
 
     @Override
     public String asDoc() {
-        // String res = "`" + (is_static ? "static " : "" ) + type.getName() + " " + name + "` read(" + readAccessor + ") write(" + writeAccessor + ")\n";
-        String res = "|" + type.getName() + "|__" + name + "__|" + readAccessor + "|" + writeAccessor + "|" + (assignValue == null ? "" : assignValue.expr) + "|";
+        // String res = "`" + (is_static ? "static " : "" ) + type.getName() + " " +
+        // name + "` read(" + readAccessor + ") write(" + writeAccessor + ")\n";
+        String res = "|" + type.getName() + "|__" + name + "__|" + readAccessor + "|" + writeAccessor + "|"
+                + (assignValue == null ? "" : assignValue.expr) + "|";
         return res + super.asDoc().replaceAll("\\n", " ") + "|\n";
     }
 

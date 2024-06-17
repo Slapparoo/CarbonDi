@@ -1,3 +1,11 @@
+Object/Memory recycler
+
+Static ClassManager function pointer table
+
+ClassManager to their own memory div
+
+Rewite core_support in EC
+
 loop returns
 
 loop types

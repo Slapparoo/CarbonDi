@@ -18,3 +18,4 @@ vgcore*
 /.settings
 core/include/eccore.h
 
+*gz

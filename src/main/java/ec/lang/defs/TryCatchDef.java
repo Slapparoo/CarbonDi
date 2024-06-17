@@ -134,19 +134,19 @@ public class TryCatchDef extends StatementDef implements ContainerDef {
     @Override
     public void resolve_01() {
         super.resolve_01();
-        blockDef.containedInBlock = containedInBlock;
+        blockDef.setContainedInBlock(getContainedInBlock());
         blockDef.resolve_01();
 
-        tryBlock.containedInBlock = containedInBlock;
+        tryBlock.setContainedInBlock(getContainedInBlock());
         tryBlock.resolve_01();
 
         for (CatchBlock catchBlock : catchBlocks) {
-            catchBlock.containedInBlock = containedInBlock;
+            catchBlock.setContainedInBlock(getContainedInBlock());
             catchBlock.resolve_01();
         }
 
         if (finallyBlock != null) {
-            finallyBlock.containedInBlock = containedInBlock;
+            finallyBlock.setContainedInBlock(getContainedInBlock());
             finallyBlock.resolve_01();
         }
     }

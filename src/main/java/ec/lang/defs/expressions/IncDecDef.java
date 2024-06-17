@@ -13,7 +13,7 @@ public class IncDecDef extends TypeExpr {
 
     @Override
     public void resolve_01() {
-        expression.containedInBlock = containedInBlock;
+        expression.setContainedInBlock(getContainedInBlock());
 
         if (expression instanceof MultiTypeExpr) {
             ((MultiTypeExpr)expression).directAccess = true;

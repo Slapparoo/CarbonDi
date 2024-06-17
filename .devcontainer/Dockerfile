@@ -23,4 +23,12 @@ RUN echo "PATH=$PATH:/workspaces/ec-lang" >> /root/.bashrc
 
 COPY vsc-grammar/ec-lang-support /root/.vscode-server/extensions/ec-lang-support
 
+RUN wget https://download.jetbrains.com/idea/ideaIC-2022.1.1.tar.gz
+RUN tar -zxvf ideaIC-*.tar.gz
+RUN mkdir /opt/idea/
+RUN chmod 777 /opt/idea/
+RUN mv idea-*/* /opt/idea/
+RUN ln -sf /opt/idea/bin/idea.sh /usr/local/bin/ij
+RUN usermod -aG ubuntu vscode
+
 USER ubuntu

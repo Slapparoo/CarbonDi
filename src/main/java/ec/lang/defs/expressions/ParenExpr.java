@@ -23,7 +23,7 @@ public class ParenExpr extends ExprDef {
     public void resolve_01() {
         super.resolve_01();
         if (enclosed != null) {
-            enclosed.containedInBlock = containedInBlock;
+            enclosed.setContainedInBlock(getContainedInBlock());
             enclosed.resolve_01();
         }
     }
