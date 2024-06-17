@@ -1,13 +1,19 @@
 package ec.lang;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.List;
+import java.util.Optional;
 
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.atn.ATNConfigSet;
+import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.junit.jupiter.api.BeforeAll;
@@ -24,6 +30,8 @@ import ec.lang.model.ecParser.ProgramContext;
 @SuppressWarnings("deprecation")
 
 public class BaseTest {
+
+    static List<String> errors = new ArrayList<>();
 
     @BeforeEach
     public void preLoader() throws IOException {
@@ -52,6 +60,15 @@ public class BaseTest {
         return string.replaceAll("[\t\n\r]", "").replaceAll(" +", " ");
     }
 
+    public static String genStrippedCode(String source) {
+        lex(source);
+        if (!errors.isEmpty()) {
+            return null;
+        }
+        return stripWhiteSpace(stripComments(DefFactory.getCurrentBlock().asCode()));
+    }
+
+
     /**
      * Utility method to strip whitespace and comments
      */
@@ -64,8 +81,28 @@ public class BaseTest {
     }
 
     protected static void lex(ecLexer lexer) {
-        // try {
+        errors.clear();
+        ANTLRErrorListener listener = new ANTLRErrorListener() {
+            @Override
+            public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
+                errors.add(offendingSymbol == null ? "<Unknown>" : offendingSymbol.toString());
+            }
+
+            @Override
+            public void reportAmbiguity(Parser recognizer, DFA dfa, int startIndex, int stopIndex, boolean exact, BitSet ambigAlts, ATNConfigSet configs) {
+            }
+
+            @Override
+            public void reportAttemptingFullContext(Parser recognizer, DFA dfa, int startIndex, int stopIndex, BitSet conflictingAlts, ATNConfigSet configs) {
+            }
+
+            @Override
+            public void reportContextSensitivity(Parser recognizer, DFA dfa, int startIndex, int stopIndex, int prediction, ATNConfigSet configs) {
+            }
+        };
+        lexer.addErrorListener(listener);
         ecParser parser = new ecParser(new CommonTokenStream(lexer));
+        parser.addErrorListener(listener);
         // adjust the line number
         // lexer.setLine(-110);
 
@@ -89,15 +126,10 @@ public class BaseTest {
             }
         };
         walker.walk(ecbl, tree);
-        // } catch (Exception e) {
-        // System.out.println(e.getMessage());
-        // e.printStackTrace();
-        // }
-
     }
 
     public static void assertContains(String compiledCode, String expectedString) {
-        assertTrue(compiledCode.indexOf(expectedString) > -1,
-                String.format("expecting: \"%s\" not found in compiledCode: \"%s\"", expectedString, compiledCode));
+        assertThat(compiledCode)
+                .contains(expectedString);
     }
 }

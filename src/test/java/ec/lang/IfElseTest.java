@@ -1,40 +1,73 @@
 package ec.lang;
 
-import java.io.IOException;
-
-import ec.lang.model.ecLexer;
-import org.antlr.v4.runtime.ANTLRInputStream;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import ec.lang.defs.DefFactory;
-import ec.lang.defs.FileDef;
+import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-@SuppressWarnings("deprecation")
 public class IfElseTest {
-    static String code = null;
-
     @BeforeAll
     public static void setup() throws IOException {
         BaseTest.preLoad();
-
-        BaseTest.lex("if (!true) { 1;} else if (false) {2;} else {3;}");
-
-        code = BaseTest.stripWhiteSpace(DefFactory.getCurrentBlock().asCode());
     }
 
-
     @Test
-    public void testIfElse() throws IOException {
+    public void testIfElseElse() {
+        String code = BaseTest.genStrippedCode("if (!true) { 1;} else if (false) {2;} else {3;}");
         assertNotNull(code);
 
         // @TODO FIXME assertTrue(code.indexOf("if (!true)") > -1);
         assertThat(code)
-                .contains("if (true)")
-                .contains("else if (false)")
-                .contains("else {");
+                .contains("if (true) {")
+                .contains("} else if (false) {")
+                .contains("} else {");
     }
+
+    @Test
+    public void testIfElseIf() {
+        String code = BaseTest.genStrippedCode("if (!true) { 1;} else if (false) {2;}");
+        assertNotNull(code);
+
+        // @TODO FIXME assertTrue(code.indexOf("if (!true)") > -1);
+        assertThat(code)
+                .contains("if (true) {")
+                .contains("} else if (false) {")
+                .doesNotContain("} else {");
+    }
+
+    @Test
+    public void testIfElse() {
+        String code = BaseTest.genStrippedCode("if (!true) { 1;} else {2;}");
+        assertNotNull(code);
+
+        // @TODO FIXME assertTrue(code.indexOf("if (!true)") > -1);
+        assertThat(code)
+                .contains("if (true) {")
+                .contains("} else {")
+                .doesNotContain("else if");
+    }
+
+    @Test
+    public void testIf() {
+        String code = BaseTest.genStrippedCode("if (!true) { 1;}");
+        assertNotNull(code);
+
+        // @TODO FIXME assertTrue(code.indexOf("if (!true)") > -1);
+        assertThat(code)
+                .contains("if (true) { 1;}");
+    }
+
+    @Test
+    public void testElseSyntaxError() {
+        String code = BaseTest.genStrippedCode("else if (!true) { 1;}");
+        assertNull(code);
+        assertThat(BaseTest.errors)
+                .hasSize(1)
+                        .contains("[@0,0:3='else',<64>,1:0]");
+    }
+
 }
