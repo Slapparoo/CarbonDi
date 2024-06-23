@@ -33,14 +33,34 @@ public class ArrayIndexExpr extends TypeExpr {
                     + SnippetFactory.classModelStatement("Array", super.expr, isStatic) + "->get(" + super.expr
                     + ", " + arrayIndex.asCode() + ")";
         } else {
+            String type = thisType.getObjectType() != null ? thisType.getObjectType() : thisType.getName();
             if (isGet) {
-                return "/*te4*/ *((num *)((c_2106303_RefArray_cm*)getc_2106303_RefArray_cm())->get(" + super.expr + ", "
+                if (type.equals("DynamicArray")) {
+                    return "*((c_2106303_%s_cm*)getc_2106303_%s_cm())->getValue(".formatted(type, type)
+                            + super.expr + ", "
+                            + arrayIndex.asCode() + ")";
+                }
+
+                return "/*te4*/ *((num *)((c_2106303_%s_cm*)getc_2106303_%s_cm())->get(".formatted(type, type)
+                        + super.expr + ", "
                         + arrayIndex.asCode() + "))";
             } else {
-                return "((c_2106303_RefArray_cm*)getc_2106303_RefArray_cm())->setObject(" + super.expr + ", "
-                        + arrayIndex.asCode() + ",";
+                if (type.equals("RefArray")) {
+                    // by ref
+                    return "((c_2106303_%s_cm*)getc_2106303_%s_cm())->setObject(".formatted(type, type)
+                            + super.expr + ", "
+                            + arrayIndex.asCode() + ",";
+                } else if (type.equals("DynamicArray")) {
+                    return "((c_2106303_%s_cm*)getc_2106303_%s_cm())->setValue(".formatted(type, type)
+                            + super.expr + ", "
+                            + arrayIndex.asCode() + ", &";
+                } else {
+                    // by value pointer
+                    return "((c_2106303_%s_cm*)getc_2106303_%s_cm())->set(".formatted(type, type)
+                            + super.expr + ", "
+                            + arrayIndex.asCode() + ", &";
+                }
             }
-
         }
     }
 

@@ -51,7 +51,7 @@ class Parser.TokenMatcher (Parser.Matcher) {
 
     boolean match(TokenSequence tokenSequence) {
         Token token = tokenSequence.tokenList.get(tokenSequence.tsindex);
-        print("TokenMatcher.match1 sequence=%i this=%i\n", token.type, tokenId);
+        // print("TokenMatcher.match1 sequence=%i this=%i\n", token.type, tokenId);
 
         return !isNot && token.type == tokenId;
     }
@@ -74,40 +74,32 @@ class Parser.OrMatcher (Parser.Matcher) {
 
 class Parser.SequenceMatcher (Parser.Matcher) {
     properties {
-        DynamicArray attributes = DynamicArray(20, Boxing.u8_, 1);  // required, 0-many, 1-many, not? 
+        DynamicArray attributes = DynamicArray(Boxing.u8_, 1);  // required, 0-many, 1-many, not? 
         RefArrayList sequence = RefArrayList();  // what this class will match against
     }
 
     void add(Matcher matcher, u8 attribute) {
-        // ?sq = sequence;
-        // ?at = attributes;
+        ?atts = attributes;
+        ?seq = sequence;
 
-        printf(`SequenceMatcher.add %lu %u %lu %lu\n`, sequence.ralsize, attribute, attributes.length, attributes.dataSize);
-        attributes[sequence.ralsize] = attribute;
-        print("SequenceMatcher.add_1\n");
-        sequence.add(matcher);
+        atts[seq.ralsize] = attribute;
+        seq.add(matcher);
     }
 
     boolean match(TokenSequence tokenSequence) {
-        print("match\n");
-        // ?sq = sequence;
         ?index = tokenSequence.tsindex;
         ?inc = tokenSequence.tsindex;
-        print("sequence=%i\n", sequence.ralsize);
-        loop (sequence.ralsize) {
-            Matcher matcher = sequence.get($a);
+        ?seq = sequence;
+        loop (seq.ralsize) {
+            Matcher matcher = seq.get($a);
             tokenSequence.tsindex = inc;
             if (!matcher.match(tokenSequence)) {
                 // restore index
                 tokenSequence.tsindex = index;
-                print("match false\n");
                 return false;
             }
             inc++;
-            print("matchinc %i\n", inc);
-
         }
-
         return true;
     }
 }
@@ -116,17 +108,16 @@ class Parser.SequenceMatcher (Parser.Matcher) {
 // printf(`line0\n`);
 
 ?ts = TokenSequence(tokens);
-ts.tokenList = tokens;
-ts.tsindex = 0;
+// print("line0\n");
+// ts.tokenList = tokens;
+// ts.tsindex = 0;
 
 ?sm = SequenceMatcher();
 
 sm.add(TokenMatcher(TOKEN_ID), 0);
 sm.add(TokenMatcher(TOKEN_ASSIGN), 0);
-
 sm.add(TokenMatcher(TOKEN_DOLLARBRACE), 0);
 sm.add(TokenMatcher(TOKEN_ID), 0);
-print("call match\n");
 sm.add(TokenMatcher(TOKEN_RBRACE), 0);
 
 print("call match\n");

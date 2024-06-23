@@ -34,24 +34,24 @@
 
 u64 entry__ = __onEnter();/*va1*/i32 res = 0;
 
-for (num a__a = 0; a__a < /*te8*/length; a__a++){
-if (/*oxa*//*te8*/length - /*oxb*//*oxa*//*te8*/a__a > /*oxb*/4) {
-/*Ax7*//*te8*/res/*te8*/+=/*fc2 null */EC_GETVALUE_i32(/*te8*/p, /*te8*/a__a);
-/*Ax7*//*te8*/a__a/*te8*/+=3;
+for (num a__a = 0; a__a < length; a__a++){
+if (/*oxa*/length - /*oxb*//*oxa*/a__a > /*oxb*/4) {
+/*Ax7*/res+=/*fc2 null */EC_GETVALUE_i32(p, a__a);
+/*Ax7*/a__a+=3;
 }
 
- else if (/*oxa*//*te8*/length - /*oxb*//*oxa*//*te8*/a__a > /*oxb*/2) {
-/*Ax7*//*te8*/res/*te8*/+=/*fc2 null */EC_GETVALUE_i16(/*te8*/p, /*te8*/a__a);
-/*Ax7*//*te8*/a__a/*te8*/+=1;
+ else if (/*oxa*/length - /*oxb*//*oxa*/a__a > /*oxb*/2) {
+/*Ax7*/res+=/*fc2 null */EC_GETVALUE_i16(p, a__a);
+/*Ax7*/a__a+=1;
 }
 
 /* else? */ else {
-/*Ax7*//*te8*/res/*te8*/+=/*oxa*//*fc2 null */EC_GETVALUE_i8(/*te8*/p, /*te8*/a__a) - /*oxb*/31;
+/*Ax7*/res+=/*oxa*//*fc2 null */EC_GETVALUE_i8(p, a__a) - /*oxb*/31;
 }
 
 }
 
-return __exitReturn_i32_un(/*te8*/res, entry__);
+return __exitReturn_i32_un(res, entry__);
 }
 
 

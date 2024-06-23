@@ -32,19 +32,19 @@
 
 /*fd1*/i32 c_2106303_BoxinggetSizeBytes(i32 type){
 
-u64 entry__ = __onEnter();if (/*oxa*//*oxa*//*oxa*//*oxa*//*oxa*//*te8*/type == /*oxb*/1 || /*oxb*//*te8*/type == /*oxb*/2 || /*oxb*//*te8*/type == /*oxb*/3) {
+u64 entry__ = __onEnter();if (/*oxa*//*oxa*//*oxa*//*oxa*//*oxa*/type == /*oxb*/1 || /*oxb*/type == /*oxb*/2 || /*oxb*/type == /*oxb*/3) {
 return __exitReturn_i64_un(1, entry__);
 }
 
- else if (/*oxa*//*oxa*//*oxa*//*te8*/type == /*oxb*/4 || /*oxb*//*te8*/type == /*oxb*/5) {
+ else if (/*oxa*//*oxa*//*oxa*/type == /*oxb*/4 || /*oxb*/type == /*oxb*/5) {
 return __exitReturn_i64_un(2, entry__);
 }
 
- else if (/*oxa*//*oxa*//*oxa*//*oxa*//*oxa*//*te8*/type == /*oxb*/6 || /*oxb*//*te8*/type == /*oxb*/7 || /*oxb*//*te8*/type == /*oxb*/8) {
+ else if (/*oxa*//*oxa*//*oxa*//*oxa*//*oxa*/type == /*oxb*/6 || /*oxb*/type == /*oxb*/7 || /*oxb*/type == /*oxb*/8) {
 return __exitReturn_i64_un(4, entry__);
 }
 
- else if (/*oxa*//*oxa*//*oxa*//*oxa*//*oxa*//*te8*/type == /*oxb*/9 || /*oxb*//*te8*/type == /*oxb*/10 || /*oxb*//*te8*/type == /*oxb*/11) {
+ else if (/*oxa*//*oxa*//*oxa*//*oxa*//*oxa*/type == /*oxb*/9 || /*oxb*/type == /*oxb*/10 || /*oxb*/type == /*oxb*/11) {
 return __exitReturn_i64_un(8, entry__);
 }
 

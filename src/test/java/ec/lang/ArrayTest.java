@@ -23,10 +23,10 @@ public class ArrayTest extends BaseTest{
             if (fd.name.equals("testArrayIndexVar")) {
                 fd.resolve_01();
                 res= stripWhiteSpace(stripComments(fd.asCode()));
+                break;
             }
         }
         assertNotNull(res);
-        // System.out.println(res);
         assertContains(res, "void testArrayIndexVar()");
         assertContains(res, "u64 entry__ = __onEnter()");
         assertContains(res, "return __exitReturn_void_un(entry__);}");
@@ -35,19 +35,16 @@ public class ArrayTest extends BaseTest{
 
     @Test
     public void testArrayIndexCreate() throws IOException {
-        // contains function
         assertContains(res, "num numbers = create_c_2106303_Array_1(10, ((c_2106303_Boxing_cm*) getc_2106303_Boxing_cm())->i8_, sizeof(i8));");
     }
 
     @Test
     public void testArrayIndexVarSet() throws IOException {
-        // contains function
         assertContains(res, "(i8*)((c_2106303_Array_cm*)useObject(numbers)->classmodel)->get(numbers, 1)='t';");
     }
 
     @Test
     public void testArrayIndexVarGet() throws IOException {
-        // contains function
         assertContains(res, "void testArrayIndexVar()");
         assertContains(res, "(i8*)((c_2106303_Array_cm*)useObject(numbers)->classmodel)->get(numbers, 1);");
     }

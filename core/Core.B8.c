@@ -44,7 +44,7 @@ u64 entry__ = __onEnter();return __exitReturn_pointer_un("b8", entry__);
 
 /*fd1*/pointer c_2106303_B8asStr(num this){
 
-u64 entry__ = __onEnter();if (/*te14a*/((c_2106303_B8_cm*)useObject(/*te8*/this)->classmodel)->get_value(/*te8*/this)) {
+u64 entry__ = __onEnter();if (/*te14a*/((c_2106303_B8_cm*)useObject(this)->classmodel)->get_value(this)) {
 return __exitReturn_pointer_un("true", entry__);
 }
 

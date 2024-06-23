@@ -140,6 +140,9 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
                         tx.setContainedInBlock(getContainedInBlock());
                     }
                     tx.prepare_03(last);
+                    if (variableDef == null) {
+                        variableDef = tx.variableDef;
+                    }
                     if (tx.directAccess) {
                         directAccess = true;
                     }
@@ -355,8 +358,11 @@ public class MultiTypeExpr extends ExprDef implements MultiTypeId {
         // if thistype != null it can't be this.tx
         arrayIndex = tx.arrayIndex;
         // tx is a property of thistype
+        ClassDef classDef = DefFactory.resolveClass(lastVar.type);
+        if (classDef == null) {
+            classDef = lastVar.classDef;
+        }
 
-        ClassDef classDef = lastVar.classDef;
         if (lastVar.classDef == null) {
             if (lastVar.type.isIs_array()) {
                 classDef = DefFactory.resolveClass(lastVar.type.getObjectType());

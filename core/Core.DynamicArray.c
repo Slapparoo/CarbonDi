@@ -33,22 +33,22 @@
 /*fd1*/pointer c_2106303_DynamicArraygetValue(num this, u64 index){
 
 u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("add %s", "here");
-if (/*oxa*//*te8*/index >= /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this)) {
-/*st*/ /*fc2 null */throwException("[error] index array out of bounds");
+if (/*oxa*/index >= /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_capacity(this)) {
+/*st*/ /*fc2 null */throwException("[error] DynamicArray index out of bounds");
 }
 
-return __exitReturn_pointer_un(/* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get(this, /*te8*/index), entry__);
+return __exitReturn_pointer_un(/* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get(this, index), entry__);
 }
 
 
 /*fd1*/void c_2106303_DynamicArraysetValue(num this, u64 index, pointer value){
 
-u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("add %lu, %lu", /*te8*/index, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this));
-if (/*oxa*//*te8*/index >= /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this)) {
-/*st*/ /*fc2 null */throwException("[error] index array out of bounds");
+u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("add %lu, %lu", index, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_capacity(this));
+if (/*oxa*/index >= /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_capacity(this)) {
+/*st*/ /*fc2 null */throwException("[error] DynamicArray index out of bounds");
 }
 
-/*st*/ /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set(this, /*te8*/index, /*te8*/value);
+/*st*/ /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set(this, index, value);
 
 return __exitReturn_void_un(entry__);}
 
@@ -56,8 +56,8 @@ return __exitReturn_void_un(entry__);}
 /*fd1*/void c_2106303_DynamicArrayaddTail(num this, pointer value){
 
 u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("add %s", "here");
-if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this) == /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this)) {
-if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) > /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_slideAmount()) {
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_endIndex(this) == /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_capacity(this)) {
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_startIndex(this) > /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_slideAmount()) {
 /*st*/ /*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->slideLeft(this);
 }
 
@@ -67,8 +67,8 @@ if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmo
 
 }
 
-/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->length++;
-/*st*/ /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->setValue(this, /*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->endIndex++, /*te8*/value);
+/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(this)->data)->length++;
+/*st*/ /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->setValue(this, /*te15a*/((c_2106303_DynamicArray*)useObject(this)->data)->endIndex++, value);
 
 return __exitReturn_void_un(entry__);}
 
@@ -76,8 +76,8 @@ return __exitReturn_void_un(entry__);}
 /*fd1*/void c_2106303_DynamicArrayaddHead(num this, pointer value){
 
 u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("add %s", "here");
-if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) == /*oxb*/0) {
-if (/*oxa*//*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this) < /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this) - /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_slideAmount()) {
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_startIndex(this) == /*oxb*/0) {
+if (/*oxa*//*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_endIndex(this) < /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_capacity(this) - /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_slideAmount()) {
 /*st*/ /*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->slideRight(this);
 }
 
@@ -87,163 +87,163 @@ if (/*oxa*//*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->
 
 }
 
-/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->length++;
-/*st*/ /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->setValue(this, --/*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->startIndex, /*te8*/value);
+/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(this)->data)->length++;
+/*st*/ /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->setValue(this, --/*te15a*/((c_2106303_DynamicArray*)useObject(this)->data)->startIndex, value);
 
 return __exitReturn_void_un(entry__);}
 
 
 /*fd1*/void c_2106303_DynamicArrayinsert(num this, u64 index, pointer value){
 
-u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("insert %lu", /*te8*/index);
-if (/*oxa*//*te8*/index > /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this)) {
+u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("insert %lu", index);
+if (/*oxa*/index > /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_length(this)) {
 /*st*/ /*fc2 null */throwException("[error] index array out of bounds");
 }
 
-if (/*oxa*//*te8*/index == /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this)) {
-/*st*/ /*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->addHead(this, /*te8*/value);
+if (/*oxa*/index == /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_startIndex(this)) {
+/*st*/ /*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->addHead(this, value);
 return __exitReturn_void_un(entry__);
 }
 
-if (/*oxa*//*te8*/index == /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this)) {
-/*st*/ /*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->addTail(this, /*te8*/value);
+if (/*oxa*/index == /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_endIndex(this)) {
+/*st*/ /*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->addTail(this, value);
 return __exitReturn_void_un(entry__);
 }
 
-if (/*oxa*//*oxa*//*te8*/index - /*oxb*//*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) > /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this) - /*oxb*//*te8*/index) {
-if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this) + /*oxb*//*oxa*/1 == /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this)) {
+if (/*oxa*//*oxa*/index - /*oxb*//*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_startIndex(this) > /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_endIndex(this) - /*oxb*/index) {
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_endIndex(this) + /*oxb*//*oxa*/1 == /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_capacity(this)) {
 /*st*/ /*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->addCapacityTail(this);
 }
 
-/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->endIndex++;
-/*va1*/u64 ix = /*oxa*//*te8*/index + /*oxb*/1;
-/*st*/ /*fc2 null */memmove(/*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te8*/ix, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this))), /*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te8*/index, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this))), /*oxa*/(/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this) - /*oxb*//*te8*/index) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_dataSize(/*te8*/this));
+/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(this)->data)->endIndex++;
+/*va1*/u64 ix = /*oxa*/index + /*oxb*/1;
+/*st*/ /*fc2 null */memmove(/*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(ix, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_values(this))), /*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(index, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_values(this))), /*oxa*/(/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_endIndex(this) - /*oxb*/index) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_dataSize(this));
 }
 
 /* else? */ else {
-if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) == /*oxb*/0) {
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_startIndex(this) == /*oxb*/0) {
 /*st*/ /*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->addCapacityHead(this);
 }
 
-/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->startIndex--;
-/*va1*/u64 ix = /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) + /*oxb*/1;
-/*st*/ /*fc2 null */memmove(/*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this))), /*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te8*/ix, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this))), /*oxa*/(/*oxa*//*te8*/index - /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this)) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_dataSize(/*te8*/this));
+/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(this)->data)->startIndex--;
+/*va1*/u64 ix = /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_startIndex(this) + /*oxb*/1;
+/*st*/ /*fc2 null */memmove(/*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_startIndex(this), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_values(this))), /*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(ix, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_values(this))), /*oxa*/(/*oxa*/index - /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_startIndex(this)) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_dataSize(this));
 }
 
-/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->length++;
-/*st*/ /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set(this, /*te8*/index, /*te8*/value);
+/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(this)->data)->length++;
+/*st*/ /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set(this, index, value);
 
 return __exitReturn_void_un(entry__);}
 
 
 /*fd1*/pointer c_2106303_DynamicArrayremoveHead(num this){
 
-u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("remove %lu", /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this));
-if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this) == /*oxb*/0) {
+u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("remove %lu", /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_startIndex(this));
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_length(this) == /*oxb*/0) {
 /*st*/ /*fc2 null */throwException("[error] index array out of bounds");
 }
 
-if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) >= /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this)) {
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_startIndex(this) >= /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_endIndex(this)) {
 /*st*/ /*fc2 null */throwException("[error] index array out of bounds index overlap.");
 }
 
-if (/*oxa*//*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this) - /*oxb*//*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this) > /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy() + /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_slideAmount()) {
+if (/*oxa*//*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_capacity(this) - /*oxb*//*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_length(this) > /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy() + /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_slideAmount()) {
 /*st*/ /*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->reduceCapacityHead(this);
 }
 
-/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->length--;
-return __exitReturn_pointer_un(/* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get(this, /*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->startIndex++), entry__);
+/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(this)->data)->length--;
+return __exitReturn_pointer_un(/* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get(this, /*te15a*/((c_2106303_DynamicArray*)useObject(this)->data)->startIndex++), entry__);
 }
 
 
 /*fd1*/pointer c_2106303_DynamicArrayremoveTail(num this){
 
-u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("remove endIndex=%lu, length=%lu, capacity=%lu", /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this));
-if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this) == /*oxb*/0) {
+u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("remove endIndex=%lu, length=%lu, capacity=%lu", /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_endIndex(this), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_length(this), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_capacity(this));
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_length(this) == /*oxb*/0) {
 /*st*/ /*fc2 null */throwException("[error] index array out of bounds");
 }
 
-if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) >= /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this)) {
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_startIndex(this) >= /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_endIndex(this)) {
 /*st*/ /*fc2 null */throwException("[error] index array out of bounds index overlap.");
 }
 
-/*va1*/pointer res1 = /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get(this, --/*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->endIndex);
-/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->length--;
-if (/*oxa*//*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this) - /*oxb*//*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this) > /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy() + /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_slideAmount()) {
+/*va1*/pointer res1 = /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get(this, --/*te15a*/((c_2106303_DynamicArray*)useObject(this)->data)->endIndex);
+/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(this)->data)->length--;
+if (/*oxa*//*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_capacity(this) - /*oxb*//*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_length(this) > /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy() + /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_slideAmount()) {
 /*st*/ /*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->reduceCapacityTail(this);
 }
 
-return __exitReturn_pointer_un(/*te8*/res1, entry__);
+return __exitReturn_pointer_un(res1, entry__);
 }
 
 
 /*fd1*/pointer c_2106303_DynamicArrayremove(num this, u64 index, pointer value){
 
 u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("remove %s", "here");
-if (/*oxa*//*oxa*//*oxa*//*oxa*//*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this) == /*oxb*/0 || /*oxb*//*te8*/index < /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) || /*oxb*//*te8*/index > /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this)) {
+if (/*oxa*//*oxa*//*oxa*//*oxa*//*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_length(this) == /*oxb*/0 || /*oxb*/index < /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_startIndex(this) || /*oxb*/index > /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_endIndex(this)) {
 /*st*/ /*fc2 null */throwException("[error] index array out of bounds");
 }
 
-if (/*oxa*//*te8*/index == /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this)) {
+if (/*oxa*/index == /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_startIndex(this)) {
 return __exitReturn_pointer_un(/*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->removeHead(this), entry__);
 }
 
-if (/*oxa*//*te8*/index == /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this)) {
+if (/*oxa*/index == /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_endIndex(this)) {
 return __exitReturn_pointer_un(/*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->removeTail(this), entry__);
 }
 
-/*va1*/pointer result = /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get(this, /*te8*/index);
-if (/*oxa*//*oxa*//*te8*/index - /*oxb*//*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) > /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this) - /*oxb*//*te8*/index) {
-/*va1*/u64 ix = /*oxa*//*te8*/index + /*oxb*/1;
-/*st*/ /*fc2 null */memmove(/*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te8*/index, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this))), /*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te8*/ix, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this))), /*oxa*/(/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this) - /*oxb*//*te8*/index) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_dataSize(/*te8*/this));
-/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->endIndex--;
+/*va1*/pointer result = /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get(this, index);
+if (/*oxa*//*oxa*/index - /*oxb*//*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_startIndex(this) > /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_endIndex(this) - /*oxb*/index) {
+/*va1*/u64 ix = /*oxa*/index + /*oxb*/1;
+/*st*/ /*fc2 null */memmove(/*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(index, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_values(this))), /*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(ix, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_values(this))), /*oxa*/(/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_endIndex(this) - /*oxb*/index) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_dataSize(this));
+/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(this)->data)->endIndex--;
 }
 
 /* else? */ else {
-/*va1*/u64 ix = /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) + /*oxb*/1;
-/*st*/ /*fc2 null */memmove(/*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te8*/ix, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this))), /*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this))), /*oxa*/(/*oxa*//*te8*/index - /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this)) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_dataSize(/*te8*/this));
-/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->startIndex++;
+/*va1*/u64 ix = /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_startIndex(this) + /*oxb*/1;
+/*st*/ /*fc2 null */memmove(/*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(ix, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_values(this))), /*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_startIndex(this), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_values(this))), /*oxa*/(/*oxa*/index - /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_startIndex(this)) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_dataSize(this));
+/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(this)->data)->startIndex++;
 }
 
-/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->length--;
-/*rx2*/ return __exitReturn_pointer_un(/*te8*/result, entry__);
+/*st*/ /*te15a*/((c_2106303_DynamicArray*)useObject(this)->data)->length--;
+return __exitReturn_pointer_un(result, entry__);
 }
 
 
 /*fd1*/pointer c_2106303_DynamicArraypeekTail(num this){
 
 u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("peek %s", "here");
-if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this) == /*oxb*/0) {
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_length(this) == /*oxb*/0) {
 /*st*/ /*fc2 null */throwException("[error] index array out of bounds");
 }
 
-return __exitReturn_pointer_un(/* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get(this, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this)), entry__);
+return __exitReturn_pointer_un(/* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get(this, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_endIndex(this)), entry__);
 }
 
 
 /*fd1*/pointer c_2106303_DynamicArraypeekHead(num this){
 
 u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("peek %s", "here");
-if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this) == /*oxb*/0) {
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_length(this) == /*oxb*/0) {
 /*st*/ /*fc2 null */throwException("[error] index array out of bounds");
 }
 
-return __exitReturn_pointer_un(/* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get(this, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this)), entry__);
+return __exitReturn_pointer_un(/* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get(this, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_startIndex(this)), entry__);
 }
 
 
 /*fd1*/void c_2106303_DynamicArrayaddCapacityHead(num this){
 
 u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("grow %s", "here");
-/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_values(/*te8*/this, /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->realloc(this, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this), /*oxa*/(/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this) + /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy()) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_dataSize(/*te8*/this)));
-if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this) == /*oxb*/null) {
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set_values(this, /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->realloc(this, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_values(this), /*oxa*/(/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_capacity(this) + /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy()) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_dataSize(this)));
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_values(this) == /*oxb*/null) {
 /*st*/ /*fc2 null */throwException("[error] out of memory exception.");
 }
 
-/*Ax7*//*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->capacity/*te8*/+=/*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy();
-/*st*/ /*fc2 null */memmove(/*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy(), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this))), /*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(0, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this))), /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_dataSize(/*te8*/this));
-/*Ax7*//*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->startIndex/*te8*/+=/*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy();
-/*Ax7*//*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->endIndex/*te8*/+=/*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy();
+/*Ax7*//*te15a*/((c_2106303_DynamicArray*)useObject(this)->data)->capacity+=/*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy();
+/*st*/ /*fc2 null */memmove(/*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy(), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_values(this))), /*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(0, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_values(this))), /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_length(this) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_dataSize(this));
+/*Ax7*//*te15a*/((c_2106303_DynamicArray*)useObject(this)->data)->startIndex+=/*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy();
+/*Ax7*//*te15a*/((c_2106303_DynamicArray*)useObject(this)->data)->endIndex+=/*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy();
 
 return __exitReturn_void_un(entry__);}
 
@@ -251,32 +251,32 @@ return __exitReturn_void_un(entry__);}
 /*fd1*/void c_2106303_DynamicArrayaddCapacityTail(num this){
 
 u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("grow %s", "here");
-/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_values(/*te8*/this, /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->realloc(this, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this), /*oxa*/(/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this) + /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy()) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_dataSize(/*te8*/this)));
-if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this) == /*oxb*/null) {
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set_values(this, /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->realloc(this, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_values(this), /*oxa*/(/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_capacity(this) + /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy()) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_dataSize(this)));
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_values(this) == /*oxb*/null) {
 /*st*/ /*fc2 null */throwException("[error] out of memory exception.");
 }
 
-/*Ax7*//*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->capacity/*te8*/+=/*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy();
+/*Ax7*//*te15a*/((c_2106303_DynamicArray*)useObject(this)->data)->capacity+=/*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy();
 
 return __exitReturn_void_un(entry__);}
 
 
 /*fd1*/void c_2106303_DynamicArrayreduceCapacityHead(num this){
 
-u64 entry__ = __onEnter();if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this) <= /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_initialSize()) {
+u64 entry__ = __onEnter();if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_capacity(this) <= /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_initialSize()) {
 return __exitReturn_void_un(entry__);
 }
 
 /*st*/ /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->realignLeft(this);
-/*va1*/u64 oldCapacity = /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this);
-/*va1*/u64 requestAmount = /*oxa*/(/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this) - /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy()) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_dataSize(/*te8*/this);
-/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_values(/*te8*/this, /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->realloc(this, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this), /*te8*/requestAmount));
-if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this) == /*oxb*/null) {
+/*va1*/u64 oldCapacity = /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_capacity(this);
+/*va1*/u64 requestAmount = /*oxa*/(/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_capacity(this) - /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy()) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_dataSize(this);
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set_values(this, /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->realloc(this, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_values(this), requestAmount));
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_values(this) == /*oxb*/null) {
 /*st*/ /*fc2 null */throwException("[error] out of memory exception.");
 }
 
-/*Ax7*//*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->capacity/*te8*/-=/*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy();
-/*st*/ /*fc2 null */debug_println("shrink length=%lu, requestedAmount=%lu, oldCapacity=%lu, capacity=%lu", /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this), /*te8*/requestAmount, /*te8*/oldCapacity, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this));
+/*Ax7*//*te15a*/((c_2106303_DynamicArray*)useObject(this)->data)->capacity-=/*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy();
+/*st*/ /*fc2 null */debug_println("shrink length=%lu, requestedAmount=%lu, oldCapacity=%lu, capacity=%lu", /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_length(this), requestAmount, oldCapacity, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_capacity(this));
 
 return __exitReturn_void_un(entry__);}
 
@@ -284,12 +284,12 @@ return __exitReturn_void_un(entry__);}
 /*fd1*/void c_2106303_DynamicArrayreduceCapacityTail(num this){
 
 u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("shrink %s", "here");
-/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_values(/*te8*/this, /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->realloc(this, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this), /*oxa*/(/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this) - /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy()) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_dataSize(/*te8*/this)));
-if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this) == /*oxb*/null) {
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set_values(this, /* switch from fc5 to te4*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->realloc(this, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_values(this), /*oxa*/(/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_capacity(this) - /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy()) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_dataSize(this)));
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_values(this) == /*oxb*/null) {
 /*st*/ /*fc2 null */throwException("[error] out of memory exception.");
 }
 
-/*Ax7*//*te15a*/((c_2106303_DynamicArray*)useObject(/*te8*/this)->data)->capacity/*te8*/-=/*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy();
+/*Ax7*//*te15a*/((c_2106303_DynamicArray*)useObject(this)->data)->capacity-=/*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_growBy();
 
 return __exitReturn_void_un(entry__);}
 
@@ -297,13 +297,13 @@ return __exitReturn_void_un(entry__);}
 /*fd1*/void c_2106303_DynamicArrayrealignLeft(num this){
 
 u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("align %s", "here");
-/*va1*/pointer dest = /*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(0, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this)));
-/*va1*/pointer source = /*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this)));
-/*va1*/u64 amount = /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_dataSize(/*te8*/this);
-/*st*/ /*fc2 null */debug_println("align %p == %p, %p, amount=%lu, length=%lu, dataSize=%lu, capacity=%lu", /*te8*/dest, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this), /*te8*/source, /*te8*/amount, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_dataSize(/*te8*/this), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this));
-/*st*/ /*fc2 null */memmove(/*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this), /*te8*/source, /*te8*/amount);
-/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_startIndex(/*te8*/this, 0);
-/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_endIndex(/*te8*/this, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this));
+/*va1*/pointer dest = /*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(0, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_values(this)));
+/*va1*/pointer source = /*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_startIndex(this), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_values(this)));
+/*va1*/u64 amount = /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_length(this) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_dataSize(this);
+/*st*/ /*fc2 null */debug_println("align %p == %p, %p, amount=%lu, length=%lu, dataSize=%lu, capacity=%lu", dest, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_values(this), source, amount, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_length(this), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_dataSize(this), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_capacity(this));
+/*st*/ /*fc2 null */memmove(/*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_values(this), source, amount);
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set_startIndex(this, 0);
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set_endIndex(this, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_length(this));
 
 return __exitReturn_void_un(entry__);}
 
@@ -312,13 +312,13 @@ return __exitReturn_void_un(entry__);}
 
 u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("slide %s", "here");
 /*va1*/u64 newStart = 0;
-if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) + /*oxb*//*oxa*/1 >= /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_slideAmount()) {
-/*Ax6*//*te8*/newStart/*te8*/=/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) - /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_slideAmount();
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_startIndex(this) + /*oxb*//*oxa*/1 >= /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_slideAmount()) {
+/*Ax6*/newStart=/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_startIndex(this) - /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_slideAmount();
 }
 
-/*st*/ /*fc2 null */memmove(/*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te8*/newStart, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this))), /*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this))), /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_dataSize(/*te8*/this));
-/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_startIndex(/*te8*/this, /*te8*/newStart);
-/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_endIndex(/*te8*/this, /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) + /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this));
+/*st*/ /*fc2 null */memmove(/*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(newStart, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_values(this))), /*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_startIndex(this), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_values(this))), /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_length(this) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_dataSize(this));
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set_startIndex(this, newStart);
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set_endIndex(this, /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_startIndex(this) + /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_length(this));
 
 return __exitReturn_void_un(entry__);}
 
@@ -326,14 +326,14 @@ return __exitReturn_void_un(entry__);}
 /*fd1*/void c_2106303_DynamicArrayslideRight(num this){
 
 u64 entry__ = __onEnter();/*st*/ /*fc2 null */debug_println("slide %s", "here");
-/*va1*/u64 newStart = /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) - /*oxb*/(/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this) - /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this));
-if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_endIndex(/*te8*/this) + /*oxb*//*oxa*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_slideAmount() <= /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this)) {
-/*Ax6*//*te8*/newStart/*te8*/=/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this) + /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_slideAmount();
+/*va1*/u64 newStart = /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_startIndex(this) - /*oxb*/(/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_capacity(this) - /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_length(this));
+if (/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_endIndex(this) + /*oxb*//*oxa*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_slideAmount() <= /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_capacity(this)) {
+/*Ax6*/newStart=/*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_startIndex(this) + /*oxb*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_slideAmount();
 }
 
-/*st*/ /*fc2 null */memmove(/*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te8*/newStart, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this))), /*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_values(/*te8*/this))), /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_dataSize(/*te8*/this));
-/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_startIndex(/*te8*/this, /*te8*/newStart);
-/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_endIndex(/*te8*/this, /*oxa*//*te8*/newStart + /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_length(/*te8*/this));
+/*st*/ /*fc2 null */memmove(/*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(newStart, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_values(this))), /*fc2 null */EC_ADDRESS(/*fc2 null */EC_ARRAY(/*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_startIndex(this), /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_values(this))), /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_length(this) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_dataSize(this));
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set_startIndex(this, newStart);
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set_endIndex(this, /*oxa*/newStart + /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_length(this));
 
 return __exitReturn_void_un(entry__);}
 
@@ -456,12 +456,12 @@ num this =  create_c_2106303_DynamicArray();
 
 ((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set_dataType(this, dataType);
 {
-/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_capacity(/*te8*/this, /*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_initialSize());
-/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_dataSize(/*te8*/this, /*fc4*/ ((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->getSizeBytes(/*te8*/dataType));
-/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_values(/*te8*/this, /*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->alloc(this, /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_dataSize(/*te8*/this)));
-/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_startIndex(/*te8*/this, /*oxa*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_initialSize() / /*oxb*/2);
-/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_endIndex(/*te8*/this, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this));
-/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_length(/*te8*/this, 0);
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set_capacity(this, /*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_initialSize());
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set_dataSize(this, /*fc4*/ ((c_2106303_Boxing_cm*)getc_2106303_Boxing_cm())->getSizeBytes(dataType));
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set_values(this, /*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->alloc(this, /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_capacity(this) * /*oxb*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_dataSize(this)));
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set_startIndex(this, /*oxa*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_initialSize() / /*oxb*/2);
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set_endIndex(this, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_startIndex(this));
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set_length(this, 0);
 }
 
 return this;
@@ -472,11 +472,11 @@ num this =  create_c_2106303_DynamicArray();
 ((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set_dataType(this, dataType);
 ((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set_dataSize(this, dataSize);
 {
-/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_capacity(/*te8*/this, /*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_initialSize());
-/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_values(/*te8*/this, /*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->alloc(this, /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_capacity(/*te8*/this) * /*oxb*//*te8*/dataSize));
-/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_startIndex(/*te8*/this, /*oxa*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_initialSize() / /*oxb*/2);
-/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_endIndex(/*te8*/this, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->get_startIndex(/*te8*/this));
-/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(/*te8*/this)->classmodel)->set_length(/*te8*/this, 0);
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set_capacity(this, /*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_initialSize());
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set_values(this, /*fc3*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->alloc(this, /*oxa*//*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_capacity(this) * /*oxb*/dataSize));
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set_startIndex(this, /*oxa*//*te14*/((c_2106303_DynamicArray_cm*)getc_2106303_DynamicArray_cm())->get_initialSize() / /*oxb*/2);
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set_endIndex(this, /*te14a*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->get_startIndex(this));
+/*Ax5*//*te14b*/((c_2106303_DynamicArray_cm*)useObject(this)->classmodel)->set_length(this, 0);
 }
 
 return this;

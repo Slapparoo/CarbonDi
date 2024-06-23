@@ -32,27 +32,27 @@
 
 /*fd1*/void c_2106303_RefArrayListstartup(num this){
 
-u64 entry__ = __onEnter();if (/*te14a*/((c_2106303_RefArrayList_cm*)useObject(/*te8*/this)->classmodel)->get_isInit(/*te8*/this)) {
+u64 entry__ = __onEnter();if (/*te14a*/((c_2106303_RefArrayList_cm*)useObject(this)->classmodel)->get_isInit(this)) {
 return __exitReturn_void_un(entry__);
 }
 
-/*Ax5*//*te14b*/((c_2106303_RefArrayList_cm*)useObject(/*te8*/this)->classmodel)->set_isInit(/*te8*/this, true);
-/*Ax3*//*te14b*/((c_2106303_RefArrayList_cm*)useObject(/*te8*/this)->classmodel)->set_list(/*te8*/this, /*cd1*/ create_c_2106303_RefArray_1(/*te14*/((c_2106303_RefArrayList_cm*)getc_2106303_RefArrayList_cm())->get_growBy()));
+/*Ax5*//*te14b*/((c_2106303_RefArrayList_cm*)useObject(this)->classmodel)->set_isInit(this, true);
+/*Ax3*//*te14b*/((c_2106303_RefArrayList_cm*)useObject(this)->classmodel)->set_list(this, /*cd1*/ create_c_2106303_RefArray_1(/*te14*/((c_2106303_RefArrayList_cm*)getc_2106303_RefArrayList_cm())->get_growBy()));
 
 return __exitReturn_void_un(entry__);}
 
 
 /*fd1*/void c_2106303_RefArrayListgrowList(num this){
 
-u64 entry__ = __onEnter();/*va1*/num tempList = /*te14a*/((c_2106303_RefArrayList_cm*)useObject(/*te8*/this)->classmodel)->get_list(/*te8*/this);
-/*va1*/num newList = /*cd1*/ create_c_2106303_RefArray_1(/*oxa*//*te14a*/((c_2106303_RefArray_cm*)useObject(/*te8*/tempList)->classmodel)->get_length(/*te8*/tempList) + /*oxb*//*te14*/((c_2106303_RefArrayList_cm*)getc_2106303_RefArrayList_cm())->get_growBy());
+u64 entry__ = __onEnter();/*va1*/num tempList = /*te14a*/((c_2106303_RefArrayList_cm*)useObject(this)->classmodel)->get_list(this);
+/*va1*/num newList = /*cd1*/ create_c_2106303_RefArray_1(/*oxa*//*te14a*/((c_2106303_RefArray_cm*)useObject(tempList)->classmodel)->get_length(tempList) + /*oxb*//*te14*/((c_2106303_RefArrayList_cm*)getc_2106303_RefArrayList_cm())->get_growBy());
 
-for (num a__a = 0; a__a < /*te14a*/((c_2106303_RefArray_cm*)useObject(/*te8*/tempList)->classmodel)->get_length(/*te8*/tempList); a__a++){
-/*va1*/i64 ix = /*te8*/a__a;
-/*Ax3*/((c_2106303_RefArray_cm*)getc_2106303_RefArray_cm())->setObject(newList, /*te8*/ix,/*te4*/ *((num *)((c_2106303_RefArray_cm*)getc_2106303_RefArray_cm())->get(tempList, /*te8*/ix)));
+for (num a__a = 0; a__a < /*te14a*/((c_2106303_RefArray_cm*)useObject(tempList)->classmodel)->get_length(tempList); a__a++){
+/*va1*/i64 ix = a__a;
+/*Ax3*/((c_2106303_RefArray_cm*)getc_2106303_RefArray_cm())->setObject(newList, ix,/*te4*/ *((num *)((c_2106303_RefArray_cm*)getc_2106303_RefArray_cm())->get(tempList, ix)));
 }
 
-/*Ax3*//*te14b*/((c_2106303_RefArrayList_cm*)useObject(/*te8*/this)->classmodel)->set_list(/*te8*/this, /*te8*/newList);
+/*Ax3*//*te14b*/((c_2106303_RefArrayList_cm*)useObject(this)->classmodel)->set_list(this, newList);
 
 return __exitReturn_void_un(entry__);}
 
@@ -60,23 +60,23 @@ return __exitReturn_void_un(entry__);}
 /*fd1*/void c_2106303_RefArrayListadd(num this, num object){
 
 u64 entry__ = __onEnter();/*st*/ /* switch from fc5 to te4*/((c_2106303_RefArrayList_cm*)useObject(this)->classmodel)->startup(this);
-/*va1*/num tempList = /*te14a*/((c_2106303_RefArrayList_cm*)useObject(/*te8*/this)->classmodel)->get_list(/*te8*/this);
-if (/*oxa*//*te14a*/((c_2106303_RefArray_cm*)useObject(/*te8*/tempList)->classmodel)->get_length(/*te8*/tempList) == /*oxb*//*te14a*/((c_2106303_RefArrayList_cm*)useObject(/*te8*/this)->classmodel)->get_ralsize(/*te8*/this)) {
+/*va1*/num tempList = /*te14a*/((c_2106303_RefArrayList_cm*)useObject(this)->classmodel)->get_list(this);
+if (/*oxa*//*te14a*/((c_2106303_RefArray_cm*)useObject(tempList)->classmodel)->get_length(tempList) == /*oxb*//*te14a*/((c_2106303_RefArrayList_cm*)useObject(this)->classmodel)->get_ralsize(this)) {
 /*st*/ /*fc3*/((c_2106303_RefArrayList_cm*)useObject(this)->classmodel)->growList(this);
 }
 
-/*va1*/num tempList2 = /*te14a*/((c_2106303_RefArrayList_cm*)useObject(/*te8*/this)->classmodel)->get_list(/*te8*/this);
-/*Ax3*/((c_2106303_RefArray_cm*)getc_2106303_RefArray_cm())->setObject(tempList2, /*te14a*/((c_2106303_RefArrayList_cm*)useObject(/*te8*/this)->classmodel)->get_ralsize(/*te8*/this),/*te8*/object);
-/*st*/ /*te15a*/((c_2106303_RefArrayList*)useObject(/*te8*/this)->data)->ralsize++;
+/*va1*/num tempList2 = /*te14a*/((c_2106303_RefArrayList_cm*)useObject(this)->classmodel)->get_list(this);
+/*Ax3*/((c_2106303_RefArray_cm*)getc_2106303_RefArray_cm())->setObject(tempList2, /*te14a*/((c_2106303_RefArrayList_cm*)useObject(this)->classmodel)->get_ralsize(this),object);
+/*st*/ /*te15a*/((c_2106303_RefArrayList*)useObject(this)->data)->ralsize++;
 
 return __exitReturn_void_un(entry__);}
 
 
 /*fd1*/num c_2106303_RefArrayListget(num this, u64 index){
 
-u64 entry__ = __onEnter();/*va1*/num tempList = /*te14a*/((c_2106303_RefArrayList_cm*)useObject(/*te8*/this)->classmodel)->get_list(/*te8*/this);
-/*va1*/num o = /*te4*/ *((num *)((c_2106303_RefArray_cm*)getc_2106303_RefArray_cm())->get(tempList, /*te8*/index));
-/*rx4*/ return __exitReturn_ref_un(/*te8*/o, entry__);
+u64 entry__ = __onEnter();/*va1*/num tempList = /*te14a*/((c_2106303_RefArrayList_cm*)useObject(this)->classmodel)->get_list(this);
+/*va1*/num o = /*te4*/ *((num *)((c_2106303_RefArray_cm*)getc_2106303_RefArray_cm())->get(tempList, index));
+/*rx4*/ return __exitReturn_ref_un(o, entry__);
 }
 
 

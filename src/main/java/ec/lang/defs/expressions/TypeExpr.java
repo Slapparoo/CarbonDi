@@ -1,10 +1,6 @@
 package ec.lang.defs.expressions;
 
-import ec.lang.defs.ClassDef;
-import ec.lang.defs.ExprDef;
-import ec.lang.defs.SnippetFactory;
-import ec.lang.defs.TypeIdDef;
-import ec.lang.defs.VariableDef;
+import ec.lang.defs.*;
 
 public class TypeExpr extends ExprDef implements MultiTypeId {
     public ExprDef arrayIndex = null;
@@ -49,8 +45,16 @@ public class TypeExpr extends ExprDef implements MultiTypeId {
 
     public void prepare_03(String ref_id) {
         if (variableDef == null) {
-            throw new RuntimeException(
-                    "variableDef == null " + expr + " " + isResolved() + " " + getLine() + " " + ref_id);
+            if (ref_id != null) {
+                var lvd = getContainedInBlock().classDef.resolveProperty(ref_id);
+                variableDef = lvd.classDef.resolveProperty(expr);
+                memberOf = lvd.classDef;
+            }
+            if (variableDef == null) {
+                throw new RuntimeException(
+                        "variableDef == null " + expr + " " + isResolved() + " " + getLine() + " " + ref_id);
+            }
+
         }
 
         if (arrayIndex != null) {

@@ -32,31 +32,31 @@
 
 /*fd1*/u64 c_2106303_FileUtilsfilesize(pointer fp){
 
-u64 entry__ = __onEnter();/*va1*/int prev = /*fc2 null */ftell(/*te8*/fp);
-/*st*/ /*fc2 null */fseek(/*te8*/fp, 0, /*te8*/SEEK_END);
-/*va1*/int sz = /*fc2 null */ftell(/*te8*/fp);
-/*st*/ /*fc2 null */fseek(/*te8*/fp, /*te8*/prev, /*te8*/SEEK_SET);
-return __exitReturn_int_un(/*te8*/sz, entry__);
+u64 entry__ = __onEnter();/*va1*/int prev = /*fc2 null */ftell(fp);
+/*st*/ /*fc2 null */fseek(fp, 0, SEEK_END);
+/*va1*/int sz = /*fc2 null */ftell(fp);
+/*st*/ /*fc2 null */fseek(fp, prev, SEEK_SET);
+return __exitReturn_int_un(sz, entry__);
 }
 
 
 /*fd1*/num c_2106303_FileUtilsfileread(num filename){
 
-u64 entry__ = __onEnter();/*va1*/pointer fp = /*fc2 null */fopen(/* switch from fc5 to te4*/((c_2106303_String_cm*)useObject(/*te8*/filename)->classmodel)->asStr(/*te8*/filename), "r");
-if (/*oxa*//*te8*/fp == /*oxb*/null) {
+u64 entry__ = __onEnter();/*va1*/pointer fp = /*fc2 null */fopen(/* switch from fc5 to te4*/((c_2106303_String_cm*)useObject(filename)->classmodel)->asStr(filename), "r");
+if (/*oxa*/fp == /*oxb*/null) {
 /*st*/ /*fc2 null */throwException("[openfile] error opening file.");
 }
 
-/*va1*/u64 size = /*fc4*/ ((c_2106303_FileUtils_cm*)getc_2106303_FileUtils_cm())->filesize(/*te8*/fp);
-/*va1*/u64 szp1 = /*oxa*//*te8*/size + /*oxb*/1;
+/*va1*/u64 size = /*fc4*/ ((c_2106303_FileUtils_cm*)getc_2106303_FileUtils_cm())->filesize(fp);
+/*va1*/u64 szp1 = /*oxa*/size + /*oxb*/1;
 num buffer = create_c_2106303_Array_1(szp1, ((c_2106303_Boxing_cm*) getc_2106303_Boxing_cm())->i8_, sizeof(i8));
-/*va1*/num result = /*fc2 null */fread(/*te14a*/((c_2106303_Array_cm*)useObject(/*te8*/buffer)->classmodel)->get_values(/*te8*/buffer), 1, /*te8*/size, /*te8*/fp);
-/*st*/ /*fc2 null */fclose(/*te8*/fp);
-if (/*oxa*//*te8*/result != /*oxb*//*te8*/size) {
+/*va1*/num result = /*fc2 null */fread(/*te14a*/((c_2106303_Array_cm*)useObject(buffer)->classmodel)->get_values(buffer), 1, size, fp);
+/*st*/ /*fc2 null */fclose(fp);
+if (/*oxa*/result != /*oxb*/size) {
 /*st*/ /*fc2 null */throwException("[readfile] error reading file.");
 }
 
-/*rx1*/ return __exitReturn_ref_un(/*te8*/buffer, entry__);
+/*rx1*/ return __exitReturn_ref_un(buffer, entry__);
 }
 
 

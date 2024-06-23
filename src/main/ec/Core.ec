@@ -909,7 +909,7 @@ public class Core.DynamicArray (Core.Array){
     public pointer getValue(u64 index) {
         debug_println(`add %s`, `here`);
         if (index >= capacity) {
-            throwException(`[error] index array out of bounds`);
+            throwException(`[error] DynamicArray index out of bounds`);
         }
         return get(index);
     }
@@ -920,7 +920,7 @@ public class Core.DynamicArray (Core.Array){
     public void setValue(u64 index, pointer value) {
         debug_println(`add %lu, %lu`, index, capacity);
         if (index >= capacity) {
-            throwException(`[error] index array out of bounds`);
+            throwException(`[error] DynamicArray index out of bounds`);
         }
         set(index, value);
     }

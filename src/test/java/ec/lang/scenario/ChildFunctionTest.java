@@ -52,7 +52,7 @@ public class ChildFunctionTest extends BaseTest {
 
                 boolean match(TokenSequence tokenSequence) {
                     Token token = tokenSequence.tokenList.get(tokenSequence.tsindex);
-                    print("TokenMatcher.match1 sequence=%i this=%i\n", token.type, tokenId);
+/*                    print("TokenMatcher.match1 sequence=%i this=%i\n", token.type, tokenId);  */
 
                     return !isNot && token.type == tokenId;
                 }
@@ -83,29 +83,28 @@ public class ChildFunctionTest extends BaseTest {
                     // ?sq = sequence;
                     // ?at = attributes;
 
-                    printf(`SequenceMatcher.add %lu %u %lu %lu\n`, sequence.ralsize, attribute, attributes.length, attributes.dataSize);
+/*                    printf(`SequenceMatcher.add %lu %u %lu %lu\n`, sequence.ralsize, attribute, attributes.length, attributes.dataSize);  */
                     attributes[sequence.ralsize] = attribute;
-                    print("SequenceMatcher.add_1\n");
+/*                    print("SequenceMatcher.add_1\n");  */
                     sequence.add(matcher);
                 }
 
                 boolean match(TokenSequence tokenSequence) {
-                    print("match\n");
+/*                    print("match\n");      */
                     ?index = tokenSequence.tsindex;
                     ?inc = tokenSequence.tsindex;
-                    print("sequence=%i\n", sequence.ralsize);
+/*                    print("sequence=%i\n", sequence.ralsize);    */
                     loop (sequence.ralsize) {
                         Matcher matcher = sequence.get($a);
                         tokenSequence.tsindex = inc;
                         if (!matcher.match(tokenSequence)) {
                             // restore index
                             tokenSequence.tsindex = index;
-                            print("match false\n");
+/*                            print("match false\n");  */
                             return false;
                         }
                         inc++;
-                        print("matchinc %i\n", inc);
-
+/*                        print("matchinc %i\n", inc);   */
                     }
 
                     return true;

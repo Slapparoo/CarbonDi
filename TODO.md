@@ -1,5 +1,7 @@
 Object/Memory recycler
 
+Constructor overrides not calling parent to set values
+
 Static ClassManager function pointer table
 
 ClassManager to their own memory div

@@ -17,7 +17,7 @@ FROM mcr.microsoft.com/vscode/devcontainers/base:${VARIANT}
 
 RUN apt-get update \
     && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends openjdk-17-jdk git maven make clang clang-format valgrind vim
+    && apt-get -y install --no-install-recommends openjdk-21-jdk git maven make clang clang-format valgrind vim
 
 RUN echo "PATH=$PATH:/workspaces/ec-lang" >> /root/.bashrc
 

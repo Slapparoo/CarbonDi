@@ -34,7 +34,7 @@
 
 u64 entry__ = __onEnter();/*va1*/boolean res = false;
 
-switch (/*te8*/chr) {
+switch (chr) {
 
 case 65 :
 case 66 :
@@ -88,10 +88,10 @@ case 118 :
 case 119 :
 case 120 :
 case 121 :
-case 122 :/*Ax6*//*te8*/res/*te8*/=true;
+case 122 :/*Ax6*/res=true;
 
 }
-return __exitReturn_i32_un(/*te8*/res, entry__);
+return __exitReturn_boolean_un(res, entry__);
 }
 
 
@@ -99,7 +99,7 @@ return __exitReturn_i32_un(/*te8*/res, entry__);
 
 u64 entry__ = __onEnter();/*va1*/boolean res = false;
 
-switch (/*te8*/chr) {
+switch (chr) {
 
 case 32 :
 
@@ -155,10 +155,10 @@ case 118 :
 case 119 :
 case 120 :
 case 121 :
-case 122 :/*Ax6*//*te8*/res/*te8*/=true;
+case 122 :/*Ax6*/res=true;
 
 }
-return __exitReturn_i32_un(/*te8*/res, entry__);
+return __exitReturn_boolean_un(res, entry__);
 }
 
 
@@ -166,7 +166,7 @@ return __exitReturn_i32_un(/*te8*/res, entry__);
 
 u64 entry__ = __onEnter();/*va1*/boolean res = false;
 
-switch (/*te8*/chr) {
+switch (chr) {
 
 case 65 :
 case 66 :
@@ -193,10 +193,10 @@ case 86 :
 case 87 :
 case 88 :
 case 89 :
-case 90 :/*Ax6*//*te8*/res/*te8*/=true;
+case 90 :/*Ax6*/res=true;
 
 }
-return __exitReturn_i32_un(/*te8*/res, entry__);
+return __exitReturn_boolean_un(res, entry__);
 }
 
 
@@ -204,7 +204,7 @@ return __exitReturn_i32_un(/*te8*/res, entry__);
 
 u64 entry__ = __onEnter();/*va1*/boolean res = false;
 
-switch (/*te8*/chr) {
+switch (chr) {
 
 case 97 :
 case 98 :
@@ -231,10 +231,10 @@ case 118 :
 case 119 :
 case 120 :
 case 121 :
-case 122 :/*Ax6*//*te8*/res/*te8*/=true;
+case 122 :/*Ax6*/res=true;
 
 }
-return __exitReturn_i32_un(/*te8*/res, entry__);
+return __exitReturn_boolean_un(res, entry__);
 }
 
 
@@ -242,7 +242,7 @@ return __exitReturn_i32_un(/*te8*/res, entry__);
 
 u64 entry__ = __onEnter();/*va1*/boolean res = false;
 
-switch (/*te8*/chr) {
+switch (chr) {
 
 case 32 :
 
@@ -309,10 +309,10 @@ case 118 :
 case 119 :
 case 120 :
 case 121 :
-case 122 :/*Ax6*//*te8*/res/*te8*/=true;
+case 122 :/*Ax6*/res=true;
 
 }
-return __exitReturn_i32_un(/*te8*/res, entry__);
+return __exitReturn_boolean_un(res, entry__);
 }
 
 
@@ -320,7 +320,7 @@ return __exitReturn_i32_un(/*te8*/res, entry__);
 
 u64 entry__ = __onEnter();/*va1*/boolean res = false;
 
-switch (/*te8*/chr) {
+switch (chr) {
 
 case 48 :
 case 49 :
@@ -385,10 +385,10 @@ case 118 :
 case 119 :
 case 120 :
 case 121 :
-case 122 :/*Ax6*//*te8*/res/*te8*/=true;
+case 122 :/*Ax6*/res=true;
 
 }
-return __exitReturn_i32_un(/*te8*/res, entry__);
+return __exitReturn_boolean_un(res, entry__);
 }
 
 
@@ -396,7 +396,7 @@ return __exitReturn_i32_un(/*te8*/res, entry__);
 
 u64 entry__ = __onEnter();/*va1*/boolean res = false;
 
-switch (/*te8*/chr) {
+switch (chr) {
 
 case 48 :
 case 49 :
@@ -409,10 +409,10 @@ case 55 :
 case 56 :
 case 57 :
 
-case 95 :/*Ax6*//*te8*/res/*te8*/=true;
+case 95 :/*Ax6*/res=true;
 
 }
-return __exitReturn_i32_un(/*te8*/res, entry__);
+return __exitReturn_boolean_un(res, entry__);
 }
 
 
@@ -420,7 +420,7 @@ return __exitReturn_i32_un(/*te8*/res, entry__);
 
 u64 entry__ = __onEnter();/*va1*/boolean res = false;
 
-switch (/*te8*/chr) {
+switch (chr) {
 
 case 48 :
 case 49 :
@@ -435,10 +435,10 @@ case 57 :
 
 case 95 :
 
-case 46 :/*Ax6*//*te8*/res/*te8*/=true;
+case 46 :/*Ax6*/res=true;
 
 }
-return __exitReturn_i32_un(/*te8*/res, entry__);
+return __exitReturn_boolean_un(res, entry__);
 }
 
 
@@ -446,7 +446,7 @@ return __exitReturn_i32_un(/*te8*/res, entry__);
 
 u64 entry__ = __onEnter();/*va1*/boolean res = false;
 
-switch (/*te8*/chr) {
+switch (chr) {
 
 case 48 :
 case 49 :
@@ -473,10 +473,10 @@ case 68 :
 case 69 :
 case 70 :
 
-case 95 :/*Ax6*//*te8*/res/*te8*/=true;
+case 95 :/*Ax6*/res=true;
 
 }
-return __exitReturn_i32_un(/*te8*/res, entry__);
+return __exitReturn_boolean_un(res, entry__);
 }
 
 
@@ -484,15 +484,15 @@ return __exitReturn_i32_un(/*te8*/res, entry__);
 
 u64 entry__ = __onEnter();/*va1*/boolean res = false;
 
-switch (/*te8*/chr) {
+switch (chr) {
 
 case 48 :
 case 49 :
 
-case 95 :/*Ax6*//*te8*/res/*te8*/=true;
+case 95 :/*Ax6*/res=true;
 
 }
-return __exitReturn_i32_un(/*te8*/res, entry__);
+return __exitReturn_boolean_un(res, entry__);
 }
 
 

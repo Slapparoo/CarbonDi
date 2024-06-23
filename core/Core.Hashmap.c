@@ -32,82 +32,82 @@
 
 /*fd1*/void c_2106303_HashmapreHash(num this, num key, num value){
 
-u64 entry__ = __onEnter();/*va1*/u64 oldSize = /*te14a*/((c_2106303_Hashmap_cm*)useObject(/*te8*/this)->classmodel)->get_hmsize(/*te8*/this);
-/*va1*/num oldlist = /*te14a*/((c_2106303_Hashmap_cm*)useObject(/*te8*/this)->classmodel)->get_hmlist(/*te8*/this);
-/*Ax7*//*te15a*/((c_2106303_Hashmap*)useObject(/*te8*/this)->data)->hmsize/*te8*/+=512;
-/*va1*/num newlist = /*cd1*/ create_c_2106303_RefArray_1(/*te14a*/((c_2106303_Hashmap_cm*)useObject(/*te8*/this)->classmodel)->get_hmsize(/*te8*/this));
-/*Ax5*//*te14b*/((c_2106303_Hashmap_cm*)useObject(/*te8*/this)->classmodel)->set_hmitems(/*te8*/this, 0);
+u64 entry__ = __onEnter();/*va1*/u64 oldSize = /*te14a*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->get_hmsize(this);
+/*va1*/num oldlist = /*te14a*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->get_hmlist(this);
+/*Ax7*//*te15a*/((c_2106303_Hashmap*)useObject(this)->data)->hmsize+=512;
+/*va1*/num newlist = /*cd1*/ create_c_2106303_RefArray_1(/*te14a*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->get_hmsize(this));
+/*Ax5*//*te14b*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->set_hmitems(this, 0);
 
-for (num a__a = 0; a__a < /*te8*/oldSize; a__a++){
-/*va1*/i64 ix = /*te8*/a__a;
-/*va1*/num item = /*te4*/ *((num *)((c_2106303_RefArray_cm*)getc_2106303_RefArray_cm())->get(oldlist, /*te8*/ix));
-if (/*oxa*//*te8*/item != /*oxb*/0) {
-if (/*oxa*//*te14a*/((c_2106303_Object_cm*)useObject(/*te8*/item)->classmodel)->get_instanceName(/*te8*/item) == /*oxb*//*te141*/((c_2106303_MapDuo_cm*)getc_2106303_MapDuo_cm())->className()) {
-/*va1*/num d = /*te8*/item;
-/*st*/ /*fc3*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->internalPut(this, /*te8*/newlist, /*te14a*/((c_2106303_MapDuo_cm*)useObject(/*te8*/d)->classmodel)->get_oneKey(/*te8*/d), /*te14a*/((c_2106303_MapDuo_cm*)useObject(/*te8*/d)->classmodel)->get_oneValue(/*te8*/d));
-/*st*/ /*fc3*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->internalPut(this, /*te8*/newlist, /*te14a*/((c_2106303_MapDuo_cm*)useObject(/*te8*/d)->classmodel)->get_twoKey(/*te8*/d), /*te14a*/((c_2106303_MapDuo_cm*)useObject(/*te8*/d)->classmodel)->get_twoValue(/*te8*/d));
+for (num a__a = 0; a__a < oldSize; a__a++){
+/*va1*/i64 ix = a__a;
+/*va1*/num item = /*te4*/ *((num *)((c_2106303_RefArray_cm*)getc_2106303_RefArray_cm())->get(oldlist, ix));
+if (/*oxa*/item != /*oxb*/0) {
+if (/*oxa*//*te14a*/((c_2106303_Object_cm*)useObject(item)->classmodel)->get_instanceName(item) == /*oxb*//*te141*/((c_2106303_MapDuo_cm*)getc_2106303_MapDuo_cm())->className()) {
+/*va1*/num d = item;
+/*st*/ /*fc3*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->internalPut(this, newlist, /*te14a*/((c_2106303_MapDuo_cm*)useObject(d)->classmodel)->get_oneKey(d), /*te14a*/((c_2106303_MapDuo_cm*)useObject(d)->classmodel)->get_oneValue(d));
+/*st*/ /*fc3*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->internalPut(this, newlist, /*te14a*/((c_2106303_MapDuo_cm*)useObject(d)->classmodel)->get_twoKey(d), /*te14a*/((c_2106303_MapDuo_cm*)useObject(d)->classmodel)->get_twoValue(d));
 }
 
 /* else? */ else {
-/*va1*/num e = /*te8*/item;
-/*st*/ /*fc3*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->internalPut(this, /*te8*/newlist, /*te14a*/((c_2106303_MapEntry_cm*)useObject(/*te8*/e)->classmodel)->get_key(/*te8*/e), /*te14a*/((c_2106303_MapEntry_cm*)useObject(/*te8*/e)->classmodel)->get_value(/*te8*/e));
+/*va1*/num e = item;
+/*st*/ /*fc3*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->internalPut(this, newlist, /*te14a*/((c_2106303_MapEntry_cm*)useObject(e)->classmodel)->get_key(e), /*te14a*/((c_2106303_MapEntry_cm*)useObject(e)->classmodel)->get_value(e));
 }
 
 }
 
 }
 
-/*st*/ /* switch from fc5 to te4*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->internalPut(this, /*te8*/newlist, /*te8*/key, /*te8*/value);
-/*Ax2*//*te14b*/((c_2106303_Hashmap_cm*)useObject(/*te8*/this)->classmodel)->set_hmlist(/*te8*/this, /*te8*/newlist);
+/*st*/ /* switch from fc5 to te4*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->internalPut(this, newlist, key, value);
+/*Ax2*//*te14b*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->set_hmlist(this, newlist);
 
 return __exitReturn_void_un(entry__);}
 
 
 /*fd1*/void c_2106303_Hashmapstartuphm(num this){
 
-u64 entry__ = __onEnter();if (/*te14a*/((c_2106303_Hashmap_cm*)useObject(/*te8*/this)->classmodel)->get_isInitm(/*te8*/this)) {
+u64 entry__ = __onEnter();if (/*te14a*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->get_isInitm(this)) {
 return __exitReturn_void_un(entry__);
 }
 
-if (/*oxa*//*te14a*/((c_2106303_Hashmap_cm*)useObject(/*te8*/this)->classmodel)->get_hmsize(/*te8*/this) < /*oxb*/256) {
-/*Ax5*//*te14b*/((c_2106303_Hashmap_cm*)useObject(/*te8*/this)->classmodel)->set_hmsize(/*te8*/this, 256);
+if (/*oxa*//*te14a*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->get_hmsize(this) < /*oxb*/256) {
+/*Ax5*//*te14b*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->set_hmsize(this, 256);
 }
 
-/*Ax2*//*te14b*/((c_2106303_Hashmap_cm*)useObject(/*te8*/this)->classmodel)->set_hmlist(/*te8*/this, /*cd1*/ create_c_2106303_RefArray_1(/*te14a*/((c_2106303_Hashmap_cm*)useObject(/*te8*/this)->classmodel)->get_hmsize(/*te8*/this)));
-/*Ax2*//*te14b*/((c_2106303_Hashmap_cm*)useObject(/*te8*/this)->classmodel)->set_isInitm(/*te8*/this, true);
+/*Ax2*//*te14b*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->set_hmlist(this, /*cd1*/ create_c_2106303_RefArray_1(/*te14a*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->get_hmsize(this)));
+/*Ax2*//*te14b*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->set_isInitm(this, true);
 
 return __exitReturn_void_un(entry__);}
 
 
 /*fd1*/num c_2106303_Hashmapget(num this, num object){
 
-u64 entry__ = __onEnter();if (!/*te14a*/((c_2106303_Hashmap_cm*)useObject(/*te8*/this)->classmodel)->get_isInitm(/*te8*/this)) {
+u64 entry__ = __onEnter();if (!/*te14a*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->get_isInitm(this)) {
 return __exitReturn_i64_un(0, entry__);
 }
 
-/*va1*/i32 index = /*oxa*//* switch from fc5 to te4*/((c_2106303_Object_cm*)useObject(/*te8*/object)->classmodel)->hashCode(/*te8*/object) % /*oxb*//*te14a*/((c_2106303_Hashmap_cm*)useObject(/*te8*/this)->classmodel)->get_hmsize(/*te8*/this);
-/*va1*/num tempList = /*te14a*/((c_2106303_Hashmap_cm*)useObject(/*te8*/this)->classmodel)->get_hmlist(/*te8*/this);
-/*va1*/num item = /*te4*/ *((num *)((c_2106303_RefArray_cm*)getc_2106303_RefArray_cm())->get(tempList, /*te8*/index));
-if (/*oxa*//*te8*/item == /*oxb*/0) {
+/*va1*/i32 index = /*oxa*//* switch from fc5 to te4*/((c_2106303_Object_cm*)useObject(object)->classmodel)->hashCode(object) % /*oxb*//*te14a*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->get_hmsize(this);
+/*va1*/num tempList = /*te14a*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->get_hmlist(this);
+/*va1*/num item = /*te4*/ *((num *)((c_2106303_RefArray_cm*)getc_2106303_RefArray_cm())->get(tempList, index));
+if (/*oxa*/item == /*oxb*/0) {
 return __exitReturn_i64_un(0, entry__);
 }
 
- else if (/*oxa*//*te14a*/((c_2106303_Object_cm*)useObject(/*te8*/item)->classmodel)->get_instanceName(/*te8*/item) == /*oxb*//*te141*/((c_2106303_MapDuo_cm*)getc_2106303_MapDuo_cm())->className()) {
-/*va1*/num duo = /*te8*/item;
-if (/* switch from fc5 to te4*/((c_2106303_Object_cm*)useObject(/*te14a*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->get_oneKey(/*te8*/duo))->classmodel)->equals(/*te14a*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->get_oneKey(/*te8*/duo), /*te8*/object)) {
-/*rx4*/ return __exitReturn_ref_un(/*te14a*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->get_oneValue(/*te8*/duo), entry__);
+ else if (/*oxa*//*te14a*/((c_2106303_MapEntry_cm*)useObject(item)->classmodel)->get_instanceName(item) == /*oxb*//*te141*/((c_2106303_MapDuo_cm*)getc_2106303_MapDuo_cm())->className()) {
+/*va1*/num duo = item;
+if (/* switch from fc5 to te4*/((c_2106303_Object_cm*)useObject(/*te14a*/((c_2106303_MapDuo_cm*)useObject(duo)->classmodel)->get_oneKey(duo))->classmodel)->equals(/*te14a*/((c_2106303_MapDuo_cm*)useObject(duo)->classmodel)->get_oneKey(duo), object)) {
+/*rx4*/ return __exitReturn_ref_un(/*te14a*/((c_2106303_MapDuo_cm*)useObject(duo)->classmodel)->get_oneValue(duo), entry__);
 }
 
- else if (/* switch from fc5 to te4*/((c_2106303_Object_cm*)useObject(/*te14a*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->get_twoKey(/*te8*/duo))->classmodel)->equals(/*te14a*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->get_twoKey(/*te8*/duo), /*te8*/object)) {
-/*rx4*/ return __exitReturn_ref_un(/*te14a*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->get_twoValue(/*te8*/duo), entry__);
+ else if (/* switch from fc5 to te4*/((c_2106303_Object_cm*)useObject(/*te14a*/((c_2106303_MapDuo_cm*)useObject(duo)->classmodel)->get_twoKey(duo))->classmodel)->equals(/*te14a*/((c_2106303_MapDuo_cm*)useObject(duo)->classmodel)->get_twoKey(duo), object)) {
+/*rx4*/ return __exitReturn_ref_un(/*te14a*/((c_2106303_MapDuo_cm*)useObject(duo)->classmodel)->get_twoValue(duo), entry__);
 }
 
 }
 
- else if (/*oxa*//*te14a*/((c_2106303_Object_cm*)useObject(/*te8*/item)->classmodel)->get_instanceName(/*te8*/item) == /*oxb*//*te141*/((c_2106303_MapEntry_cm*)getc_2106303_MapEntry_cm())->className()) {
-/*va1*/num e = /*te8*/item;
-if (/* switch from fc5 to te4*/((c_2106303_Object_cm*)useObject(/*te14a*/((c_2106303_MapEntry_cm*)useObject(/*te8*/e)->classmodel)->get_key(/*te8*/e))->classmodel)->equals(/*te14a*/((c_2106303_MapEntry_cm*)useObject(/*te8*/e)->classmodel)->get_key(/*te8*/e), /*te8*/object)) {
-/*rx4*/ return __exitReturn_ref_un(/*te14a*/((c_2106303_MapEntry_cm*)useObject(/*te8*/e)->classmodel)->get_value(/*te8*/e), entry__);
+ else if (/*oxa*//*te14a*/((c_2106303_MapEntry_cm*)useObject(item)->classmodel)->get_instanceName(item) == /*oxb*//*te141*/((c_2106303_MapEntry_cm*)getc_2106303_MapEntry_cm())->className()) {
+/*va1*/num e = item;
+if (/* switch from fc5 to te4*/((c_2106303_Object_cm*)useObject(/*te14a*/((c_2106303_MapEntry_cm*)useObject(e)->classmodel)->get_key(e))->classmodel)->equals(/*te14a*/((c_2106303_MapEntry_cm*)useObject(e)->classmodel)->get_key(e), object)) {
+/*rx4*/ return __exitReturn_ref_un(/*te14a*/((c_2106303_MapEntry_cm*)useObject(e)->classmodel)->get_value(e), entry__);
 }
 
 }
@@ -118,46 +118,46 @@ return __exitReturn_i64_un(0, entry__);
 
 /*fd1*/void c_2106303_HashmapinternalPut(num this, num refArray, num key, num value){
 
-u64 entry__ = __onEnter();/*va1*/i32 index = /*oxa*//* switch from fc5 to te4*/((c_2106303_Object_cm*)useObject(/*te8*/key)->classmodel)->hashCode(/*te8*/key) % /*oxb*//*te14a*/((c_2106303_Hashmap_cm*)useObject(/*te8*/this)->classmodel)->get_hmsize(/*te8*/this);
-/*va1*/num tempList = /*te8*/refArray;
-/*va1*/num item = /*te4*/ *((num *)((c_2106303_RefArray_cm*)getc_2106303_RefArray_cm())->get(tempList, /*te8*/index));
-if (/*oxa*//*te8*/item == /*oxb*/0) {
-/*Ax3*/((c_2106303_RefArray_cm*)getc_2106303_RefArray_cm())->setObject(tempList, /*te8*/index,/*cd1*/ create_c_2106303_MapEntry_1(/*te8*/key, /*te8*/value));
-/*st*/ /*te15a*/((c_2106303_Hashmap*)useObject(/*te8*/this)->data)->hmitems++;
+u64 entry__ = __onEnter();/*va1*/i32 index = /*oxa*//* switch from fc5 to te4*/((c_2106303_Object_cm*)useObject(key)->classmodel)->hashCode(key) % /*oxb*//*te14a*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->get_hmsize(this);
+/*va1*/num tempList = refArray;
+/*va1*/num item = /*te4*/ *((num *)((c_2106303_RefArray_cm*)getc_2106303_RefArray_cm())->get(tempList, index));
+if (/*oxa*/item == /*oxb*/0) {
+/*Ax3*/((c_2106303_RefArray_cm*)getc_2106303_RefArray_cm())->setObject(tempList, index,/*cd1*/ create_c_2106303_MapEntry_1(key, value));
+/*st*/ /*te15a*/((c_2106303_Hashmap*)useObject(this)->data)->hmitems++;
 return __exitReturn_void_un(entry__);
 }
 
- else if (/*oxa*//*te14a*/((c_2106303_Object_cm*)useObject(/*te8*/item)->classmodel)->get_instanceName(/*te8*/item) == /*oxb*//*te141*/((c_2106303_MapDuo_cm*)getc_2106303_MapDuo_cm())->className()) {
-/*va1*/num duo = /*te8*/item;
-if (/* switch from fc5 to te4*/((c_2106303_Object_cm*)useObject(/*te14a*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->get_oneKey(/*te8*/duo))->classmodel)->equals(/*te14a*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->get_oneKey(/*te8*/duo), /*te8*/key)) {
-/*Ax2*//*te14b*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->set_oneValue(/*te8*/duo, /*te8*/value);
+ else if (/*oxa*//*te14a*/((c_2106303_Object_cm*)useObject(item)->classmodel)->get_instanceName(item) == /*oxb*//*te141*/((c_2106303_MapDuo_cm*)getc_2106303_MapDuo_cm())->className()) {
+/*va1*/num duo = item;
+if (/* switch from fc5 to te4*/((c_2106303_Object_cm*)useObject(/*te14a*/((c_2106303_MapDuo_cm*)useObject(duo)->classmodel)->get_oneKey(duo))->classmodel)->equals(/*te14a*/((c_2106303_MapDuo_cm*)useObject(duo)->classmodel)->get_oneKey(duo), key)) {
+/*Ax2*//*te14b*/((c_2106303_MapDuo_cm*)useObject(duo)->classmodel)->set_oneValue(duo, value);
 return __exitReturn_void_un(entry__);
 }
 
- else if (/* switch from fc5 to te4*/((c_2106303_Object_cm*)useObject(/*te14a*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->get_twoKey(/*te8*/duo))->classmodel)->equals(/*te14a*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->get_twoKey(/*te8*/duo), /*te8*/key)) {
-/*Ax2*//*te14b*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->set_twoValue(/*te8*/duo, /*te8*/value);
+ else if (/* switch from fc5 to te4*/((c_2106303_Object_cm*)useObject(/*te14a*/((c_2106303_MapDuo_cm*)useObject(duo)->classmodel)->get_twoKey(duo))->classmodel)->equals(/*te14a*/((c_2106303_MapDuo_cm*)useObject(duo)->classmodel)->get_twoKey(duo), key)) {
+/*Ax2*//*te14b*/((c_2106303_MapDuo_cm*)useObject(duo)->classmodel)->set_twoValue(duo, value);
 return __exitReturn_void_un(entry__);
 }
 
-/*st*/ /*fc3*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->reHash(this, /*te8*/key, /*te8*/value);
+/*st*/ /*fc3*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->reHash(this, key, value);
 return __exitReturn_void_un(entry__);
 }
 
- else if (/*oxa*//*te14a*/((c_2106303_Object_cm*)useObject(/*te8*/item)->classmodel)->get_instanceName(/*te8*/item) == /*oxb*//*te141*/((c_2106303_MapEntry_cm*)getc_2106303_MapEntry_cm())->className()) {
-/*va1*/num entry = /*te8*/item;
-if (/* switch from fc5 to te4*/((c_2106303_Object_cm*)useObject(/*te14a*/((c_2106303_MapEntry_cm*)useObject(/*te8*/entry)->classmodel)->get_key(/*te8*/entry))->classmodel)->equals(/*te14a*/((c_2106303_MapEntry_cm*)useObject(/*te8*/entry)->classmodel)->get_key(/*te8*/entry), /*te8*/key)) {
-/*Ax2*//*te14b*/((c_2106303_MapEntry_cm*)useObject(/*te8*/entry)->classmodel)->set_value(/*te8*/entry, /*te8*/value);
+ else if (/*oxa*//*te14a*/((c_2106303_Object_cm*)useObject(item)->classmodel)->get_instanceName(item) == /*oxb*//*te141*/((c_2106303_MapEntry_cm*)getc_2106303_MapEntry_cm())->className()) {
+/*va1*/num entry = item;
+if (/* switch from fc5 to te4*/((c_2106303_Object_cm*)useObject(/*te14a*/((c_2106303_MapEntry_cm*)useObject(entry)->classmodel)->get_key(entry))->classmodel)->equals(/*te14a*/((c_2106303_MapEntry_cm*)useObject(entry)->classmodel)->get_key(entry), key)) {
+/*Ax2*//*te14b*/((c_2106303_MapEntry_cm*)useObject(entry)->classmodel)->set_value(entry, value);
 return __exitReturn_void_un(entry__);
 }
 
 /* else? */ else {
 /*va1*/num duo = /*cd1*/ create_c_2106303_MapDuo();
-/*Ax2*//*te14b*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->set_oneKey(/*te8*/duo, /*te14a*/((c_2106303_MapEntry_cm*)useObject(/*te8*/entry)->classmodel)->get_key(/*te8*/entry));
-/*Ax2*//*te14b*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->set_oneValue(/*te8*/duo, /*te14a*/((c_2106303_MapEntry_cm*)useObject(/*te8*/entry)->classmodel)->get_value(/*te8*/entry));
-/*Ax2*//*te14b*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->set_twoKey(/*te8*/duo, /*te8*/key);
-/*Ax2*//*te14b*/((c_2106303_MapDuo_cm*)useObject(/*te8*/duo)->classmodel)->set_twoValue(/*te8*/duo, /*te8*/value);
-/*Ax3*/((c_2106303_RefArray_cm*)getc_2106303_RefArray_cm())->setObject(tempList, /*te8*/index,/*te8*/duo);
-/*st*/ /*te15a*/((c_2106303_Hashmap*)useObject(/*te8*/this)->data)->hmitems++;
+/*Ax2*//*te14b*/((c_2106303_MapDuo_cm*)useObject(duo)->classmodel)->set_oneKey(duo, /*te14a*/((c_2106303_MapEntry_cm*)useObject(entry)->classmodel)->get_key(entry));
+/*Ax2*//*te14b*/((c_2106303_MapDuo_cm*)useObject(duo)->classmodel)->set_oneValue(duo, /*te14a*/((c_2106303_MapEntry_cm*)useObject(entry)->classmodel)->get_value(entry));
+/*Ax2*//*te14b*/((c_2106303_MapDuo_cm*)useObject(duo)->classmodel)->set_twoKey(duo, key);
+/*Ax2*//*te14b*/((c_2106303_MapDuo_cm*)useObject(duo)->classmodel)->set_twoValue(duo, value);
+/*Ax3*/((c_2106303_RefArray_cm*)getc_2106303_RefArray_cm())->setObject(tempList, index,duo);
+/*st*/ /*te15a*/((c_2106303_Hashmap*)useObject(this)->data)->hmitems++;
 return __exitReturn_void_un(entry__);
 }
 
@@ -170,11 +170,11 @@ return __exitReturn_void_un(entry__);}
 
 /*fd1*/void c_2106303_Hashmapput(num this, num key, num value){
 
-u64 entry__ = __onEnter();if (!/*te14a*/((c_2106303_Hashmap_cm*)useObject(/*te8*/this)->classmodel)->get_isInitm(/*te8*/this)) {
+u64 entry__ = __onEnter();if (!/*te14a*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->get_isInitm(this)) {
 /*st*/ /*fc3*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->startuphm(this);
 }
 
-/*st*/ /* switch from fc5 to te4*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->internalPut(this, /*te14a*/((c_2106303_Hashmap_cm*)useObject(/*te8*/this)->classmodel)->get_hmlist(/*te8*/this), /*te8*/key, /*te8*/value);
+/*st*/ /* switch from fc5 to te4*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->internalPut(this, /*te14a*/((c_2106303_Hashmap_cm*)useObject(this)->classmodel)->get_hmlist(this), key, value);
 
 return __exitReturn_void_un(entry__);}
 

@@ -164,6 +164,16 @@ public class BlockDef extends StatementDef implements ContainerDef {
             }
         }
 
+        if (statementDefs != null) {
+            for (StatementDef sd : statementDefs) {
+                if (sd instanceof VariableDef vd) {
+                    if (name.equals(vd.getName())) {
+                        return vd;
+                    }
+                }
+            }
+        }
+
         if (getContainedInBlock() != null) {
             if (getContainedInBlock() != this) {
                 VariableDef res = getContainedInBlock().resolveVariable(name);
